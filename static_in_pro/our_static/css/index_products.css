@@ -1,0 +1,261 @@
+/*Products List - Products Raw Class*/
+#products-wrapper{
+    /*padding: top-right-bottom-left*/
+    padding: 32px 0px 118px 0px;
+    /*background-color: rgba(218, 167, 52, 0.95);*/
+    background-color: #E5B34D;
+}
+/*Product List - Items Classes*/
+#product-list{
+
+}
+#product1{
+    background-image: url("../img/products/Printer.svg");
+}
+#product2{
+    background-image: url("../img/products/Tablet.svg");
+}
+#product3{
+    background-image: url("../img/products/Speakers.svg");
+}
+#product4{
+    background-image: url("../img/products/Camera.svg");
+}
+#product5{
+    background-image: url("../img/products/Smart_watch.svg");
+}
+#product6{
+    background-image: url("../img/products/Smart_phone.svg");
+}
+#product7{
+    background-image: url("../img/products/Laptop.svg");
+}
+#product8{
+    background-image: url("../img/products/Hard_drive.svg");
+}
+#product9{
+    background-image: url("../img/products/Headphones.svg");
+}
+#product10{
+    background-image: url("../img/products/Screen.svg");
+}
+.product-frame{
+    height: 135px;
+    width: 135px;
+    display: none;
+    /*transition: opacity .4s ease-in-out;*/
+    /*opacity: 0;*/
+    transition: all .1s ease-in-out;
+    background-color: white;
+}
+
+/*Product List - Mobile Label and Next Icon*/
+.product-label {
+    display: none;
+    font-size: 20px !important;
+    font-family: "Bariol";
+    color: rgb(255, 255, 255);
+    line-height: 1.7;
+    text-align: center;
+    border-radius: 15px;
+    background-color: rgb(58, 73, 78);
+    width: 150px;
+    height: 36px;
+    font-weight: normal;
+    position: relative;
+    /*135+36*/
+    top: 152px;
+    margin: 0px;
+    transform: none !important;
+}
+#next-icon{
+    display: none;
+    position: relative;
+    /*135+36*/
+    top: 171px;
+    /*99+60*/
+    left: 105px;
+    color: #E6592A;
+    font-size: 52px;
+}
+#next-layer1{
+    display: none;
+    font-size: 30px;
+    color: white;
+    position: relative;
+    top: 128px;
+    left: 116px;
+}
+#next-layer2{
+    display: none;
+    font-size: 10px;
+    color: #E6592A;
+    position: relative;
+    top: 93px;
+    left: 105px;
+}
+
+/*Product List - Left and Right Controls Classes*/
+#arrow-icon{
+    color: whitesmoke;
+    transition: font-size .1s ease-in-out;
+    font-size: 42px;
+}
+#arrow-icon:hover{
+    font-size: 43px;
+}
+.arrow-btn:active,
+.arrow-btn:focus{
+    outline: none !important;
+}
+.arrow-btn{
+    background-color: transparent;
+    border: none;
+    outline: none !important;
+}
+.right-control{
+    padding-left: 0px;
+    padding-top: 35px;
+
+}
+.left-control{
+    padding-right: 0px;
+    padding-top: 35px;
+}
+/*Product List - Global Classes*/
+body{
+    height: 100%;
+    width: 100% !important;
+}
+.vertical-center{
+    position: relative;
+    top: 50% !important;
+    /*transform: translateY(50%);*/
+    /*transform: translate(50% 50%);*/
+}
+
+/*Product List - Responsive*/
+
+/* Extra small devices - 320px Design (phones, less than 480px) */
+@media (max-width: 767px) {
+    #product-list{
+        padding: 0px;
+    }
+    #product-list div:nth-child(n+3):nth-child(-n+5){
+        display: inline-block;
+    }
+    #product-list div:nth-child(3){
+        float: left !important;
+        padding-left: 0px !important;
+        width: 80px;
+        background-size: 135px 135px;
+        background-position: left -55px top 0px;
+        background-repeat: no-repeat;
+
+    }
+    #product-list div:nth-child(4) i{
+        display: inline-block !important;
+    }
+    #product-list div:nth-child(4) label{
+        display: inline-block !important;
+    }
+    #product-list div:nth-child(5){
+        float: right;
+        width: 80px;
+        background-size: 135px 135px;
+        background-position: left 0px top 0px;
+        background-repeat: no-repeat;
+    }
+}
+/* Extra small devices - 480px Design (phones, less than 768 and greater than 480) */
+@media (min-width: 480px) and (max-width: 767px) {
+    #products-wrapper{
+        padding: 32px 0px 103px 0px;
+    }
+    .product-frame{
+        height: 150px;
+        width: 150px;
+    }
+    #product-list div:nth-child(3){
+        width: 110px;
+        background-position: right 15px top 0px;
+        background-size: 150px 150px;
+    }
+    #product-list div:nth-child(5){
+        width: 110px;
+        background-position: left 15px top 0px;
+        background-size: 150px 150px;
+    }
+    .product-label{
+        font-size: 24px !important;
+        line-height: 1.5;
+    }
+    #next-icon, #next-layer2{
+        left: 120px;
+    }
+    #next-layer1{
+        left: 132px;
+    }
+}
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    #products-wrapper{
+        padding: 50px 15px 50px 15px !important;
+    }
+    .product-frame{
+        height: 112px;
+        width: 111px;
+        margin-left: 4px !important;
+        margin-right: 4px !important;
+    }
+    .product-frame:hover{
+        transform: scale(1.03);
+        cursor: pointer;
+    }
+    #product-list div:nth-child(n+3):nth-child(-n+6){
+        display: inline-block;
+    }
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    #products-wrapper{
+        padding: 47.5px 15px 47.5px 15px !important;
+    }
+    .product-frame{
+        height: 117px;
+        width: 117px;
+    }
+    #product-list div:nth-child(n+2):nth-child(-n+7){
+        display: inline-block;
+    }
+    .right-control{
+        padding-left: 15px;
+    }
+    .left-control{
+        padding-right: 15px;
+    }
+}
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    #products-wrapper{
+        padding: 41px 15px 41px 15px !important;
+    }
+    .product-frame{
+        height: 125px;
+        width: 125px;
+        margin-left: 0.4% !important;
+        margin-right: 0.4% !important;
+    }
+    #product-list div:nth-child(n+1):nth-child(-n+7){
+        display: inline-block;
+    }
+    .right-control{
+        padding-top: 40px;
+    }
+    .left-control{
+        padding-top: 40px;
+    }
+}
+
+

@@ -1,0 +1,76 @@
+{% load staticfiles %}
+
+<head>
+    <!-- About - How it works and Who We Are Style -->
+    <link href="{% static 'css/index_about.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Container: About Section -->
+    <div class="container-fluid">
+        <!-- Raw: How it Works & Who we are -->
+        <div id="about-wrapper" class="row text-center">
+            <!-- Column: How it Works -->
+            <div id="how-col" class="col-xs-12 col-md-6">
+                <!-- How it Works - Header -->
+                <label id="how-label" class="about-label">How it works</label>
+                <!-- How it Works - Level Description (mobile) -->
+                <p id="p-how-320" class="p-how text-center">
+                    <label id="desc-label-320" class="desc-label">Pick a product</label>
+                        <span id="desc-stage-320" class="desc-stage">
+                            based on immaterial factors, rather than studying the indicators
+                            that tell them whether they can make money(1).
+                        </span>
+                </p>
+                <!-- How it Works - Face Icon -->
+                <div id="face-icon" class="text-center">
+                    <!-- How it Works - Level Description (tablet and up) -->
+                    <p id="p-how-768" class="p-how">
+                        <label id="desc-label-768" class="desc-label">Pick a product</label>
+                            <span id="desc-stage-768" class="desc-stage">
+                                based on immaterial factors, rather than studying the indicators
+                                that tell them whether they can make money(1).
+                            </span>
+                    </p>
+                </div>
+                <!-- How it Works - Infographic -->
+                <div id="infographic" class="">
+                    <img id="infographic-line" class="" src="{% static 'img/how_it_works/infographic/line.svg' %}">
+                    <img id="info-stage1" class="infographic-circle"
+                         src="{% static 'img/how_it_works/infographic/circle_red.svg' %}">
+                    <img id="info-stage2" class="infographic-circle"
+                         src="{% static 'img/how_it_works/infographic/circle_gold.svg' %}">
+                    <img id="info-stage3" class="infographic-circle"
+                         src="{% static 'img/how_it_works/infographic/circle_green.svg' %}">
+                    <img id="info-stage4" class="infographic-circle"
+                         src="{% static 'img/how_it_works/infographic/circle_blue.svg' %}">
+                    <img id="info-stage5" class="infographic-circle"
+                         src="{% static 'img/how_it_works/infographic/circle_purple.svg' %}">
+                </div>
+            </div>
+            <!-- Column: Who we are -->
+            <div id="who-col" class="col-xs-12 col-md-6">
+                <!-- Who we are - Mobile Label -->
+                <label id="who-we-label" class="about-label">Who We Are</label>
+                <!-- Who we are - Djaroo Description -->
+                <p id="p-who-we" class="text-center">
+                        <span class="desc-djaroo">
+                            Djaroo is  a multinational corporation and e-commerce company,
+                            providing consumer to consumer & business to consumer sales services via Internet
+                        </span>
+                </p>
+                <!-- Who we are - 16:9 video -->
+                <div id="video-djaroo" class="embed-responsive embed-responsive-16by9">
+                    <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/jSS1tF1Cgog"
+                            frameborder="0" allowfullscreen></iframe>
+                </div>
+                <p id="p-who-we-992" class="text-center">
+                        <span class="">
+                            Djaroo is  a multinational corporation and e-commerce company,
+                            providing consumer to consumer & business to consumer sales services via Internet
+                        </span>
+                </p>
+            </div>
+        </div>
+    </div>
+</body>

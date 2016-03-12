@@ -1,0 +1,25 @@
+# File types #
+##############
+*.egg-info
+*.pot
+*.pyc
+*.swo
+*.swp
+*.swn
+
+# Directories #
+###############
+logs/
+.idea/
+
+# Specific files #
+##################
+djaroo/settings/local.py
+
+# OS generated files #
+######################
+.DS_Store?
+ehthumbs.db
+Icon?
+Thumbs.db
+*~

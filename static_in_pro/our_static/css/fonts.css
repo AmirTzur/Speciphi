@@ -1,0 +1,24 @@
+navbar-static-top.css@font-face {
+    font-family: 'bariol_regular-webfont';
+    src: url('../fonts/bariol_regular-webfont.ttf');
+}
+
+@font-face {
+    font-family: 'bariol_bold-webfont';
+    src: url('../fonts/bariol_bold-webfont.ttf');
+}
+
+@font-face {
+    font-family: 'bariol_thin-webfont';
+    src: url('../fonts/bariol_thin-webfont.ttf');
+}
+
+@font-face {
+    font-family: 'bariol_light-webfont';
+    src: url('../fonts/bariol_light-webfont.ttf');
+}
+
+@font-face {
+    font-family: 'bariol_regular_italic-webfont';
+    src: url('../fonts/bariol_regular_italic-webfont.ttf');
+}

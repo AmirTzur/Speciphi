@@ -1,0 +1,67 @@
+/*Home Header - Header Raw Class*/
+#header-wrapper{
+    /*padding: top-right-bottom-left*/
+    padding: 4px 15px 8px 15px;
+    background-color: white;
+}
+/*Home Header - Logo image*/
+#logo{
+    display: inline-block;
+    width: 122px;
+    height: 51px;
+}
+/*Home Header - Sentence*/
+.sentence {
+    font-size: 36px;
+    font-family: "Bariol";
+    color: rgb(230, 89, 42);
+    font-weight: bold;
+    font-style: italic;
+    position: relative;
+    line-height: 2.0;
+    padding-left: 25px;
+    display: none;
+}
+
+/*Header - Responsive*/
+
+/* Extra small devices (phones, less than 768px) */
+@media (max-width: 767px) {
+
+}
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    .sentence{
+        display: inline-block;
+    }
+    #logo{
+        width: 228px;
+        height: 95px;
+    }
+    #header-wrapper{
+        padding: 15px 15px 10px 15px;
+        background-color: white;
+    }
+}
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    .sentence{
+        font-size: 43px;
+        line-height: 1.7;
+        top: 0px;
+        padding-left: 35px;
+    }
+    #logo{
+        width: 235px;
+        height: 98px;
+    }
+}
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .sentence{
+        font-size: 50px;
+        line-height: 1.4;
+    }
+}
+
+

@@ -1,0 +1,336 @@
+/*Home About Us - Raw Class*/
+#about-wrapper{
+    /*padding: top-right-bottom-left*/
+    padding: 0px;
+    background-color: #E5DFD3;
+}
+
+/*Home About Us - How it works & Who we are Label Class*/
+.about-label {
+    font-size: 48px;
+    font-family: "Bariol";
+    font-weight: normal;
+    color: rgb(234, 178, 42);
+    line-height: 1;
+    margin: 0px;
+}
+.about-label:hover{
+    cursor: pointer;
+}
+/*Home About Us - How it works wrapper*/
+#how-col{
+    padding: 8px 15px 8px 15px;
+    border-bottom: solid 3px white;
+}
+.p-how{
+    display: none;
+    padding: 5px 0px 5px 0px;
+    font-size: 19px;
+    font-family: "Bariol";
+    line-height: 1.2;
+    margin: 0px;
+}
+#p-how-768{
+    display: none;
+    position: relative;
+}
+.desc-label {
+    font-size: 24px;
+    font-family: "Bariol";
+    color: rgba(230, 89, 42, 0.8);
+    font-weight: bold;
+    line-height: 0.633;
+    margin: 0px;
+}
+#face-icon{
+    display: none;
+    padding: 0px 40px 0px 0px;
+    width: 116px;
+    height: 112px;
+    background-image: url("../img/how_it_works/head_icon.svg");
+    background-repeat: no-repeat;
+}
+#infographic{
+    display: none;
+    padding: 0px 0px 0px 0px;
+    width: 126px;
+}
+.infographic-circle{
+    position: relative;
+    top: -52px;
+    left: 0px;
+    width: 20px;
+    height: 20px;
+    z-index: 20;
+    border-radius: 50%;
+
+}
+.infographic-circle:hover{
+    cursor: pointer;
+}
+#infographic img:nth-child(2){
+    left: -14px;
+}
+#infographic img:nth-child(3){
+    left: -9px;
+    top: -93px;
+}
+#infographic img:nth-child(5){
+    left: 6px;
+    top: -14px;
+}
+#infographic img:nth-child(6){
+    left: 11px;
+}
+#infographic-line{
+    width: 126px;
+    height: 85px;
+}
+/*Home About Us - Who we are wrapper*/
+#who-col{
+    padding: 10px 0px 10px 0px;
+}
+#p-who-we{
+    display: none;
+    padding: 5px 15px 5px 15px;
+    font-size: 19px;
+    font-family: "Bariol";
+    color: rgb(0, 0, 0);
+    line-height: 1.2;
+    margin: 0px;
+}
+#p-who-we-992{
+    display: none !important;
+    font-size: 17px;
+    font-family: "Bariol";
+    color: rgb(0, 0, 0);
+    line-height: 1.2;
+    margin: 0px;
+    width: 182px;
+    float: left;
+    text-align: left;
+    padding: 15px 0px 0px 15px;
+    position: static;
+}
+#video-djaroo{
+    display: none;
+    padding: 0px 0px 0px 20px;
+    height: 126px;
+    width: 100%;
+    float: right;
+}
+
+
+
+/*About - Responsive*/
+
+/* Extra small devices - 320px Design (phones, less than 480px) */
+@media (max-width: 767px) {
+
+}
+/* Extra small devices - 480px Design (phones, 480 and up) */
+@media (min-width: 480px) {
+    .p-how{
+        padding: 20px 0px 20px 0px;
+    }
+    #face-icon{
+        padding: 0px 110px 0px 0px;
+        width: 186px;
+        height: 142px;
+    }
+    #infographic{
+        padding: 0px 0px 0px 0px;
+        width: 192px;
+    }
+    .infographic-circle{
+        width: 30px;
+        height: 30px;
+    }
+    #infographic img:nth-child(2){
+        left: -28px;
+        top: -78px;
+    }
+    #infographic img:nth-child(3){
+        top: -140px;
+        left: -16px;
+    }
+    #infographic img:nth-child(4){
+        top: -78px;
+    }
+    #infographic img:nth-child(5){
+        top: -19px;
+        left: 13px
+    }
+    #infographic img:nth-child(6){
+        top: -78px;
+        left: 22px
+    }
+    #infographic-line{
+        width: 192px;
+        height: 129px;
+    }
+    #p-who-we{
+        padding: 20px 15px 20px 15px;
+    }
+}
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    #how-col{
+        padding: 15px 15px 0px 15px;
+        border-bottom: none;
+    }
+    .about-label {
+        font-size: 24px !important;
+        color: rgb(58, 73, 78);
+        font-weight: bold;
+        line-height: 1.2;
+        float: left;
+    }
+    .about-label:hover{
+        cursor: default;
+    }
+    #infographic{
+        display: inline-block !important;
+        float: left;
+        width: 262px;
+        height: 258px;
+        padding: 75px 20px 45px 20px;
+    }
+    .p-how{
+        padding: 0px;
+        float: right;
+        font-size: 21px;
+        line-height: 1.2;
+        text-align: left;
+        /*width: 217px;*/
+        /*height: 175px;*/
+    }
+    .p-how label{
+        display: block !important;
+        padding-bottom: 5px;
+    }
+    #p-how-320{
+        display: none !important;
+    }
+    #p-how-768{
+        display: inline-block !important;
+        position: relative;
+        top: 123px;
+        left: 31px;
+        width: 220px;
+        height: 160px;
+    }
+    #face-icon{
+        display: inline-block !important;
+        /*width: 112px;*/
+        /*height: 167px;*/
+        background-size: 112px 167px;
+        background-position: top center;
+        width: 220px;
+        height: 285px;
+        padding: 0px;
+    }
+    #who-col{
+        background-color: #e5b34d;
+        padding: 0px 0px 0px 15px;
+        border-bottom: solid 70px #E5DFD3;
+        height: 279px;
+    }
+    #who-we-label{
+        padding-top: 10px;
+    }
+    #p-who-we{
+        display: inline-block !important;
+        width: 280px;
+        float: left;
+        text-align: left;
+        font-size: 17px;
+        padding: 63px 0px 35px 0px;
+        position: relative;
+        /*"who we are" length=120.313*/
+        left: -120.313px;
+    }
+    #video-djaroo{
+        display: inline-block !important;
+        padding: 0px 0px 0px 0px;
+        height: 208.9px;
+        width: 45.6%;
+        /*float: right;*/
+    }
+}
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    #about-wrapper{
+        padding: 40px 0px 30px 15px;
+    }
+    .about-label{
+        display: block;
+        float: none;
+        text-align: left;
+        padding: 0px 0px 30px 40px;
+    }
+    #how-col{
+        padding: 0px;
+    }
+    .p-how{
+        font-size: 17px;
+    }
+    .desc-label{
+        font-size: 19px;
+        padding-bottom: 2px;
+    }
+    #face-icon{
+        display: inline-block;
+        /*display: block;*/
+        background-size: 77px 112px;
+        background-position: top center;
+        width: 150px;
+        height: 215px;
+        padding: 0px;
+    }
+    #p-how-768{
+        /*display: inline-block;*/
+        /*position: relative;*/
+        top: 83px;
+        left: 10px;
+        width: 150px;
+        height: 130px;
+    }
+    #infographic{
+        display: inline-block;
+        float: none;
+        width: 280px;
+        height: 193px;
+        padding: 25px 20px 30px 40px;
+        position: relative;
+        top: -30px;
+    }
+    #who-col{
+        padding: 0px;
+        background-color:transparent;
+        height: auto;
+        border-bottom: none;
+    }
+    #who-we-label{
+        padding-top: 0px;
+        padding-left: 0px;
+    }
+    #p-who-we{
+        display: none !important;
+    }
+    #p-who-we-992{
+        display: inline-block !important;
+    }
+    #video-djaroo{
+        padding: 0px 0px 0px 0px;
+        height: 200px;
+        width: 60%;
+        float: left;
+    }
+}
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .about-label{
+        padding: 0px 0px 30px 92px;
+    }
+}

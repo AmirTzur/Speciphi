@@ -1,0 +1,235 @@
+{% load staticfiles %}
+{% load djaroo_extras %}
+
+<head>
+    <!-- Navbar style -->
+    <link href="{% static 'css/navbar.css' %}" rel="stylesheet">
+    <!-- Navbar-Dropdown improvements style -->
+    <link href="{% static 'css/dropdowns-enhancement.css' %}" rel="stylesheet">
+    <!--ED:added-->
+    <!--sign in dropdown-->
+    <link href="{% static 'css/login_dropdown.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+<div class="container-fluid" id="navbar-wrapper">
+    <div id="nav-row" class="row">
+        <div class="nav-col-size col-xs-12 col-sm-offset-1 col-sm-10">
+
+            <div id="left-side-nav">
+                {#navigation#}
+                <ul class="ul-top">
+                    <div id="figure">
+                        <li><a id="backward" class="button" style="cursor: default"
+                               onclick="
+                                       if (i > 0) {
+                                       $('#'+pages[i].name).css('display','none');
+                                       $('#'+pages[i-1].name).css('display','block');
+                                       i--;
+                                       $('#forward').css('cursor', 'pointer');
+                                       $('#forward').children().css('opacity', '1');
+                                       if (i == 0 || !pages[i-1].show){
+                                       $('#backward').children().css('opacity', '0.6');
+                                       $('#backward').css('cursor', 'default');
+                                       }else {
+                                       $('#backward').children().css('opacity', '1');
+                                       $('#forward').children().css('opacity', '1');
+                                       $('#backward').css('cursor', 'pointer');
+                                       }
+                                       }
+                                       ">
+                            <i class="fa fa-caret-left fa-lg"></i>
+                        </a>
+                        </li>
+                        <li>
+                            {% for page in pages %}
+                                <a id="{{ page }}" class="figure-word"
+                                        {% if pages|keylist1:page %}
+                                   style="display: block; pointer-events:none; height: 28px;width: 60px; text-align: center; color: #E6592A;"
+                                        {% else %}
+                                   style="display: none; width: 60px; text-align: center; outline: none;"
+                                        {% endif %}
+                                   href="{% url pages|keylist2:page %}"
+                                        >{{ page }}
+                                </a>
+                            {% endfor %}
+                        </li>
+                        <li>
+                            <a id="forward" class="button" style="cursor: default"
+                               onclick="
+                                       if (i < pages.length-1 && pages[i+1].show) {
+                                       $('#'+pages[i].name).css('display','none');
+                                       $('#'+pages[i+1].name).css('display','block')
+                                       i++;
+                                       $('#backward').children().css('opacity', '1');
+                                       $('#forward').children().css('opacity', '1');
+                                       $('#backward').css('cursor', 'pointer');
+                                       //fade arrow color when next page is unavailable
+                                       if (i == pages.length-1 || !pages[i+1].show){
+                                       $('#forward').children().css('opacity', '0.6');
+                                       $('#forward').css('cursor', 'default');
+                                       }else {
+                                       $('#forward').children().css('opacity', '1');
+                                       $('#forward').children().css('opacity', '1');
+                                       $('#forward').css('cursor', 'pointer');
+                                       }
+                                       }
+                                       ">
+                                <i class="fa fa-caret-right fa-lg"></i>
+                            </a>
+                        </li>
+                    </div>
+                </ul>
+                {#orientation#}
+                <ul class="ul-bottom">
+                    <div id="screens_holder">
+                        {% for page in pages %}
+                            {% if pages|keylist1:page %}
+                                <li>
+                                    <div id="circle" style="background-color: #E6592A!important;"></div>
+                                </li>
+                            {% else %}
+                                <li>
+                                    <div id="circle"></div>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </ul>
+            </div>
+
+
+            {#center-side-nav#}
+            <div class="dropdown" id="center-side-nav">
+
+                <span id="drop_left" style="display: none; padding-top: 15px;">
+                    <img src="{% static 'img/navbar/Left_egg.svg' %}">
+                </span>
+
+                <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">
+                    <a id="egg"></a>
+                </button>
+
+                <span id="drop_right" style="display: none;">
+                    <img src="{% static 'img/navbar/Right_egg.svg' %}">
+                </span>
+
+                <ul class="dropdown-menu pull-center" role="menu" aria-labelledby="menu1">
+                    <li><a href="#" class="text-align-center">About Us</a></li>
+                    <li><a href="#" class="text-align-center">Contact Us</a></li>
+                    <li><a href="#" class="text-align-center">FAQ</a></li>
+                    <li><a href="#" class="text-align-center">Personal Zone</a>
+                        <!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="#">HTML</a></li>-->
+                    </li>
+                    <li role="presentation" class="divider"></li>
+                    {% for page in pages %}
+                        <li><a href="{% url pages|keylist2:page %}"
+                               class="text-align-center">{{ page }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            {#right-side-nav#}
+            <div id="right-side-nav">
+                <ul class="ul-top">
+                    <div id="register_links">
+
+                        <div class="dropdown2">
+                            {% if request.user.is_authenticated %}
+
+                                <li><a onclick="opendrop2()" class="dropbtn" style="cursor: pointer">Sign Out</a></li>
+                                <div id="myDropdown" class="dropdown-content">
+                                    <iframe id="accounts_iframe" src="/accounts/logout/"></iframe>
+                                </div>
+
+                            {% else %}
+
+                                <li><a onclick="opendrop2()" class="dropbtn" style="cursor: pointer">Sign In</a></li>
+                                <div id="myDropdown" class="dropdown-content">
+                                    <iframe id="accounts_iframe" src="/accounts/login/"></iframe>
+                                </div>
+
+                            {% endif %}
+                            <li><span style="cursor: default">|</span></li>
+                        </div>
+
+                    </div>
+                </ul>
+
+                <ul class="ul-bottom">
+                    <div id="share_icons">
+                        <li><a href="#" class="small-right-side-padding">
+                            <i class="fa fa-facebook-official fa-lg"></i></a></li>
+                        <li><a href="#" class="small-sides-padding">
+                            <i class="fa fa-twitter-square fa-lg"></i></a></li>
+                        <li><a href="#" class="small-sides-padding">
+                            <i class="fa fa-google-plus-square fa-lg"></i></a></li>
+                        <li><a href="#" class="small-left-side-padding">
+                            <i class="fa fa-share-alt-square fa-lg"></i></a></li>
+                    </div>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var pages = [
+        {name: "Home", show: false},
+        {name: "Affil", show: false},
+        {name: "Appli", show: false},
+        {name: "Focal", show: false},
+        {name: "Compar", show: false},
+        {name: "Results", show: false},
+    ];
+    //update pages array with the current page
+    {% for page in pages %}
+        {% if pages|keylist1:page %}
+            for (var i = 0; i < pages.length; i++) {
+                pages[i].show = true;
+                if (pages[i].name == '{{ page }}') {
+                    break;
+                }
+            }
+            ;
+        {% endif %}
+    {% endfor %}
+
+    //color figure arrows according to current page and his neighbors
+    if (i == pages.length - 1 || !pages[i + 1].show) {
+        $('#forward').children().css('opacity', '0.6');
+    }
+    if (i == 0) {
+        $('#backward').children().css('opacity', '0.6');
+
+    } else {
+        $('#backward').css('cursor', 'pointer');
+    }
+
+    {#    facebook script#}
+    window.fbAsyncInit = function () {
+        FB.init({
+            appId: '824594521003011',
+            xfbml: true,
+            version: 'v2.5'
+        });
+    };
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+
+</script>
+<script src="{% static 'js/navbar.js' %}" style=""></script>
+
+</body>
+
