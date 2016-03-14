@@ -20,6 +20,7 @@
     position: relative;
     line-height: 2.0;
     padding-left: 25px;
+    top: 3px;
     display: none;
 }
 
@@ -48,8 +49,8 @@
     .sentence{
         font-size: 43px;
         line-height: 1.7;
-        top: 0px;
         padding-left: 35px;
+        top: 5px;
     }
     #logo{
         width: 235px;
