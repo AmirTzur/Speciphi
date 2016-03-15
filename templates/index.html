@@ -1,7 +1,9 @@
 {% extends 'djaroo_base.html' %}
 {% load staticfiles %}
 
-<title>{% block head_title %} Home {{ block.super }}{% endblock %}</title>
+<title>
+    {% block head_title %} Home {{ block.super }}{% endblock %}
+</title>
 
 {% block content %}
 
@@ -12,7 +14,7 @@
     <!-- Feature: About -->
     {% include "index_about.html" %}
 
-    <!-- Load javascript -->
+    <!-- Scripts -->
     {% include "index_js.html" %}
 
 {% endblock %}
