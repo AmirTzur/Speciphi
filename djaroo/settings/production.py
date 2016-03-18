@@ -3,8 +3,9 @@
 # mysql -- exp1db
 # db username -- amir_exp1
 # password -- firstexp2280djarooproject
+# webfaction ssh: username=amirtz ; password=long012B2848short!@elad
 
-# superuser: username=amirtzur ; password=mottytal054elad7918amir841
+#superuser: username=djaroo_admin ; password=become@3737!dont#ativ050run1987%
 
 """
     Django settings for exp1 project.
@@ -17,6 +18,7 @@
     For the full list of settings and their values, see
     https://docs.djangoproject.com/en/1.8/ref/settings/
 """
+
 from django.conf import settings
 
 if not settings.DEBUG:
@@ -35,7 +37,7 @@ if not settings.DEBUG:
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = False
 
-    ALLOWED_HOSTS = ['www.djaroo.com']
+    ALLOWED_HOSTS = ['djaroo.com', 'www.djaroo.com']
 
     EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_HOST_USER = 'tzuramir@gmail.com'
@@ -57,6 +59,11 @@ if not settings.DEBUG:
         'django.contrib.messages',
         'django.contrib.staticfiles',
         # third party apps
+        # 'allauth',
+        # 'allauth.account',
+        # 'allauth.socialaccount',
+        # 'allauth.socialaccount.providers.facebook',
+        # 'allauth.socialaccount.providers.google',
         # 'crispy_forms',
         # 'registration',
         # my apps
@@ -102,7 +109,7 @@ if not settings.DEBUG:
         'default': {
             'ENGINE': 'django.db.backends.mysql',
             # 'NAME': os.path.join(BASE_DIR, 'db.exp1db'),
-            'NAME': 'djarooDB',
+            'NAME': 'djaroodb',
             'USER': 'amir_exp1',
             'PASSWORD': 'firstexp2280djarooproject',
             # 'HOST': '127.0.0.1',
@@ -130,7 +137,7 @@ if not settings.DEBUG:
 
     STATIC_URL = '/static/'
 
-    STATIC_ROOT = '/home/amirtz/webapps/djaroo_exp1_static'
+    STATIC_ROOT = '/home/amirtz/webapps/djaroo_static/'
         # os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "static_root")
 
     STATICFILES_DIRS = (
@@ -140,7 +147,7 @@ if not settings.DEBUG:
     )
 
     MEDIA_URL = '/media/'
-    MEDIA_ROOT = '/home/amirtz/webapps/djaroo_exp1_media'
+    MEDIA_ROOT = '/home/amirtz/webapps/djaroo_media/'
         # os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "media_root")
 
     # crispy forms TAGs SETTINGS
