@@ -82,7 +82,14 @@ function opendrop2() {
 }
 
 //cancel iframe border
-$('#accounts_iframe')[0].setAttribute('frameBorder','0');
+$('#accounts_iframe')[0].setAttribute('frameBorder', '0');
+
+//close iframe and refresh the parent page
+function closeIFrame() {
+    $('#accounts_iframe').remove();
+    location.reload();
+}
+
 
 ////fix right-side-nav size according to register link text
 //// media query change

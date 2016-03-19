@@ -54,7 +54,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
-
+    'allauth.socialaccount.providers.twitter',
     # 'crispy_forms',
     # 'registration',
     # my apps
@@ -147,8 +147,6 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "media_roo
 # Django registration-redux settings
 # ACCOUNT_ACTIVATION_DAYS = 7
 # REGISTRATION_AUTO_LOGIN = True
-
-# LOGIN_REDIRECT_URL = '/'
 
 # Allauth settings
 AUTHENTICATION_BACKENDS = (

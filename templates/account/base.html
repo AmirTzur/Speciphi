@@ -24,11 +24,31 @@
         input[type='password'],
         input[type='text'],
         input[type='email'] {
-            width: 80%;
-            height: 30px;
+            width: 85%;
+            height: 27px;
             padding: 2px 4px;
             margin: 6px;
             background-color: #E5DFD3;
+
+            color: white;
+            text-decoration-color: white;
+            text-emphasis-color: white;
+            text-overline-color: white;
+            text-line-through-color: white;
+            text-underline-color: white;
+            -moz-text-decoration-color: white;
+            -webkit-text-decoration-color: white;
+            -webkit-text-fill-color: white;
+            -webkit-text-stroke-color: white;
+            box-shadow: none;
+            -moz-box-shadow: none;
+            -webkit-box-shadow: none;
+            outline: none;
+        }
+
+        {#        change google auto fill yellow color#}
+        input:-webkit-autofill {
+            -webkit-box-shadow: 0 0 0px 1000px #E5DFD3 inset;
         }
 
         .remember-forgot-section {
@@ -89,21 +109,32 @@
         :-ms-input-placeholder {
             text-align: center;
         }
+
+        #close_icon {
+        {#            font-size: 24px;#}{#            font-family: "FontAwesome";#}{#            color: rgb(217, 191, 113);#}{#            line-height: 1.2;#}{#            text-align: left;#}{#            width: 16px;#}{#            height: 17px;#}{#            #}{#            #} font-family: 'Helvetica', 'Arial', sans-serif;
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+        }
+
     </style>
 </head>
 <body>
 {% block body %}
 
-    {% if messages %}
-        <div>
-            <strong>Messages:</strong>
-            <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-    {% endif %}
+    {#    {% if messages %}#}
+    {#        <div>#}
+    {#            <strong>Messages:</strong>#}
+    {#            <ul>#}
+    {#                {% for message in messages %}#}
+    {#                    <li>{{ message }}</li>#}
+    {#                {% endfor %}#}
+    {#            </ul>#}
+    {#        </div>#}
+    {#    {% endif %}#}
 
 
     {% block content %}
@@ -125,6 +156,11 @@
 
 
 {% block extra_body %}
+    <div id="close_icon" class="btn" onclick="parent.closeIFrame();" style="cursor: pointer">
+        <a>
+
+        </a>
+    </div>
 {% endblock %}
 </body>
 </html>

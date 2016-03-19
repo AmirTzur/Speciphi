@@ -137,11 +137,11 @@
 
                         <div class="dropdown2">
                             {% if request.user.is_authenticated %}
-
-                                <li><a onclick="opendrop2()" class="dropbtn" style="cursor: pointer">Sign Out</a></li>
-                                <div id="myDropdown" class="dropdown-content">
-                                    <iframe id="accounts_iframe" src="/accounts/logout/"></iframe>
-                                </div>
+                                <li><a href="/accounts/logout" class="dropbtn" style="cursor: pointer">Sign Out</a></li>
+                                {#                                <li><a onclick="opendrop2()" class="dropbtn" style="cursor: pointer">Sign Out</a></li>#}
+                                {#                                <div id="myDropdown" class="dropdown-content">#}
+                                {#                                    <iframe id="accounts_iframe" src="/accounts/logout/"></iframe>#}
+                                {#                                </div>#}
 
                             {% else %}
 

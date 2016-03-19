@@ -25,8 +25,10 @@ urlpatterns = [
     url(r'^focalization/$', 'consult.views.focalization', name='focalization'),
     url(r'^comparison/$', 'consult.views.comparison', name='comparison'),
     url(r'^results/$', 'consult.views.results', name='results'),
-    # url(r'^accounts/', include('allauth.urls')),
-    # url(r'^admin/', include(admin.site.urls)),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
+    url(r'^accounts/', include('allauth.urls')),
+    url(r'^admin/', include(admin.site.urls)),
+
 ]
 
 if settings.DEBUG:
