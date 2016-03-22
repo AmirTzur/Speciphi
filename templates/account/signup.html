@@ -5,17 +5,44 @@
 {% block head_title %}{% trans "Signup" %}{% endblock %}
 
 {% block content %}
-<h1>{% trans "Sign Up" %}</h1>
+    <h3 style="margin: 5px;">{% trans "Sign up Djaroo" %}</h3>
 
-<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
 
-<form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
-  {% csrf_token %}
-  {{ form.as_p }}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-  {% endif %}
-  <button type="submit">{% trans "Sign Up" %} &raquo;</button>
-</form>
+    {#    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">#}
+    {#        {% csrf_token %}#}
+    {#        {{ form.as_p }}#}
+    {##}
+    {#        {% if redirect_field_value %}#}
+    {#            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>#}
+    {#        {% endif %}#}
+    {#        <button type="submit">{% trans "Sign Up" %} &raquo;</button>#}
+    {#    </form>#}
 
+    <form class="signup" id="signup_form" method="POST" action="{% url 'account_signup' %}">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        {{ form.username.errors }}
+        <input id="id_username" type="text" name="username" placeholder="User name" maxlength="30">
+        {{ form.email.errors }}
+        <input id="id_email" type="email" name="email" placeholder="E-mail address">
+        {{ form.password1.errors }}
+        <input id="id_password1" type="password" name="password1" placeholder="Password">
+        {{ form.password2.errors }}
+        <input id="id_password2" type="password" name="password2" placeholder="Password (again)">
+
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+        {% endif %}
+
+        <p style="margin-top: 4px; margin-bottom: 0px">
+            <button id="btn_sign" class="btn" type="submit">{% trans "Sign Up" %}</button>
+        </p>
+    </form>
+
+    <p style="margin-top: 4px; margin-bottom: 0px;">
+        {% blocktrans %}Already have an account?
+            <a href="{{ login_url }}" class="sign_options">Sign in</a>
+        {% endblocktrans %}
+    </p>
 {% endblock %}

@@ -6,7 +6,11 @@
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
 {% block content %}
-
+    <style>
+        .socialaccount_ballot ul li {
+            display: inline;
+        }
+    </style>
     {#<h1>{% trans "Sign In" %}</h1>#}
 
     {% if socialaccount.providers %}
@@ -16,13 +20,13 @@
         {#for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>#}
 
         <div class="socialaccount_ballot" id="wrapper">
-
+            <ul>
+                <h3 style="margin-top: 5px; margin-bottom: 10px">Sign in with</h3>
+            </ul>
             <ul class="socialaccount_providers">
                 {% include "socialaccount/snippets/provider_list.html" with process="login" %}
             </ul>
-
             <div style="text-align: center" class="login-or">{% trans 'or' %}</div>
-
         </div>
 
         {% include "socialaccount/snippets/login_extra.html" %}
@@ -35,12 +39,13 @@
     <form class="login" method="POST" action="{% url 'account_login' %}">
         {% csrf_token %}
         {{ form.non_field_errors }}
-        <input id="id_login" class="login-input" maxlength="30" name="login" placeholder="Username"
+
+        <input id="id_login" class="login-input" maxlength="30" name="login" placeholder="User name"
                type="text"/>{{ form.login.errors }}<br>
         <input id="id_password" class="login-input" name="password" placeholder="Password"
                type="password"/>{{ form.password.errors }}<br>
 
-        <div class="remember-forgot-section" style="width: 85%">
+        <div class="remember-forgot-section" style="width: 85%; margin-top: 0px">
             <input id="id_remember" name="remember" type="checkbox"/>
             <label for="id_remember">Remember Me</label>
             <a class="forgot" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
@@ -49,7 +54,7 @@
             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
         {% endif %}
 
-        <button id="btn_signin" class="btn" type="submit">{% trans "Sign In" %}</button>
+        <button id="btn_sign" class="btn" type="submit">{% trans "Sign In" %}</button>
     </form>
 
 {% endblock %}
