@@ -68,6 +68,9 @@
 .infographic-circle:hover{
     cursor: pointer;
 }
+#info-stage1{
+    border: dashed 1px #8c2b3d;
+}
 #infographic img:nth-child(2){
     left: -14px;
 }
