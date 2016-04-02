@@ -14,7 +14,8 @@
 
     {% if provider.id == "facebook" %}
         <li>
-            <a title="{{ provider.name }}" class="socialaccount_provider {{ provider.id }} sc-btn sc--facebook sc--tiny sc--flat"
+            <a title="{{ provider.name }}"
+               class="socialaccount_provider {{ provider.id }} sc-btn sc--facebook sc--tiny sc--flat"
                href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
                 <span class="sc-icon">
                     <svg viewBox="0 0 33 33" width="25" height="25" xmlns="http://www.w3.org/2000/svg"
@@ -43,7 +44,8 @@
         </li>
     {% elif provider.id == "twitter" %}
         <li>
-            <a title="{{ provider.name }}" class="socialaccount_provider {{ provider.id }} sc-btn sc--twitter sc--tiny sc--flat"
+            <a title="{{ provider.name }}"
+               class="socialaccount_provider {{ provider.id }} sc-btn sc--twitter sc--tiny sc--flat"
                href="javascript:poptastic('/accounts/twitter/login');">
                 <span class="sc-icon">
                     <svg viewBox="0 0 33 33" width="25" height="25" xmlns="http://www.w3.org/2000/svg"
@@ -64,12 +66,37 @@
 
 {% endfor %}
 <script>
+    {#    function poptastic(url) {#}
+    {#        var popupWindow = window.open(url, 'popup', 'height=400,width=300');#}
+    {#        if (window.focus) {#}
+    {#            popupWindow.focus();#}
+    {#        }#}
+    {#    }#}
+    {#    #}
     function poptastic(url) {
-        var newWindow = window.open(url, 'name', 'height=400,width=300');
+        var popupWindow = window.open(url, 'popup', 'height=400,width=300');
         if (window.focus) {
-            newWindow.focus();
+            popupWindow.focus();
         }
+//check the url of the pop up every interval and close it if...
+        setInterval(function () {
+            if (popupWindow.location.href.indexOf("http://localhost:8000/accounts/google/login/callback/") === 0) {
+                popupWindow.close();
+                window.parent.location = window.parent.location;
+            }
+        }, 1);
+
+
+        // close popup and refresh index if popup url : 1. referring to index 2. not referring to signup
+        {#            if (popupWindow.location.href.indexOf("http://localhost:8000/") === 0 && (popupWindow.location.href.indexOf("signup") === -1)) {#}
+        {#                alert(popupWindow.location.href);#}
+        {#                popupWindow.close();#}
+        {#                window.parent.location = window.parent.location;#}
+        {#            }#}
+
     }
+
+
 </script>
 
 <!--popups->

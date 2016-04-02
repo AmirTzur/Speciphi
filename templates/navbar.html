@@ -11,7 +11,9 @@
     <link href="{% static 'css/login_dropdown.css' %}" rel="stylesheet">
 
 </head>
-
+<script>
+    var numofelements = '{{ numbum }}';
+</script>
 <body>
 <div class="container-fluid" id="navbar-wrapper">
     <div id="nav-row" class="row">
@@ -134,7 +136,8 @@
                             {% else %}
                                 <li><a onclick="opendrop2()" class="dropbtn" style="cursor: pointer">Sign In</a></li>
                                 <div id="myDropdown" class="dropdown-content">
-                                    <iframe id="accounts_iframe" src="/accounts/login/"></iframe>
+                                    <iframe id="accounts_iframe" src="/accounts/login/"
+                                            onload="IframeLoaded(this)" ></iframe>
                                 </div>
                             {% endif %}
                             <li><span style="cursor: default">|</span></li>

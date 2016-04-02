@@ -197,7 +197,6 @@ SOCIALACCOUNT_AUTO_SIGNUP = False
 SOCIALACCOUNT_EMAIL_REQUIRED = False
 
 
-
 # A string pointing to a custom form class (e.g. ‘myapp.forms.SignupForm’)
 # that is used during signup to ask the user for additional input (e.g. newsletter signup, birth date).
 # This class should implement a def signup(self, request, user) method,
