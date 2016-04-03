@@ -94,18 +94,12 @@ $('#myDropdown').css({
 });
 
 //adjust iframe size, evoke on iframe load
-function IframeLoaded(obj) {
-    //$("#myDropdown.show").attr('height','200px');
-    //obj.style.height = obj.contentWindow.document.body.scrollHeight + 'px';
-    //alert(obj.contentWindow.document.html.scrollHeight);
-    //alert(obj.contentWindow.document.body.scrollHeight);
-    var body = obj.contentWindow.document.body,
-        html = obj.contentWindow.document.documentElement;
-    var iframe_height = Math.max(html.scrollHeight, html.offsetHeight);
-    //alert(body.scrollHeight + ' ' + body.offsetHeight + ' ' + html.clientHeight + ' ' + html.scrollHeight + ' ' + html.offsetHeight);
-    $('#accounts_iframe').css('height', iframe_height);
-    // ### verify email address screen height need to be fixed..
-}
+//function IframeLoaded(obj) {
+//    var body = obj.contentWindow.document.body,
+//        html = obj.contentWindow.document.documentElement;
+//    var iframe_height = Math.max(html.scrollHeight, html.offsetHeight);
+//    $('#accounts_iframe').css('height', iframe_height);
+//}
 
 
 //close iframe by refreshing the parent page

@@ -160,7 +160,7 @@ AUTHENTICATION_BACKENDS = (
 
 # auth allauth configurations
 # after logging in, redirect the user to the home page
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/success_close'
 
 # auth providers
 SOCIALACCOUNT_PROVIDERS = {

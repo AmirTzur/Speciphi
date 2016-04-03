@@ -19,6 +19,12 @@ def home(request):
     return render(request, "index.html", context)
 
 
+def success_close(request):
+    context = {
+    }
+    return render(request, "success_close.html", context)
+
+
 def affiliation(request):
     pages = OrderedDict()
     pages['Home'] = [False, "home"]

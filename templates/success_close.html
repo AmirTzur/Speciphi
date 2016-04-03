@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript">
+        parent.closeIFrame();
+        // email confirmation
+        if (window.self === window.top) // if window don't have parent (not an iframe), redirect to home page
+        {
+            window.location = "http://localhost:8000";
+        }
+    </script>
+</head>
+<body>
+</body>
+</html>

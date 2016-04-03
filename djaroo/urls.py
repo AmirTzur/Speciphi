@@ -20,6 +20,7 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^$', 'consult.views.home', name='home'),
+    url(r'^success_close/$', 'consult.views.success_close', name='success_close'),
     url(r'^affiliation/$', 'consult.views.affiliation', name='affiliation'),
     url(r'^application/$', 'consult.views.application', name='application'),
     url(r'^focalization/$', 'consult.views.focalization', name='focalization'),

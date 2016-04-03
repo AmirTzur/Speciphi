@@ -79,12 +79,22 @@
             popupWindow.focus();
         }
 //check the url of the pop up every interval and close it if...
+
+
         setInterval(function () {
-            if (popupWindow.location.href.indexOf("http://localhost:8000/accounts/google/login/callback/") === 0) {
+            if (popupWindow.location.href == "http://localhost:8000/success_close/" || popupWindow.location.href == "http://localhost:8000/success_close/#") {
                 popupWindow.close();
                 window.parent.location = window.parent.location;
             }
         }, 1);
+
+        {#        setInterval(function () {#}
+        {#            if (popupWindow.location.href.indexOf("http://localhost:8000/accounts/google/login/callback/") === 0) {#}
+        {#            if (popupWindow.location.href == "http://localhost:8000/" || popupWindow.location.href == "http://localhost:8000/#") {#}
+        {#                popupWindow.close();#}
+        {#                window.parent.location = window.parent.location;#}
+        {#            }#}
+        {#        }, 1);#}
 
 
         // close popup and refresh index if popup url : 1. referring to index 2. not referring to signup
