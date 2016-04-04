@@ -47,7 +47,8 @@
     padding: 0px 40px 0px 0px;
     width: 116px;
     height: 112px;
-    background-image: url("../img/how_it_works/head_icon.svg");
+    /*background-image: url("../img/how_it_works/head_icon_step1.svg");*/
+    background-image: url('data:image/svg+xml;utf8, <svg id="Affiliation_icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 76 101.5"><defs><style>.cls-1{opacity:0.5;}.cls-2{fill:#e6592a;}.cls-3{fill:#8c2b3d;}.cls-4{fill:none;stroke:#fff;stroke-miterlimit:10;stroke-dasharray:7.15 3.06;}</style></defs><title>Djaroo_icons_135px</title><g class="cls-1"><path class="cls-2" d="M34.24,65.11H33.33c-4,0-15.33-.86-23.33-9.2V111H45V90.19a4.59,4.59,0,0,1-1.53-1C35,84.18,34.26,66.29,34.24,65.11Z"/><path class="cls-2" d="M66.19,63.79h0l0-.07s5.74-2.49,8.45-5.53,0.44-10.27.44-10.27l-0.17-.54s-2.36-7.07-6.32-7.95a1.22,1.22,0,0,0-.16.1h0a30.32,30.32,0,0,0,.84-7.17c0-17.67-15.4-32.07-34.4-32.07S0.16,14.6.16,32.28C0.16,41.15,4,48.85,10,54.94V55a34.13,34.13,0,0,0,23,9.23v0h2.06c0,1.18.66,19.08,9.13,24.06,0.61,0.36,1.37.7,2,1,9,4.33,22.55,5.63,22.55,5.63l0.16,0.21L66.7,79.28l1.72-3.54-2-2.26,0.75-2.15-1-7.52v0"/></g><circle class="cls-3" cx="35.25" cy="32" r="12.5"/><circle class="cls-4" cx="35.25" cy="32" r="26.01"/></svg>');
     background-repeat: no-repeat;
 }
 #infographic{
@@ -67,6 +68,9 @@
 }
 .infographic-circle:hover{
     cursor: pointer;
+}
+#info-stage1{
+    border: dashed 1px #8c2b3d;
 }
 #infographic img:nth-child(2){
     left: -14px;

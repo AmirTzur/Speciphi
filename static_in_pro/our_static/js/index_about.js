@@ -49,6 +49,29 @@ $(document).ready(function () {
             "that tell them whether they can make money(2).");
         $("#infographic-line").nextUntil().css('border', 'none');
         $(this).css('border', 'dashed 1px #8c2b3d');
+        //$("#face-icon").find('circle').css({fill: "black"});
+        //$(".cls-3").removeAttr('fill');
+        //var $svg1 = $("#face-icon").find('circle').attr('class');
+        $(function(){
+           //alert($("#how-col").find('circle').css('fill'));
+           // $("#how-col").find('circle').css({fill: "black"});
+           // $("#how-col").find('circle').attr("fill", "white");
+           // $('path, polygon, circle', this).attr('fill', '#ccc');
+        });
+        var $imgf = $("#face-icon").css('background-image');
+        //var $im1 = $imgf.find('svg');
+        alert($imgf);
+        //$('path, polygon, circle', this).attr('fill', '#ccc');
+        //$('circle', this).attr('fill', '#ccc');
+        //$("#face-icon").find('circle').css({fill: "black"});
+        //$("#face-icon").css('background-image');
+        //$("#face-icon").find('circle').attr('fill', 'white');
+        //$(".cls-3").css({fill: "black!important"});
+        //alert($(".cls-3").attr('fill'));
+        //alert($("#face-icon").css('background-image'));
+        //$("#face-icon").css('background-image', 'url(../img/how_it_works/head_icon_step2.svg)');
+        //alert($("#face-icon").css('background-image'));
+
     });
     $("#info-stage3").click(function () {
         $("#desc-label-320").text("Stage 3");
