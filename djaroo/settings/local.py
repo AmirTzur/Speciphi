@@ -59,6 +59,7 @@ INSTALLED_APPS = (
     # 'registration',
     # my apps
     'consult',
+    'apis'
 )
 
 MIDDLEWARE_CLASSES = (
