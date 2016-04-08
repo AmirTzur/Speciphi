@@ -29,11 +29,12 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'djaroo.superuser@gmail.com'
-# Google 2 step verification code, so we wont have to turn down our security level
-EMAIL_HOST_PASSWORD = 'gbaqdkwujzrdlzky'
+EMAIL_HOST_USER = 'tzuramir@gmail.com'
+EMAIL_HOST_PASSWORD = '0547918841A'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+# if using gmail account -> unlock Captcha (security level)
 
 # Application definition
 
@@ -48,12 +49,12 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     # third party apps
     # allauth
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.twitter',
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
+    # 'allauth.socialaccount.providers.facebook',
+    # 'allauth.socialaccount.providers.google',
+
     # 'crispy_forms',
     # 'registration',
     # my apps
@@ -84,7 +85,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                # allauth
                 'allauth.account.context_processors.account',
                 'allauth.socialaccount.context_processors.socialaccount',
             ],
@@ -148,7 +148,7 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "media_roo
 # ACCOUNT_ACTIVATION_DAYS = 7
 # REGISTRATION_AUTO_LOGIN = True
 
-SITE_ID = 1
+# LOGIN_REDIRECT_URL = '/'
 
 # Allauth settings
 AUTHENTICATION_BACKENDS = (
@@ -158,19 +158,27 @@ AUTHENTICATION_BACKENDS = (
     "allauth.account.auth_backends.AuthenticationBackend"
 )
 
-# auth allauth configurations
-# after logging in, redirect the user to the home page
-LOGIN_REDIRECT_URL = '/success_close'
+SITE_ID = 1
 
-# auth providers
+# auth and allauth settings
+# after logging in, redirect the user to the home page
+LOGIN_REDIRECT_URL = '/'
+SOCIALACCOUNT_QUERY_EMAIL = True
 SOCIALACCOUNT_PROVIDERS = {
     'facebook': {
         'SCOPE': ['email', 'public_profile'],
         'METHOD': 'js_sdk',  # instead of 'oauth2'
-        # need to add the info you want to SCOPE as well
-        # available SCOPE: https://developers.facebook.com/docs/facebook-login/permissions
-        # 'FIELDS': [
-        # ],
+        # 'FIELDS': ['id',
+        #            'email',
+        #            'name',
+        #            'first_name',
+        #            'last_name',
+        #            'verified',
+        #            'locale',
+        #            'timezone',
+        #            'link',
+        #            'gender',
+        #            'updated_time'],
     },
     'google': {
         'SCOPE': ['email', 'profile'],
@@ -179,23 +187,12 @@ SOCIALACCOUNT_PROVIDERS = {
 }
 
 # auto send verification email
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
-ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_EMAIL_REQUIRED = True
-
-SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
-# ask socialaccount for user's email
-SOCIALACCOUNT_QUERY_EMAIL = True
-# Attempt to bypass the signup form by using fields (e.g. username, email)
-# retrieved from the social account provider.
-# If a conflict arises due to a duplicate e-mail address the signup form will still kick in.
-# if setting it to false - sometimes register users as username = user
+ACCOUNT_EMAIL_REQUIRED = False
 SOCIALACCOUNT_AUTO_SIGNUP = False
-SOCIALACCOUNT_EMAIL_REQUIRED = False
-
 
 # A string pointing to a custom form class (e.g. ‘myapp.forms.SignupForm’)
 # that is used during signup to ask the user for additional input (e.g. newsletter signup, birth date).
