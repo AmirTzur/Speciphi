@@ -5,7 +5,7 @@
 # password -- firstexp2280djarooproject
 # webfaction ssh: username=amirtz ; password=long012B2848short!@elad
 
-#superuser: username=djaroo_admin ; password=become@3737!dont#ativ050run1987%
+# superuser: username=djaroo_admin ; password=become@3737!dont#ativ050run1987%
 
 """
     Django settings for exp1 project.
@@ -138,7 +138,7 @@ if not settings.DEBUG:
     STATIC_URL = '/static/'
 
     STATIC_ROOT = '/home/amirtz/webapps/djaroo_static/'
-        # os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "static_root")
+    # os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "static_root")
 
     STATICFILES_DIRS = (
         os.path.join(BASE_DIR, "static_in_pro", "our_static"),
@@ -148,13 +148,52 @@ if not settings.DEBUG:
 
     MEDIA_URL = '/media/'
     MEDIA_ROOT = '/home/amirtz/webapps/djaroo_media/'
-        # os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "media_root")
+    # os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "media_root")
 
-    # crispy forms TAGs SETTINGS
-    # CRISPY_TEMPLATE_PACK = 'bootstrap3'
+    SITE_ID = 1
 
-    # Django registration-redux settings
-    # ACCOUNT_ACTIVATION_DAYS = 7
-    # REGISTRATION_AUTO_LOGIN = True
-    # SITE_ID = 1
-    # LOGIN_REDIRECT_URL = '/'
+    # Allauth settings
+    AUTHENTICATION_BACKENDS = (
+    # Needed to login by username in Django admin, regardless of `allauth`
+    "django.contrib.auth.backends.ModelBackend",
+    # `allauth` specific authentication methods, such as login by e-mail
+    "allauth.account.auth_backends.AuthenticationBackend"
+    )
+
+    # auth allauth configurations
+    # after logging in, redirect the user to the home page
+    LOGIN_REDIRECT_URL = '/success_close'
+
+    # auth providers
+    SOCIALACCOUNT_PROVIDERS = {
+        'facebook': {
+            'SCOPE': ['email', 'public_profile'],
+            'METHOD': 'js_sdk',  # instead of 'oauth2'
+            # need to add the info you want to SCOPE as well
+            # available SCOPE: https://developers.facebook.com/docs/facebook-login/permissions
+            # 'FIELDS': [
+            # ],
+        },
+        'google': {
+            'SCOPE': ['email', 'profile'],
+            'AUTH_PARAMS': {'access_type': 'online'}
+        }
+    }
+
+    # auto send verification email
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+    ACCOUNT_AUTHENTICATION_METHOD = 'username_email'
+    ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+    ACCOUNT_USERNAME_REQUIRED = True
+    ACCOUNT_EMAIL_REQUIRED = True
+
+    SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
+    # ask socialaccount for user's email
+    SOCIALACCOUNT_QUERY_EMAIL = True
+    # Attempt to bypass the signup form by using fields (e.g. username, email)
+    # retrieved from the social account provider.
+    # If a conflict arises due to a duplicate e-mail address the signup form will still kick in.
+    # if setting it to false - sometimes register users as username = user
+    SOCIALACCOUNT_AUTO_SIGNUP = False
+    SOCIALACCOUNT_EMAIL_REQUIRED = False

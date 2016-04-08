@@ -1,0 +1,136 @@
+body {
+    font-family: bariol_regular-webfont;
+    text-align: center;
+}
+
+div#wrapper ul {
+    list-style-type: none;
+}
+
+div#wrapper li {
+    text-align: center;
+}
+
+ul {
+    padding: 0px;
+}
+
+input[type='password'],
+input[type='text'],
+input[type='email'] {
+    width: 85%;
+    height: 27px;
+    padding: 2px 4px;
+    margin: 6px;
+    background-color: #E5DFD3;
+    border-style: none;
+    color: white;
+    text-decoration-color: white;
+    text-emphasis-color: white;
+    text-overline-color: white;
+    text-line-through-color: white;
+    text-underline-color: white;
+    -moz-text-decoration-color: white;
+    -webkit-text-decoration-color: white;
+    -webkit-text-fill-color: white;
+    -webkit-text-stroke-color: white;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    outline: none;
+}
+
+/*change google auto fill yellow color */
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #E5DFD3 inset;
+}
+
+.remember-forgot-section {
+    width: 94%;
+    text-align: left;
+    margin: 8px auto;
+    font-size: 14px;
+}
+
+.forgot {
+    float: right;
+    margin-top: 2px;
+}
+
+ul.errorlist {
+    margin: 0;
+    padding: 0;
+}
+
+ul.errorlist li {
+    display: inline;
+    color: red;
+    font-size: 12px;
+}
+
+a {
+    text-decoration: none;
+}
+
+#btn_sign {
+    width: 95px;
+    height: 25px;
+    background-color: #E5B34D;
+    border-bottom-right-radius: 30px;
+    border-top-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    border-top-left-radius: 30px;
+    border: none;
+    font-size: 16px;
+    color: white;
+    outline: none;
+    cursor: pointer;
+}
+
+/*align the form input placeholder*/
+
+::-webkit-input-placeholder {
+    text-align: center;
+}
+
+:-moz-placeholder {
+    /* Firefox 18- */
+    text-align: center;
+}
+
+::-moz-placeholder {
+    /* Firefox 19+ */
+    text-align: center;
+}
+
+:-ms-input-placeholder {
+    text-align: center;
+}
+
+#close_icon {
+    text-align: right;
+}
+
+#close_icon a i {
+    color: #d9bf71;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+#wrapper ul {
+    margin-top: 4px;
+    margin-bottom: 0px;
+}
+
+.sign_options {
+    text-decoration: none;
+    list-style-type: none;
+    color: rgb(230, 89, 42);
+}
+
+.forgot {
+    text-decoration: none;
+    list-style-type: none;
+    color: black;
+}

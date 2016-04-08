@@ -79,10 +79,34 @@ document.getElementById("screens_holder").firstElementChild.firstElementChild.id
  toggle between hiding and showing the dropdown content */
 function opendrop2() {
     document.getElementById("myDropdown").classList.toggle("show");
+    // first time opening the iframe, set him the height of url's document (/account/login)
+    $('#accounts_iframe').css('height', '292px');
+
 }
 
 //cancel iframe border
-$('#accounts_iframe')[0].setAttribute('frameBorder','0');
+$('#accounts_iframe')[0].setAttribute('frameBorder', '0');
+
+//set iframe border
+$('#myDropdown').css({
+    "border-style": "solid",
+    "border-width": "1px",
+});
+
+//adjust iframe size, evoke on iframe load
+//function IframeLoaded(obj) {
+//    var body = obj.contentWindow.document.body,
+//        html = obj.contentWindow.document.documentElement;
+//    var iframe_height = Math.max(html.scrollHeight, html.offsetHeight);
+//    $('#accounts_iframe').css('height', iframe_height);
+//}
+
+
+//close iframe by refreshing the parent page
+function closeIFrame() {
+    location.reload();
+}
+
 
 ////fix right-side-nav size according to register link text
 //// media query change
@@ -106,12 +130,6 @@ $('#accounts_iframe')[0].setAttribute('frameBorder','0');
 //}
 
 
-///* When the user clicks on the button,
-// toggle between hiding and showing the dropdown content */
-//function myFunction() {
-//    document.getElementById("myDropdown").classList.toggle("show");
-//}
-//
 //// Close the dropdown menu if the user clicks outside of it
 //window.onclick = function (event) {
 //    if (!event.target.matches('.dropbtn')) {
