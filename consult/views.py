@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from collections import OrderedDict
+from django.db import connection, Error
 
 
 # Create your views here.
@@ -12,6 +13,30 @@ def home(request):
     pages['Focal'] = [False, "focalization"]
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [False, "results"]
+    # get user ip
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        user_ip = x_forwarded_for.split(',')[0]
+    else:
+        user_ip = request.META.get('REMOTE_ADDR')
+    params = [user_ip]
+    # connect to djaroo.db
+    try:
+        cursor = connection.cursor()
+        cursor.execute('call newEntrance(%s,"")', [params])
+        row_fetched = cursor.fetchone()
+        if cursor:
+            print("fetched row:")
+            print(row_fetched)
+            print("fetched row type:")
+            print(type(row_fetched))
+            request.session['user_id'] = row_fetched[0]
+            print("home View, session['user_id']: ")
+            print(request.session['user_id'])
+        else:
+            print("cursor is not defined")
+    except Error as e:
+        print(e)
 
     context = {
         "pages": pages,
@@ -33,6 +58,8 @@ def affiliation(request):
     pages['Focal'] = [False, "focalization"]
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [False, "results"]
+    print('affiliation View, session["user_id"]:')
+    print(request.session['user_id'])
     context = {
         "pages": pages,
     }
