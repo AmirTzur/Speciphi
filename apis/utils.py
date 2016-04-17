@@ -71,10 +71,9 @@ class ebayClient(object):
         """
 
         api_request = {
-            'categoryId': '175672',
-            'paginationInput': {'entriesPerPage': 2},
+            'categoryId': '177',
             'outputSelector': 'AspectHistogram',
-            'affiliate': {'trackingId': 1},
+            # 'affiliate': {'trackingId': 1},
         }
             # 'itemFilter': [
             #     {'name': 'Condition',
@@ -104,6 +103,7 @@ class ebayClient(object):
         #             {'name': 'LocatedIn',
         #              'value': 'GB'},
         #         ],
+        #         'paginationInput': {'entriesPerPage': 2},
         #         'affiliate': {'trackingId': 1},
         #         'sortOrder': 'CountryDescending',
         #     }
@@ -113,10 +113,25 @@ class ebayClient(object):
             # (2) timeout = 20 (default) -- HTTP request timeout, (3) response_encoding = 'XML' (default) -- API encoding.
             api = Finding(config_file=None, domain=self.domain, appid=self.appid)
             response = api.execute('findItemsByCategory', api_request)
-            return response
         except ConnectionError as e:
             print(e)
             print(e.response.dict())
+            return e
+
+        rs_dict = response.json()
+        # for aspect in rs_dict['aspectHistogramContainer']['aspect']:
+        #     print('## aspect %d ###' % aspect)
+        #     print(rs_dict['aspectHistogramContainer']['aspect'](aspect))
+        print(response.dom())
+        return response
+        # response_dict = response.dict()
+        # for aspect in response.dict()['aspectHistogramContainer']['aspect']:
+        #     print('## aspect ###')
+        #     print(aspect.keys())
+        # for aspect in response.dict()['aspectHistogramContainer']:
+        #     print('## aspect ###')
+        #     print(aspect)
+
 
     def example_call(self):
         """
