@@ -5,7 +5,15 @@
 </head>
 
 <body>
+request.session.entrance_id: {{ request.session.entrance_id }} <br>
+consultationProcess_id: {{ consultationProcess_id }}<br>
 <div class="container-fluid" id="types_wrapper">
-
+affiliations:
+    {% for affiliation in affiliations %}
+        <div>
+            {{ affiliation.name }},
+            {{ affiliation.description }}
+        </div>
+    {% endfor %}
 </div>
 </body>

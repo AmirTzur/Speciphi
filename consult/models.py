@@ -36,3 +36,15 @@ class Consultationprocesses(models.Model):
 
     class Meta:
         db_table = 'consultationprocesses'
+
+
+class Affiliations(models.Model):
+    products = models.ForeignKey('Products', db_column='Products_id')  # Field name made lowercase.
+    name = models.CharField(max_length=45)
+    description = models.TextField(max_length=300)
+    image = models.TextField(blank=True, null=True)
+    creationdatetime = models.DateTimeField(db_column='creationDateTime')  # Field name made lowercase.
+
+    class Meta:
+        db_table = 'affiliations'
+        unique_together = (('products', 'name'),)
