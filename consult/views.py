@@ -89,14 +89,14 @@ def affiliation(request, product=None):
                 # Output: Creates new entry in "consultationProcesses" Table
                 cursor.execute('CALL setNewConsultationProcess(%s,%s)', [request.session['entrance_id'], productID])
                 cursor.close()
-                
+
             cursor = connection.cursor()
             if not cursor:
                 print("cursor was not defined")
             else:
                 # Input: Entrance_id
                 # Output: ConsultationProcess_id
-                cursor.execute('CALL getConsultationProcessId(43)')
+                cursor.execute('CALL getConsultationProcessId(%s)', [request.session['entrance_id']])
                 consultationProcess_id = cursor.fetchone()
                 cursor.close()
         except Error as e:
