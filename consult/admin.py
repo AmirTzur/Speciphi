@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from apis.models import EbayLaptopAspect, EbayLaptopFilter
-from apis.admin import EbayLaptopAspectAdmin, EbayLaptopFilterAdmin
+from apis.models import EbayLaptopAspect, EbayLaptopDeal
+from apis.admin import EbayLaptopAspectAdmin, EbayLaptopDealAdmin
 
 # Register your models here.
 
@@ -9,4 +9,4 @@ from apis.admin import EbayLaptopAspectAdmin, EbayLaptopFilterAdmin
 # Register API APP models
 
 admin.site.register(EbayLaptopAspect, EbayLaptopAspectAdmin)
-admin.site.register(EbayLaptopFilter, EbayLaptopFilterAdmin)
+admin.site.register(EbayLaptopDeal, EbayLaptopDealAdmin)

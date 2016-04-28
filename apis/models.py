@@ -13,19 +13,16 @@ class EbayLaptopAspect(models.Model):
     #     ordering = ('-date',)
     #     get_latest_by = 'date'
 
-    def __str__(self):
-        return self.aspect
 
+class EbayLaptopDeal(models.Model):
 
-class EbayLaptopFilter(models.Model):
+    price = models.IntegerField()
 
-    filter = models.CharField(max_length=30)
-    categories = models.CharField(max_length=200)
-    # updated = models.DateTimeField('Date published')
+    class Meta:
+        ordering = ["price"]
 
     def __str__(self):
-        return self.title
-
+        return self.price
 
 # class EbayLaptopFilter(models.Model):
 #
