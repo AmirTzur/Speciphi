@@ -152,9 +152,10 @@ class EbayClient(object):
                 if trading_ack and 'Item' in trading_response.dict().keys():
                     trading_item = trading_response.dict()['Item']
                     # Extract item specifics (if exist) such as 'Screen Size'
-                    if 'ItemSpecifics' in trading_item.keys() and type(trading_item['ItemSpecifics']['NameValueList']) == 'dict':
+                    if 'ItemSpecifics' in trading_item.keys():
                         for spec in trading_item['ItemSpecifics']['NameValueList']:
-                            if 'Name' in spec.keys() and 'Value' in spec.keys():
+                            if not isinstance(spec, str):
+                                print(type(spec))
                                 item_data[spec['Name']] = spec['Value']
                     # Extract listing details (if exist) such as 'Price'
                     if 'ListingDetails' in trading_item.keys():
