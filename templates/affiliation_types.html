@@ -5,7 +5,44 @@
 </head>
 
 <body>
-<div class="container-fluid" id="types_wrapper">
 
+<div class="container-fluid">
+    <div id="types_wrapper" style=" position: relative;">
+        <form action="{% url 'application' product %}" method="POST">{% csrf_token %}
+            <div id="types_list">
+                <ul id="ul_list">
+                    {% for affiliation in affiliations %}
+                        <li>
+                            {{ affiliation.name }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div id="types_display">
+                {% for affiliation in affiliations %}
+                    <div id="{{ affiliation.name }}" style="display: none;">
+                        <br>
+                        <button type="button" class="type_button">
+                            {{ affiliation.name }}
+                        </button>
+                        <br>
+                        <br>
+                        <span>
+                            {{ affiliation.description }}
+                        </span>
+                        <br>
+                        <br>
+                        <span id="checkbox_text">choose {{ affiliation.name }}</span>
+                        <input id="{{ affiliation.name }}_box" type="checkbox" name="{{ affiliation.name }}" value="1"/>
+                        <label for="{{ affiliation.name }}_box"></label>
+                    </div>
+                {% endfor %}
+            </div>
+            <br>
+            <br>
+            <br>
+            <button type="submit" id="next_page"></button>
+        </form>
+    </div>
 </div>
 </body>
