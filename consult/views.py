@@ -110,8 +110,18 @@ def affiliation(request, product=None):
         })
     return render(request, "affiliation.html", context)
 
+    # Always return an HttpResponseRedirect after successfully dealing
+    # with POST data. This prevents data from being posted twice if a
+    # user hits the Back button.
 
-def application(request):
+
+# https://docs.djangoproject.com/en/1.8/intro/tutorial04/
+
+def application(request, product=None):
+    if request.method == "POST":
+        print("post method submitted" + product)
+    elif request.method == "GET":
+        print("post method submitted" + product)
     pages = OrderedDict()
     pages['Home'] = [False, "home"]
     pages['Affil'] = [False, "affiliation"]
@@ -121,6 +131,7 @@ def application(request):
     pages['Results'] = [False, "results"]
     context = {
         "pages": pages,
+        "product": product,
     }
     return render(request, "application.html", context)
 
