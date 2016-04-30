@@ -7,10 +7,10 @@
 <body>
 
 <div class="container-fluid">
-    <div id="types_wrapper" style=" position: relative;">
+    <div id="types_wrapper">
         <form action="{% url 'application' product %}" method="POST">{% csrf_token %}
-            <div id="types_list">
-                <ul id="ul_list">
+            <div id="mobile_types_list">
+                <ul>
                     {% for affiliation in affiliations %}
                         <li>
                             {{ affiliation.name }}
@@ -33,7 +33,14 @@
                         <br>
                         <br>
                         <span id="checkbox_text">choose {{ affiliation.name }}</span>
-                        <input id="{{ affiliation.name }}_box" type="checkbox" name="{{ affiliation.name }}" value="1"/>
+                        {#                        {% for f in form %}#}
+                        {#                            {% if f.name == affiliation.name %}#}
+                        {#                            <script>#}
+                        {#                                console.log('{{ f }}')#}
+                        {#                            </script>#}
+                        {#                        {% endfor %}#}
+{#                        {{ form.Student }}#}
+                        <input id="{{ affiliation.name }}_box" type="checkbox" name="{{ affiliation.name }}"/>
                         <label for="{{ affiliation.name }}_box"></label>
                     </div>
                 {% endfor %}

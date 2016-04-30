@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from collections import OrderedDict
 from django.db import connection, Error
+from consult.forms import AffiliationsForm
+from consult.models import Affiliations
 
 
 # Create your views here.
@@ -63,9 +65,19 @@ def affiliation(request, product=None):
     pages['Focal'] = [False, "focalization"]
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [False, "results"]
+
+    # form = AffiliationsForm(request.POST or None)
+    # if form.Student:
+    #     print('form')
+    # else:
+    #     print('!form')
+    # for f in form:
+    #     print(f)
+
     context = {
         "pages": pages,
-        "product": product
+        "product": product,
+        # "form": form,
     }
     if product == 'Laptop':
         productID = 2  # Laptop product ID
@@ -119,9 +131,12 @@ def affiliation(request, product=None):
 
 def application(request, product=None):
     if request.method == "POST":
-        print("post method submitted" + product)
+        print("post method submitted " + product)
+        # affs = Affiliations.objects.all()
+        # for aff in affs:
+        #     print(aff.name+"_box")
     elif request.method == "GET":
-        print("post method submitted" + product)
+        print("get method submitted " + product)
     pages = OrderedDict()
     pages['Home'] = [False, "home"]
     pages['Affil'] = [False, "affiliation"]
