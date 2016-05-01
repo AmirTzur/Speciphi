@@ -22,6 +22,7 @@
 #mobile_types_list ul {
     padding: 0;
 }
+
 #mobile_types_list ul li {
     margin-left: -20px;
     list-style: none;
@@ -35,6 +36,11 @@
     -webkit-transform: matrix(0.75, 0, 0, 0.75, 0, 0);
     -ms-transform: matrix(0.75, 0, 0, 0.75, 0, 0);
     cursor: pointer;
+}
+
+#mobile_types_list ul li i {
+    font-size: 28px;
+    line-height: 4px;
 }
 
 .type_button {
@@ -62,35 +68,40 @@
     line-height: 1.059;
 }
 
-/* to hide the checkbox itself */
-input[type=checkbox] {
-    display: none;
-}
+/*/!* hide the original checkbox *!/*/
+/*input[type=checkbox] {*/
+/*display: none;*/
+/*}*/
 
-input[type=checkbox] + label:before {
-    font-family: FontAwesome;
-    display: inline-block;
-}
+/*input[type=checkbox] + label:before {*/
+/*font-family: FontAwesome;*/
+/*display: inline-block;*/
+/*}*/
+/*/!*content values list : https://astronautweb.co/snippet/font-awesome/!*!/*/
+/*/!* unchecked icon *!/*/
+/*input[type=checkbox] + label:before {*/
+/*content: "\f096";*/
+/*/!*content: "\f10c";*!/*/
+/*/!*font-size: 18px;*!/*/
+/*}*/
 
-/* unchecked icon */
-input[type=checkbox] + label:before {
-    content: "\f096";
-}
+/*/!* space between checkbox and label *!/*/
+/*input[type=checkbox] + label:before {*/
+/*letter-spacing: 10px;*/
+/*}*/
 
-/* space between checkbox and label */
-input[type=checkbox] + label:before {
-    letter-spacing: 10px;
-}
+/*/!* checked icon *!/*/
+/*input[type=checkbox]:checked + label:before {*/
+/*content: "\f046";*/
+/*/!*content: "\f05d";*!/*/
+/*/!*font-size: 18px;*!/*/
+/*}*/
 
-/* checked icon */
-input[type=checkbox]:checked + label:before {
-    content: "\f046";
-}
-
-/* allow space for check mark */
-input[type=checkbox]:checked + label:before {
-    letter-spacing: 8px;
-}
+/*/!* allow space for check mark *!/*/
+/*input[type=checkbox]:checked + label:before {*/
+/*/!*letter-spacing: 8px;*!/*/
+/*letter-spacing: 10px;*/
+/*}*/
 
 #next_page {
     background: url("../img/consult_general/Next_btn.png") no-repeat transparent;

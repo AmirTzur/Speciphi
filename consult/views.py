@@ -66,18 +66,12 @@ def affiliation(request, product=None):
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [False, "results"]
 
-    # form = AffiliationsForm(request.POST or None)
-    # if form.Student:
-    #     print('form')
-    # else:
-    #     print('!form')
-    # for f in form:
-    #     print(f)
+    form = AffiliationsForm()
 
     context = {
         "pages": pages,
         "product": product,
-        # "form": form,
+        "form": form,
     }
     if product == 'Laptop':
         productID = 2  # Laptop product ID
@@ -131,10 +125,15 @@ def affiliation(request, product=None):
 
 def application(request, product=None):
     if request.method == "POST":
-        print("post method submitted " + product)
-        # affs = Affiliations.objects.all()
-        # for aff in affs:
-        #     print(aff.name+"_box")
+        print("post method submitted")
+        form = AffiliationsForm(request.POST)
+        if form.is_valid():
+            print(form)
+            print("iterate form:")
+            for f in form:
+                print(f)
+        else:
+            print("form is not valid")
     elif request.method == "GET":
         print("get method submitted " + product)
     pages = OrderedDict()
