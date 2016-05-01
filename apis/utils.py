@@ -1,3 +1,8 @@
+import os
+import json
+import csv
+
+from django.conf import settings
 
 # eBay-Python sdk
 from ebaysdk.exception import ConnectionError
@@ -5,7 +10,7 @@ from ebaysdk.finding import Connection as Finding
 from ebaysdk.trading import Connection as Trading
 
 # model to store local data from eBay
-from .models import EbayLaptopAspect, EbayLaptopFilter
+from .models import EbayLaptopAspect, EbayLaptopDeal
 
 
 class EbayClient(object):
@@ -23,7 +28,6 @@ class EbayClient(object):
         self.state = kwargs.get('state', 'production')
         self.min_price = kwargs.get('min_price', 200)
         self.max_price = kwargs.get('max_price', 250)
-
         self.item_deals = {}
         self.devid = '63ffcffb-5194-4b29-99f6-46243937f140'
         self.token = 'AgAAAA**AQAAAA**aAAAAA**EHIVVw**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AEloelDpeFqAWdj6x9nY+seQ**RcUCAA**AAMAAA**1AYoROp8ljS5LeygbB7JOsWbm1WZ87v/CkBJue4l0DMf0daQme2sNhQCT+K2Kr2Bhs/GGdFEwJUMQYfzbZ8Dwob5FRLEWlfno6qiSnqVDKls2+cVfqi6NRfre53capvWz8PrFNU0wnn2FfDXN/41YAHxJXLCJRfHdLJGDxKKcjnCDZOkJNOnbZTs+qLwXBI6/iQqUrAi87PhoBu8G81GSphGj50hn/th60j14rmyu4MDJTR3Az5YcOQfNQRbty3iRBzfkbJwCpG0ilNKHBlDoS2E708othrY3nqGiZ6GAKt2EPJT2Bhq5vKze1hCuHY5KQe8513MRJRJ0L5uaCARRgT1Wsega2IkXfwV6oWlgVxe1zD002iCGBYI7pezRdAIaEbguX7dwSmU0ZWeoP3HMBHwSTfM6gv0AMIYkf0vCwDohdTx2M+FkAzOCQy03oaVWsH/iu+1ahguhiHojfkHsovc3cT5WB5E3oLObhGq1R2Uilt15rUQp4m8J1UILo5vTvwPpB3ctub4xSTd+onFdCtl4qnQfEBQ9Fh2TINB/ONpEt0EksdP3ghV6Yoys84Yy6Ii56YDuDEKWU45ekHJMOZW55XbZdM7v4jBx5y78KkFb99UNn+a+jPSGvHHUX/SDXwz5XEQ8s/S+C7LMiAZJ/8kVDQJFZIR58vJwCYOy2mIZZxddCy/a1TZaGfh/B87AaRMSN+aMMvKcetLyA/+3+/qb9+3eHGh5Gf5RRDfIfkmXowjNy/jhsG5GIwfNqe7'
@@ -43,6 +47,63 @@ class EbayClient(object):
 
     # def __getattr__(self, method):
     #     return ebayClient(self.domain, self.appid, '%s/%s' % (self.method, self.method))
+
+    def fetch_deals(self, min_price, max_price):
+        self.pull_laptop_deals(min_price, max_price)
+        p_range = str(min_price) + '-' + str(max_price)
+        print(len(self.item_deals[p_range]))
+        self.add_deals_json(p_range)
+
+    def json_to_csv(self):
+        header = []
+        with open(os.path.join(settings.BASE_DIR, 'deals.ebay.json'), 'r', encoding='utf-8') as ebay_deals:
+            io_str = ebay_deals.read()
+            json_parsed = json.loads(io_str)
+            deals_data = json_parsed['ebay_deals']
+            for item in deals_data:
+                for key in item.keys():
+                    if key not in header:
+                        header.append(key)
+            # open a file for writing
+            with open(os.path.join(settings.BASE_DIR, 'ebay.data.csv'), 'w', encoding='utf-8') as ebay_data:
+                # create the csv writer object
+                csv_writer = csv.writer(ebay_data)
+                csv_writer.writerow(header)
+                for item in deals_data:
+                    item_values = []
+                    for title in header:
+                        if title in item.keys():
+                            item_values.append(item[title])
+                        else:
+                            item_values.append('')
+                    csv_writer.writerow(item_values)
+            ebay_data.close()
+        ebay_deals.close()
+
+
+    def add_deals_json(self, price_range=""):
+        """
+        Get dictionary with item deals details (range:list structure) and add item instances to the table.
+        If specification name field does not exist in model - a new field will be create.
+        :return:
+        """
+        if price_range in self.item_deals.keys():
+            with open(os.path.join(settings.BASE_DIR, 'deals.ebay.json'), 'a', encoding='utf-8', newline='') as deals_json:
+                for items_in_range in self.item_deals[price_range]:
+                    for items_group in items_in_range:
+                        json.dump(items_group, deals_json, sort_keys=True, indent=4)
+                        deals_json.write(',\n')
+            deals_json.close()
+
+        # for items_in_range in self.item_deals.values():
+        #             for item_group in items_in_range:
+        #                 for item in item_group:
+        #                     for spec_name, spec_val in item.items():
+        #                         # insert to spec_name field if exist, else create new filed
+        #                         if spec_name:
+        #                             return
+        #                         else:
+        #                             return
 
     def pull_laptop_deals(self, min_price, max_price):
         """
@@ -125,7 +186,7 @@ class EbayClient(object):
         """
         Extract item data (e.g specification, price, end time, etc.) using Finding and Trading APIs call.
         :param finding_response - sdk Response class from findItemsByCategory call (Finding API).
-        :return List of items (dictionary) that contains specific deal details
+        :return List of items (dictionaries) that contains specific deal details
         """
         deal_list = []
         if 'searchResult' in finding_response.dict().keys():
@@ -155,7 +216,6 @@ class EbayClient(object):
                     if 'ItemSpecifics' in trading_item.keys():
                         for spec in trading_item['ItemSpecifics']['NameValueList']:
                             if not isinstance(spec, str):
-                                print(type(spec))
                                 item_data[spec['Name']] = spec['Value']
                     # Extract listing details (if exist) such as 'Price'
                     if 'ListingDetails' in trading_item.keys():
