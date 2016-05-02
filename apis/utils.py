@@ -10,7 +10,7 @@ from ebaysdk.finding import Connection as Finding
 from ebaysdk.trading import Connection as Trading
 
 # model to store local data from eBay
-from .models import EbayLaptopDeal
+from .models import EbayLaptopAspect, EbayLaptopDeal
 
 
 class EbayClient(object):
@@ -64,7 +64,7 @@ class EbayClient(object):
             for item in deals_data:
                 for key in item.keys():
                     if key not in header:
-                        header.append(str(key))
+                        header.append(key)
             header.sort()
             # open a file for writing
             with open(os.path.join(settings.BASE_DIR, 'ebay.data.csv'), 'w', encoding='utf-8') as ebay_data:
@@ -75,7 +75,7 @@ class EbayClient(object):
                     item_values = []
                     for title in header:
                         if title in item.keys():
-                            item_values.append(str(item[title]))
+                            item_values.append(item[title])
                         else:
                             item_values.append('')
                     csv_writer.writerow(item_values)
