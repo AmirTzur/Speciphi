@@ -50,7 +50,11 @@
                                         {% else %}
                                    style="display: none; width: 60px; text-align: center; outline: none;"
                                         {% endif %}
+                                        {% if page == 'Home' %}
                                    href="{% url pages|keylist2:page %}"
+                                        {% else %}
+                                   href="{% url pages|keylist2:page product %}"
+                                        {% endif %}
                                         >{{ page }}
                                 </a>
                             {% endfor %}
@@ -99,22 +103,17 @@
                 </ul>
             </div>
 
-
             {#center-side-nav#}
             <div class="dropdown" id="center-side-nav">
-
                 <span id="drop_left" style="display: none; padding-top: 15px;">
                     <img src="{% static 'img/navbar/Left_egg.svg' %}">
                 </span>
-
                 <button class="btn btn-primary dropdown-toggle" id="menu1" type="button" data-toggle="dropdown">
                     <a id="egg"></a>
                 </button>
-
                 <span id="drop_right" style="display: none;">
                     <img src="{% static 'img/navbar/Right_egg.svg' %}">
                 </span>
-
                 <ul class="dropdown-menu pull-center" role="menu" aria-labelledby="menu1">
                     <li><a href="#" class="text-align-center">About Us</a></li>
                     <li><a href="#" class="text-align-center">Contact Us</a></li>
@@ -124,39 +123,33 @@
                     </li>
                     <li role="presentation" class="divider"></li>
                     {% for page in pages %}
-                        <li><a href="{% url pages|keylist2:page %}"
-                               class="text-align-center">{{ page }}</a></li>
+                        <li><a
+                                {% if page == 'Home' %}
+                                    href="{% url pages|keylist2:page %}"
+                                {% else %}
+                                    href="{% url pages|keylist2:page product %}"
+                                {% endif %}
+                                    class="text-align-center">{{ page }}</a></li>
                     {% endfor %}
                 </ul>
             </div>
-
             {#right-side-nav#}
             <div id="right-side-nav">
                 <ul class="ul-top">
                     <div id="register_links">
-
                         <div class="dropdown2">
                             {% if request.user.is_authenticated %}
-
-                                <li><a onclick="opendrop2()" class="dropbtn" style="cursor: pointer">Sign Out</a></li>
-                                <div id="myDropdown" class="dropdown-content">
-                                    <iframe id="accounts_iframe" src="/accounts/logout/"></iframe>
-                                </div>
-
+                                <li><a href="/accounts/logout" class="dropbtn" style="cursor: pointer">Sign Out</a></li>
                             {% else %}
-
                                 <li><a onclick="opendrop2()" class="dropbtn" style="cursor: pointer">Sign In</a></li>
                                 <div id="myDropdown" class="dropdown-content">
                                     <iframe id="accounts_iframe" src="/accounts/login/"></iframe>
                                 </div>
-
                             {% endif %}
                             <li><span style="cursor: default">|</span></li>
                         </div>
-
                     </div>
                 </ul>
-
                 <ul class="ul-bottom">
                     <div id="share_icons">
                         <li><a href="#" class="small-right-side-padding">
@@ -227,6 +220,7 @@
         js.src = "//connect.facebook.net/en_US/sdk.js";
         fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
+
 
 </script>
 <script src="{% static 'js/navbar.js' %}" style=""></script>

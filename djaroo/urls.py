@@ -27,6 +27,16 @@ urlpatterns = [
     url(r'^results/$', 'consult.views.results', name='results'),
     # url(r'^accounts/', include('allauth.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^success_close/$', 'consult.views.success_close', name='success_close'),
+    url(r'^([a-zA-Z]\w+)/affiliation/$', 'consult.views.affiliation', name='affiliation'),
+    url(r'^([a-zA-Z]\w+)/application/$', 'consult.views.application', name='application'),
+    url(r'^([a-zA-Z]\w+)/focalization/$', 'consult.views.focalization', name='focalization'),
+    url(r'^([a-zA-Z]\w+)/comparison/$', 'consult.views.comparison', name='comparison'),
+    url(r'^([a-zA-Z]\w+)/results/$', 'consult.views.results', name='results'),
+    url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
+    url(r'^accounts/', include('allauth.urls')),
+    url(r'^admin/', include(admin.site.urls)),
+
 ]
 
 if settings.DEBUG:
