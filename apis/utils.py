@@ -53,6 +53,7 @@ class EbayClient(object):
         p_range = str(min_price) + '-' + str(max_price)
         print(len(self.item_deals[p_range]))
         self.add_deals_json(p_range)
+        # self.json_to_csv()
 
     def json_to_csv(self):
         header = []
@@ -64,6 +65,7 @@ class EbayClient(object):
                 for key in item.keys():
                     if key not in header:
                         header.append(key)
+            header.sort()
             # open a file for writing
             with open(os.path.join(settings.BASE_DIR, 'ebay.data.csv'), 'w', encoding='utf-8') as ebay_data:
                 # create the csv writer object
