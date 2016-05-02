@@ -13,7 +13,8 @@
                 <ul>
                     {% for affiliation in affiliations %}
                         <li>
-                            <i class="fa fa-check fa-lg" aria-hidden="true" style="display: none;"></i> {{ affiliation.name }}
+                            <i class="fa fa-check fa-lg" aria-hidden="true"
+                               style="display: none;"></i> {{ affiliation.name }}
                         </li>
                     {% endfor %}
                 </ul>
@@ -27,14 +28,13 @@
                         </button>
                         <br>
                         <br>
-                        <span>
+                        <span class="description_text" style="display: block;">
                             {{ affiliation.description }}
                         </span>
-                        <br>
-                        <br>
                         <span id="checkbox_text">choose {{ affiliation.name }}</span>
-                        {{ form }}
+                        {#                        {{ form }}#}
                         {#                        <input id="{{ affiliation.name }}_box" type="checkbox" name="{{ affiliation.name }}"/>#}
+                        {{ affiliation.form_input }}
                         <label for="{{ affiliation.name }}_box"></label>
                     </div>
                 {% endfor %}

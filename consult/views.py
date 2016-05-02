@@ -66,12 +66,9 @@ def affiliation(request, product=None):
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [False, "results"]
 
-    form = AffiliationsForm()
-
     context = {
         "pages": pages,
         "product": product,
-        "form": form,
     }
     if product == 'Laptop':
         productID = 2  # Laptop product ID
@@ -108,6 +105,16 @@ def affiliation(request, product=None):
         except Error as e:
             print(e)
         request.session['productID'] = productID
+
+        # transfer form input tags through affiliations dict
+        form = AffiliationsForm()
+        for f in form:
+            for a in affiliations:
+                if str(a['name']) in str(f):
+                    a['form_input'] = str(f)
+        for a in affiliations:
+            print(a)
+
         context.update({
             "productID": productID,
             "affiliationsLength": len(affiliations),

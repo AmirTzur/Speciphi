@@ -11,7 +11,7 @@
 }
 
 #mobile_types_list {
-    width: 160px;
+    width: 135px;
     float: left;
 }
 
@@ -45,20 +45,20 @@
 
 .type_button {
     border-radius: 50%;
-    width: 185px;
-    height: 185px;
+    width: 147px;
+    height: 147px;
     background-color: white;
     color: rgb(249, 163, 51);
     text-align: center;
     text-decoration: none;
     border: 2px solid white;
-    font-size: 33px;
+    font-size: 27px;
     font-family: "Bariol";
     font-weight: bold;
     line-height: 1.2;
-    -moz-transform: matrix(0.75, 0, 0, 0.75, 0, 0);
-    -webkit-transform: matrix(0.75, 0, 0, 0.75, 0, 0);
-    -ms-transform: matrix(0.75, 0, 0, 0.75, 0, 0);
+    /*-moz-transform: matrix(0.75, 0, 0, 0.75, 0, 0);*/
+    /*-webkit-transform: matrix(0.75, 0, 0, 0.75, 0, 0);*/
+    /*-ms-transform: matrix(0.75, 0, 0, 0.75, 0, 0);*/
 }
 
 #checkbox_text {
@@ -105,11 +105,22 @@
 
 #next_page {
     background: url("../img/consult_general/Next_btn.png") no-repeat transparent;
+    /*background-image: url("../img/consult_general/Next_button.svg");*/
     width: 37px;
     height: 37px;
     border: none;
-    /*float: right;*/
     position: absolute;
     right: 0;
     bottom: 15px;
+}
+
+/*remove button outer border*/
+button:focus {
+    outline: none;
+}
+
+.description_text {
+    width: 150px;
+    height: 120px;
+    margin: 0 auto;
 }
