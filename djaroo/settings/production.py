@@ -68,6 +68,7 @@ if not settings.DEBUG:
         # 'registration',
         # my apps
         'consult',
+        'apis',
     )
 
     MIDDLEWARE_CLASSES = (

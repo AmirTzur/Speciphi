@@ -92,7 +92,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         # 'NAME': os.path.join(BASE_DIR, 'db.exp1db'),
-        'NAME': 'djarooDB',
+        'NAME': 'djaroodb',
         'USER': 'root',
         'PASSWORD': '1234',
         'HOST': '127.0.0.1',

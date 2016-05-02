@@ -26,7 +26,7 @@ urlpatterns = [
     url(r'^comparison/$', 'consult.views.comparison', name='comparison'),
     url(r'^results/$', 'consult.views.results', name='results'),
     # url(r'^accounts/', include('allauth.urls')),
-    # url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', include(admin.site.urls)),
 ]
 
 if settings.DEBUG:
