@@ -49,51 +49,6 @@ def home(request):
     return render(request, "index.html", context)
 
 
-# return results as a dict with key names
-def dictfetchall(cursor):
-    columns = [col[0] for col in cursor.description]
-    return [
-        dict(zip(columns, row))
-        for row in cursor.fetchall()
-        ]
-
-
-def NewConsulteeAffiliation(request):
-    print('Views: NewConsulteeAffiliation')
-    if request.method == 'POST':
-        Affiliation_id = request.POST.get('Affiliation_id')
-        checked = request.POST.get('checked')
-        print('Affiliation_id: ' + Affiliation_id + '. checked: ' + checked)
-        response_data = {}  # hold the data that will send back to client
-        try:
-            cursor = connection.cursor()
-            if not cursor:
-                print("cursor was not defined")
-            else:
-                # Input: Entrance_id, Product_id, ConsultationProcess_id, Affiliation_id , Checked
-                # Output: Creates new entry in the: "consulteeAffiliations" Table
-                cursor.execute('CALL setNewConsulteeAffiliation(%s,%s,%s,%s,%s)',
-                               [request.session['Entrance_id'],
-                                request.session['Product_id'],
-                                request.session['ConsultationProcess_id'],
-                                Affiliation_id,
-                                checked])
-                cursor.close()
-        except Error as e:
-            print(e)
-
-        response_data['result'] = 'Create post successful!'
-        return HttpResponse(
-            json.dumps(response_data),
-            content_type="application/json"
-        )
-    else:
-        return HttpResponse(
-            json.dumps({"failed": "request POST didn't go through"}),
-            content_type="application/json"
-        )
-
-
 def affiliation(request, product=None):
     pages = OrderedDict()
     pages['Home'] = [False, "home"]
@@ -145,9 +100,13 @@ def affiliation(request, product=None):
         request.session['Product_id'] = Product_id
         if ConsultationProcess_id:
             request.session['ConsultationProcess_id'] = ConsultationProcess_id[0]
+
+        form = AffiliationsForm(Affiliations_dict=Affiliations.objects.all())
+        print("iterate form:")
+        for f in form:
+            print(type(f), f)
         # transfer form input tags through affiliations dict
         # check if instead of the following, first take out the name attr from the input using xml parsing
-        form = AffiliationsForm()
         for f in form:
             for a in affiliations:
                 if str(a['name']) in str(f):
@@ -243,3 +202,48 @@ def success_close(request):
     context = {
     }
     return render(request, "success_close.html", context)
+
+
+# return results as a dict with key names
+def dictfetchall(cursor):
+    columns = [col[0] for col in cursor.description]
+    return [
+        dict(zip(columns, row))
+        for row in cursor.fetchall()
+        ]
+
+
+def NewConsulteeAffiliation(request):
+    print('Views: NewConsulteeAffiliation')
+    if request.method == 'POST':
+        Affiliation_id = request.POST.get('Affiliation_id')
+        checked = request.POST.get('checked')
+        print('Affiliation_id: ' + Affiliation_id + '. checked: ' + checked)
+        response_data = {}  # hold the data that will send back to client
+        try:
+            cursor = connection.cursor()
+            if not cursor:
+                print("cursor was not defined")
+            else:
+                # Input: Entrance_id, Product_id, ConsultationProcess_id, Affiliation_id , Checked
+                # Output: Creates new entry in the: "consulteeAffiliations" Table
+                cursor.execute('CALL setNewConsulteeAffiliation(%s,%s,%s,%s,%s)',
+                               [request.session['Entrance_id'],
+                                request.session['Product_id'],
+                                request.session['ConsultationProcess_id'],
+                                Affiliation_id,
+                                checked])
+                cursor.close()
+        except Error as e:
+            print(e)
+
+        response_data['result'] = 'Create post successful!'
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+    else:
+        return HttpResponse(
+            json.dumps({"failed": "request POST didn't go through"}),
+            content_type="application/json"
+        )
