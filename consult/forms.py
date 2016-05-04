@@ -8,7 +8,6 @@ class AffiliationsForm(forms.Form):
         Affiliations_dict = kwargs.pop('Affiliations_dict')
         super(AffiliationsForm, self).__init__(*args, **kwargs)
         for aff in Affiliations_dict:
-            print(aff.id, aff.name, aff.description, aff.image, aff.creationdatetime)
             self.fields[aff.name] = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={
                 'id': aff.name + '_box',
                 'name': aff.name,
