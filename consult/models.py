@@ -48,3 +48,17 @@ class Affiliations(models.Model):
     class Meta:
         db_table = 'affiliations'
         unique_together = (('products', 'name'),)
+
+
+class Consulteeaffiliations(models.Model):
+    entrances_id = models.IntegerField(db_column='Entrances_id')  # Field name made lowercase.
+    products_id = models.IntegerField(db_column='Products_id')  # Field name made lowercase.
+    consultationprocesses = models.ForeignKey(Consultationprocesses,
+                                              db_column='consultationProcesses_id')  # Field name made lowercase.
+    affiliations = models.ForeignKey(Affiliations, db_column='Affiliations_id')  # Field name made lowercase.
+    selectiondatetime = models.DateTimeField(db_column='selectionDateTime')  # Field name made lowercase.
+    checked = models.BooleanField()
+
+    class Meta:
+        db_table = 'consulteeaffiliations'
+        unique_together = (('consultationprocesses', 'selectiondatetime'),)

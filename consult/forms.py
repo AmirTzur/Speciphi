@@ -19,10 +19,14 @@ class AffiliationsForm(forms.Form):
     #                 'required': False
     #             })
     #         })
-    Student = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'id': 'Student_box'}), label='')
-    Gamer = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'id': 'Gamer_box'}), label='')
-    Scientist = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'id': 'Scientist_box'}), label='')
-    Teacher = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'id': 'Teacher_box'}), label='')
+    Student = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'id': 'Student_box', 'value': '1'}),
+                                 label='')
+    Gamer = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'id': 'Gamer_box', 'value': '2'}),
+                               label='')
+    Scientist = forms.BooleanField(required=False,
+                                   widget=forms.CheckboxInput(attrs={'id': 'Scientist_box', 'value': '9'}), label='')
+    Teacher = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'id': 'Teacher_box', 'value': '10'}),
+                                 label='')
     Web_Surfer = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={'id': 'Web Surfer_box'}),
                                     label='')
     # Stay_at_Home_Parent = forms.BooleanField(required=False,

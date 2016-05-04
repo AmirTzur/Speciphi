@@ -40,6 +40,8 @@ $(document).ready(function () {
                 return mobile_list_type == checked_type;
             }).children().css('display', 'none');
         }
+
+        AJAX_setNewConsulteeAffiliation(this);
     });
     // check or uncheck checkbox with a press of button
     $('div#types_display div button').click(function () {
@@ -50,4 +52,30 @@ $(document).ready(function () {
             $(this).parent().children('input[type=checkbox]').prop('checked', true).change();
         }
     });
+
+    // extract the val,
+    function AJAX_setNewConsulteeAffiliation(object) {
+        // convert check from true/false to 1/0
+        var checked_val;
+        if ($(object).is(':checked')) checked_val = 1;
+        else checked_val = 0;
+
+        console.log('Affiliation_id: ' + $(object).val() + '. checked: ' + checked_val);
+        $.ajax({
+            url: '/NewConsulteeAffiliation/', // the endpoint
+            type: "POST", // http method
+            data: {Affiliation_id: $(object).val(), checked: checked_val}, // data sent with the post request
+
+            // handle a successful response
+            success: function (json) {
+                console.log(json); // log the returned json to the console
+                console.log("success");
+            },
+
+            // handle a non-successful response
+            error: function (xhr, errmsg, err) {
+                console.log(xhr.status + ": " + xhr.responseText, errmsg, err); // provide a bit more info about the error to the console
+            }
+        });
+    }
 });

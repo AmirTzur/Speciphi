@@ -2,10 +2,11 @@ from django.shortcuts import render
 from collections import OrderedDict
 from django.db import connection, Error
 from consult.forms import AffiliationsForm
+from django.http import HttpResponse
 from consult.models import Affiliations
+import xml.etree.ElementTree as ET
+import json
 
-
-# Create your views here.
 
 def home(request):
     pages = OrderedDict()
@@ -16,7 +17,7 @@ def home(request):
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [False, "results"]
 
-    if 'entrance_id' not in request.session:
+    if 'Entrance_id' not in request.session:
         # get user ip
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
         if x_forwarded_for:
@@ -32,15 +33,15 @@ def home(request):
                 # Input: Entrance_ip, Entrance_country
                 # Output: Creates new entry in “Entrances” Table, Entrance_id
                 cursor.execute('call newEntrance(%s,"")', [user_ip])
-                entrance_id = cursor.fetchone()
+                Entrance_id = cursor.fetchone()
                 cursor.close()
-                if entrance_id:
-                    request.session['entrance_id'] = entrance_id[0]
-                    print("new Entrance, entrance_id set to " + str(request.session['entrance_id']))
+                if Entrance_id:
+                    request.session['Entrance_id'] = Entrance_id[0]
+                    print("new Entrance, Entrance_id set to " + str(request.session['Entrance_id']))
         except Error as e:
             print(e)
     else:
-        print("entrance_id was already set to " + str(request.session['entrance_id']))
+        print("Entrance_id was already set to " + str(request.session['Entrance_id']))
     context = {
         "pages": pages,
         "product": "None",
@@ -57,6 +58,42 @@ def dictfetchall(cursor):
         ]
 
 
+def NewConsulteeAffiliation(request):
+    print('Views: NewConsulteeAffiliation')
+    if request.method == 'POST':
+        Affiliation_id = request.POST.get('Affiliation_id')
+        checked = request.POST.get('checked')
+        print('Affiliation_id: ' + Affiliation_id + '. checked: ' + checked)
+        response_data = {}  # hold the data that will send back to client
+        try:
+            cursor = connection.cursor()
+            if not cursor:
+                print("cursor was not defined")
+            else:
+                # Input: Entrance_id, Product_id, ConsultationProcess_id, Affiliation_id , Checked
+                # Output: Creates new entry in the: "consulteeAffiliations" Table
+                cursor.execute('CALL setNewConsulteeAffiliation(%s,%s,%s,%s,%s)',
+                               [request.session['Entrance_id'],
+                                request.session['Product_id'],
+                                request.session['ConsultationProcess_id'],
+                                Affiliation_id,
+                                checked])
+                cursor.close()
+        except Error as e:
+            print(e)
+
+        response_data['result'] = 'Create post successful!'
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+    else:
+        return HttpResponse(
+            json.dumps({"failed": "request POST didn't go through"}),
+            content_type="application/json"
+        )
+
+
 def affiliation(request, product=None):
     pages = OrderedDict()
     pages['Home'] = [False, "home"]
@@ -71,7 +108,7 @@ def affiliation(request, product=None):
         "product": product,
     }
     if product == 'Laptop':
-        productID = 2  # Laptop product ID
+        Product_id = 2  # Laptop product ID
         # connect to djarooDB
         try:
             cursor = connection.cursor()
@@ -79,8 +116,8 @@ def affiliation(request, product=None):
                 print("cursor was not defined")
             else:
                 # Input: Product_id
-                # Output: Affiliations names, descriptions and images
-                cursor.execute('CALL getProductAffiliations(%s)', [productID])
+                # Output: id, Affiliations names, descriptions and images
+                cursor.execute('CALL getProductAffiliations(%s)', [Product_id])
                 affiliations = dictfetchall(cursor)
                 cursor.close()
 
@@ -90,7 +127,7 @@ def affiliation(request, product=None):
             else:
                 # Input: Entrance_id, Product_id
                 # Output: Creates new entry in "consultationProcesses" Table
-                cursor.execute('CALL setNewConsultationProcess(%s,%s)', [request.session['entrance_id'], productID])
+                cursor.execute('CALL setNewConsultationProcess(%s,%s)', [request.session['Entrance_id'], Product_id])
                 cursor.close()
 
             cursor = connection.cursor()
@@ -99,27 +136,28 @@ def affiliation(request, product=None):
             else:
                 # Input: Entrance_id
                 # Output: ConsultationProcess_id
-                cursor.execute('CALL getConsultationProcessId(%s)', [request.session['entrance_id']])
-                consultationProcess_id = cursor.fetchone()
+                cursor.execute('CALL getConsultationProcessId(%s)', [request.session['Entrance_id']])
+                ConsultationProcess_id = cursor.fetchone()
                 cursor.close()
         except Error as e:
             print(e)
-        request.session['productID'] = productID
 
+        request.session['Product_id'] = Product_id
+        if ConsultationProcess_id:
+            request.session['ConsultationProcess_id'] = ConsultationProcess_id[0]
         # transfer form input tags through affiliations dict
+        # check if instead of the following, first take out the name attr from the input using xml parsing
         form = AffiliationsForm()
         for f in form:
             for a in affiliations:
                 if str(a['name']) in str(f):
                     a['form_input'] = str(f)
-        for a in affiliations:
-            print(a)
 
         context.update({
-            "productID": productID,
+            "Product_id": Product_id,
             "affiliationsLength": len(affiliations),
             "affiliations": affiliations,
-            "consultationProcess_id": consultationProcess_id[0],
+            "ConsultationProcess_id": ConsultationProcess_id[0],
         })
     return render(request, "affiliation.html", context)
 
@@ -132,17 +170,19 @@ def affiliation(request, product=None):
 
 def application(request, product=None):
     if request.method == "POST":
-        print("post method submitted")
+        print("Application|post method submitted")
         form = AffiliationsForm(request.POST)
-        if form.is_valid():
-            print(form)
-            print("iterate form:")
-            for f in form:
-                print(f)
-        else:
-            print("form is not valid")
+        # if form.is_valid():
+        # print(form)
+        # form_str = '<div>' + str(form) + '</div>'
+        # tree = ET.ElementTree(ET.fromstring(form_str))
+        # for node in tree.getiterator():
+        #     print(tree)
+        # else:
+        # print("form is not valid")
     elif request.method == "GET":
         print("get method submitted " + product)
+
     pages = OrderedDict()
     pages['Home'] = [False, "home"]
     pages['Affil'] = [False, "affiliation"]
