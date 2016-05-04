@@ -1,6 +1,8 @@
 import os
 import json
 import csv
+# Amazon sdk: bottlenode
+import bottlenose
 
 from django.conf import settings
 
@@ -82,7 +84,6 @@ class EbayClient(object):
             ebay_data.close()
         ebay_deals.close()
 
-
     def add_deals_json(self, price_range=""):
         """
         Get dictionary with item deals details (range:list structure) and add item instances to the table.
@@ -96,16 +97,6 @@ class EbayClient(object):
                         json.dump(items_group, deals_json, sort_keys=True, indent=4)
                         deals_json.write(',\n')
             deals_json.close()
-
-        # for items_in_range in self.item_deals.values():
-        #             for item_group in items_in_range:
-        #                 for item in item_group:
-        #                     for spec_name, spec_val in item.items():
-        #                         # insert to spec_name field if exist, else create new filed
-        #                         if spec_name:
-        #                             return
-        #                         else:
-        #                             return
 
     def pull_laptop_deals(self, min_price, max_price):
         """
@@ -218,19 +209,22 @@ class EbayClient(object):
                     if 'ItemSpecifics' in trading_item.keys():
                         for spec in trading_item['ItemSpecifics']['NameValueList']:
                             if not isinstance(spec, str):
-                                item_data[spec['Name']] = spec['Value']
+                                item_data[str(spec['Name'])] = str(spec['Value'])
                     # Extract listing details (if exist) such as 'Price'
                     if 'ListingDetails' in trading_item.keys():
-                        item_data['dealEndTime'] = trading_item['ListingDetails']['EndTime']
-                        item_data['price'] = trading_item['ListingDetails']['ConvertedStartPrice']['value']
-                        item_data['URL'] = trading_item['ListingDetails']['ViewItemURL']
+                        if 'EndTime' in trading_item['ListingDetails'].keys():
+                            item_data['DealEndTime'] = trading_item['ListingDetails']['EndTime']
+                        if 'ConvertedStartPrice' in trading_item['ListingDetails'].keys():
+                            item_data['Price'] = trading_item['ListingDetails']['ConvertedStartPrice']['value']
+                        if 'ViewItemURL' in trading_item['ListingDetails'].keys():
+                            item_data['URL'] = trading_item['ListingDetails']['ViewItemURL']
                     # Extract picture url (if exist)
                     if 'PictureDetails' in trading_item.keys():
                         if 'PictureURL' in trading_item['PictureDetails'].keys():
-                            item_data['image'] = trading_item['PictureDetails']['PictureURL']
+                            item_data['Image'] = trading_item['PictureDetails']['PictureURL']
                     # Extract title (if exist)
                     if 'Title' in trading_item.keys():
-                        item_data['title'] = trading_item['Title']
+                        item_data['Title'] = trading_item['Title']
                 deal_list.append(item_data)
             return deal_list
         else:
@@ -348,4 +342,24 @@ class EbayClient(object):
 #             title = info['description']
 #         )
 
+class AmazonClient(object):
+    """
 
+    limits: one query per second per associate tag
+    """
+    def __init__(self, **kwargs):
+        """
+        To create new instance provide Amazon credentials:
+            AWS_ACCESS_KEY_ID = AKIAJZXUIQUQZ34J3E5Q
+            AWS_SECRET_ACCESS_KEY = 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
+            AWS_ASSOCIATE_TAG = 9034-3545-7023 (root account id)
+        """
+        self.amazon_id = kwargs.get('amazon_id', 'AKIAJZXUIQUQZ34J3E5Q')
+        self.amazon_key = kwargs.get('amazon_key', '6ZHpC651IZ6WmW0dC9Y9DfVO6ORYGYpR633zdbj/')
+        self.amazon_tag = kwargs.get('amazon_tag', '9034-3545-7023')
+
+    def get_item(self):
+        amazon = bottlenose.Amazon(self.amazon_id, self.amazon_key, self.amazon_tag)
+        # item lookup call: IdType=UPC , SearchIndex=Electronics (US market) , node=493964
+        amazon_response = amazon.ItemLookup(ItemId='', ResponseGroup='', SearchIndex='Electronics', IdType='UPC')
+        print(amazon_response)
