@@ -1,8 +1,6 @@
 $(document).ready(function () {
     // show first type # change to mobile only
     $('div#types_display div:nth-child(1)').css('display', 'block');
-    // fix padding
-    $('div#mobile_types_list ul li:first-child').css('padding-top', '15px');
     // iterate checked checkboxes and show V on type list (needed when a user press back button) # change to mobile only
     $('div#types_display').children().filter(function () {
         if ($(this).children('div.choose_container').children('input[type=checkbox]').is(':checked')) {
@@ -55,21 +53,11 @@ $(document).ready(function () {
     });
     // change checkbox value when choose_text clicked
     $('.checkbox_text').click(function () {
-        if ($(this).parent().children('input[type=checkbox]').is(':checked')) {
-            $(this).parent().children('input[type=checkbox]').prop('checked', false).change();
-        }
-        else {
-            $(this).parent().children('input[type=checkbox]').prop('checked', true).change();
-        }
+        $(this).parent().parent().children('button').children('input[type=checkbox]').prop('checked', !$(this).parent().parent().children('button').children('input[type=checkbox]').is(':checked')).change();
     });
-    // change checkbox value when button or choose_text clicked
+    // change checkbox value when button or clicked
     $('div#types_display div button').click(function () {
-        if ($(this).parent().children('.choose_container').children('input[type=checkbox]').is(':checked')) {
-            $(this).parent().children('.choose_container').children('input[type=checkbox]').prop('checked', false).change();
-        }
-        else {
-            $(this).parent().children('.choose_container').children('input[type=checkbox]').prop('checked', true).change();
-        }
+        $(this).children('input[type=checkbox]').prop('checked', !$(this).children('input[type=checkbox]').is(':checked')).change();
     });
 
     function AJAX_setNewConsulteeAffiliation(object) {

@@ -20,28 +20,28 @@
             <div id="types_display">
                 {% for affiliation in affiliations %}
                     <div id="{{ affiliation.name }}" style="display: none;">
-                        <br>
                         <button type="button" class="type_button">
                             {{ affiliation.name }}
+                            {{ affiliation.form_input }}
+                            <label for="{{ affiliation.name }}_box"></label>
                         </button>
-                        <br>
-                        <br>
                         <span class="description_text" style="display: block;">
                             {{ affiliation.description }}
                         </span>
 
                         <div class="choose_container">
                             <span class="checkbox_text">
-                                choose {{ affiliation.name }}
+{#                                choose {{ affiliation.name }}#}
+{#                                choose type#}
                             </span>
-                            {{ affiliation.form_input }}
-                            <label for="{{ affiliation.name }}_box"></label>
+                            {#                            {{ affiliation.form_input }}#}
+                            {#                            <label for="{{ affiliation.name }}_box"></label>#}
                         </div>
                     </div>
                 {% endfor %}
             </div>
-            <br>
-            <br>
+{#            <br>#}
+{#            <br>#}
             <br>
             <label id="next_page">
                 <input type="submit" name="image" style="display: none">

@@ -11,7 +11,7 @@
 }
 
 #mobile_types_list {
-    width: 150px;
+    width: 138px;
     float: left;
 }
 
@@ -25,10 +25,10 @@
 
 #mobile_types_list ul li {
     margin-left: -20px;
+    font-size: 28px;
     list-style: none;
     line-height: 1.2;
     text-align: left;
-    font-size: 27px;
     font-family: "Bariol";
     color: rgb(255, 255, 255);
     font-weight: bold;
@@ -38,12 +38,20 @@
     cursor: pointer;
 }
 
+div#mobile_types_list ul li:first-child {
+    padding-top: 10px;
+}
+
 #mobile_types_list ul li i {
     font-size: 28px;
     line-height: 4px;
 }
 
 .type_button {
+    /* so checkbox position will be determined according to type_button */
+    position: relative;
+    margin-top: 15px;
+    margin-bottom: 15px;
     border-radius: 50%;
     width: 140px;
     height: 140px;
@@ -56,9 +64,6 @@
     font-family: "Bariol";
     font-weight: bold;
     line-height: 1.2;
-    /*-moz-transform: matrix(0.75, 0, 0, 0.75, 0, 0);*/
-    /*-webkit-transform: matrix(0.75, 0, 0, 0.75, 0, 0);*/
-    /*-ms-transform: matrix(0.75, 0, 0, 0.75, 0, 0);*/
 }
 
 .checkbox_text {
@@ -77,6 +82,7 @@ input[type=checkbox] {
 
 input[type=checkbox] + label:before {
     font-family: FontAwesome;
+    font-size: 22px;
     display: inline-block;
 }
 
@@ -88,7 +94,7 @@ input[type=checkbox] + label:before {
 
 /* space between checkbox and label */
 input[type=checkbox] + label:before {
-    letter-spacing: 10px;
+    /*letter-spacing: 10px;*/
 }
 
 /* checked icon */
@@ -99,12 +105,16 @@ input[type=checkbox]:checked + label:before {
 
 /* allow space for check mark */
 input[type=checkbox]:checked + label:before {
-    letter-spacing: 8px;
+    letter-spacing: -4px;
+}
+
+.type_button label {
+    position: absolute;
+    bottom: 5px;
+    left: 60px;
 }
 
 #next_page {
-    /*background: url("../img/consult_general/Next_btn.png") no-repeat transparent;*/
-    /*background-image: url("../img/consult_general/Next_button.svg");*/
     border: none;
     position: absolute;
     right: 2px;
@@ -118,13 +128,71 @@ button:focus {
 }
 
 .description_text {
-    width: 143px;
+    width: 145px;
     height: 120px;
     margin: 0 auto;
+    /*padding-bottom: 50px;*/
 }
 
 .choose_container {
     width: 140px;
-    height: 40px;
-    display: inline-block
+    /*to hold 2 lines (small types name same as big)*/
+    height: 45px;
+    display: inline-block;
 }
+
+/*================ media queries==================*/
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 767px) {
+
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width: 768px) {
+    .type_button {
+        margin-top: 45px;
+        margin-bottom: 35px;
+        width: 155px;
+        height: 155px;
+        font-size: 28px;
+    }
+
+    /*fix first type list element padding*/
+    div#mobile_types_list ul li:first-child {
+        padding-top: 40px;
+    }
+
+    div#mobile_types_list ul li:last-child {
+        padding-bottom: 20px;
+    }
+
+    #mobile_types_list ul li {
+        margin-left: 15px;
+        font-size: 30px;
+    }
+
+    #mobile_types_list {
+        width: 180px;
+    }
+
+    .description_text {
+        width: 170px;
+        height: 140px;
+    }
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width: 992px) {
+
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width: 1200px) {
+
+}
+
+
+
+
