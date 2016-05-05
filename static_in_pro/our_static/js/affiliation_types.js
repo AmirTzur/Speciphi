@@ -35,7 +35,9 @@ $(document).ready(function () {
             // set V
             $('div#mobile_types_list ul').children().filter(function () {
                 return $(this).context.innerText == checked_type;
-            }).children().css('display', 'inline');
+            }).css('color', 'black');
+                //.css('display', 'inline');
+
         }
         else {
             // remove V
@@ -46,7 +48,7 @@ $(document).ready(function () {
                     mobile_list_type = mobile_list_type.substring(1);
                 }
                 return mobile_list_type == checked_type;
-            }).children().css('display', 'none');
+            }).css('color', 'white');
         }
         // run SQL procedure
         AJAX_setNewConsulteeAffiliation(this);

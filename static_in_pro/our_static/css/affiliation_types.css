@@ -36,6 +36,7 @@
     -webkit-transform: matrix(0.75, 0, 0, 0.75, 0, 0);
     -ms-transform: matrix(0.75, 0, 0, 0.75, 0, 0);
     cursor: pointer;
+    padding-bottom: 5px;
 }
 
 div#mobile_types_list ul li:first-child {
@@ -82,7 +83,7 @@ input[type=checkbox] {
 
 input[type=checkbox] + label:before {
     font-family: FontAwesome;
-    font-size: 22px;
+    font-size: 20px;
     display: inline-block;
 }
 
