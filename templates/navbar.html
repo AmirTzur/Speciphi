@@ -122,15 +122,15 @@
                         <!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="#">HTML</a></li>-->
                     </li>
                     <li role="presentation" class="divider"></li>
-                    {% for page in pages %}
-                        <li><a
-                                {% if page == 'Home' %}
-                                    href="{% url pages|keylist2:page %}"
-                                {% else %}
-                                    href="{% url pages|keylist2:page product %}"
-                                {% endif %}
-                                    class="text-align-center">{{ page }}</a></li>
-                    {% endfor %}
+{#                    {% for page in pages %}#}
+{#                        <li><a#}
+{#                                {% if page == 'Home' %}#}
+{#                                    href="{% url pages|keylist2:page %}"#}
+{#                                {% else %}#}
+{#                                    href="{% url pages|keylist2:page product %}"#}
+{#                                {% endif %}#}
+{#                                    class="text-align-center">{{ page }}</a></li>#}
+{#                    {% endfor %}#}
                 </ul>
             </div>
             {#right-side-nav#}

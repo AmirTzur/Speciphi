@@ -11,7 +11,7 @@
 }
 
 #mobile_types_list {
-    width: 135px;
+    width: 150px;
     float: left;
 }
 
@@ -28,7 +28,7 @@
     list-style: none;
     line-height: 1.2;
     text-align: left;
-    font-size: 28px;
+    font-size: 27px;
     font-family: "Bariol";
     color: rgb(255, 255, 255);
     font-weight: bold;
@@ -45,14 +45,14 @@
 
 .type_button {
     border-radius: 50%;
-    width: 147px;
-    height: 147px;
+    width: 140px;
+    height: 140px;
     background-color: white;
     color: rgb(249, 163, 51);
     text-align: center;
     text-decoration: none;
     border: 2px solid white;
-    font-size: 27px;
+    font-size: 25px;
     font-family: "Bariol";
     font-weight: bold;
     line-height: 1.2;
@@ -61,50 +61,55 @@
     /*-ms-transform: matrix(0.75, 0, 0, 0.75, 0, 0);*/
 }
 
-#checkbox_text {
+.checkbox_text {
     font-size: 17px;
     font-family: "Bariol";
     color: rgb(230, 89, 42);
     line-height: 1.059;
+    cursor: pointer;
 }
+
 /*replace default checkbox with font awesome checkbox*/
 /* hide the original checkbox */
 input[type=checkbox] {
-display: none;
+    display: none;
 }
+
 input[type=checkbox] + label:before {
-font-family: FontAwesome;
-display: inline-block;
+    font-family: FontAwesome;
+    display: inline-block;
 }
+
 /* unchecked icon */
 input[type=checkbox] + label:before {
-content: "\f096";
+    content: "\f096";
+    cursor: pointer;
 }
 
 /* space between checkbox and label */
 input[type=checkbox] + label:before {
-letter-spacing: 10px;
+    letter-spacing: 10px;
 }
 
 /* checked icon */
 input[type=checkbox]:checked + label:before {
-content: "\f046";
+    content: "\f046";
+    cursor: pointer;
 }
 
 /* allow space for check mark */
 input[type=checkbox]:checked + label:before {
-letter-spacing: 8px;
+    letter-spacing: 8px;
 }
 
 #next_page {
-    background: url("../img/consult_general/Next_btn.png") no-repeat transparent;
+    /*background: url("../img/consult_general/Next_btn.png") no-repeat transparent;*/
     /*background-image: url("../img/consult_general/Next_button.svg");*/
-    width: 37px;
-    height: 37px;
     border: none;
     position: absolute;
-    right: 0;
+    right: 2px;
     bottom: 15px;
+    cursor: pointer;
 }
 
 /*remove button outer border*/
@@ -113,7 +118,13 @@ button:focus {
 }
 
 .description_text {
-    width: 150px;
+    width: 143px;
     height: 120px;
     margin: 0 auto;
+}
+
+.choose_container {
+    width: 140px;
+    height: 40px;
+    display: inline-block
 }

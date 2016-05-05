@@ -3,6 +3,16 @@ $(document).ready(function () {
     $('div#types_display div:nth-child(1)').css('display', 'block');
     // fix padding
     $('div#mobile_types_list ul li:first-child').css('padding-top', '15px');
+    // iterate checked checkboxes and show V on type list (needed when a user press back button) # change to mobile only
+    $('div#types_display').children().filter(function () {
+        if ($(this).children('div.choose_container').children('input[type=checkbox]').is(':checked')) {
+            var checked_type = $(this).prop('id');
+            // set V
+            $('div#mobile_types_list ul').children().filter(function () {
+                return $(this).context.innerText == checked_type;
+            }).children().css('display', 'inline');
+        }
+    });
     // click on list will change displayed type # change to mobile only
     $('div#mobile_types_list ul li').on('click', function () {
         // get pressed type
@@ -40,11 +50,11 @@ $(document).ready(function () {
                 return mobile_list_type == checked_type;
             }).children().css('display', 'none');
         }
-
+        // run SQL procedure
         AJAX_setNewConsulteeAffiliation(this);
     });
-    // check or uncheck checkbox with a press of button
-    $('div#types_display div button').click(function () {
+    // change checkbox value when choose_text clicked
+    $('.checkbox_text').click(function () {
         if ($(this).parent().children('input[type=checkbox]').is(':checked')) {
             $(this).parent().children('input[type=checkbox]').prop('checked', false).change();
         }
@@ -52,15 +62,22 @@ $(document).ready(function () {
             $(this).parent().children('input[type=checkbox]').prop('checked', true).change();
         }
     });
+    // change checkbox value when button or choose_text clicked
+    $('div#types_display div button').click(function () {
+        if ($(this).parent().children('.choose_container').children('input[type=checkbox]').is(':checked')) {
+            $(this).parent().children('.choose_container').children('input[type=checkbox]').prop('checked', false).change();
+        }
+        else {
+            $(this).parent().children('.choose_container').children('input[type=checkbox]').prop('checked', true).change();
+        }
+    });
 
-    // extract the val,
     function AJAX_setNewConsulteeAffiliation(object) {
         // convert check from true/false to 1/0
         var checked_val;
         if ($(object).is(':checked')) checked_val = 1;
         else checked_val = 0;
-
-        console.log('Affiliation_id: ' + $(object).val() + '. checked: ' + checked_val);
+        // send AJAX post request to NewConsulteeAffiliation view
         $.ajax({
             url: '/NewConsulteeAffiliation/', // the endpoint
             type: "POST", // http method
@@ -68,10 +85,8 @@ $(document).ready(function () {
 
             // handle a successful response
             success: function (json) {
-                console.log(json); // log the returned json to the console
-                console.log("success");
+                //console.log(json); // log the returned json to the console
             },
-
             // handle a non-successful response
             error: function (xhr, errmsg, err) {
                 console.log(xhr.status + ": " + xhr.responseText, errmsg, err); // provide a bit more info about the error to the console

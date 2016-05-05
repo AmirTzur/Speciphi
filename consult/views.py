@@ -9,6 +9,7 @@ import json
 
 
 def home(request):
+    print('home|')
     pages = OrderedDict()
     pages['Home'] = [True, "home"]
     pages['Affil'] = [False, "affiliation"]
@@ -50,6 +51,7 @@ def home(request):
 
 
 def affiliation(request, product=None):
+    print('affiliation|')
     pages = OrderedDict()
     pages['Home'] = [False, "home"]
     pages['Affil'] = [True, "affiliation"]
@@ -57,13 +59,15 @@ def affiliation(request, product=None):
     pages['Focal'] = [False, "focalization"]
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [False, "results"]
-
     context = {
         "pages": pages,
         "product": product,
     }
+
     if product == 'Laptop':
         Product_id = 2  # Laptop product ID
+
+    if Product_id:
         # connect to djarooDB
         try:
             cursor = connection.cursor()
@@ -71,7 +75,7 @@ def affiliation(request, product=None):
                 print("cursor was not defined")
             else:
                 # Input: Product_id
-                # Output: id, Affiliations names, descriptions and images
+                # Output: Affiliations - id, Affiliations names, descriptions and images
                 cursor.execute('CALL getProductAffiliations(%s)', [Product_id])
                 affiliations = dictfetchall(cursor)
                 cursor.close()
@@ -97,16 +101,15 @@ def affiliation(request, product=None):
         except Error as e:
             print(e)
 
-        request.session['Product_id'] = Product_id
+        if Affiliations:
+            form = AffiliationsForm(Affiliations_dict=Affiliations.objects.all())
         if ConsultationProcess_id:
             request.session['ConsultationProcess_id'] = ConsultationProcess_id[0]
+        if Product_id:
+            request.session['Product_id'] = Product_id
 
-        form = AffiliationsForm(Affiliations_dict=Affiliations.objects.all())
-        print("iterate form:")
-        for f in form:
-            print(type(f), f)
-        # transfer form input tags through affiliations dict
-        # check if instead of the following, first take out the name attr from the input using xml parsing
+        # copy form input tags to Affiliations dict
+        # check if instead of double loop, first take out the name attr from the input using xml parsing
         for f in form:
             for a in affiliations:
                 if str(a['name']) in str(f):
@@ -123,24 +126,14 @@ def affiliation(request, product=None):
     # Always return an HttpResponseRedirect after successfully dealing
     # with POST data. This prevents data from being posted twice if a
     # user hits the Back button.
+    # https://docs.djangoproject.com/en/1.8/intro/tutorial04/
 
-
-# https://docs.djangoproject.com/en/1.8/intro/tutorial04/
 
 def application(request, product=None):
     if request.method == "POST":
-        print("Application|post method submitted")
-        form = AffiliationsForm(request.POST)
-        # if form.is_valid():
-        # print(form)
-        # form_str = '<div>' + str(form) + '</div>'
-        # tree = ET.ElementTree(ET.fromstring(form_str))
-        # for node in tree.getiterator():
-        #     print(tree)
-        # else:
-        # print("form is not valid")
+        print("application| POST")
     elif request.method == "GET":
-        print("get method submitted " + product)
+        print("Application| GET")
 
     pages = OrderedDict()
     pages['Home'] = [False, "home"]
@@ -199,6 +192,7 @@ def results(request):
 
 
 def success_close(request):
+    print('success_close|')
     context = {
     }
     return render(request, "success_close.html", context)
@@ -214,12 +208,11 @@ def dictfetchall(cursor):
 
 
 def NewConsulteeAffiliation(request):
-    print('Views: NewConsulteeAffiliation')
+    print('NewConsulteeAffiliation|')
     if request.method == 'POST':
         Affiliation_id = request.POST.get('Affiliation_id')
         checked = request.POST.get('checked')
-        print('Affiliation_id: ' + Affiliation_id + '. checked: ' + checked)
-        response_data = {}  # hold the data that will send back to client
+        response_data = {}  # hold the data that will send back to client (for future use)
         try:
             cursor = connection.cursor()
             if not cursor:
