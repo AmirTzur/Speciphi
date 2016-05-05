@@ -109,6 +109,7 @@ input[type=checkbox]:checked + label:before {
     letter-spacing: -4px;
 }
 
+/*checkbox location relative to the button parent*/
 .type_button label {
     position: absolute;
     bottom: 5px;
@@ -165,11 +166,11 @@ button:focus {
     }
 
     div#mobile_types_list ul li:last-child {
-        padding-bottom: 20px;
+        /*padding-bottom: 20px;*/
     }
 
     #mobile_types_list ul li {
-        margin-left: 15px;
+        margin-left: 10px;
         font-size: 30px;
     }
 
@@ -179,9 +180,17 @@ button:focus {
 
     .description_text {
         width: 170px;
-        height: 140px;
     }
 
+    /*checkbox location relative to the button parent*/
+    .type_button label {
+        bottom: 5px;
+        left: 68px;
+    }
+
+    #next_page {
+        right: 20px;
+    }
 }
 
 /* Medium Devices, Desktops */

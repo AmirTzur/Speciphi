@@ -36,7 +36,7 @@ $(document).ready(function () {
             $('div#mobile_types_list ul').children().filter(function () {
                 return $(this).context.innerText == checked_type;
             }).css('color', 'black');
-                //.css('display', 'inline');
+            //.css('display', 'inline');
 
         }
         else {
@@ -83,4 +83,19 @@ $(document).ready(function () {
             }
         });
     }
+
+    // jquery media query
+    $(window).resize(function () {
+        //  extra small screen
+        if ($(this).width() < 768) {
+            // locate next_page button
+            $('#next_page').css('bottom', '15px');
+        }
+        // small screen
+        if ($(this).width() >= 768 && $(this).width() < 992) {
+            // locate next_page button in the middle of screen
+            $('#next_page').css('bottom', parseInt((parseInt($('#types_wrapper').css('height')) - parseInt($('#next_page').css('height'))) / 2) + 'px');
+        }
+    });
+
 });
