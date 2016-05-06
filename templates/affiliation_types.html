@@ -10,10 +10,7 @@
             <div id="mobile_types_list">
                 <ul>
                     {% for affiliation in affiliations %}
-                        <li>
-                            <i class="fa fa-check fa-lg" aria-hidden="true"
-                               style="display: none;"></i>{{ affiliation.name }}
-                        </li>
+                        <li>{{ affiliation.name }}</li>
                     {% endfor %}
                 </ul>
             </div>
@@ -29,10 +26,10 @@
                             {{ affiliation.description }}
                         </span>
 
-                        <div class="choose_container">
-                            <span class="checkbox_text">
-                            </span>
-                        </div>
+{#                        <div class="choose_container">#}
+{#                            <span class="checkbox_text">#}
+{#                            </span>#}
+{#                        </div>#}
                     </div>
                 {% endfor %}
             </div>

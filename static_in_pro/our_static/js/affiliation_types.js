@@ -1,67 +1,65 @@
 $(document).ready(function () {
-    // show first type # change to mobile only
-    $('div#types_display div:nth-child(1)').css('display', 'block');
-    // iterate checked checkboxes and show V on type list (needed when a user press back button) # change to mobile only
-    $('div#types_display').children().filter(function () {
-        if ($(this).children('div.choose_container').children('input[type=checkbox]').is(':checked')) {
-            var checked_type = $(this).prop('id');
-            // set V
-            $('div#mobile_types_list ul').children().filter(function () {
-                return $(this).context.innerText == checked_type;
-            }).children().css('display', 'inline');
-        }
-    });
-    // click on list will change displayed type # change to mobile only
-    $('div#mobile_types_list ul li').on('click', function () {
-        // get pressed type
-        var pressed_type = $(this).context.innerText;
-        // inner <i> adds a space at beginning of innerText - remove it
-        if (!(/^[0-9a-zA-Z]+$/.test(pressed_type.charAt(0)))) {
-            pressed_type = pressed_type.substring(1);
-        }
-        // change displayed type to display: none
+    // extra small and small screens build up
+    if ($(window).width() < 992) {
+        // show first type # mobile only
+        $('div#types_display div:nth-child(1)').css('display', 'block');
+        // color checked types on type list (needed when a user press back button) # mobile only
         $('div#types_display').children().filter(function () {
-            return $(this).css('display') == 'block';
-        }).css('display', 'none');
-        // change pressed type css to display: block
-        $('div#types_display').children().filter(function () {
-            return $(this).prop('id') == pressed_type;
-        }).css('display', 'block');
-    });
-    // on checkbox changed, set or remove V #change to mobile only
-    $(':checkbox').change(function () {
-        var checked_type = $(this).prop('name');
-        if ($(this).is(":checked")) {
-            // set V
-            $('div#mobile_types_list ul').children().filter(function () {
-                return $(this).context.innerText == checked_type;
-            }).css('color', 'black');
-            //.css('display', 'inline');
+            if ($(this).children('button.type_button').children('input[type=checkbox]').is(':checked')) {
+                var checked_type = $(this).prop('id');
+                // change color
+                $('div#mobile_types_list ul').children().filter(function () {
+                    return $(this).context.innerText == checked_type;
+                }).css('color', 'black');
+            }
+        });
+        // click on list will display selected type # mobile only
+        $('div#mobile_types_list ul li').on('click', function () {
+            var pressed_type = $(this).context.innerText;
+            // inner <i> adds a space at beginning of innerText - remove it
+            if (!(/^[0-9a-zA-Z]+$/.test(pressed_type.charAt(0)))) {
+                pressed_type = pressed_type.substring(1);
+            }
+            // hide current displayed type
+            $('div#types_display').children().filter(function () {
+                return $(this).css('display') == 'block';
+            }).css('display', 'none');
+            // show pressed type
+            $('div#types_display').children().filter(function () {
+                return $(this).prop('id') == pressed_type;
+            }).css('display', 'block');
+        });
+        // on checkbox changed, set or remove type list color # mobile only
+        $(':checkbox').change(function () {
+            var checked_type = $(this).prop('name');
+            if ($(this).is(":checked")) {
+                // set list color
+                $('div#mobile_types_list ul').children().filter(function () {
+                    return $(this).context.innerText == checked_type;
+                }).css('color', 'black');
+            }
+            else {
+                // remove type list color
+                $('div#mobile_types_list ul').children().filter(function () {
+                    var mobile_list_type = $(this).context.innerText;
+                    // inner <i> adds a weird space at beginning of innerText - remove it
+                    if (!(/^[0-9a-zA-Z]+$/.test(mobile_list_type.charAt(0))))
+                        mobile_list_type = mobile_list_type.substring(1);
+                    return mobile_list_type == checked_type;
+                }).css('color', 'white');
+            }
+        });
+    }
 
-        }
-        else {
-            // remove V
-            // inner <i> adds a weird space at beginning of innerText - remove it
-            $('div#mobile_types_list ul').children().filter(function () {
-                var mobile_list_type = $(this).context.innerText;
-                if (!(/^[0-9a-zA-Z]+$/.test(mobile_list_type.charAt(0)))) {
-                    mobile_list_type = mobile_list_type.substring(1);
-                }
-                return mobile_list_type == checked_type;
-            }).css('color', 'white');
-        }
-        // run SQL procedure
-        AJAX_setNewConsulteeAffiliation(this);
-    });
-    // change checkbox value when choose_text clicked
-    $('.checkbox_text').click(function () {
-        $(this).parent().parent().children('button').children('input[type=checkbox]').prop('checked', !$(this).parent().parent().children('button').children('input[type=checkbox]').is(':checked')).change();
-    });
-    // change checkbox value when button or clicked
+    // change checkbox value when button clicked
     $('div#types_display div button').click(function () {
         $(this).children('input[type=checkbox]').prop('checked', !$(this).children('input[type=checkbox]').is(':checked')).change();
     });
-
+    // invoke setNewConsulteeAffiliation when select or remove affiliation
+    $(':checkbox').change(function () {
+        // run SQL procedure
+        AJAX_setNewConsulteeAffiliation(this);
+    });
     function AJAX_setNewConsulteeAffiliation(object) {
         // convert check from true/false to 1/0
         var checked_val;
@@ -83,19 +81,8 @@ $(document).ready(function () {
             }
         });
     }
-
-    // jquery media query
-    $(window).resize(function () {
-        //  extra small screen
-        if ($(this).width() < 768) {
-            // locate next_page button
-            $('#next_page').css('bottom', '15px');
-        }
-        // small screen
-        if ($(this).width() >= 768 && $(this).width() < 992) {
-            // locate next_page button in the middle of screen
-            $('#next_page').css('bottom', parseInt((parseInt($('#types_wrapper').css('height')) - parseInt($('#next_page').css('height'))) / 2) + 'px');
-        }
-    });
-
 });
+
+
+//// locate next_page button in the middle of screen
+//$('#next_page').css('bottom', parseInt((parseInt($('#types_wrapper').css('height')) - parseInt($('#next_page').css('height'))) / 2) + 'px');
