@@ -131,7 +131,6 @@ button:focus {
 
 /* Extra Small Devices, Phones */
 @media only screen and (max-width: 767px) {
-
 }
 
 /* Small Devices, Tablets */
@@ -139,18 +138,24 @@ button:focus {
     .type_button {
         margin-top: 45px;
         margin-bottom: 35px;
-        width: 155px;
-        height: 155px;
-        font-size: 28px;
+        width: 180px;
+        height: 180px;
+        font-size: 30px;
+    }
+
+    /*checkbox location relative to the button parent*/
+    .type_button label {
+        bottom: 8px;
+        left: 79px;
+    }
+
+    .description_text {
+        width: 180px;
     }
 
     /*fix first type list element padding*/
     div#mobile_types_list ul li:first-child {
         padding-top: 40px;
-    }
-
-    div#mobile_types_list ul li:last-child {
-        /*padding-bottom: 20px;*/
     }
 
     #mobile_types_list ul li {
@@ -162,30 +167,88 @@ button:focus {
         width: 180px;
     }
 
-    .description_text {
-        width: 170px;
-    }
-
-    /*checkbox location relative to the button parent*/
-    .type_button label {
-        bottom: 5px;
-        left: 68px;
-    }
-
     #next_page {
         right: 20px;
-        bottom: 15px;
+        bottom: 50%;
     }
 }
 
 /* Medium Devices, Desktops */
 @media only screen and (min-width: 992px) {
+    #types_first_row {
+        padding-top: 50px;
+    }
+
+    #types_second_row {
+        padding-bottom: 10px;
+        padding-top: 0;
+    }
+
+    .type_button {
+        margin: 20px 15px 20px 15px;
+        padding: 0;
+        width: 135px;
+        height: 135px;
+        font-size: 24px;
+    }
+
+    /*checkbox location relative to the button parent*/
+    .type_button label {
+        bottom: 5px;
+        left: 57px;
+    }
+
+    #next_page {
+        top: 85px;
+    }
+
+    .type_button:hover {
+        width: 155px;
+        height: 155px;
+        margin: 10px 5px 10px 5px;
+    }
+
+    /*on parent hover > change child css*/
+    .type_button:hover > label {
+        left: 67px;
+    }
 
 }
 
 /* Large Devices, Wide Screens */
 @media only screen and (min-width: 1200px) {
+    #types_first_row {
+        padding-top: 45px;
+        width: 100%;
+    }
 
+    .type_button {
+        margin: 22px 25px 22px 25px;
+        width: 150px;
+        height: 150px;
+        font-size: 25px;
+    }
+
+    /*checkbox location relative to the button parent*/
+    .type_button label {
+        bottom: 5px;
+        left: 65px;
+    }
+
+    #next_page {
+        top: 85px;
+    }
+
+    .type_button:hover {
+        width: 172px;
+        height: 172px;
+        margin: 11px 14px 11px 14px;
+    }
+
+    /*on parent hover > change child css*/
+    .type_button:hover > label {
+        left: 76px;
+    }
 }
 
 
