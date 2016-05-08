@@ -202,17 +202,34 @@ button:focus {
         top: 85px;
     }
 
+    span.description_text {
+        position: absolute;
+        top: 27px;
+        left: 10px;
+        width: 130px;
+        height: 130px;
+        font-size: 14px;
+        color: rgb(230, 89, 42);
+    }
+
     .type_button:hover {
         width: 155px;
         height: 155px;
         margin: 10px 5px 10px 5px;
+        /*weaker color*/
+        color: rgb(254, 234, 216);
     }
 
     /*on parent hover > change child css*/
     .type_button:hover > label {
         left: 67px;
+        color: rgb(249, 163, 51);
     }
 
+    /*doesn't workkkkkkkkk*/
+    .type_button:hover > span {
+        display: block;
+    }
 }
 
 /* Large Devices, Wide Screens */
@@ -237,6 +254,14 @@ button:focus {
 
     #next_page {
         top: 85px;
+    }
+
+    span.description_text {
+        top: 28px;
+        left: 13px;
+        width: 140px;
+        height: 140px;
+        font-size: 15px;
     }
 
     .type_button:hover {

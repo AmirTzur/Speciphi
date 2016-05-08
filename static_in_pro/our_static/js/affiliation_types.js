@@ -74,7 +74,9 @@ $(document).ready(function () {
             // if was in desktop layout - move types back to .types_display and delete #types_first&second_row
             if ($('div#types_display div:nth-child(1)').hasClass('row')) {
                 $('div#types_first_row').children().each(function (index) {
-                    $(this).children('span').css('display', 'block');
+                    // show description and add it back to default place
+                    $(this).children('button').children('span').css('display', 'block');
+                    $(this).children('button').children('span').appendTo($(this));
                     if (index == 0) {
                         $(this).css('display', 'block');
                     }
@@ -93,10 +95,10 @@ $(document).ready(function () {
                 $('div#types_second_row').remove();
             }
             else {
-                // show first type # mobile only
+                // show first type
                 $('div#types_display div:nth-child(1)').css('display', 'block');
             }
-            // color checked types on type list (needed also when a user press back button) # mobile only
+            // color checked types on type list (needed also when a user press back button)
             $('div#types_display').children().filter(function () {
                 if ($(this).children('button.type_button').children('input[type=checkbox]').is(':checked')) {
                     var checked_type = $(this).prop('id');
@@ -118,7 +120,11 @@ $(document).ready(function () {
                 $('div#types_display').prepend('<div id="types_first_row" class="row"></div><div id="types_second_row" class="row"></div>');
                 // iterate types
                 $('div#types_display').children().each(function (index) {
+                    // hide description and insert it into button
                     $(this).children('span').css('display', 'none');
+                    //$(this).children('span').css('visibility', 'hidden');
+                    $(this).children('span').appendTo($(this).children('button'));
+                    // show type
                     $(this).css('display', 'inline-block');
                     // insert types into rows (divs 0 and 1 are types rows)
                     //01|2345|6789
