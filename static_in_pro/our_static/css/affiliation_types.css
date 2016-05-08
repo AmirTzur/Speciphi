@@ -43,11 +43,6 @@ div#mobile_types_list ul li:first-child {
     padding-top: 10px;
 }
 
-#mobile_types_list ul li i {
-    font-size: 28px;
-    line-height: 4px;
-}
-
 .type_button {
     /* so checkbox position will be determined according to type_button */
     position: relative;
@@ -133,6 +128,13 @@ button:focus {
 @media only screen and (max-width: 767px) {
 }
 
+@media only screen and (min-width: 480px) {
+        .type_display {
+        position: relative;
+        right: 45px;
+    }
+}
+
 /* Small Devices, Tablets */
 @media only screen and (min-width: 768px) {
     .type_button {
@@ -159,17 +161,25 @@ button:focus {
     }
 
     #mobile_types_list ul li {
-        margin-left: 10px;
+        /*margin-left: 10px;*/
         font-size: 30px;
     }
 
     #mobile_types_list {
-        width: 180px;
+        margin-left: 60px;
+    }
+
+    #mobile_types_list {
+        width: 145px;
     }
 
     #next_page {
-        right: 20px;
+        right: 40px;
         bottom: 50%;
+    }
+
+    .type_display {
+        right: 65px;
     }
 }
 
@@ -226,6 +236,12 @@ button:focus {
     .type_button:hover > span {
         display: block !important;
     }
+
+    /*back to default position*/
+    .type_display {
+        position: static;
+    }
+
 }
 
 /* Large Devices, Wide Screens */
@@ -265,5 +281,9 @@ button:focus {
     /*checkbox position*/
     .type_button:hover > label {
         left: 76px;
+    }
+
+    #next_page {
+        right: 65px;
     }
 }
