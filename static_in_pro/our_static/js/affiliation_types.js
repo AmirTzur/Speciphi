@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    // click on list will display selected type # mobile only
+    // click on list will display selected type
     $('div#mobile_types_list ul li').on('click', function () {
         var pressed_type = $(this).context.innerText;
         // inner <i> adds a space at beginning of innerText - remove it
@@ -86,7 +86,8 @@ $(document).ready(function () {
                     $(this).appendTo('div#types_display');
                 });
                 $('div#types_second_row').children().each(function () {
-                    $(this).children('span').css('display', 'block');
+                    $(this).children('button').children('span').css('display', 'block');
+                    $(this).children('button').children('span').appendTo($(this));
                     $(this).css('display', 'none');
                     $(this).appendTo('div#types_display');
                 });
@@ -122,7 +123,6 @@ $(document).ready(function () {
                 $('div#types_display').children().each(function (index) {
                     // hide description and insert it into button
                     $(this).children('span').css('display', 'none');
-                    //$(this).children('span').css('visibility', 'hidden');
                     $(this).children('span').appendTo($(this).children('button'));
                     // show type
                     $(this).css('display', 'inline-block');
