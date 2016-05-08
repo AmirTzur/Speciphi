@@ -32,7 +32,7 @@ def home(request):
                 print("cursor was not defined")
             else:
                 # Input: Entrance_ip, Entrance_country
-                # Output: Creates new entry in “Entrances” Table, Entrance_id
+                # Output: Creates new entry in Entrances Table, Entrance_id
                 cursor.execute('call newEntrance(%s,"")', [user_ip])
                 Entrance_id = cursor.fetchone()
                 cursor.close()
