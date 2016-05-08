@@ -111,6 +111,16 @@ input[type=checkbox]:checked + label:before {
     cursor: pointer;
 }
 
+#next_page svg {
+    width: 37px;
+    height: 37px;
+}
+
+#next_page svg image {
+    width: 65px;
+    height: 65px;
+}
+
 /*remove button outer border*/
 button:focus {
     outline: none;
@@ -129,7 +139,7 @@ button:focus {
 }
 
 @media only screen and (min-width: 480px) {
-        .type_display {
+    .type_display {
         position: relative;
         right: 45px;
     }
@@ -176,6 +186,16 @@ button:focus {
     #next_page {
         right: 40px;
         bottom: 50%;
+    }
+
+    #next_page svg {
+        width: 65px;
+        height: 65px;
+    }
+
+    #next_page svg image {
+        width: 65px;
+        height: 65px;
     }
 
     .type_display {
