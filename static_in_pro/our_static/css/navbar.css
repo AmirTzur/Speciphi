@@ -274,16 +274,6 @@ ul.dropdown-menu {
         padding-left: 0px !important;
     }
 
-    /*set up the right configurations for dropdown for small screens (same as big screens) */
-    /*.navbar-nav .open .dropdown-menu {*/
-    /*position: absolute;*/
-    /*background-color: #E5DFD3;*/
-    /*-webkit-background-clip: padding-box;*/
-    /*border: 1px solid #ccc;*/
-    /*border-radius: 4px;*/
-    /*-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);*/
-    /*box-shadow: 0 6px 12px rgba(0, 0, 0, .175)*/
-    /*}*/
 }
 
 /* Small Devices, Tablets */
