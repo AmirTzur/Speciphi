@@ -10,17 +10,21 @@
     position: relative;
 }
 
+#types_display {
+    overflow: hidden;
+    padding-top: 20px;
+}
+
 #mobile_types_list {
     width: 138px;
     float: left;
-}
-
-#types_display {
-    overflow: hidden;
+    margin-top: 12px;
+    margin-bottom: 22px;
 }
 
 #mobile_types_list ul {
     padding: 0;
+    margin: 0;
 }
 
 #mobile_types_list ul li {
@@ -36,7 +40,7 @@
     -webkit-transform: matrix(0.75, 0, 0, 0.75, 0, 0);
     -ms-transform: matrix(0.75, 0, 0, 0.75, 0, 0);
     cursor: pointer;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
 }
 
 div#mobile_types_list ul li:first-child {
@@ -147,40 +151,42 @@ button:focus {
 
 /* Small Devices, Tablets */
 @media only screen and (min-width: 768px) {
+    /*checkbox location relative to the button parent*/
+    .type_display {
+        right: 65px;
+    }
+
     .type_button {
-        margin-top: 45px;
-        margin-bottom: 35px;
+        margin-top: 90px;
+        margin-bottom: 110px;
         width: 180px;
         height: 180px;
         font-size: 30px;
     }
 
-    /*checkbox location relative to the button parent*/
     .type_button label {
         bottom: 8px;
         left: 79px;
     }
 
     .description_text {
-        width: 180px;
+        width: 270px;
     }
 
-    /*fix first type list element padding*/
-    div#mobile_types_list ul li:first-child {
-        padding-top: 40px;
+    #mobile_types_list {
+        width: 160px;
+        margin-left: 60px;
+        margin-top: 55px;
+        margin-bottom: 80px;
     }
 
     #mobile_types_list ul li {
-        /*margin-left: 10px;*/
-        font-size: 30px;
+        font-size: 33px;
+        padding-bottom: 30px;
     }
 
-    #mobile_types_list {
-        margin-left: 60px;
-    }
-
-    #mobile_types_list {
-        width: 145px;
+    div#mobile_types_list ul li:first-child {
+        padding-top: 30px;
     }
 
     #next_page {
@@ -196,10 +202,6 @@ button:focus {
     #next_page svg image {
         width: 65px;
         height: 65px;
-    }
-
-    .type_display {
-        right: 65px;
     }
 }
 
