@@ -112,6 +112,14 @@ input[type=checkbox]:checked + label:before {
     left: 60px;
 }
 
+
+/*show checked on hover*/
+.type_button:hover > input[type=checkbox] + label:before {
+    /*content: "\f046";*/
+    /*opacity: 0.7;*/
+    color: rgb(230, 89, 42);
+}
+
 #next_page {
     border: none;
     position: absolute;
@@ -205,12 +213,6 @@ span.description_text {
         left: 79px;
     }
 
-    /*show checked on hover*/
-    .type_button:hover > input[type=checkbox] + label:before {
-        content: "\f046";
-        opacity: 0.7;
-    }
-
     span.description_text {
         width: 175px;
     }
@@ -275,6 +277,13 @@ span.description_text {
     .type_button label {
         bottom: 5px;
         left: 57px;
+    }
+
+
+    /*show checked on hover*/
+    .type_button:hover > input[type=checkbox] + label:before {
+        /*content: "\f096";*/
+        opacity: 0.7;
     }
 
     span.description_text {
