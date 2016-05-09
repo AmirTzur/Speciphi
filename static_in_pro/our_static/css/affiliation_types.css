@@ -52,18 +52,18 @@ div#mobile_types_list ul li:first-child {
     position: relative;
     margin-top: 15px;
     margin-bottom: 15px;
-    border-radius: 50%;
     width: 140px;
     height: 140px;
-    background-color: white;
-    color: rgb(249, 163, 51);
+    border-radius: 50%;
+    font-size: 25px;
     text-align: center;
     text-decoration: none;
     border: 2px solid white;
-    font-size: 25px;
     font-family: "Bariol";
     font-weight: bold;
     line-height: 1.2;
+    background-color: white;
+    color: rgb(249, 163, 51);
 }
 
 /*replace default checkbox with font awesome checkbox*/
@@ -130,7 +130,7 @@ button:focus {
     outline: none;
 }
 
-.description_text {
+span.description_text {
     width: 145px;
     height: 145px;
     margin: auto auto 10px auto;
@@ -142,11 +142,32 @@ button:focus {
 @media only screen and (max-width: 767px) {
 }
 
+/* Custom Mini i-pad screen*/
 @media only screen and (min-width: 480px) {
     .type_display {
         position: relative;
         right: 45px;
     }
+
+    .type_button {
+        width: 155px;
+        height: 155px;
+        font-size: 25px;
+        margin-top: 25px;
+        margin-bottom: 30px;
+    }
+
+    /*checkbox location relative to the button parent*/
+    .type_button label {
+        bottom: 5px;
+        left: 67px;
+    }
+
+    span.description_text {
+        width: 170px;
+        height: 130px;
+    }
+
 }
 
 /* Small Devices, Tablets */
@@ -191,17 +212,17 @@ button:focus {
 
     #next_page {
         right: 40px;
-        bottom: 50%;
+        bottom: 40%;
     }
 
     #next_page svg {
-        width: 65px;
-        height: 65px;
+        width: 60px;
+        height: 60px;
     }
 
     #next_page svg image {
-        width: 65px;
-        height: 65px;
+        width: 60px;
+        height: 60px;
     }
 }
 

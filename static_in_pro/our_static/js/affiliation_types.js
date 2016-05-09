@@ -22,7 +22,7 @@ $(document).ready(function () {
             // set list color
             $('div#mobile_types_list ul').children().filter(function () {
                 return $(this).context.innerText == checked_type;
-            }).css('color', 'black');
+            }).css('color', '#E6592A');
         }
         else {
             // remove type list color
@@ -106,7 +106,7 @@ $(document).ready(function () {
                     // change color
                     $('div#mobile_types_list ul').children().filter(function () {
                         return $(this).context.innerText == checked_type;
-                    }).css('color', 'black');
+                    }).css('color', '#E6592A');
                 }
             });
 
