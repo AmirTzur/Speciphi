@@ -7,6 +7,9 @@ from django.db import models
 # http://stackoverflow.com/questions/7625674/utility-of-managed-false-option-in-django-models
 
 class Entrances(models.Model):
+    def __str__(self):
+        return 'Entrances Obj: ' + str(self.id)
+
     ip = models.CharField(max_length=16)
     country = models.CharField(max_length=45, blank=True, null=True)
     entrancedatetime = models.DateTimeField(db_column='entranceDateTime')
@@ -17,6 +20,9 @@ class Entrances(models.Model):
 
 
 class Products(models.Model):
+    def __str__(self):
+        return 'Products Obj: ' + str(self.name)
+
     name = models.CharField(unique=True, max_length=45)
     creationdatetime = models.DateTimeField(db_column='creationDateTime')
     # Should use ImageField(upload_to=None, height_field=None, width_field=None, max_length=100, **options)
@@ -29,6 +35,9 @@ class Products(models.Model):
 
 
 class Consultationprocesses(models.Model):
+    def __str__(self):
+        return 'Consultationprocesses Obj: ' + str(self.id)
+
     entrances = models.ForeignKey('Entrances', db_column='Entrances_id')
     products = models.ForeignKey('Products', db_column='Products_id')
     startdatetime = models.DateTimeField(db_column='startDateTime')
@@ -39,6 +48,9 @@ class Consultationprocesses(models.Model):
 
 
 class Affiliations(models.Model):
+    def __str__(self):
+        return 'Affiliations Obj: ' + str(self.name)
+
     products = models.ForeignKey('Products', db_column='Products_id')
     name = models.CharField(max_length=45)
     description = models.TextField(max_length=300)
@@ -51,6 +63,9 @@ class Affiliations(models.Model):
 
 
 class Consulteeaffiliations(models.Model):
+    def __str__(self):
+        return 'Consulteeaffiliations Obj: ' + str(self.id)
+
     entrances_id = models.IntegerField(db_column='Entrances_id')
     products_id = models.IntegerField(db_column='Products_id')
     consultationprocesses = models.ForeignKey(Consultationprocesses,
