@@ -47,6 +47,11 @@ div#mobile_types_list ul li:first-child {
     padding-top: 10px;
 }
 
+#mobile_types_list ul li:hover {
+    opacity: 0.7;
+    color: rgb(230, 89, 42) !important;
+}
+
 .type_button {
     /* so checkbox position will be determined according to type_button */
     position: relative;
@@ -168,6 +173,16 @@ span.description_text {
         height: 130px;
     }
 
+    #next_page svg {
+        width: 47px;
+        height: 47px;
+    }
+
+    #next_page svg image {
+        width: 60px;
+        height: 60px;
+    }
+
 }
 
 /* Small Devices, Tablets */
@@ -188,6 +203,12 @@ span.description_text {
     .type_button label {
         bottom: 8px;
         left: 79px;
+    }
+
+    /*show checked on hover*/
+    .type_button:hover > input[type=checkbox] + label:before {
+        content: "\f046";
+        opacity: 0.7;
     }
 
     .description_text {
@@ -224,6 +245,7 @@ span.description_text {
         width: 60px;
         height: 60px;
     }
+
 }
 
 /* Medium Devices, Desktops */
