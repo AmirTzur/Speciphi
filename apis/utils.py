@@ -3,6 +3,9 @@ import json
 import csv
 # Amazon sdk: bottlenode
 import bottlenose
+import lxml
+from lxml import objectify
+
 
 from django.conf import settings
 
@@ -45,19 +48,19 @@ class EbayClient(object):
             self.certid = 'b3c9c740-b8d2-47b7-8123-830aa3df9087'
 
     def __repr__(self):
-        return "<ebayClient>"
+        return "<EbayClient>"
 
     # def __getattr__(self, method):
     #     return ebayClient(self.domain, self.appid, '%s/%s' % (self.method, self.method))
 
-    def fetch_deals(self, min_price, max_price):
-        self.pull_laptop_deals(min_price, max_price)
-        p_range = str(min_price) + '-' + str(max_price)
+    def fetch_deals(self):
+        self.pull_laptop_deals(self.min_price, self.max_price)
+        p_range = str(self.min_price) + '-' + str(self.max_price)
         print(len(self.item_deals[p_range]))
-        self.add_deals_json(p_range)
+        self.save_deals(p_range)
         # self.json_to_csv()
 
-    def json_to_csv(self):
+    def create_csv(self):
         header = []
         with open(os.path.join(settings.BASE_DIR, 'deals.ebay.json'), 'r', encoding='utf-8') as ebay_deals:
             io_str = ebay_deals.read()
@@ -84,7 +87,7 @@ class EbayClient(object):
             ebay_data.close()
         ebay_deals.close()
 
-    def add_deals_json(self, price_range=""):
+    def save_deals(self, price_range=""):
         """
         Get dictionary with item deals details (range:list structure) and add item instances to the table.
         If specification name field does not exist in model - a new field will be create.
@@ -213,18 +216,18 @@ class EbayClient(object):
                     # Extract listing details (if exist) such as 'Price'
                     if 'ListingDetails' in trading_item.keys():
                         if 'EndTime' in trading_item['ListingDetails'].keys():
-                            item_data['DealEndTime'] = trading_item['ListingDetails']['EndTime']
+                            item_data['dealEndTime'] = trading_item['ListingDetails']['EndTime']
                         if 'ConvertedStartPrice' in trading_item['ListingDetails'].keys():
                             item_data['Price'] = trading_item['ListingDetails']['ConvertedStartPrice']['value']
                         if 'ViewItemURL' in trading_item['ListingDetails'].keys():
                             item_data['URL'] = trading_item['ListingDetails']['ViewItemURL']
-                    # Extract picture url (if exist)
-                    if 'PictureDetails' in trading_item.keys():
-                        if 'PictureURL' in trading_item['PictureDetails'].keys():
-                            item_data['Image'] = trading_item['PictureDetails']['PictureURL']
+                    # Extract picture url (if exist) - usually return list (csv -> R conflict !!!)
+                    # if 'PictureDetails' in trading_item.keys():
+                    #     if 'PictureURL' in trading_item['PictureDetails'].keys():
+                    #         item_data['Image'] = trading_item['PictureDetails']['PictureURL']
                     # Extract title (if exist)
-                    if 'Title' in trading_item.keys():
-                        item_data['Title'] = trading_item['Title']
+                    # if 'Title' in trading_item.keys():
+                    #     item_data['Title'] = trading_item['Title']
                 deal_list.append(item_data)
             return deal_list
         else:
@@ -352,14 +355,106 @@ class AmazonClient(object):
         To create new instance provide Amazon credentials:
             AWS_ACCESS_KEY_ID = AKIAJZXUIQUQZ34J3E5Q
             AWS_SECRET_ACCESS_KEY = 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
-            AWS_ASSOCIATE_TAG = 9034-3545-7023 (root account id)
+            AWS_ASSOCIATE_TAG = djaroo10-20
         """
         self.amazon_id = kwargs.get('amazon_id', 'AKIAJZXUIQUQZ34J3E5Q')
         self.amazon_key = kwargs.get('amazon_key', '6ZHpC651IZ6WmW0dC9Y9DfVO6ORYGYpR633zdbj/')
-        self.amazon_tag = kwargs.get('amazon_tag', '9034-3545-7023')
+        self.amazon_tag = kwargs.get('amazon_tag', 'djaroo10-20')
 
-    def get_item(self):
-        amazon = bottlenose.Amazon(self.amazon_id, self.amazon_key, self.amazon_tag)
-        # item lookup call: IdType=UPC , SearchIndex=Electronics (US market) , node=493964
-        amazon_response = amazon.ItemLookup(ItemId='', ResponseGroup='', SearchIndex='Electronics', IdType='UPC')
-        print(amazon_response)
+    def __repr__(self):
+        return "<AmazonClient>"
+
+    # def __getattr__(self, method):
+    #     return ebayClient(self.domain, self.appid, '%s/%s' % (self.method, self.method))
+
+    def pull_upc(self):
+        #pull upc list from existing csv file
+        return []
+
+    def save_deals(self, amazon_deals):
+        #save list of deals (dict) to json file
+
+    def create_csv(self):
+        #save json data to new csv file
+
+    def fetch_deals(self):
+        amazon_deals = []
+        upc_list = self.pull_upc()
+        for item_upc in upc_list:
+            amazon_deals.append(self.get_item(item_upc))
+        self.save_deals(amazon_deals)
+
+    def get_item(self, upc='887276124025'):
+        """
+
+        :param upc:
+        :return:
+        """
+        amazon_data = {}
+        amazon = bottlenose.Amazon(self.amazon_id, self.amazon_key, self.amazon_tag, MaxQPS=0.9)
+        # Item lookup call: IdType=UPC , SearchIndex=Electronics (US market) , node=493964
+        amazon_response = amazon.ItemLookup(ItemId=upc, ResponseGroup='Large', SearchIndex='Electronics', IdType='UPC')
+        response_elem = objectify.fromstring(amazon_response.decode('utf-8'))
+        # Extract data from Amazon xml response
+        for amazon_attr in response_elem.Items.Item.iterchildren("*"):
+            tag_str = amazon_attr.tag
+            medium_tag = tag_str.split('}')[1]
+            if not amazon_attr.text:
+                obj_data = self.breake_obj(amazon_attr, {})
+                amazon_data.update(obj_data)
+            else:
+                amazon_data[medium_tag] = amazon_attr.text
+        return amazon_data
+
+    def breake_obj(self, attr_obj, obj_data):
+        """
+
+        :param attr_obj:
+        :param obj_data:
+        :return:
+        """
+        if attr_obj.text:
+            obj_tag = attr_obj.tag.split('}')[1]
+            parent_tag = attr_obj.getparent().tag.split('}')[1]
+            full_tag = str(parent_tag+'>'+obj_tag)
+            obj_data[full_tag] = self.val_insert(full_tag, attr_obj.text, obj_data)
+            # print('break_obj_simple_str: tag: '+full_tag+' val: '+obj_data[full_tag])
+            return obj_data
+        else:
+            for sub_attr in attr_obj.iterchildren("*"):
+                obj_tag = sub_attr.tag.split('}')[1]
+                parent_tag = sub_attr.getparent().tag.split('}')[1]
+                full_tag = str(parent_tag+'>'+obj_tag)
+                if not sub_attr.text:
+                    if full_tag == 'ItemAttributes>Feature':
+                        print('object child (recursion): '+full_tag)
+                        print(type(attr_obj))
+                        print(attr_obj.text)
+                    obj_dict = self.breake_obj(sub_attr, {})
+                    obj_data.update(obj_dict)
+                    if full_tag == 'ItemAttributes>Feature':
+                        print('obj_data after executing '+full_tag)
+                    # print(obj_data)
+                else:
+                    obj_data[full_tag] = self.val_insert(full_tag, sub_attr.text, obj_data)
+                    # print('simple child (base type): '+full_tag+' with value:'+obj_data[full_tag])
+        return obj_data
+
+    def val_insert(self, tag_name, tag_value, item_dict):
+        """
+
+        :param tag_name:
+        :param tag_value:
+        :param item_dict:
+        :return:
+        """
+        if tag_name in item_dict.keys():
+            if isinstance(item_dict[tag_name], list):
+                item_dict[tag_name].append(tag_value)
+                return item_dict[tag_name]
+            else:
+                multi_values = [item_dict[tag_name], tag_value, ]
+                return multi_values
+        else:
+            return tag_value
+    # get list of upc -> for each upc extract details ->  get large response -> parse xml -> save to self.item_deals -> export to json -> export to csv
