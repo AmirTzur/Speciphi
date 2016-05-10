@@ -73,35 +73,35 @@ div#mobile_types_list ul li:first-child {
 
 /*replace default checkbox with font awesome checkbox*/
 /* hide the original checkbox */
-input[type=checkbox] {
+.type_button input[type=checkbox] {
     display: none;
 }
 
-input[type=checkbox] + label:before {
+.type_button input[type=checkbox] + label:before {
     font-family: FontAwesome;
     font-size: 20px;
     display: inline-block;
 }
 
 /* unchecked icon */
-input[type=checkbox] + label:before {
+.type_button input[type=checkbox] + label:before {
     content: "\f096";
     cursor: pointer;
 }
 
 /* space between checkbox and label */
-input[type=checkbox] + label:before {
+.type_button input[type=checkbox] + label:before {
     /*letter-spacing: 10px;*/
 }
 
 /* checked icon */
-input[type=checkbox]:checked + label:before {
+.type_button input[type=checkbox]:checked + label:before {
     content: "\f046";
     cursor: pointer;
 }
 
 /* allow space for check mark */
-input[type=checkbox]:checked + label:before {
+.type_button input[type=checkbox]:checked + label:before {
     letter-spacing: -4px;
 }
 
@@ -110,14 +110,6 @@ input[type=checkbox]:checked + label:before {
     position: absolute;
     bottom: 5px;
     left: 60px;
-}
-
-
-/*show checked on hover*/
-.type_button:hover > input[type=checkbox] + label:before {
-    /*content: "\f046";*/
-    /*opacity: 0.7;*/
-    color: rgb(230, 89, 42);
 }
 
 #next_page {
@@ -279,13 +271,6 @@ span.description_text {
         left: 57px;
     }
 
-
-    /*show checked on hover*/
-    .type_button:hover > input[type=checkbox] + label:before {
-        /*content: "\f096";*/
-        opacity: 0.7;
-    }
-
     span.description_text {
         position: absolute;
         top: 25px;
@@ -360,8 +345,4 @@ span.description_text {
     .type_button:hover > label {
         left: 76px;
     }
-
-    /*#next_page {*/
-    /*!*right: 65px;*!*/
-    /*}*/
 }

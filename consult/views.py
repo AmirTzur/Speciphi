@@ -1,3 +1,5 @@
+from random import random
+
 from django.shortcuts import render
 from collections import OrderedDict
 from django.db import connection, Error
@@ -134,7 +136,6 @@ def application(request, product=None):
         print("application| POST")
     elif request.method == "GET":
         print("Application| GET")
-
     pages = OrderedDict()
     pages['Home'] = [False, "home"]
     pages['Affil'] = [False, "affiliation"]
@@ -146,6 +147,17 @@ def application(request, product=None):
         "pages": pages,
         "product": product,
     }
+    # Uses = OrderedDict()
+    # for i in range(0, 8):
+    #     Uses['id'] = i
+    #     Uses['value'] = i
+    #     Uses['name'] = 'Video editing ' + str(i)
+    #     Uses[
+    #         'description'] = 'A Person who selects and mixes dialogue, music and special audio effects in the preparation of an audio master for CDs' + i
+    # context.update({'Uses': Uses})
+    # value = models.IntegerField()
+    # name = models.CharField(max_length=45, blank=True, null=True)
+    # description = models.TextField()
     return render(request, "application.html", context)
 
 
