@@ -1,6 +1,12 @@
 import os
 import json
 import csv
+import time
+# Amazon sdk: bottlenode
+import bottlenose
+import lxml
+from lxml import objectify
+
 
 from django.conf import settings
 
@@ -26,8 +32,8 @@ class EbayClient(object):
         prod: PieceOfA-ae60-404f-b9e8-963d4cb77c54
         """
         self.state = kwargs.get('state', 'production')
-        self.min_price = kwargs.get('min_price', 200)
-        self.max_price = kwargs.get('max_price', 250)
+        self.min_price = kwargs.get('min_price', 350)
+        self.max_price = kwargs.get('max_price', 400)
         self.item_deals = {}
         self.devid = '63ffcffb-5194-4b29-99f6-46243937f140'
         self.token = 'AgAAAA**AQAAAA**aAAAAA**EHIVVw**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AEloelDpeFqAWdj6x9nY+seQ**RcUCAA**AAMAAA**1AYoROp8ljS5LeygbB7JOsWbm1WZ87v/CkBJue4l0DMf0daQme2sNhQCT+K2Kr2Bhs/GGdFEwJUMQYfzbZ8Dwob5FRLEWlfno6qiSnqVDKls2+cVfqi6NRfre53capvWz8PrFNU0wnn2FfDXN/41YAHxJXLCJRfHdLJGDxKKcjnCDZOkJNOnbZTs+qLwXBI6/iQqUrAi87PhoBu8G81GSphGj50hn/th60j14rmyu4MDJTR3Az5YcOQfNQRbty3iRBzfkbJwCpG0ilNKHBlDoS2E708othrY3nqGiZ6GAKt2EPJT2Bhq5vKze1hCuHY5KQe8513MRJRJ0L5uaCARRgT1Wsega2IkXfwV6oWlgVxe1zD002iCGBYI7pezRdAIaEbguX7dwSmU0ZWeoP3HMBHwSTfM6gv0AMIYkf0vCwDohdTx2M+FkAzOCQy03oaVWsH/iu+1ahguhiHojfkHsovc3cT5WB5E3oLObhGq1R2Uilt15rUQp4m8J1UILo5vTvwPpB3ctub4xSTd+onFdCtl4qnQfEBQ9Fh2TINB/ONpEt0EksdP3ghV6Yoys84Yy6Ii56YDuDEKWU45ekHJMOZW55XbZdM7v4jBx5y78KkFb99UNn+a+jPSGvHHUX/SDXwz5XEQ8s/S+C7LMiAZJ/8kVDQJFZIR58vJwCYOy2mIZZxddCy/a1TZaGfh/B87AaRMSN+aMMvKcetLyA/+3+/qb9+3eHGh5Gf5RRDfIfkmXowjNy/jhsG5GIwfNqe7'
@@ -43,19 +49,19 @@ class EbayClient(object):
             self.certid = 'b3c9c740-b8d2-47b7-8123-830aa3df9087'
 
     def __repr__(self):
-        return "<ebayClient>"
+        return "<EbayClient>"
 
     # def __getattr__(self, method):
     #     return ebayClient(self.domain, self.appid, '%s/%s' % (self.method, self.method))
 
-    def fetch_deals(self, min_price, max_price):
-        self.pull_laptop_deals(min_price, max_price)
-        p_range = str(min_price) + '-' + str(max_price)
+    def fetch_deals(self):
+        self.pull_laptop_deals(self.min_price, self.max_price)
+        p_range = str(self.min_price) + '-' + str(self.max_price)
         print(len(self.item_deals[p_range]))
-        self.add_deals_json(p_range)
+        self.save_deals(p_range)
         # self.json_to_csv()
 
-    def json_to_csv(self):
+    def create_csv(self):
         header = []
         with open(os.path.join(settings.BASE_DIR, 'deals.ebay.json'), 'r', encoding='utf-8') as ebay_deals:
             io_str = ebay_deals.read()
@@ -82,8 +88,7 @@ class EbayClient(object):
             ebay_data.close()
         ebay_deals.close()
 
-
-    def add_deals_json(self, price_range=""):
+    def save_deals(self, price_range=""):
         """
         Get dictionary with item deals details (range:list structure) and add item instances to the table.
         If specification name field does not exist in model - a new field will be create.
@@ -96,16 +101,6 @@ class EbayClient(object):
                         json.dump(items_group, deals_json, sort_keys=True, indent=4)
                         deals_json.write(',\n')
             deals_json.close()
-
-        # for items_in_range in self.item_deals.values():
-        #             for item_group in items_in_range:
-        #                 for item in item_group:
-        #                     for spec_name, spec_val in item.items():
-        #                         # insert to spec_name field if exist, else create new filed
-        #                         if spec_name:
-        #                             return
-        #                         else:
-        #                             return
 
     def pull_laptop_deals(self, min_price, max_price):
         """
@@ -216,21 +211,27 @@ class EbayClient(object):
                     trading_item = trading_response.dict()['Item']
                     # Extract item specifics (if exist) such as 'Screen Size'
                     if 'ItemSpecifics' in trading_item.keys():
+                        # Iterate ItemSpecifics tag data
                         for spec in trading_item['ItemSpecifics']['NameValueList']:
                             if not isinstance(spec, str):
-                                item_data[spec['Name']] = spec['Value']
+                                spec_name = str(spec['Name'])
+                                if spec_name == 'Brand' or spec_name == 'UPC' or spec_name == 'MPN':
+                                    item_data[spec_name] = str(spec['Value'])
                     # Extract listing details (if exist) such as 'Price'
                     if 'ListingDetails' in trading_item.keys():
-                        item_data['dealEndTime'] = trading_item['ListingDetails']['EndTime']
-                        item_data['price'] = trading_item['ListingDetails']['ConvertedStartPrice']['value']
-                        item_data['URL'] = trading_item['ListingDetails']['ViewItemURL']
-                    # Extract picture url (if exist)
-                    if 'PictureDetails' in trading_item.keys():
-                        if 'PictureURL' in trading_item['PictureDetails'].keys():
-                            item_data['image'] = trading_item['PictureDetails']['PictureURL']
+                        if 'EndTime' in trading_item['ListingDetails'].keys():
+                            item_data['dealEndTime'] = trading_item['ListingDetails']['EndTime']
+                        if 'ConvertedStartPrice' in trading_item['ListingDetails'].keys():
+                            item_data['Price'] = trading_item['ListingDetails']['ConvertedStartPrice']['value']
+                        if 'ViewItemURL' in trading_item['ListingDetails'].keys():
+                            item_data['URL'] = trading_item['ListingDetails']['ViewItemURL']
+                    # Extract picture url (if exist) - usually return list (csv -> R conflict !!!)
+                    # if 'PictureDetails' in trading_item.keys():
+                    #     if 'PictureURL' in trading_item['PictureDetails'].keys():
+                    #         item_data['Image'] = trading_item['PictureDetails']['PictureURL']
                     # Extract title (if exist)
-                    if 'Title' in trading_item.keys():
-                        item_data['title'] = trading_item['Title']
+                    # if 'Title' in trading_item.keys():
+                    #     item_data['Title'] = trading_item['Title']
                 deal_list.append(item_data)
             return deal_list
         else:
@@ -348,4 +349,171 @@ class EbayClient(object):
 #             title = info['description']
 #         )
 
+class AmazonClient(object):
+    """
 
+    limits: one query per second per associate tag
+    """
+    def __init__(self, **kwargs):
+        """
+        To create new instance provide Amazon credentials:
+            AWS_ACCESS_KEY_ID = AKIAJZXUIQUQZ34J3E5Q
+            AWS_SECRET_ACCESS_KEY = 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
+            AWS_ASSOCIATE_TAG = djaroo10-20
+        """
+        self.amazon_id = kwargs.get('amazon_id', 'AKIAJZXUIQUQZ34J3E5Q')
+        self.amazon_key = kwargs.get('amazon_key', '6ZHpC651IZ6WmW0dC9Y9DfVO6ORYGYpR633zdbj/')
+        self.amazon_tag = kwargs.get('amazon_tag', 'djaroo10-20')
+
+    def __repr__(self):
+        return "<AmazonClient>"
+
+    # def __getattr__(self, method):
+    #     return ebayClient(self.domain, self.appid, '%s/%s' % (self.method, self.method))
+
+    def pull_upc(self):
+        # pull upc list from existing csv file
+        upcs = []
+        with open(os.path.join(settings.BASE_DIR, 'ebayUniqueUpcList.txt'), 'r', encoding='utf-8') as amazon_data:
+            # create the csv writer object
+            # csv_reader = csv.reader(amazon_data)
+            for upc_raw in amazon_data:
+                upcs.append(upc_raw.split('\n')[0])
+        amazon_data.close()
+        print(upcs)
+        return upcs
+
+    def save_deals(self, amazon_deals):
+        # save list of deals (dict) to json file
+        with open(os.path.join(settings.BASE_DIR, 'deals.amazon.json'), 'a', encoding='utf-8', newline='') as deals_json:
+            for items_group in amazon_deals:
+                json.dump(items_group, deals_json, sort_keys=True, indent=4)
+                deals_json.write(',\n')
+        deals_json.close()
+
+    def create_csv(self):
+        # save json data to new csv file
+        header = []
+        with open(os.path.join(settings.BASE_DIR, 'deals.amazon.json'), 'r', encoding='utf-8') as amazon_deals:
+                io_str = amazon_deals.read()
+                json_parsed = json.loads(io_str)
+                deals_data = json_parsed['amazon_deals']
+                for item in deals_data:
+                    for key in item.keys():
+                        if key not in header:
+                            header.append(str(key))
+                header.sort()
+                # open a file for writing
+                with open(os.path.join(settings.BASE_DIR, 'amazon.data.csv'), 'w', encoding='utf-8') as amazon_data:
+                    # create the csv writer object
+                    csv_writer = csv.writer(amazon_data)
+                    csv_writer.writerow(header)
+                    for item in deals_data:
+                        item_values = []
+                        for title in header:
+                            if title in item.keys():
+                                item_values.append(str(item[title]))
+                            else:
+                                item_values.append('')
+                        csv_writer.writerow(item_values)
+                amazon_data.close()
+        amazon_deals.close()
+
+    def fetch_deals(self):
+        amazon_deals = []
+        counter = 0
+        upc_list = self.pull_upc()
+        print('successful UPC extraction')
+        # Extraction rate: 1 request per second, 5 second sleep for 10 items batch  ; Call limit: 3600 per hour
+        for item_upc in upc_list:
+            if counter % 10 == 0:
+                # 5 second sleep to avoid timeout error
+                time.sleep(5)
+                print('5 sec break')
+            item_dict = self.get_item(item_upc)
+            if item_dict:
+                amazon_deals.append(item_dict)
+            counter += 1
+        print('successful amazon deals data extraction')
+        self.save_deals(amazon_deals)
+        # reconstruct json and than execute create_csv
+        # self.create_csv()
+
+    def get_item(self, upc='887276124025'):
+        """
+
+        :param upc:
+        :return:
+        """
+        amazon_data = {}
+        amazon = bottlenose.Amazon(self.amazon_id, self.amazon_key, self.amazon_tag, MaxQPS=0.9)
+        # Item lookup call: IdType=UPC , SearchIndex=Electronics (US market) , node=493964
+        amazon_response = amazon.ItemLookup(ItemId=upc, ResponseGroup='Large', SearchIndex='Electronics', IdType='UPC')
+        response_elem = objectify.fromstring(amazon_response.decode('utf-8'))
+        item_path = objectify.ObjectPath("ItemLookupResponse.Items.Item")
+        if item_path.hasattr(response_elem):
+            # Extract data from Amazon xml response
+            for amazon_attr in response_elem.Items.Item.iterchildren("*"):
+                tag_str = amazon_attr.tag
+                medium_tag = tag_str.split('}')[1]
+                if not amazon_attr.text:
+                    obj_data = self.breake_obj(amazon_attr, {})
+                    amazon_data.update(obj_data)
+                else:
+                    amazon_data[medium_tag] = str(amazon_attr.text)
+        else:
+            print('The following UPC does not contain Item tag: '+upc)
+        return amazon_data
+
+    def breake_obj(self, attr_obj, obj_data):
+        """
+
+        :param attr_obj:
+        :param obj_data:
+        :return:
+        """
+        if attr_obj.text:
+            obj_tag = attr_obj.tag.split('}')[1]
+            parent_tag = attr_obj.getparent().tag.split('}')[1]
+            full_tag = str(parent_tag+'>'+obj_tag)
+            obj_data[full_tag] = self.val_insert(full_tag, attr_obj.text, obj_data)
+            # print('break_obj_simple_str: tag: '+full_tag+' val: '+obj_data[full_tag])
+            return obj_data
+        else:
+            for sub_attr in attr_obj.iterchildren("*"):
+                obj_tag = sub_attr.tag.split('}')[1]
+                parent_tag = sub_attr.getparent().tag.split('}')[1]
+                full_tag = str(parent_tag+'>'+obj_tag)
+                if not sub_attr.text:
+                    if full_tag == 'ItemAttributes>Feature':
+                        print('object child (recursion): '+full_tag)
+                        print(type(attr_obj))
+                        print(attr_obj.text)
+                    obj_dict = self.breake_obj(sub_attr, {})
+                    obj_data.update(obj_dict)
+                    if full_tag == 'ItemAttributes>Feature':
+                        print('obj_data after executing '+full_tag)
+                    # print(obj_data)
+                else:
+                    obj_data[full_tag] = self.val_insert(full_tag, sub_attr.text, obj_data)
+                    # print('simple child (base type): '+full_tag+' with value:'+obj_data[full_tag])
+        return obj_data
+
+    def val_insert(self, tag_name, tag_value, item_dict):
+        """
+
+        :param tag_name:
+        :param tag_value:
+        :param item_dict:
+        :return:
+        """
+        if tag_name in item_dict.keys():
+            if isinstance(item_dict[tag_name], list):
+                item_dict[tag_name].append(str(tag_value))
+                return item_dict[tag_name]
+            else:
+                multi_values = [item_dict[tag_name], str(tag_value), ]
+                return multi_values
+        else:
+            return str(tag_value)
+    # get list of upc -> for each upc extract details ->  get large response -> parse xml -> save to self.item_deals -> export to json -> export to csv
