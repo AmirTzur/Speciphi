@@ -274,20 +274,6 @@ ul.dropdown-menu {
         padding-left: 0px !important;
     }
 
-    /*set up the right configurations for dropdown for small screens (same as big screens) */
-    /*.navbar-nav .open .dropdown-menu {*/
-    /*position: absolute;*/
-    /*background-color: #E5DFD3;*/
-    /*-webkit-background-clip: padding-box;*/
-    /*border: 1px solid #ccc;*/
-    /*border-radius: 4px;*/
-    /*-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);*/
-    /*box-shadow: 0 6px 12px rgba(0, 0, 0, .175)*/
-    /*}*/
-    #res_state {
-        background-color: yellow;
-    }
-
 }
 
 /* Small Devices, Tablets */
@@ -349,20 +335,10 @@ ul.dropdown-menu {
     #share_icons {
         padding-top: 3px;
     }
-
-    #res_state {
-        background-color: orange;
-    }
-
 }
 
 /* Medium Devices, Desktops */
 @media only screen and (min-width: 992px) {
-
-    #res_state {
-        background-color: green;
-    }
-
     #accounts_iframe {
         width: 293px;
         /*height: 169px;*/
@@ -371,11 +347,6 @@ ul.dropdown-menu {
 
 /* Large Devices, Wide Screens */
 @media only screen and (min-width: 1200px) {
-    /*1080*/
-    #res_state {
-        background-color: black;
-    }
-
     #accounts_iframe {
         width: 356px;
         /*height: 195px;*/

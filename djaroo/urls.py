@@ -28,6 +28,7 @@ urlpatterns = [
     # url(r'^accounts/', include('allauth.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^success_close/$', 'consult.views.success_close', name='success_close'),
+    url(r'^NewConsulteeAffiliation/$', 'consult.views.NewConsulteeAffiliation', name='NewConsulteeAffiliation'),
     url(r'^([a-zA-Z]\w+)/affiliation/$', 'consult.views.affiliation', name='affiliation'),
     url(r'^([a-zA-Z]\w+)/application/$', 'consult.views.application', name='application'),
     url(r'^([a-zA-Z]\w+)/focalization/$', 'consult.views.focalization', name='focalization'),

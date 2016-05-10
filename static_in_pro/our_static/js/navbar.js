@@ -13,15 +13,11 @@ function ShowEggs() {
 // media query change
 function WidthChange(mq) {
     if (mq.matches) {//extra-small screens
-
         $('#right-side-nav').css('padding-left', '0px');
-
         //move dropdown2 to the right
         $('#myDropdown').css('right', '0px');
-
         /*locate dropdown2 vertically*/
         $('#myDropdown').css('top', '62px');
-
         //dropdown-eggs responsive behavioral
         if ($('.dropdown').hasClass('open')) {
             ShowEgg();
