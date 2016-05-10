@@ -11,19 +11,13 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Laptop',
+            name='EbayLaptopDeal',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
-                ('title', models.CharField(max_length=200)),
-                ('brand', models.CharField(max_length=30)),
-                ('description', models.TextField()),
-                ('url', models.CharField(max_length=400)),
-                ('date', models.DateTimeField(verbose_name='Date published')),
-                ('status', models.IntegerField(default=1)),
+                ('id', models.AutoField(serialize=False, auto_created=True, verbose_name='ID', primary_key=True)),
+                ('price', models.IntegerField()),
             ],
             options={
-                'get_latest_by': 'date',
-                'ordering': ('-date',),
+                'ordering': ['price'],
             },
         ),
     ]
