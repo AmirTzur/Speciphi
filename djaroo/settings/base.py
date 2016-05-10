@@ -92,7 +92,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         # 'NAME': os.path.join(BASE_DIR, 'db.exp1db'),
-        'NAME': 'djarooDB',
+        'NAME': 'djaroodb',
         'USER': 'root',
         'PASSWORD': '1234',
         'HOST': '127.0.0.1',
@@ -131,11 +131,4 @@ STATICFILES_DIRS = (
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_in_env", "media_root")
 
-# crispy forms TAGs SETTINGS
-# CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-# Django registration-redux settings
-# ACCOUNT_ACTIVATION_DAYS = 7
-# REGISTRATION_AUTO_LOGIN = True
-# SITE_ID = 1
-# LOGIN_REDIRECT_URL = '/'

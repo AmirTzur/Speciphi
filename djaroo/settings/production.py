@@ -27,10 +27,6 @@ if not settings.DEBUG:
 
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-
-    # Quick-start development settings - unsuitable for production
-    # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
-
     # SECURITY WARNING: keep the secret key used in production secret!
     SECRET_KEY = '3eywp!rth*c)5*(hx=lv=dzfxu6!+t%(*^til2uuwd&cnmo+gr'
 
@@ -40,12 +36,11 @@ if not settings.DEBUG:
     ALLOWED_HOSTS = ['djaroo.com', 'www.djaroo.com']
 
     EMAIL_HOST = 'smtp.gmail.com'
-    EMAIL_HOST_USER = 'tzuramir@gmail.com'
-    EMAIL_HOST_PASSWORD = '0547918841A'
+    EMAIL_HOST_USER = 'djaroo.superuser@gmail.com'
+    # Google 2 step verification code, so we wont have to turn down our security level
+    EMAIL_HOST_PASSWORD = 'gbaqdkwujzrdlzky'
     EMAIL_PORT = 587
     EMAIL_USE_TLS = True
-
-    # if using gmail account -> unlock Captcha (security level)
 
     # Application definition
 
@@ -59,15 +54,15 @@ if not settings.DEBUG:
         'django.contrib.messages',
         'django.contrib.staticfiles',
         # third party apps
-        # 'allauth',
-        # 'allauth.account',
-        # 'allauth.socialaccount',
-        # 'allauth.socialaccount.providers.facebook',
-        # 'allauth.socialaccount.providers.google',
-        # 'crispy_forms',
-        # 'registration',
+        'allauth',
+        'allauth.account',
+        'allauth.socialaccount',
+        'allauth.socialaccount.providers.facebook',
+        'allauth.socialaccount.providers.google',
+        'allauth.socialaccount.providers.twitter',
         # my apps
         'consult',
+        'apis',
     )
 
     MIDDLEWARE_CLASSES = (
@@ -94,6 +89,9 @@ if not settings.DEBUG:
                     'django.template.context_processors.request',
                     'django.contrib.auth.context_processors.auth',
                     'django.contrib.messages.context_processors.messages',
+                    # allauth
+                    'allauth.account.context_processors.account',
+                    'allauth.socialaccount.context_processors.socialaccount',
                 ],
             },
         },
@@ -101,25 +99,18 @@ if not settings.DEBUG:
 
     WSGI_APPLICATION = 'djaroo.wsgi.application'
 
-
     # Database
-    # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
-            # 'NAME': os.path.join(BASE_DIR, 'db.exp1db'),
             'NAME': 'djaroodb',
             'USER': 'amir_exp1',
             'PASSWORD': 'firstexp2280djarooproject',
-            # 'HOST': '127.0.0.1',
-            # 'PORT': '3306',
         }
     }
 
-
     # Internationalization
-    # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
     LANGUAGE_CODE = 'en-us'
 
@@ -131,9 +122,7 @@ if not settings.DEBUG:
 
     USE_TZ = True
 
-
     # Static files (CSS, JavaScript, Images)
-    # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
     STATIC_URL = '/static/'
 
@@ -142,8 +131,6 @@ if not settings.DEBUG:
 
     STATICFILES_DIRS = (
         os.path.join(BASE_DIR, "static_in_pro", "our_static"),
-        # os.path.join(BASE_DIR, "static_in_env"),
-        # '/var/www/static/',
     )
 
     MEDIA_URL = '/media/'
@@ -154,10 +141,10 @@ if not settings.DEBUG:
 
     # Allauth settings
     AUTHENTICATION_BACKENDS = (
-    # Needed to login by username in Django admin, regardless of `allauth`
-    "django.contrib.auth.backends.ModelBackend",
-    # `allauth` specific authentication methods, such as login by e-mail
-    "allauth.account.auth_backends.AuthenticationBackend"
+        # Needed to login by username in Django admin, regardless of `allauth`
+        "django.contrib.auth.backends.ModelBackend",
+        # `allauth` specific authentication methods, such as login by e-mail
+        "allauth.account.auth_backends.AuthenticationBackend"
     )
 
     # auth allauth configurations
