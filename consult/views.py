@@ -67,9 +67,9 @@ def affiliation(request, product=None):
     }
 
     if product == 'Laptop':
-        Product_id = 2  # Laptop product ID
-
-    if Product_id:
+        Product_id = 1  # Laptop product ID
+    print(product)
+    if product:
         # connect to djarooDB
         try:
             cursor = connection.cursor()
@@ -80,6 +80,7 @@ def affiliation(request, product=None):
                 # Output: Affiliations - id, Affiliations names, descriptions and images
                 cursor.execute('CALL getProductAffiliations(%s)', [Product_id])
                 affiliations = dictfetchall(cursor)
+                print()
                 cursor.close()
 
             cursor = connection.cursor()
