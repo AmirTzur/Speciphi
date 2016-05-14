@@ -5,19 +5,10 @@
 </head>
 
 <body>
-{% for use in uses %}
-    <p>{{ use.Uses_id }}</p>
-    <p>{{ use.value }}</p>
-    <p>{{ use.Uses_name }}</p>
-    <p>{{ use.description }}</p>
-    <p>{{ use.form_input }}</p>
-{% endfor %}
 
-{#
-
-{% for use in uses %}
-    <ul>{{ use.Uses_name }},{{ use.Uses_id }}
-        {% for level in use %}
+{% for t_use in template_uses %}
+    <ul>{{ t_use.Uses_name }},{{ t_use.Uses_id }},{{ t_use.show_level }}
+        {% for level in t_use.levels %}
             <li>{{ level.value }}</li>
             <li>{{ level.description }}</li>
             <li>{{ level.form_input }}</li>
@@ -25,5 +16,4 @@
     </ul>
 {% endfor %}
 
-#}
 </body>

@@ -149,26 +149,50 @@ def application(request, product=None):
     uses_ids = uses_ids_string.split(",")
 
     # get Uses values (change to SQL exec)
-    uses_values_string = "12312312"  # need to change to non-comma
+    uses_values_string = "12312312"
     uses_values = list(uses_values_string)
 
     # get relevant Uses (by id) from db
     uses = ValuesQuerySetToDict(Levelofuse.objects.all().filter(Uses_id__in=uses_ids).values())
     if uses:
+        # create inputs
         form = UsesForm(uses_dict=uses)
+        # take form inputs and append them to relevant uses
         for f in form:
             for use in uses:
                 if str(use['Uses_name'] + str(use['value'])) in str(f):
                     use['form_input'] = str(f)
-        # get distinct names
-        uses_names = OrderedSet()
+        # create data structure to present uses on template
+        template_uses = []
+        i = 0
+        j = 0
         for use in uses:
-            uses_names.add(use['Uses_name'])
-
-        # for use_name in uses_names:
-
-        context.update({"uses": uses,
-                        "uses_values": uses_values})
+            if i % 3 == 0:
+                # insert 3 uses with different values
+                template_uses.append({
+                    "Uses_id": use['Uses_id'],
+                    "Uses_name": use['Uses_name'],
+                    "show_level": uses_values[j],  # approximate use by taltul
+                    "levels": [
+                        {"id": uses[i]['id'],
+                         "value": uses[i]['value'],
+                         "description": uses[i]['description'],
+                         "form_input": uses[i]['form_input']},
+                        {"id": uses[i + 1]['id'],
+                         "value": uses[i + 1]['value'],
+                         "description": uses[i + 1]['description'],
+                         "form_input": uses[i + 1]['form_input']},
+                        {"id": uses[i + 2]['id'],
+                         "value": uses[i + 2]['value'],
+                         "description": uses[i + 2]['description'],
+                         "form_input": uses[i + 2]['form_input']},
+                    ],
+                })
+                j += 1
+            i += 1
+        context.update({
+            "template_uses": template_uses,
+        })
 
     return render(request, "application.html", context)
 
