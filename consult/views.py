@@ -174,18 +174,24 @@ def application(request, product=None):
                     "Uses_name": use['Uses_name'],
                     "show_level": uses_values[j],  # approximate use by taltul
                     "levels": [
-                        {"id": uses[i]['id'],
-                         "value": uses[i]['value'],
-                         "description": uses[i]['description'],
-                         "form_input": uses[i]['form_input']},
-                        {"id": uses[i + 1]['id'],
-                         "value": uses[i + 1]['value'],
-                         "description": uses[i + 1]['description'],
-                         "form_input": uses[i + 1]['form_input']},
-                        {"id": uses[i + 2]['id'],
-                         "value": uses[i + 2]['value'],
-                         "description": uses[i + 2]['description'],
-                         "form_input": uses[i + 2]['form_input']},
+                        {
+                            "id": uses[i]['id'],
+                            "value": uses[i]['value'],
+                            "description": uses[i]['description'],
+                            "form_input": uses[i]['form_input']
+                        },
+                        {
+                            "id": uses[i + 1]['id'],
+                            "value": uses[i + 1]['value'],
+                            "description": uses[i + 1]['description'],
+                            "form_input": uses[i + 1]['form_input']
+                        },
+                        {
+                            "id": uses[i + 2]['id'],
+                            "value": uses[i + 2]['value'],
+                            "description": uses[i + 2]['description'],
+                            "form_input": uses[i + 2]['form_input']
+                        },
                     ],
                 })
                 j += 1
@@ -197,7 +203,7 @@ def application(request, product=None):
     return render(request, "application.html", context)
 
 
-def focalization(request):
+def focalization(request, product=None):
     pages = OrderedDict()
     pages['Home'] = [False, "home"]
     pages['Affil'] = [False, "affiliation"]
@@ -207,7 +213,9 @@ def focalization(request):
     pages['Results'] = [False, "results"]
     context = {
         "pages": pages,
+        "product": product,
     }
+
     return render(request, "focalization.html", context)
 
 
