@@ -1,5 +1,6 @@
 from django.contrib import admin
 
+from .models import Entrances, Products, Consultationprocesses, Affiliations, Consulteeaffiliations, Levelofuse
 from apis.models import EbayLaptopDeal
 from apis.admin import EbayLaptopDealAdmin
 
@@ -9,8 +10,6 @@ from apis.admin import EbayLaptopDealAdmin
 # Register API APP models
 
 admin.site.register(EbayLaptopDeal, EbayLaptopDealAdmin)
-
-from .models import Entrances, Products, Consultationprocesses, Affiliations, Consulteeaffiliations
 
 
 class EntrancesAdmin(admin.ModelAdmin):
@@ -47,3 +46,10 @@ class ConsulteeaffiliationsAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Consulteeaffiliations, ConsulteeaffiliationsAdmin)
+
+
+class LevelofuseAdmin(admin.ModelAdmin):
+    list_display = ('id', 'Uses_id', 'Uses_name', 'value', 'description')
+
+
+admin.site.register(Levelofuse, LevelofuseAdmin)

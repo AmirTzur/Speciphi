@@ -1,12 +1,11 @@
-from random import random
-
 from django.shortcuts import render
 from collections import OrderedDict
 from django.db import connection, Error
-from consult.forms import AffiliationsForm
+from django.utils.datastructures import OrderedSet
+
+from consult.forms import AffiliationsForm, UsesForm
 from django.http import HttpResponse
-from consult.models import Affiliations
-import xml.etree.ElementTree as ET
+from consult.models import Levelofuse
 import json
 
 
@@ -67,7 +66,7 @@ def affiliation(request, product=None):
     }
 
     if product == 'Laptop':
-        Product_id = 2  # Laptop product ID
+        Product_id = 1  # Laptop product ID
 
     if Product_id:
         # connect to djarooDB
@@ -100,29 +99,26 @@ def affiliation(request, product=None):
                 cursor.execute('CALL getConsultationProcessId(%s)', [request.session['Entrance_id']])
                 ConsultationProcess_id = cursor.fetchone()
                 cursor.close()
+
         except Error as e:
             print(e)
 
-        if Affiliations:
-            form = AffiliationsForm(Affiliations_dict=Affiliations.objects.all())
-        if ConsultationProcess_id:
-            request.session['ConsultationProcess_id'] = ConsultationProcess_id[0]
         if Product_id:
             request.session['Product_id'] = Product_id
+        if affiliations:
+            form = AffiliationsForm(affiliations_dict=affiliations)
+            # copy form input tags to Affiliations dict
+            # check if instead of double loop, first take out the name attr from the input using xml parsing
+            for f in form:
+                for a in affiliations:
+                    if str(a['name']) in str(f):
+                        a['form_input'] = str(f)
+            context.update({
+                "affiliations": affiliations,
+            })
+        if ConsultationProcess_id:
+            request.session['ConsultationProcess_id'] = ConsultationProcess_id[0]
 
-        # copy form input tags to Affiliations dict
-        # check if instead of double loop, first take out the name attr from the input using xml parsing
-        for f in form:
-            for a in affiliations:
-                if str(a['name']) in str(f):
-                    a['form_input'] = str(f)
-
-        context.update({
-            "Product_id": Product_id,
-            "affiliationsLength": len(affiliations),
-            "affiliations": affiliations,
-            "ConsultationProcess_id": ConsultationProcess_id[0],
-        })
     return render(request, "affiliation.html", context)
 
     # Always return an HttpResponseRedirect after successfully dealing
@@ -147,17 +143,33 @@ def application(request, product=None):
         "pages": pages,
         "product": product,
     }
-    # Uses = OrderedDict()
-    # for i in range(0, 8):
-    #     Uses['id'] = i
-    #     Uses['value'] = i
-    #     Uses['name'] = 'Video editing ' + str(i)
-    #     Uses[
-    #         'description'] = 'A Person who selects and mixes dialogue, music and special audio effects in the preparation of an audio master for CDs' + i
-    # context.update({'Uses': Uses})
-    # value = models.IntegerField()
-    # name = models.CharField(max_length=45, blank=True, null=True)
-    # description = models.TextField()
+
+    # get Uses ids (change to SQL exec)
+    uses_ids_string = "1,2,3,4,5,7,9,11"
+    uses_ids = uses_ids_string.split(",")
+
+    # get Uses values (change to SQL exec)
+    uses_values_string = "12312312"  # need to change to non-comma
+    uses_values = list(uses_values_string)
+
+    # get relevant Uses (by id) from db
+    uses = ValuesQuerySetToDict(Levelofuse.objects.all().filter(Uses_id__in=uses_ids).values())
+    if uses:
+        form = UsesForm(uses_dict=uses)
+        for f in form:
+            for use in uses:
+                if str(use['Uses_name'] + str(use['value'])) in str(f):
+                    use['form_input'] = str(f)
+        # get distinct names
+        uses_names = OrderedSet()
+        for use in uses:
+            uses_names.add(use['Uses_name'])
+
+        # for use_name in uses_names:
+
+        context.update({"uses": uses,
+                        "uses_values": uses_values})
+
     return render(request, "application.html", context)
 
 
@@ -208,6 +220,10 @@ def success_close(request):
     context = {
     }
     return render(request, "success_close.html", context)
+
+
+def ValuesQuerySetToDict(vqs):
+    return [item for item in vqs]
 
 
 # return results as a dict with key names
