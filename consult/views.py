@@ -1,7 +1,6 @@
 from django.shortcuts import render
 from collections import OrderedDict
 from django.db import connection, Error
-from django.utils.datastructures import OrderedSet
 
 from consult.forms import AffiliationsForm, UsesForm
 from django.http import HttpResponse
@@ -68,7 +67,7 @@ def affiliation(request, product=None):
     if product == 'Laptop':
         Product_id = 1  # Laptop product ID
 
-    if Product_id:
+    if product:
         # connect to djarooDB
         try:
             cursor = connection.cursor()
@@ -155,6 +154,7 @@ def application(request, product=None):
     # get relevant Uses (by id) from db
     uses = ValuesQuerySetToDict(Levelofuse.objects.all().filter(Uses_id__in=uses_ids).values())
     if uses:
+        print(uses)
         # create inputs
         form = UsesForm(uses_dict=uses)
         # take form inputs and append them to relevant uses

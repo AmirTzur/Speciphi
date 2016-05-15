@@ -11,7 +11,7 @@
             <div id="mobile_uses_list">
                 <ul>
                     {% for use in template_uses %}
-                        <li>{{ use.Uses_name }}</li>
+                        <li id="list_use_{{ use.Uses_id }}">{{ use.Uses_name }}</li>
                     {% endfor %}
                 </ul>
             </div>
