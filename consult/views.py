@@ -178,19 +178,22 @@ def application(request, product=None):
                             "id": uses[i]['id'],
                             "value": uses[i]['value'],
                             "description": uses[i]['description'],
-                            "form_input": uses[i]['form_input']
+                            "form_input": uses[i]['form_input'],
+                            "level_text": "High",
                         },
                         {
                             "id": uses[i + 1]['id'],
                             "value": uses[i + 1]['value'],
                             "description": uses[i + 1]['description'],
-                            "form_input": uses[i + 1]['form_input']
+                            "form_input": uses[i + 1]['form_input'],
+                            "level_text": "Med",
                         },
                         {
                             "id": uses[i + 2]['id'],
                             "value": uses[i + 2]['value'],
                             "description": uses[i + 2]['description'],
-                            "form_input": uses[i + 2]['form_input']
+                            "form_input": uses[i + 2]['form_input'],
+                            "level_text": "Low",
                         },
                     ],
                 })

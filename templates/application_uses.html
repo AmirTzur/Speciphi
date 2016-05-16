@@ -19,14 +19,20 @@
                 {% for use in template_uses %}
                     <div class="use_display" id="{{ use.Uses_id }}" style="display: none;">
                         <div class="use_circle">{{ use.Uses_name }}</div>
-                        {% for level in use.levels %}
-                            <button type="button" class="use_button" value="{{ level.value }}">
-                                {{ level.form_input }}
-                            </button>
-                            <span class="description_text" style="display: none;">
+                        <div class="use_levels" data-brand="{{ use.show_level }}">
+                            {% for level in use.levels %}
+                                <span id="description_{{ forloop.counter }}" class="description_text"
+                                      style="display: none;">
                                 {{ level.description }}
-                            </span>
-                        {% endfor %}
+                                </span>
+                            {% endfor %}
+                            {% for level in use.levels %}
+                                <button type="button" class="use_button" value="{{ level.value }}">
+                                    {{ level.level_text }}
+                                    {{ level.form_input }}
+                                </button>
+                            {% endfor %}
+                        </div>
                     </div>
                 {% endfor %}
             </div>

@@ -53,8 +53,8 @@ div#mobile_uses_list ul li:first-child {
 }
 
 .use_circle {
-    margin-top: 15px;
-    margin-bottom: 15px;
+    display: table-cell;
+    vertical-align: middle;
     width: 140px;
     height: 140px;
     border-radius: 50%;
@@ -66,6 +66,10 @@ div#mobile_uses_list ul li:first-child {
     font-weight: bold;
     background-color: white;
     color: rgb(249, 163, 51);
+}
+
+.use_levels {
+    margin-top: 15px;
 }
 
 #next_page {
@@ -95,4 +99,8 @@ span.description_text {
     width: 145px;
     height: 145px;
     margin: auto auto 10px auto;
+}
+
+.use_button input[type=checkbox] {
+    display: none;
 }
