@@ -32,8 +32,8 @@ class EbayClient(object):
         prod: PieceOfA-ae60-404f-b9e8-963d4cb77c54
         """
         self.state = kwargs.get('state', 'production')
-        self.min_price = kwargs.get('min_price', 600)
-        self.max_price = kwargs.get('max_price', 650)
+        self.min_price = kwargs.get('min_price', 800)
+        self.max_price = kwargs.get('max_price', 850)
         self.item_deals = {}
         self.devid = '63ffcffb-5194-4b29-99f6-46243937f140'
         self.token = 'AgAAAA**AQAAAA**aAAAAA**EHIVVw**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AEloelDpeFqAWdj6x9nY+seQ**RcUCAA**AAMAAA**1AYoROp8ljS5LeygbB7JOsWbm1WZ87v/CkBJue4l0DMf0daQme2sNhQCT+K2Kr2Bhs/GGdFEwJUMQYfzbZ8Dwob5FRLEWlfno6qiSnqVDKls2+cVfqi6NRfre53capvWz8PrFNU0wnn2FfDXN/41YAHxJXLCJRfHdLJGDxKKcjnCDZOkJNOnbZTs+qLwXBI6/iQqUrAi87PhoBu8G81GSphGj50hn/th60j14rmyu4MDJTR3Az5YcOQfNQRbty3iRBzfkbJwCpG0ilNKHBlDoS2E708othrY3nqGiZ6GAKt2EPJT2Bhq5vKze1hCuHY5KQe8513MRJRJ0L5uaCARRgT1Wsega2IkXfwV6oWlgVxe1zD002iCGBYI7pezRdAIaEbguX7dwSmU0ZWeoP3HMBHwSTfM6gv0AMIYkf0vCwDohdTx2M+FkAzOCQy03oaVWsH/iu+1ahguhiHojfkHsovc3cT5WB5E3oLObhGq1R2Uilt15rUQp4m8J1UILo5vTvwPpB3ctub4xSTd+onFdCtl4qnQfEBQ9Fh2TINB/ONpEt0EksdP3ghV6Yoys84Yy6Ii56YDuDEKWU45ekHJMOZW55XbZdM7v4jBx5y78KkFb99UNn+a+jPSGvHHUX/SDXwz5XEQ8s/S+C7LMiAZJ/8kVDQJFZIR58vJwCYOy2mIZZxddCy/a1TZaGfh/B87AaRMSN+aMMvKcetLyA/+3+/qb9+3eHGh5Gf5RRDfIfkmXowjNy/jhsG5GIwfNqe7'

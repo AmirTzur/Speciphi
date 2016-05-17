@@ -117,12 +117,49 @@ def affiliation(request, product=None):
             for a in affiliations:
                 if str(a['name']) in str(f):
                     a['form_input'] = str(f)
-
+        # Get deals data for results feature and create dictionary of deals
+        # for each results category: {sort_indicator: brand, model, image_url,
+        #                                             offers[{deal_id, deal_url, vendor_name, price}, {}, ]}
+        offers = [
+            {'best_match': {'brand': 'Apple', 'model': 'Macbook Pro', 'image_url': 'xxx',
+                            'offers': [{'deal_id': 111, 'deal_url': 'xxx', 'vendor_name': 'Amazon',
+                                        'price': 950}, {'deal_id': 222, 'deal_url': 'xxx', 'vendor_name': 'eBay',
+                                                        'price': 1000}]
+                            }
+             },
+            {'most_purchased': {'brand': 'Lenovo', 'model': 'Yoga 3', 'image_url': 'xxx',
+                                'offers': [{'deal_id': 333, 'deal_url': 'xxx', 'vendor_name': 'Amazon',
+                                           'price': 1050}, {'deal_id': 444, 'deal_url': 'xxx', 'vendor_name': 'eBay',
+                                           'price': 1100}]
+                                }
+             },
+            {'type_popular': {'brand': 'Dell', 'model': 'XPS', 'image_url': 'xxx',
+                              'offers': [{'deal_id': 555, 'deal_url': 'xxx', 'vendor_name': 'Amazon',
+                                         'price': 1150}, {'deal_id': 666, 'deal_url': 'xxx', 'vendor_name': 'eBay',
+                                         'price': 1200}]
+                              }
+             },
+            {'cost_effective': {'brand': 'Asus', 'model': 'Zenbook 133X', 'image_url': 'xxx',
+                                'offers': [{'deal_id': 777, 'deal_url': 'xxx', 'vendor_name': 'Amazon',
+                                           'price': 1250}, {'deal_id': 888, 'deal_url': 'xxx', 'vendor_name': 'eBay',
+                                           'price': 1300}]
+                                }
+             },
+            {'stylish': {'brand': 'Sony', 'model': 'Bomber 304', 'image_url': 'xxx',
+                         'offers': [{'deal_id': 999, 'deal_url': 'xxx', 'vendor_name': 'Amazon',
+                                    'price': 1350}, {'deal_id': 121, 'deal_url': 'xxx', 'vendor_name': 'eBay',
+                                    'price': 1400}]
+                         }
+             },
+        ]
+        total_results = 1435
         context.update({
             "Product_id": Product_id,
             "affiliationsLength": len(affiliations),
             "affiliations": affiliations,
             "ConsultationProcess_id": ConsultationProcess_id[0],
+            "offers": offers,
+            "total_results": total_results,
         })
     return render(request, "affiliation.html", context)
 
