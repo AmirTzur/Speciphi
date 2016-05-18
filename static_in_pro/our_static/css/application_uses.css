@@ -55,21 +55,25 @@ div#mobile_uses_list ul li:first-child {
 .use_circle {
     display: table-cell;
     vertical-align: middle;
-    width: 140px;
-    height: 140px;
+    width: 130px;
+    height: 130px;
     border-radius: 50%;
-    font-size: 25px;
+    font-size: 23px;
     text-align: center;
     text-decoration: none;
     border: 2px solid white;
     font-family: "Bariol";
     font-weight: bold;
+    cursor: default;
     background-color: white;
     color: rgb(249, 163, 51);
+    /*move to circle from the left to the middle*/
+    position: relative;
+    left: 7px;
 }
 
 .use_levels {
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 #next_page {
@@ -97,10 +101,30 @@ button:focus {
 
 span.description_text {
     width: 145px;
-    height: 145px;
+    height: 120px;
     margin: auto auto 10px auto;
 }
 
-.use_button input[type=checkbox] {
-    display: none;
+.use_level_button {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    border: 0;
+    font-family: "Bariol";
+    font-weight: bold;
+    background-color: white;
+    color: rgb(249, 163, 51);
 }
+
+.use_level_button_2 {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+.use_level_button_3 {
+    background-color: rgba(255, 255, 255, 0.75);
+}
+/*.use_level_button input[type=checkbox] {*/
+/*display: none;*/
+/*}*/

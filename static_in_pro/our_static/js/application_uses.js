@@ -14,17 +14,55 @@ $(document).ready(function () {
         $('div#uses_display').children().filter(function () {
             return 'list_use_' + $(this).prop('id') == pressed_use;
         }).css('display', 'inline-block');
-        // // get level should be shown to user # move to someplace else...
-        // console.log($('div#uses_display').children().filter(function () {
-        //     return 'list_use_' + $(this).prop('id') == pressed_use;
-        // }).children('div.use_levels').attr('data-brand'));
     });
-    // show pre-selected (by algorithm) level use description
+
+    // on button click, change checkbox value
+    $('div#uses_display div button').click(function () {
+        // change pressed checkbox
+        $(this).children('input[type=checkbox]').prop('checked', !$(this).children('input[type=checkbox]').is(':checked')).change();
+    });
+
+    $(':checkbox').change(function () {
+        // color text of pressed button
+        if ($(this).is(':checked')) {
+            $(this).parent('button').css('color', 'rgb(230, 89, 42)');
+        } else {
+            $(this).parent('button').css('color', 'rgb(249, 163, 51)');
+        }
+
+        // get pressed level of use
+        var selected_use_level = $(this).prop('value');
+        console.log(selected_use_level);
+        // change to matched description
+        $(this).parent().parent().children('span').each(function () {
+            if ($(this).prop('id') == 'description_' + selected_use_level) {
+                $(this).css('display', 'block');
+            }
+            else {
+                $(this).css('display', 'none');
+            }
+        });
+        // cancel other checked levels checkbox
+        $(this).parent().parent().children('button').each(function () {
+            if ($(this).children('input[type=checkbox]').prop('value') != selected_use_level) {
+                $(this).children('input[type=checkbox]').prop('checked', false);
+                // change button text to default color
+                $(this).css('color', 'rgb(249, 163, 51)');
+            }
+        });
+        console.log($(this).prop('checked'));
+    });
+
+    // show pre-selected (by algorithm) level of use description
     $('div#uses_display').children().each(function () {
         // get pre-selected level
         var pre_selected_use = $(this).children('div.use_levels').attr('data-brand');
-        // show description
-        $(this).children('div.use_levels').children('span#description_' + pre_selected_use).css('display', 'block');
+        // check right checkbox (this will activate description change)
+        $(this).children('div.use_levels').children('button').each(function () {
+            if ($(this).attr('value') == pre_selected_use) {
+                $(this).children('input[type=checkbox]').prop('checked', true).change();
+            }
+        });
     });
 
 

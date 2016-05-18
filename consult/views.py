@@ -154,7 +154,6 @@ def application(request, product=None):
     # get relevant Uses (by id) from db
     uses = ValuesQuerySetToDict(Levelofuse.objects.all().filter(Uses_id__in=uses_ids).values())
     if uses:
-        print(uses)
         # create inputs
         form = UsesForm(uses_dict=uses)
         # take form inputs and append them to relevant uses

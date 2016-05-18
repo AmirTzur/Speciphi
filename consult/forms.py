@@ -24,5 +24,5 @@ class UsesForm(forms.Form):
                                                                                            use['Uses_id']) + '_' + str(
                                                                                            use['value']),
                                                                                        'name': use['Uses_name'],
-                                                                                       'value': use['Uses_id'],
+                                                                                       'value': use['value'],
                                                                                    }))

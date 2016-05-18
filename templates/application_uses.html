@@ -27,7 +27,8 @@
                                 </span>
                             {% endfor %}
                             {% for level in use.levels %}
-                                <button type="button" class="use_button" value="{{ level.value }}">
+                                <button type="button" class="use_level_button use_level_button_{{ level.value }}"
+                                        value="{{ level.value }}">
                                     {{ level.level_text }}
                                     {{ level.form_input }}
                                 </button>
