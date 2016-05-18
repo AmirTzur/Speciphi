@@ -1,0 +1,75 @@
+#results-container{
+    background-color: white;
+}
+
+/*Slider*/
+#price-slider{
+    display: block;
+    padding: 10px 0px 10px 0px;
+}
+#slider-range{
+    display: inline-block;
+    width: 322px;
+    height: 4px;
+    background: #e6592a;
+    border: none;
+}
+/*Slider controls*/
+#slider-range span {
+    border-radius: 50%;
+    border-color: rgb(229, 179, 77);
+    background: rgb(229, 179, 77);
+    width: 16px;
+    height: 16px;
+    /*z-index: 10;*/
+}
+#slider-range span:hover{
+    cursor: pointer;
+}
+#slider-range span:active{
+    outline: none!important;
+    border-style: none!important;
+}
+/*Slider selected range*/
+#slider-range div{
+    background: #e6592a;
+    border: none;
+    /*height: 4px;*/
+}
+/*Min and Max price*/
+.price-tag{
+    display: inline-block;
+    width: 65px;
+    font-size: 17px;
+    font-family: "Bariol";
+    color: #e6592a;
+    border: none;
+}
+
+/*Deals*/
+#deals-wrapper{
+    display: block;
+    padding: 30px 0px 40px 0px;
+}
+/*Deals total results*/
+#total-results{
+    width: 160px;
+    padding: 0px 10px 0px 10px;
+    text-align: center;
+}
+#total-results span:first-child{
+    font-size: 33px;
+    font-family: "Bariol";
+    color: rgb(249, 163, 51);
+    font-weight: bold;
+    line-height: 1.2;
+}
+#total-results span:last-child{
+    font-size: 30px;
+    font-family: "Bariol";
+    color: rgb(0, 0, 0);
+    line-height: 1.2;
+}
+
+
+

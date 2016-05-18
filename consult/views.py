@@ -121,32 +121,32 @@ def affiliation(request, product=None):
         # for each results category: {sort_indicator: brand, model, image_url,
         #                                             offers[{deal_id, deal_url, vendor_name, price}, {}, ]}
         offers = [
-            {'best_match': {'brand': 'Apple', 'model': 'Macbook Pro', 'image_url': 'xxx',
-                            'offers': [{'deal_id': 111, 'deal_url': 'xxx', 'vendor_name': 'Amazon',
+            {'best_match': {'brand': 'Apple', 'model': 'Macbook Pro', 'image_url': 'http://ecx.images-amazon.com/images/I/41lmJ1hPMnL._SL160_.jpg',
+                            'offers': [{'deal_id': 111, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B00GZB8D0M%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
                                         'price': 950}, {'deal_id': 222, 'deal_url': 'xxx', 'vendor_name': 'eBay',
                                                         'price': 1000}]
                             }
              },
-            {'most_purchased': {'brand': 'Lenovo', 'model': 'Yoga 3', 'image_url': 'xxx',
-                                'offers': [{'deal_id': 333, 'deal_url': 'xxx', 'vendor_name': 'Amazon',
+            {'most_purchased': {'brand': 'Lenovo', 'model': 'Yoga 3', 'image_url': 'http://ecx.images-amazon.com/images/I/41238W8tcjL._SL160_.jpg',
+                                'offers': [{'deal_id': 333, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B00VQP3DNY%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
                                            'price': 1050}, {'deal_id': 444, 'deal_url': 'xxx', 'vendor_name': 'eBay',
                                            'price': 1100}]
                                 }
              },
-            {'type_popular': {'brand': 'Dell', 'model': 'XPS', 'image_url': 'xxx',
-                              'offers': [{'deal_id': 555, 'deal_url': 'xxx', 'vendor_name': 'Amazon',
+            {'type_popular': {'brand': 'Dell', 'model': 'XPS', 'image_url': 'http://ecx.images-amazon.com/images/I/218dheiyUrL._SL160_.jpg',
+                              'offers': [{'deal_id': 555, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B00SQG3MQE%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
                                          'price': 1150}, {'deal_id': 666, 'deal_url': 'xxx', 'vendor_name': 'eBay',
                                          'price': 1200}]
                               }
              },
-            {'cost_effective': {'brand': 'Asus', 'model': 'Zenbook 133X', 'image_url': 'xxx',
-                                'offers': [{'deal_id': 777, 'deal_url': 'xxx', 'vendor_name': 'Amazon',
+            {'cost_effective': {'brand': 'Asus', 'model': 'Zenbook 133X', 'image_url': 'http://ecx.images-amazon.com/images/I/41-6oCGJqwL._SL160_.jpg',
+                                'offers': [{'deal_id': 777, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B01BLU6ERK%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
                                            'price': 1250}, {'deal_id': 888, 'deal_url': 'xxx', 'vendor_name': 'eBay',
                                            'price': 1300}]
                                 }
              },
-            {'stylish': {'brand': 'Sony', 'model': 'Bomber 304', 'image_url': 'xxx',
-                         'offers': [{'deal_id': 999, 'deal_url': 'xxx', 'vendor_name': 'Amazon',
+            {'stylish': {'brand': 'Sony', 'model': 'Bomber 304', 'image_url': 'http://ecx.images-amazon.com/images/I/41sgEA0JL-L._SL160_.jpg',
+                         'offers': [{'deal_id': 999, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B018AX3YGU%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
                                     'price': 1350}, {'deal_id': 121, 'deal_url': 'xxx', 'vendor_name': 'eBay',
                                     'price': 1400}]
                          }

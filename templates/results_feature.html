@@ -3,13 +3,33 @@
 
 <head>
     <link href="{% static 'css/results_feature.css' %}" rel="stylesheet">
+    <!-- jQuery UI Style -->
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.min.css" />
 </head>
 <body>
     <!-- Footer: Results Feature -->
     {# The <footer> element is not supported in Internet Explorer 8 and earlier versions #}
     <footer class="footer">
-        <div class="container-fluid">
-            <p class="text-muted">Place sticky footer content here.</p>
+        <div id="results-container" class="container-fluid">
+            <div class="hidden-xs col-sm-12">
+                <div id="price-slider" class="center-block">
+                    <label for="slider-min"></label>
+                    <input type="text" id="slider-min" class="price-tag" readonly>
+                    <div id="slider-range"></div>
+                    <label for="slider-max"></label>
+                    <input type="text" id="slider-max" class="price-tag" readonly>
+                </div>
+                <div id="deals-wrapper">
+                    <div id="total-results">
+                        <span>{{ total_results }}</span>
+                        </br>
+                        <span>results</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </footer>
+
+    <!-- jQuery UI Scripts -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 </body>
