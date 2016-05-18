@@ -122,9 +122,53 @@ span.description_text {
 .use_level_button_2 {
     background-color: rgba(255, 255, 255, 0.9);
 }
+
 .use_level_button_3 {
     background-color: rgba(255, 255, 255, 0.75);
 }
+
 /*.use_level_button input[type=checkbox] {*/
 /*display: none;*/
 /*}*/
+
+/*================ media queries==================*/
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 767px) {
+}
+
+/* Custom Mini i-pad screen*/
+@media only screen and (min-width: 480px) {
+    .use_display {
+        position: relative;
+        right: 45px;
+    }
+
+    .use_circle {
+        width: 145px;
+        height: 145px;
+        font-size: 25px;
+        /*move to circle from the left to the middle*/
+        left: 10px;
+    }
+
+    .use_display {
+        margin-top: 8px;
+    }
+
+    span.description_text {
+        width: 165px;
+        height: 100px;
+    }
+
+    #next_page svg {
+        width: 47px;
+        height: 47px;
+    }
+
+    #next_page svg image {
+        width: 60px;
+        height: 60px;
+    }
+
+}
