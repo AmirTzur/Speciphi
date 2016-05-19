@@ -23,4 +23,18 @@ $(document).ready(function(){
         $("#slider-max").val("$"+$("#slider-range").slider("values", 1));
     });
 
+    
 });
+
+function update_deals(total_results, offers) {
+    console.log(total_results);
+    // update total results
+    $('#total-results span:nth-child(1)').text(total_results);
+    // update deals
+    console.log(offers);
+    $('#list-group-horizontal').children('a').each(function(){
+        // change link: a (this) href attr
+        // change details: <div>-><span> : deal.sort_indicator, deal.price, deal.brand, deal.model
+        // change src: img deal.image_url
+    });
+}

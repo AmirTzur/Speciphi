@@ -22,8 +22,19 @@
                 <div id="deals-wrapper">
                     <div id="total-results">
                         <span>{{ total_results }}</span>
-                        </br>
                         <span>results</span>
+                    </div>
+                    <div class="list-group-horizontal">
+                        {% for deal in offers %}
+                            <a href="" class="list-group-item">
+                                <div class="item-details">
+                                    <span>{{ deal.sort_indicator }}</span>
+                                    <span>$800</span>
+                                    <span>{{ deal.brand }}&nbsp;{{ deal.model }}</span>
+                                </div>
+                                <img src="{{ deal.image_url }}">
+                            </a>
+                        {% endfor %}
                     </div>
                 </div>
             </div>

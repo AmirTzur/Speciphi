@@ -39,20 +39,24 @@
 /*Min and Max price*/
 .price-tag{
     display: inline-block;
-    width: 65px;
+    width: 70px;
     font-size: 17px;
     font-family: "Bariol";
     color: #e6592a;
     border: none;
+    text-align: center;
+    line-height: 1;
+    /*padding: 0px;*/
 }
 
 /*Deals*/
 #deals-wrapper{
     display: block;
-    padding: 30px 0px 40px 0px;
+    padding: 5px 0px 10px 0px;
 }
 /*Deals total results*/
 #total-results{
+    display: inline-block;
     width: 160px;
     padding: 0px 10px 0px 10px;
     text-align: center;
@@ -68,8 +72,48 @@
     font-size: 30px;
     font-family: "Bariol";
     color: rgb(0, 0, 0);
+    line-height: 0;
+}
+/*Deals list*/
+.list-group-horizontal{
+    display: inline-block;
+}
+.list-group-item {
+    display: inline-block;
+    width: 300px;
+    /*border: none;*/
+}
+.list-group-item img{
+    display: inline-block;
+    float: right;
+    height: 120px;
+    width: 120px;
+}
+.list-group-item div{
+    display: inline-block;
+    width: 135px;
+}
+.list-group-item div span{
+    display: block;
+    text-align: left;
+    font-family: "Bariol";
+}
+.list-group-item div span:nth-of-type(1){
+    font-size: 20px;
+    font-weight: bold;
+    color: #e5b34d;
+    line-height: 1.8;
+}
+.list-group-item div span:nth-of-type(2){
+    font-size: 17px;
+    color: #e6592a;
+    border: none;
+    line-height: 1.5;
+}
+.list-group-item div span:nth-of-type(3){
+    font-size: 15px;
+    color: rgb(0, 0, 0);
     line-height: 1.2;
 }
-
 
 
