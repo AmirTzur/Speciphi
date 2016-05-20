@@ -32,10 +32,10 @@
                         </div>
                         <div class="list-group-horizontal center-block">
                             {% for deal in offers %}
-                                <a href="" class="list-group-item">
+                                <a href="{{ deal.offers.0.deal_url }}" target="_blank" class="list-group-item">
                                     <div class="item-details">
                                         <span>{{ deal.sort_indicator }}</span>
-                                        <span>$800</span>
+                                        <span>${{ deal.offers.0.price }}</span>
                                         <span>{{ deal.brand }}&nbsp;{{ deal.model }}</span>
                                     </div>
                                     <img src="{{ deal.image_url }}">
