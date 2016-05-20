@@ -124,8 +124,9 @@ class Levelofuse(models.Model):
 #
 #
 # class Affiliations(models.Model):
+#     key = models.AutoField(primary_key=True, auto_created=True, verbose_name='key', serialize=False)
 #     products = models.ForeignKey('Products', db_column='Products_id')  # Field name made lowercase.
-#     ID = models.IntegerField()
+#     id = models.IntegerField()
 #     name = models.CharField(max_length=45)
 #     description = models.TextField()
 #     imageurl = models.CharField(db_column='imageUrl', max_length=2083, blank=True,
@@ -134,87 +135,63 @@ class Levelofuse(models.Model):
 #
 #     class Meta:
 #         db_table = 'affiliations'
-#         unique_together = (('products', 'ID'), ('products', 'name'),)
-
+#         unique_together = (('products', 'id'), ('products', 'name'))
+#
 #
 # class Uses(models.Model):
+#     key = models.AutoField(primary_key=True, auto_created=True, verbose_name='key', serialize=False)
 #     products = models.ForeignKey(Products, db_column='Products_id')  # Field name made lowercase.
-#     ID = models.IntegerField()
+#     id = models.IntegerField()
 #     name = models.CharField(max_length=45)
 #     imageurl = models.CharField(db_column='imageUrl', max_length=2083, blank=True,
-#                                 null=True)  # Field name made lowercase.
+#                                 null=True)
 #     creationdatetime = models.DateTimeField(db_column='creationDateTime')  # Field name made lowercase.
 #
 #     class Meta:
 #         db_table = 'uses'
-#         unique_together = (('products', 'ID'), ('products', 'name'),)
+#         unique_together = (('products', 'name'), ('products', 'id'),)
 #
 #
 # class Consulteeaffiliations(models.Model):
-#     entrances_id = models.IntegerField(db_column='Entrances_id')  # Field name made lowercase.
-#     products = models.ForeignKey(Products, db_column='Products_id')  # Field name made lowercase.
+#     key = models.AutoField(primary_key=True, auto_created=True, verbose_name='key', serialize=False)
+#     entrances = models.ForeignKey(Entrances, db_column='Entrances_id')  # Field name made lowercase.
+#     products = models.ForeignKey(Products, db_column='Products_id')
 #     consultationprocesses = models.ForeignKey(Consultationprocesses,
 #                                               db_column='consultationProcesses_id')  # Field name made lowercase.
-#     affiliations = models.ForeignKey(Affiliations, to_field="ID",
-#                                      db_column='Affiliations_id')  # Field name made lowercase.
+#     affiliations = models.ForeignKey(Affiliations, db_column='Affiliations_id')  # Field name made lowercase.
 #     selectiondatetime = models.DateTimeField(db_column='selectionDateTime')  # Field name made lowercase.
 #     checked = models.IntegerField()
 #
 #     class Meta:
 #         db_table = 'consulteeaffiliations'
 #         unique_together = (('consultationprocesses', 'selectiondatetime'),)
-
-#
-# class Affiliationuses(models.Model):
-#     products = models.ForeignKey('Uses', db_column='Products_id')  # Field name made lowercase.
-#     affiliations = models.ForeignKey(Affiliations, db_column='Affiliations_id')  # Field name made lowercase.
-#     uses = models.ForeignKey('Uses', db_column='Uses_id')  # Field name made lowercase.
-#     fittinglevel = models.FloatField(db_column='fittingLevel')  # Field name made lowercase.
-#     lastupdate = models.DateTimeField(db_column='lastUpdate')  # Field name made lowercase.
-#
-#     class Meta:
-#         db_table = 'affiliationuses'
-#         unique_together = (('Products_id', 'Affiliations_id', 'Uses_id'),)
 #
 #
 # class Levelofuse(models.Model):
-#     creationdatetime = models.DateTimeField(db_column='creationDateTime')  # Field name made lowercase.
-#     products = models.ForeignKey('Uses', db_column='Products_id')  # Field name made lowercase.
-#     uses = models.ForeignKey('Uses', db_column='Uses_id')  # Field name made lowercase.
-#     uses_name = models.CharField(db_column='Uses_name', max_length=45)  # Field name made lowercase.
+#     key = models.AutoField(primary_key=True, auto_created=True, verbose_name='key', serialize=False)
+#     creationdatetime = models.DateTimeField(db_column='creationDateTime')
+#     products = models.ForeignKey(Products, db_column='Products_id')
+#     uses = models.ForeignKey('Uses', db_column='Uses_id')
+#     uses_name = models.CharField(db_column='Uses_name', max_length=45)
 #     value = models.IntegerField()
 #     name = models.CharField(max_length=45, blank=True, null=True)
 #     description = models.TextField()
-#     lastupdate = models.DateTimeField(db_column='lastUpdate')  # Field name made lowercase.
+#     lastupdate = models.DateTimeField(db_column='lastUpdate')
 #
 #     class Meta:
 #         db_table = 'levelofuse'
-#         unique_together = (('Products_id', 'Uses_id', 'value'),)
-#
-#
-# class Consulteeuses(models.Model):
-#     entrances_id = models.IntegerField(db_column='Entrances_id')  # Field name made lowercase.
-#     products = models.ForeignKey('Levelofuse', db_column='Products_id')  # Field name made lowercase.
-#     consultationprocesses = models.ForeignKey(Consultationprocesses,
-#                                               db_column='consultationProcesses_id')  # Field name made lowercase.
-#     uses = models.ForeignKey('Levelofuse', db_column='Uses_id')  # Field name made lowercase.
-#     levelofuse_value = models.ForeignKey('Levelofuse', db_column='levelofUse_value')  # Field name made lowercase.
-#     selectiondatetime = models.DateTimeField(db_column='selectionDateTime')  # Field name made lowercase.
-#     checked = models.IntegerField()
-#     checkedbyuser = models.IntegerField(db_column='checkedByUser')  # Field name made lowercase.
-#
-#     class Meta:
-#         db_table = 'consulteeuses'
-#         unique_together = (('consultationProcesses_id', 'Uses_id', 'levelofUse_value', 'selectionDateTime'),)
+#         unique_together = (('products', 'uses', 'value'),)
 #
 #
 # class Affiliationlevelofuses(models.Model):
-#     products = models.ForeignKey('Levelofuse', db_column='Products_id')  # Field name made lowercase.
+#     key = models.AutoField(primary_key=True, auto_created=True, verbose_name='key', serialize=False)
+#     products = models.ForeignKey(Products, db_column='Products_id')  # Field name made lowercase.
 #     affiliations = models.ForeignKey('Affiliations', db_column='Affiliations_id')  # Field name made lowercase.
-#     uses = models.ForeignKey('Levelofuse', db_column='Uses_id')  # Field name made lowercase.
-#     levelofuse_value = models.ForeignKey('Levelofuse', db_column='levelofUse_value')  # Field name made lowercase.
+#     uses = models.ForeignKey(Uses, db_column='Uses_id')  # Field name made lowercase.
+#     levelofuse = models.ForeignKey('Levelofuse', db_column='levelofUse')  # Field name made lowercase.
+#     levelofuse_value = models.IntegerField()
 #     lastupdate = models.DateTimeField(db_column='lastUpdate')  # Field name made lowercase.
 #
 #     class Meta:
 #         db_table = 'affiliationlevelofuses'
-#         unique_together = (('Affiliations_id', 'Uses_id'),)
+#         unique_together = (('affiliations', 'uses'),)

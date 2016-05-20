@@ -13,10 +13,10 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Affiliations',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('name', models.CharField(max_length=45)),
                 ('description', models.TextField(max_length=300)),
-                ('image', models.TextField(null=True, blank=True)),
+                ('image', models.TextField(blank=True, null=True)),
                 ('creationdatetime', models.DateTimeField(db_column='creationDateTime')),
             ],
             options={
@@ -26,9 +26,9 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Consultationprocesses',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('startdatetime', models.DateTimeField(db_column='startDateTime')),
-                ('enddatetime', models.DateTimeField(null=True, db_column='endDateTime', blank=True)),
+                ('enddatetime', models.DateTimeField(db_column='endDateTime', blank=True, null=True)),
             ],
             options={
                 'db_table': 'consultationprocesses',
@@ -37,13 +37,13 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Consulteeaffiliations',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('entrances_id', models.IntegerField(db_column='Entrances_id')),
                 ('products_id', models.IntegerField(db_column='Products_id')),
                 ('selectiondatetime', models.DateTimeField(db_column='selectionDateTime')),
                 ('checked', models.BooleanField()),
-                ('affiliations', models.ForeignKey(to='consult.Affiliations', db_column='Affiliations_id')),
-                ('consultationprocesses', models.ForeignKey(to='consult.Consultationprocesses', db_column='consultationProcesses_id')),
+                ('affiliations', models.ForeignKey(db_column='Affiliations_id', to='consult.Affiliations')),
+                ('consultationprocesses', models.ForeignKey(db_column='consultationProcesses_id', to='consult.Consultationprocesses')),
             ],
             options={
                 'db_table': 'consulteeaffiliations',
@@ -52,23 +52,36 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Entrances',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('ip', models.CharField(max_length=16)),
-                ('country', models.CharField(null=True, blank=True, max_length=45)),
+                ('country', models.CharField(blank=True, max_length=45, null=True)),
                 ('entrancedatetime', models.DateTimeField(db_column='entranceDateTime')),
-                ('exitdatetime', models.DateTimeField(null=True, db_column='exitDateTime', blank=True)),
+                ('exitdatetime', models.DateTimeField(db_column='exitDateTime', blank=True, null=True)),
             ],
             options={
                 'db_table': 'Entrances',
             },
         ),
         migrations.CreateModel(
+            name='Levelofuse',
+            fields=[
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
+                ('Uses_id', models.IntegerField()),
+                ('Uses_name', models.CharField(blank=True, max_length=45)),
+                ('value', models.IntegerField()),
+                ('description', models.TextField()),
+            ],
+            options={
+                'db_table': 'levelofuse',
+            },
+        ),
+        migrations.CreateModel(
             name='Products',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, verbose_name='ID', auto_created=True)),
+                ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('name', models.CharField(unique=True, max_length=45)),
                 ('creationdatetime', models.DateTimeField(db_column='creationDateTime')),
-                ('image', models.TextField(null=True, blank=True)),
+                ('image', models.TextField(blank=True, null=True)),
             ],
             options={
                 'db_table': 'Products',
@@ -77,17 +90,17 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='consultationprocesses',
             name='entrances',
-            field=models.ForeignKey(to='consult.Entrances', db_column='Entrances_id'),
+            field=models.ForeignKey(db_column='Entrances_id', to='consult.Entrances'),
         ),
         migrations.AddField(
             model_name='consultationprocesses',
             name='products',
-            field=models.ForeignKey(to='consult.Products', db_column='Products_id'),
+            field=models.ForeignKey(db_column='Products_id', to='consult.Products'),
         ),
         migrations.AddField(
             model_name='affiliations',
             name='products',
-            field=models.ForeignKey(to='consult.Products', db_column='Products_id'),
+            field=models.ForeignKey(db_column='Products_id', to='consult.Products'),
         ),
         migrations.AlterUniqueTogether(
             name='consulteeaffiliations',

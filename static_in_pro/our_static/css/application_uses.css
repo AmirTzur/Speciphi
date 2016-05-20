@@ -127,9 +127,9 @@ span.description_text {
     background-color: rgba(255, 255, 255, 0.75);
 }
 
-/*.use_level_button input[type=checkbox] {*/
-/*display: none;*/
-/*}*/
+.use_level_button input[type=checkbox] {
+    display: none;
+}
 
 /*================ media queries==================*/
 
@@ -141,14 +141,14 @@ span.description_text {
 @media only screen and (min-width: 480px) {
     .use_display {
         position: relative;
-        right: 45px;
+        right: 40px;
     }
 
     .use_circle {
         width: 145px;
         height: 145px;
         font-size: 25px;
-        /*move to circle from the left to the middle*/
+        /*move it from left side to the middle*/
         left: 10px;
     }
 
@@ -164,6 +164,68 @@ span.description_text {
     #next_page svg {
         width: 47px;
         height: 47px;
+    }
+
+    #next_page svg image {
+        width: 60px;
+        height: 60px;
+    }
+
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width: 768px) {
+    /*checkbox location relative to the button parent*/
+    .use_display {
+        right: 65px;
+        margin-top: 90px;
+    }
+
+    .use_circle {
+        width: 180px;
+        height: 180px;
+        font-size: 30px;
+        left: 25px;
+    }
+
+    span.description_text {
+        width: 200px;
+        margin-top: 60px;
+        margin-bottom: 50px;
+    }
+
+    #mobile_uses_list {
+        width: 160px;
+        /* align to navbar */
+        margin-left: 8.3%;
+        margin-top: 55px;
+        margin-bottom: 80px;
+    }
+
+    #mobile_uses_list ul li {
+        font-size: 33px;
+        padding-bottom: 30px;
+    }
+
+    div#mobile_uses_list ul li:first-child {
+        padding-top: 30px;
+    }
+
+    .use_level_button {
+        width: 75px;
+        height: 75px;
+        font-size: 22px;
+    }
+
+    #next_page {
+        /*align according to navbar margins*/
+        right: 8.3%;
+        bottom: 40%;
+    }
+
+    #next_page svg {
+        width: 60px;
+        height: 60px;
     }
 
     #next_page svg image {
