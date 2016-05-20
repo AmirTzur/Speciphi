@@ -32,7 +32,7 @@ $(document).ready(function () {
 
         // get pressed level of use
         var selected_use_level = $(this).prop('value');
-        console.log(selected_use_level);
+        // console.log(selected_use_level);
         // change to matched description
         $(this).parent().parent().children('span').each(function () {
             if ($(this).prop('id') == 'description_' + selected_use_level) {
@@ -50,7 +50,7 @@ $(document).ready(function () {
                 $(this).css('color', 'rgb(249, 163, 51)');
             }
         });
-        console.log($(this).prop('checked'));
+        // console.log($(this).prop('checked'));
     });
 
     // show pre-selected (by algorithm) level of use description
@@ -77,7 +77,15 @@ $(document).ready(function () {
         } //end mobile screens
         // desktop screens
         else if (window.matchMedia("(min-width: 992px)").matches) {
-
+            // display uses in line
+            $('div#uses_display').children().css('display', 'inline-block');
+            // hide description text
+            $('span.description_text').css('display', 'none');
+            // use use_circle div to present Use name
+            $('div#uses_display').children().each(function () {
+                console.log($(this).children('div').first().removeClass('use_circle'));
+                console.log($(this).children('div').first().appendTo(this))
+            })
 
         }//end desktop screens
     }// end responsive query

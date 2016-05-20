@@ -142,6 +142,7 @@ span.description_text {
     .use_display {
         position: relative;
         right: 40px;
+        margin-top: 8px;
     }
 
     .use_circle {
@@ -150,10 +151,6 @@ span.description_text {
         font-size: 25px;
         /*move it from left side to the middle*/
         left: 10px;
-    }
-
-    .use_display {
-        margin-top: 8px;
     }
 
     span.description_text {
@@ -232,5 +229,36 @@ span.description_text {
         width: 60px;
         height: 60px;
     }
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width: 992px) {
+
+    #mobile_uses_list {
+        display: none;
+    }
+
+    .use_display {
+        right: 0px;
+    }
+
+    .use_circle {
+        display: none;
+    }
+
+    .use_level_button {
+        display: block;
+        height: 50px;
+        width: 50px;
+        /*margin-bottom: 30px;*/
+        /*margin-left: 30px;*/
+        margin: 0 15px 30px 15px;
+    }
+
+    /*!*on button hover, show description*!*/
+    /*.use_level_button:hover > span {*/
+    /*display: block !important;*/
+    /*}*/
 
 }

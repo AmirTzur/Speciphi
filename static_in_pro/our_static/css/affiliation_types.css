@@ -257,6 +257,10 @@ span.description_text {
         padding-top: 0;
     }
 
+    #mobile_types_list {
+        display: none;
+    }
+
     .type_button {
         margin: 20px 15px 20px 15px;
         padding: 0;
