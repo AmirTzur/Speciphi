@@ -3,6 +3,7 @@
  */
 
 $(document).ready(function(){
+    // Price Slider (jQuery UI)
     $(function() {
         $( "#slider-range" ).slider({
             range: true,
@@ -22,7 +23,15 @@ $(document).ready(function(){
         $("#slider-min").val("$"+$("#slider-range").slider("values", 0));
         $("#slider-max").val("$"+$("#slider-range").slider("values", 1));
     });
-
+    // Feature Open/Close Functionality
+    $('#open-btn').click(function(){
+        $('#close-mode').css('display', 'none');
+        $('#open-mode').css('display', 'block');
+    });
+    $('#close-btn').click(function(){
+        $('#open-mode').css('display', 'none');
+        $('#close-mode').css('display', 'block');
+    });
     
 });
 

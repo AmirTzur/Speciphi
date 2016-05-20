@@ -1,7 +1,37 @@
 #results-container{
     background-color: white;
 }
-
+/*Open/Close Mode*/
+#close-mode{
+    display: none;
+}
+#open-mode{
+    display: block;
+}
+#close-mode span{
+    font-size: 24px;
+    font-family: "Bariol";
+    color: rgb(230, 89, 42);
+    line-height: 1.5;
+    text-align: center;
+}
+/*Open/Close Button*/
+.control-btn{
+    height: 15px;
+    width: 30px;
+    border: none;
+}
+#open-btn{
+    background: url("../img/results/open_button.svg") no-repeat;
+}
+#close-btn{
+    background: url("../img/results/close_button.svg") no-repeat;
+    /*-webkit-transform: rotate(180deg);     !* Chrome and other webkit browsers *!*/
+    /*-moz-transform: rotate(180deg);        !* FF *!*/
+    /*-o-transform: rotate(180deg);          !* Opera *!*/
+    /*-ms-transform: rotate(180deg);         !* IE9 *!*/
+    /*transform: rotate(180deg);             !* W3C compliant browsers *!*/
+}
 /*Slider*/
 #price-slider{
     display: block;
@@ -52,13 +82,14 @@
 /*Deals*/
 #deals-wrapper{
     display: block;
+    float: left;
     padding: 5px 0px 10px 0px;
 }
 /*Deals total results*/
 #total-results{
     display: inline-block;
     width: 160px;
-    padding: 0px 10px 0px 10px;git 
+    padding: 0px 10px 0px 10px;
     text-align: center;
 }
 #total-results span:first-child{

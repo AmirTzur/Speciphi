@@ -12,29 +12,36 @@
     <footer class="footer">
         <div id="results-container" class="container-fluid">
             <div class="hidden-xs col-sm-12">
-                <div id="price-slider" class="center-block">
-                    <label for="slider-min"></label>
-                    <input type="text" id="slider-min" class="price-tag" readonly>
-                    <div id="slider-range"></div>
-                    <label for="slider-max"></label>
-                    <input type="text" id="slider-max" class="price-tag" readonly>
+                <div id="close-mode">
+                    <button id="open-btn" class="control-btn center-block" type="button"></button>
+                    <span>current results</span>
                 </div>
-                <div id="deals-wrapper">
-                    <div id="total-results">
-                        <span>{{ total_results }}</span>
-                        <span>results</span>
+                <div id="open-mode">
+                    <button id="close-btn" class="control-btn center-block" type="button"></button>
+                    <div id="price-slider" class="center-block">
+                        <label for="slider-min"></label>
+                        <input type="text" id="slider-min" class="price-tag" readonly>
+                        <div id="slider-range"></div>
+                        <label for="slider-max"></label>
+                        <input type="text" id="slider-max" class="price-tag" readonly>
                     </div>
-                    <div class="list-group-horizontal">
-                        {% for deal in offers %}
-                            <a href="" class="list-group-item">
-                                <div class="item-details">
-                                    <span>{{ deal.sort_indicator }}</span>
-                                    <span>$800</span>
-                                    <span>{{ deal.brand }}&nbsp;{{ deal.model }}</span>
-                                </div>
-                                <img src="{{ deal.image_url }}">
-                            </a>
-                        {% endfor %}
+                    <div id="deals-wrapper">
+                        <div id="total-results">
+                            <span>{{ total_results }}</span>
+                            <span>results</span>
+                        </div>
+                        <div class="list-group-horizontal">
+                            {% for deal in offers %}
+                                <a href="" class="list-group-item">
+                                    <div class="item-details">
+                                        <span>{{ deal.sort_indicator }}</span>
+                                        <span>$800</span>
+                                        <span>{{ deal.brand }}&nbsp;{{ deal.model }}</span>
+                                    </div>
+                                    <img src="{{ deal.image_url }}">
+                                </a>
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             </div>
