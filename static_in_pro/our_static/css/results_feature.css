@@ -1,7 +1,7 @@
 #results-container{
     background-color: white;
 }
-/*Open/Close Mode*/
+/* Feature Open/Close Mode */
 #close-mode{
     display: none;
 }
@@ -9,13 +9,15 @@
     display: block;
 }
 #close-mode span{
+    height: 60px;
     font-size: 24px;
     font-family: "Bariol";
     color: rgb(230, 89, 42);
-    line-height: 1.5;
+    line-height: 1.6;
     text-align: center;
+    padding: 0px 0px 25px 0px;
 }
-/*Open/Close Button*/
+/* Open/Close Button */
 .control-btn{
     height: 15px;
     width: 30px;
@@ -32,7 +34,7 @@
     /*-ms-transform: rotate(180deg);         !* IE9 *!*/
     /*transform: rotate(180deg);             !* W3C compliant browsers *!*/
 }
-/*Slider*/
+/* Slider */
 #price-slider{
     display: block;
     padding: 10px 0px 10px 0px;
@@ -44,7 +46,7 @@
     background: #e6592a;
     border: none;
 }
-/*Slider controls*/
+/* Slider Controls */
 #slider-range span {
     border-radius: 50%;
     border-color: rgb(229, 179, 77);
@@ -60,13 +62,13 @@
     outline: none!important;
     border-style: none!important;
 }
-/*Slider selected range*/
+/* Slider - Selected Range */
 #slider-range div{
     background: #e6592a;
     border: none;
     /*height: 4px;*/
 }
-/*Min and Max price*/
+/* Min and Max Price */
 .price-tag{
     display: inline-block;
     width: 70px;
@@ -76,21 +78,24 @@
     border: none;
     text-align: center;
     line-height: 1;
+    position: relative;
+    top: 4px;
     /*padding: 0px;*/
 }
-
-/*Deals*/
+/* Deals */
 #deals-wrapper{
     display: block;
-    float: left;
+    /*float: left;*/
     padding: 5px 0px 10px 0px;
 }
-/*Deals total results*/
+/* Deals Total Results */
 #total-results{
     display: inline-block;
     width: 160px;
     padding: 0px 10px 0px 10px;
     text-align: center;
+    position: relative;
+    left: -80px;
 }
 #total-results span:first-child{
     font-size: 33px;
@@ -105,23 +110,22 @@
     color: rgb(0, 0, 0);
     line-height: 0;
 }
-/*Deals list*/
+/* Deals List */
 .list-group-horizontal{
     display: inline-block;
+    position: relative;
+    left: -80px;
 }
 .list-group-item {
     display: inline-block;
-    width: 300px;
-    /*border: none;*/
+    width: 150px;
 }
 .list-group-item img{
-    display: inline-block;
-    float: right;
+    float: left;
     height: 120px;
     width: 120px;
 }
 .list-group-item div{
-    display: inline-block;
     width: 135px;
 }
 .list-group-item div span{
@@ -147,4 +151,74 @@
     line-height: 1.2;
 }
 
+/* Results Feature - Responsive */
+
+/* Extra small devices - 320px Design (phones, less than 480px) */
+@media (max-width: 767px) {
+
+}
+/* Extra small devices - 480px Design (phones, less than 768 and greater than 480) */
+@media (min-width: 480px) and (max-width: 767px) {
+
+}
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    #results-feature{
+        display: block!important;
+    }
+}
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    #total-results{
+        width: 85px;
+        padding: 0px 5px 0px 5px;
+        left: -30px;
+    }
+    #total-results span:first-child{
+        font-size: 25px;
+    }
+    #total-results span:last-child{
+        font-size: 22px;
+    }
+    .list-group-horizontal{
+        left: -21.25px;
+    }
+    .list-group-item {
+        width: 270px;
+    }
+    .list-group-item img{
+        display: inline-block;
+        float: right;
+        height: 100px;
+        width: 100px;
+    }
+    .list-group-item div{
+        display: inline-block;
+    }
+}
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    #total-results{
+        width: 160px;
+        padding: 0px 10px 0px 10px;
+        left: -60px;
+    }
+    #total-results span:first-child{
+        font-size: 33px;
+    }
+    #total-results span:last-child{
+        font-size: 30px;
+    }
+    .list-group-horizontal{
+        left: -80px;
+    }
+    .list-group-item {
+        width: 300px;
+    }
+    .list-group-item img{
+        height: 120px;
+        width: 120px;
+    }
+
+}
 
