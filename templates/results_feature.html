@@ -30,7 +30,7 @@
                             <span>{{ total_results }}</span>
                             <span>results</span>
                         </div>
-                        <div class="list-group-horizontal center-block">
+                        <div id="deals-list" class="list-group-horizontal center-block">
                             {% for deal in offers %}
                                 <a href="{{ deal.offers.0.deal_url }}" target="_blank" class="list-group-item">
                                     <div class="item-details">
