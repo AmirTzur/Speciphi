@@ -62,7 +62,8 @@ $(document).ready(function () {
                 $(this).parent().children('span').each(function () {
                     // update description div # desktop screens
                     if ($(this).prop('id') == 'description_' + selected_use_level) {
-                        $('#description_container').html($(this).html());
+                        $('#description_container').children('span').html($(this).html());
+                        // $('#description_container').children('span').text('text');
                     }
                 });
             }
@@ -100,7 +101,7 @@ $(document).ready(function () {
                 });
                 // change use_levels buttons order to default
                 $('#uses_display').children('div.use_display').each(function () {
-                    $($(this).children('div.use_levels').children('button').get().reverse()).each(function (index) {
+                    $($(this).children('div.use_levels').children('button').get().reverse()).each(function () {
                         $(this).parent('div').append(this);
                     });
                 });
@@ -121,11 +122,11 @@ $(document).ready(function () {
             // hide description text
             $('span.description_text').css('display', 'none');
             // add new description container
-            $('div#uses_wrapper form').prepend('<div id="description_container"></div>');
+            $('div#uses_wrapper form').prepend('<div id="description_container"><span>&nbsp;</span></div>');
             // change use_levels buttons order
             $('#uses_display').children('div.use_display').each(function () {
                 // iterate buttons in reverse order
-                $($(this).children('div.use_levels').children('button').get().reverse()).each(function (index) {
+                $($(this).children('div.use_levels').children('button').get().reverse()).each(function () {
                     $(this).parent('div').append(this);
                 });
             });
