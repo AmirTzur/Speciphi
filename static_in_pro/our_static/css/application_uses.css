@@ -119,13 +119,14 @@ span.description_text {
     color: rgb(249, 163, 51);
 }
 
+.use_level_button_1 {
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
 .use_level_button_2 {
     background-color: rgba(255, 255, 255, 0.9);
 }
 
-.use_level_button_3 {
-    background-color: rgba(255, 255, 255, 0.75);
-}
 
 .use_level_button input[type=checkbox] {
     display: none;
@@ -238,9 +239,13 @@ span.description_text {
     #mobile_uses_list {
         display: none;
     }
-
+    #uses_display {
+        padding-top: 0px;
+    }
     .use_display {
         right: 0;
+        width: 80px;
+        margin: 0;
     }
 
     .use_circle {
@@ -265,10 +270,12 @@ span.description_text {
         display: table-cell;
     }
 
-    .use_display {
-        width: 80px;
+    #description_container {
+        width: 230px;
+        height: 85px;
+        margin-top: 30px;
+        display: inline-block;
     }
-
     /*!*on button hover, show description*!*/
     /*.use_level_button:hover > span {*/
     /*display: block !important;*/

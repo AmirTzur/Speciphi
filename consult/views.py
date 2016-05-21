@@ -178,7 +178,7 @@ def application(request, product=None):
                             "value": uses[i]['value'],
                             "description": uses[i]['description'],
                             "form_input": uses[i]['form_input'],
-                            "level_text": "High",
+                            "level_text": "Low",
                         },
                         {
                             "id": uses[i + 1]['id'],
@@ -192,7 +192,7 @@ def application(request, product=None):
                             "value": uses[i + 2]['value'],
                             "description": uses[i + 2]['description'],
                             "form_input": uses[i + 2]['form_input'],
-                            "level_text": "Low",
+                            "level_text": "High",
                         },
                     ],
                 })

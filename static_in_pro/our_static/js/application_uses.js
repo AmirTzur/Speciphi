@@ -15,8 +15,6 @@ $(document).ready(function () {
             return 'list_use_' + $(this).prop('id') == pressed_use;
         }).css('display', 'inline-block');
     });
-
-
     // on button click, change checkbox value
     $('div#uses_display div button').click(function () {
         // change pressed checkbox
@@ -24,25 +22,16 @@ $(document).ready(function () {
     });
 
     $(':checkbox').change(function () {
+        // get pressed level of use
+        var selected_use_level = $(this).prop('value');
         // color text of pressed button
         if ($(this).is(':checked')) {
             $(this).parent('button').css('color', 'rgb(230, 89, 42)');
         } else {
             $(this).parent('button').css('color', 'rgb(249, 163, 51)');
         }
-        // get pressed level of use
-        var selected_use_level = $(this).prop('value');
         // update data-brand (where we keep algorithm choice value)
         $(this).parent().parent().attr('data-brand', selected_use_level);
-        // change to matched description
-        $(this).parent().parent().children('span').each(function () {
-            if ($(this).prop('id') == 'description_' + selected_use_level) {
-                $(this).css('display', 'block');
-            }
-            else {
-                $(this).css('display', 'none');
-            }
-        });
         // cancel other checked levels checkbox
         $(this).parent().parent().children('button').each(function () {
             if ($(this).children('input[type=checkbox]').prop('value') != selected_use_level) {
@@ -51,19 +40,35 @@ $(document).ready(function () {
                 $(this).css('color', 'rgb(249, 163, 51)');
             }
         });
-    });
-    // show pre-selected (by algorithm) level of use description
-    $('div#uses_display').children().each(function () {
-        // get pre-selected level
-        var pre_selected_use = $(this).children('div.use_levels').attr('data-brand');
-        // check right checkbox (this will activate description change)
-        $(this).children('div.use_levels').children('button').each(function () {
-            if ($(this).attr('value') == pre_selected_use) {
-                $(this).children('input[type=checkbox]').prop('checked', true).change();
+        // handle description
+        $(this).parent().parent().children('span').each(function () {
+            // show matched description # mobile screens
+            if ($(this).prop('id') == 'description_' + selected_use_level) {
+                $(this).css('display', 'block');
+            }
+            else {
+                $(this).css('display', 'none');
             }
         });
-    });
 
+    }); // end checkbox change
+
+    // show description on button hover
+    $('button.use_level_button').mouseover(function () {
+        {
+            if (window.matchMedia("(min-width: 992px)").matches) {
+                // get pressed level of use
+                var selected_use_level = $(this).prop('value');
+                $(this).parent().children('span').each(function () {
+                    console.log(this);
+                    // update description div # desktop screens
+                    if ($(this).prop('id') == 'description_' + selected_use_level) {
+                        $('#description_container').html($(this).html());
+                    }
+                });
+            }
+        }
+    });
     // responsive query
     function WidthChange() {
         // mobile screens
@@ -80,10 +85,21 @@ $(document).ready(function () {
                     $(this).children('div').last().removeClass('use_name');
                     $(this).children('div').last().addClass('use_circle');
                     $(this).children('div').last().prependTo(this);
-                    // NEED TO IMPLEMENT NEXT: show chosen display
+                    // delete desktop description
+                    $('#description_container').remove();
+                });
+                // show right description
+                $('div#uses_display').children().each(function () {
+                    // get selected level
+                    var selected_use = $(this).children('div.use_levels').attr('data-brand');
+                    // show right description
+                    $(this).children('div.use_levels').children('span').each(function () {
+                        if ($(this).prop('id') == 'description_' + selected_use) {
+                            $(this).css('display', 'block');
+                        }
+                    });
                 });
             }
-
 
         } //end mobile screens
 
@@ -98,8 +114,9 @@ $(document).ready(function () {
                 $(this).children('div').first().removeClass('use_circle');
                 $(this).children('div').first().addClass('use_name');
                 $(this).children('div').first().appendTo(this);
-            })
-
+            });
+            // add new description container
+            $('div#uses_wrapper form').prepend('<div id="description_container">text text text text text text text text text</div>');
         }//end desktop screens
     }// end responsive query
 
@@ -112,5 +129,38 @@ $(document).ready(function () {
         // invoke layout function
         WidthChange();
     }
+
+    // show pre-selected (by algorithm) level of use description
+    $('div#uses_display').children().each(function () {
+        // get pre-selected level
+        var pre_selected_use = $(this).children('div.use_levels').attr('data-brand');
+        // check right checkbox
+        $(this).children('div.use_levels').children('button').each(function () {
+            if ($(this).attr('value') == pre_selected_use) {
+                $(this).children('input[type=checkbox]').prop('checked', true);
+                // activate description change
+                startChoices($(this).children('input[type=checkbox]'));
+            }
+        });
+    });
+
+    function startChoices(that) {
+        // color text of pressed button
+        $(that).parent('button').css('color', 'rgb(230, 89, 42)');
+        // get pressed level of use
+        var selected_use_level = $(that).prop('value');
+        // update data-brand (where we keep algorithm choice value)
+        $(that).parent().parent().attr('data-brand', selected_use_level);
+        // show matched description
+        $(that).parent().parent().children('span').each(function () {
+            if ($(this).prop('id') == 'description_' + selected_use_level) {
+                $(this).css('display', 'block');
+            }
+            else {
+                $(this).css('display', 'none');
+            }
+        });
+    }
+
 
 });
