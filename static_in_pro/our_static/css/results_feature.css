@@ -95,18 +95,31 @@
     position: relative;
     left: -80px;
 }
-#total-results span:first-child{
+#total-results span:first-of-type{
     font-size: 33px;
     font-family: "Bariol";
     color: rgb(249, 163, 51);
     font-weight: bold;
     line-height: 1.2;
 }
-#total-results span:last-child{
+#total-results span:last-of-type{
     font-size: 30px;
     font-family: "Bariol";
     color: rgb(0, 0, 0);
     line-height: 0;
+}
+#total-results a{
+    display: block;
+    position: relative;
+    top: 1px;
+    text-decoration: none;
+}
+#total-results a:visited{
+    color: #337ab7;
+}
+#total-results a i{
+    color: rgba(51, 122, 183, 0.8);
+    font-size: 12px;
 }
 /* Deals List */
 .list-group-horizontal{
@@ -117,6 +130,7 @@
 .list-group-item {
     display: inline-block;
     width: 150px;
+    vertical-align: middle;
 }
 .list-group-item img{
     float: left;

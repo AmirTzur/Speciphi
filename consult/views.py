@@ -270,7 +270,7 @@ def NewConsulteeAffiliation(request):
         except Error as e:
             print(e)
         offers = [
-            {'sort_indicator': 'Best Match', 'brand': 'Affle', 'model': 'Macbook Fro',
+            {'sort_indicator': 'Best Match', 'brand': 'Affle', 'model': 'Macbook Froombook',
              'image_url': 'http://ecx.images-amazon.com/images/I/51T4mO8USwL._SL160_.jpg',
              'offers': [{'deal_id': 111,
                          'deal_url': 'http://www.amazon.com/gp/offer-listing/B01C7UGP04%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
