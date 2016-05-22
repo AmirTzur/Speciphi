@@ -54,7 +54,23 @@ $(document).ready(function () {
     }); // end checkbox change
 
     // show description on button hover
-    $('button.use_level_button').mouseover(function () {
+    // $('button.use_level_button').mouseover(function () {
+    //     {
+    //         if (window.matchMedia("(min-width: 992px)").matches) {
+    //             // get pressed level of use
+    //             var selected_use_level = $(this).prop('value');
+    //             $(this).parent().children('span').each(function () {
+    //                 // update description div # desktop screens
+    //                 if ($(this).prop('id') == 'description_' + selected_use_level) {
+    //                     $('#description_container').children('span').html($(this).html());
+    //                 }
+    //             });
+    //         }
+    //     }
+    // });
+
+    // show description text on button hover
+    $('button.use_level_button').mouseenter(function () {
         {
             if (window.matchMedia("(min-width: 992px)").matches) {
                 // get pressed level of use
@@ -63,12 +79,19 @@ $(document).ready(function () {
                     // update description div # desktop screens
                     if ($(this).prop('id') == 'description_' + selected_use_level) {
                         $('#description_container').children('span').html($(this).html());
-                        // $('#description_container').children('span').text('text');
                     }
                 });
             }
         }
     });
+    // remove description text after hover
+    $('button.use_level_button').mouseleave(function () {
+        if (window.matchMedia("(min-width: 992px)").matches) {
+            $('#description_container').children('span').html('&nbsp;');
+        }
+    });
+
+
     // responsive query
     function WidthChange() {
         // mobile screens
