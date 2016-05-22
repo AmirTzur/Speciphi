@@ -121,13 +121,12 @@ span.description_text {
 }
 
 .use_level_button_1 {
-    background-color: rgba(255, 255, 255, 0.70);
+    background-color: rgba(255, 255, 255, 0.5);
 }
 
 .use_level_button_2 {
-    background-color: rgba(255, 255, 255, 0.85);
+    background-color: rgba(255, 255, 255, 0.75);
 }
-
 
 .use_level_button input[type=checkbox] {
     display: none;
@@ -240,9 +239,11 @@ span.description_text {
     #mobile_uses_list {
         display: none;
     }
+
     #uses_display {
         padding-top: 0px;
     }
+
     .use_display {
         right: 0;
         width: 80px;
@@ -257,8 +258,25 @@ span.description_text {
         height: 50px;
         width: 50px;
         margin: 0 0 30px 0;
+        font-size: 20px;
     }
 
+    /*none selected use_level_button # desktop*/
+    .use_level_button_0 {
+        border: 2px solid white;
+        height: 50px;
+        width: 50px;
+        margin: 0 0 30px 0;
+        border-radius: 50%;
+        text-align: center;
+        text-decoration: none;
+        /*temporary*/
+        font-size: 20px;
+        background-color: transparent;
+    }
+    .hide_text {
+        font-size: 0;
+    }
     /*create class instead of use_circle*/
     .use_name {
         font-size: 18px;
@@ -277,9 +295,5 @@ span.description_text {
         margin-top: 30px;
         display: inline-block;
     }
-    /*!*on button hover, show description*!*/
-    /*.use_level_button:hover > span {*/
-    /*display: block !important;*/
-    /*}*/
 
 }

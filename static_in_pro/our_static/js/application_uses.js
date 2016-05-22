@@ -22,8 +22,17 @@ $(document).ready(function () {
     });
 
     $(':checkbox').change(function () {
-        // get pressed level of use
-        var selected_use_level = $(this).prop('value');
+        var selected_use_level;
+
+        if (!$(this).is(':checked')) {
+            // un checked (use level 0)
+            selected_use_level = 1; // (for now..)
+        }
+        else {
+            // get pressed level of use
+            selected_use_level = $(this).prop('value');
+        }
+
         // color text of pressed button
         if ($(this).is(':checked')) {
             $(this).parent('button').css('color', 'rgb(230, 89, 42)');
@@ -51,6 +60,8 @@ $(document).ready(function () {
                 }
             });
         }
+        //
+
     }); // end checkbox change
 
     // show description text on button hover # desktop
@@ -59,7 +70,7 @@ $(document).ready(function () {
             // get pressed level of use
             var selected_use_level = $(this).prop('value');
             $(this).parent().children('span').each(function () {
-                // update description div # desktop screens
+                // update description div
                 if ($(this).prop('id') == 'description_' + selected_use_level) {
                     $('#description_container').children('span').html($(this).html());
                 }
@@ -117,7 +128,6 @@ $(document).ready(function () {
         else if (window.matchMedia("(min-width: 992px)").matches) {
             // display uses in line
             $('div#uses_display').children().css('display', 'inline-block');
-
             // remove use_circle class and show name at the bottom
             $('div#uses_display').children().each(function () {
                 $(this).children('div').first().removeClass('use_circle');
@@ -135,6 +145,38 @@ $(document).ready(function () {
                     $(this).parent('div').append(this);
                 });
             });
+            // hide use_level_buttons text (High/Med/Low)
+            $('.use_level_button').addClass('hide_text');
+
+            //  update buttons style
+            $('div#uses_display').children('div.use_display').each(function () {
+                // get pre-selected level
+                var selected_use_level = $(this).children('div.use_levels').attr('data-brand');
+                // update buttons style
+                $(this).children('div.use_levels').children('button').each(function () {
+                    if ($(this).attr('value') == selected_use_level) {
+                        if ($(this).prop('value') == selected_use_level) {
+                            console.log(selected_use_level);
+                            if ($(this).prop('value') == 0) {
+                                $(this).parent('div.use_levels').children('button').addClass('use_level_button_0');
+                            } else if ($(this).prop('value') == 1) {
+                                $(this).siblings('button').addClass('use_level_button_0');
+                            } else if ($(this).prop('value') == 2) {
+                                $(this).prev('button').addClass('use_level_button_0');
+                                $(this).removeClass('use_level_button_0');
+                            } else if ($(this).prop('value') == 3) {
+                                $(this).siblings('button').removeClass('use_level_button_0');
+                                $(this).removeClass('use_level_button_0');
+                            } else if ($(this).prop('value') == 4) {
+                                // style of use level 4
+                            }
+                        }
+
+                    }
+                });
+            });
+
+
         }//end desktop screens
     }// end responsive query
 
@@ -149,14 +191,14 @@ $(document).ready(function () {
     }
 
     // show pre-selected (by algorithm) level of use description
-    $('div#uses_display').children().each(function () {
+    $('div#uses_display').children('div.use_display').each(function () {
         // get pre-selected level
         var pre_selected_use = $(this).children('div.use_levels').attr('data-brand');
         // check right checkbox
         $(this).children('div.use_levels').children('button').each(function () {
             if ($(this).attr('value') == pre_selected_use) {
                 $(this).children('input[type=checkbox]').prop('checked', true);
-                // activate description change
+                // activate: description change # mobile, buttons style # desktop
                 startChoices($(this).children('input[type=checkbox]'));
             }
         });
@@ -167,8 +209,6 @@ $(document).ready(function () {
         $(that).parent('button').css('color', 'rgb(230, 89, 42)');
         // get pressed level of use
         var selected_use_level = $(that).prop('value');
-        // update data-brand (where we keep algorithm choice value)
-        $(that).parent().parent().attr('data-brand', selected_use_level);
         // show matched description #mobile only
         if (window.matchMedia("(max-width: 991px)").matches) {
             $(that).parent().parent().children('span').each(function () {
@@ -179,6 +219,24 @@ $(document).ready(function () {
                     $(this).css('display', 'none');
                 }
             });
+            // style use_level_buttons # desktop
+        } else if (window.matchMedia("(min-width: 992px)").matches) {
+            //
+            // $(that).parent('button').parent('div.use_levels').children('button').each(function () {
+            //     if ($(this).prop('value') == selected_use_level) {
+            //         if ($(this).prop('value') == 0) {
+            //             $(this).parent('div.use_levels').children('button').addClass('use_level_button_0');
+            //         } else if ($(this).prop('value') == 1) {
+            //             $(this).siblings('button').addClass('use_level_button_0');
+            //         } else if ($(this).prop('value') == 2) {
+            //             $(this).prev('button').addClass('use_level_button_0');
+            //         } else if ($(this).prop('value') == 3) {
+            //             // default buttons colors
+            //         } else if ($(this).prop('value') == 4) {
+            //             // style of use level 4
+            //         }
+            //     }
+            // });
         }
     }
 
