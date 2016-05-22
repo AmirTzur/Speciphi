@@ -56,9 +56,8 @@
 #slider-range span:hover{
     cursor: pointer;
 }
-#slider-range span:active{
-    outline: none!important;
-    border-style: none!important;
+#slider-range span:active, span:focus{
+    outline: none;
 }
 /* Slider - Selected Range */
 #slider-range div{
