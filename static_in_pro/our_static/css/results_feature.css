@@ -92,7 +92,9 @@
     width: 160px;
     padding: 0px 10px 0px 10px;
     text-align: center;
+    vertical-align: middle;
     position: relative;
+    top: -18px;
     left: -80px;
 }
 #total-results span:first-of-type{
@@ -119,7 +121,7 @@
 }
 #total-results a i{
     color: rgba(51, 122, 183, 0.8);
-    font-size: 12px;
+    font-size: 13px;
 }
 /* Deals List */
 .list-group-horizontal{
