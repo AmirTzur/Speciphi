@@ -14,7 +14,6 @@ $(document).ready(function(){
             slide: function(event, ui){
                 $("#slider-min").val("$" + ui.values[0]);
                 $("#slider-max").val("$" + ui.values[1]);
-                console.log('slider moved');
             },
             stop: function(event, ui){
                 alert('Define ajax callback to get results');
@@ -35,7 +34,6 @@ $(document).ready(function(){
             $('#close-mode').css('display', 'block');
         });
     });
-    
 });
 
 function update_deals(total_results, offers) {
