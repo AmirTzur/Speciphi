@@ -40,51 +40,33 @@ $(document).ready(function () {
                 $(this).css('color', 'rgb(249, 163, 51)');
             }
         });
-        // handle description
-        $(this).parent().parent().children('span').each(function () {
-            // show matched description # mobile screens
-            if ($(this).prop('id') == 'description_' + selected_use_level) {
-                $(this).css('display', 'block');
-            }
-            else {
-                $(this).css('display', 'none');
-            }
-        });
-
+        // show matched description # mobile screens
+        if (window.matchMedia("(max-width: 991px)").matches) {
+            $(this).parent().parent().children('span').each(function () {
+                if ($(this).prop('id') == 'description_' + selected_use_level) {
+                    $(this).css('display', 'block');
+                }
+                else {
+                    $(this).css('display', 'none');
+                }
+            });
+        }
     }); // end checkbox change
 
-    // show description on button hover
-    // $('button.use_level_button').mouseover(function () {
-    //     {
-    //         if (window.matchMedia("(min-width: 992px)").matches) {
-    //             // get pressed level of use
-    //             var selected_use_level = $(this).prop('value');
-    //             $(this).parent().children('span').each(function () {
-    //                 // update description div # desktop screens
-    //                 if ($(this).prop('id') == 'description_' + selected_use_level) {
-    //                     $('#description_container').children('span').html($(this).html());
-    //                 }
-    //             });
-    //         }
-    //     }
-    // });
-
-    // show description text on button hover
+    // show description text on button hover # desktop
     $('button.use_level_button').mouseenter(function () {
-        {
-            if (window.matchMedia("(min-width: 992px)").matches) {
-                // get pressed level of use
-                var selected_use_level = $(this).prop('value');
-                $(this).parent().children('span').each(function () {
-                    // update description div # desktop screens
-                    if ($(this).prop('id') == 'description_' + selected_use_level) {
-                        $('#description_container').children('span').html($(this).html());
-                    }
-                });
-            }
+        if (window.matchMedia("(min-width: 992px)").matches) {
+            // get pressed level of use
+            var selected_use_level = $(this).prop('value');
+            $(this).parent().children('span').each(function () {
+                // update description div # desktop screens
+                if ($(this).prop('id') == 'description_' + selected_use_level) {
+                    $('#description_container').children('span').html($(this).html());
+                }
+            });
         }
     });
-    // remove description text after hover
+    // remove description text after hover # desktop
     $('button.use_level_button').mouseleave(function () {
         if (window.matchMedia("(min-width: 992px)").matches) {
             $('#description_container').children('span').html('&nbsp;');
