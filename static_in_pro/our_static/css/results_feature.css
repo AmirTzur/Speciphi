@@ -92,9 +92,9 @@
     width: 160px;
     padding: 0px 10px 0px 10px;
     text-align: center;
-    vertical-align: middle;
+    vertical-align: top;
     position: relative;
-    top: -18px;
+    top: 12px;
     left: -80px;
 }
 #total-results span:first-of-type{
@@ -113,7 +113,7 @@
 #total-results a{
     display: block;
     position: relative;
-    top: 1px;
+    top: -1px;
     text-decoration: none;
 }
 #total-results a:visited{
@@ -132,7 +132,7 @@
 .list-group-item {
     display: inline-block;
     width: 150px;
-    vertical-align: middle;
+    vertical-align: top;
 }
 .list-group-item img{
     float: left;
@@ -184,9 +184,11 @@
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
     #total-results{
-        width: 85px;
+        width: 90px;
         padding: 0px 5px 0px 5px;
-        left: -30px;
+        position: relative;
+        left: -42px;
+        top: 16px;
     }
     #total-results span:first-child{
         font-size: 25px;
@@ -194,8 +196,16 @@
     #total-results span:last-child{
         font-size: 22px;
     }
+    #total-results a{
+        font-size: 12px;
+        position: relative;
+        top: 7px;
+    }
+    #total-results a i{
+        font-size: 12px;
+    }
     .list-group-horizontal{
-        left: -21.25px;
+        left: -45px;
     }
     .list-group-item {
         width: 270px;
@@ -216,12 +226,20 @@
         width: 160px;
         padding: 0px 10px 0px 10px;
         left: -60px;
+        top: 13px;
     }
     #total-results span:first-child{
         font-size: 33px;
     }
     #total-results span:last-child{
         font-size: 30px;
+    }
+    #total-results a{
+        font-size: 14px;
+        top: 0px;
+    }
+    #total-results a i{
+        font-size: 13px;
     }
     .list-group-horizontal{
         left: -80px;
