@@ -241,7 +241,11 @@ span.description_text {
     }
 
     #uses_display {
-        padding-top: 0px;
+        padding-top: 0;
+        /*coz of desktop_levels (High/Med/Low text) moves it to right, fix it*/
+        position: relative;
+        /* half of #desktop_levels width*/
+        left: -40px;
     }
 
     .use_display {
@@ -274,9 +278,11 @@ span.description_text {
         font-size: 20px;
         background-color: transparent;
     }
+
     .hide_text {
         font-size: 0;
     }
+
     /*create class instead of use_circle*/
     .use_name {
         font-size: 18px;
@@ -294,6 +300,34 @@ span.description_text {
         height: 85px;
         margin-top: 30px;
         display: inline-block;
+    }
+
+    #desktop_levels {
+        width: 80px;
+        height: 240px;
+    }
+
+    .level_text {
+        display: block;
+        height: 50px;
+        width: 80px;
+        margin: 5px 0 25px 0;
+        font-size: 22px;
+        font-family: "Bariol";
+        font-weight: bold;
+        color: white;
+    }
+
+    .level_text_high {
+
+    }
+
+    .level_text_med {
+
+    }
+
+    .level_text_low {
+
     }
 
 }

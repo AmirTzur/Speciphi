@@ -92,6 +92,8 @@ $(document).ready(function () {
     function WidthChange() {
         // mobile screens
         if (window.matchMedia("(max-width: 991px)").matches) {
+            // remove levels_text
+            $('div#desktop_levels').remove();
             // hide all uses
             $('div#uses_display').children().each(function () {
                 $(this).css('display', 'none');
@@ -128,9 +130,17 @@ $(document).ready(function () {
                 // remove "desktop style" from buttons
                 $('div.use_levels').children('button').removeClass('use_level_button_0 hide_text');
             }
+
         } //end mobile screens
         // desktop screens
         else if (window.matchMedia("(min-width: 992px)").matches) {
+            // add levels text
+            $('#uses_display').prepend("" +
+                "<div id='desktop_levels'>" +
+                "<span class='level_text level_text_high'>High</span>" +
+                "<span class='level_text level_text_med'>Med</span>" +
+                "<span class='level_text level_text_low'>Low</span>" +
+                "</div>");
             // display uses in line
             $('div#uses_display').children().css('display', 'inline-block');
             // remove use_circle class and show name at the bottom
@@ -157,6 +167,8 @@ $(document).ready(function () {
                 // update buttons style
                 UpdateColumn($(this).children('div.use_levels'), $(this).children('div.use_levels').attr('data-brand'));
             });
+
+
         }//end desktop screens
     }// end responsive query
 
@@ -183,6 +195,7 @@ $(document).ready(function () {
             }
         });
     });
+
     // show matched description
     function startChoices(that) {
         // color text of pressed button

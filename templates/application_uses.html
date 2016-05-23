@@ -15,7 +15,9 @@
                     {% endfor %}
                 </ul>
             </div>
+
             <div id="uses_display">
+{#            <div id='desktop_levels' style="display: none"><span class='level_text'>High</span><span class='level_text'>Med</span><span class='level_text'>Low</span></div>#}
                 {% for use in template_uses %}
                     <div class="use_display" id="{{ use.Uses_id }}" style="display: none;">
                         <div class="use_circle">{{ use.Uses_name }}</div>
