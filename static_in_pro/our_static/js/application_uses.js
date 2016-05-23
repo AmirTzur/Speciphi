@@ -74,7 +74,7 @@ $(document).ready(function () {
                 // update description div
                 if ($(this).prop('id') == 'description_' + selected_use_level) {
                     $('#description_container').children('span').html($(this).html());
-                    $('#description_container').prepend("<span id='hover_description_name'>" + $(this).parent('div.use_levels').siblings('div.use_name').html() + "," + $(that).text() + "<span>");
+                    $('#description_container').prepend("<span id='hover_description_name'>" + $(that).text() + "<span>");
                 }
             });
             // color buttons
