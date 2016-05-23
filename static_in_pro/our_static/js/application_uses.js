@@ -69,10 +69,12 @@ $(document).ready(function () {
         if (window.matchMedia("(min-width: 992px)").matches) {
             // get pressed level of use
             var selected_use_level = $(this).prop('value');
+            var that = this;
             $(this).parent().children('span').each(function () {
                 // update description div
                 if ($(this).prop('id') == 'description_' + selected_use_level) {
                     $('#description_container').children('span').html($(this).html());
+                    $('#description_container').prepend("<span id='hover_description_name'>" + $(this).parent('div.use_levels').siblings('div.use_name').html() + "," + $(that).text() + "<span>");
                 }
             });
             // color buttons
@@ -83,6 +85,7 @@ $(document).ready(function () {
     $('button.use_level_button').mouseleave(function () {
         if (window.matchMedia("(min-width: 992px)").matches) {
             $('#description_container').children('span').html('&nbsp;');
+            $('#description_container').children('span').first().remove();
             // color buttons
             UpdateColumn($(this).parent('div.use_levels'), $(this).parent('div.use_levels').attr('data-brand'));
         }
@@ -152,7 +155,8 @@ $(document).ready(function () {
             // hide description text
             $('span.description_text').css('display', 'none');
             // add new description container
-            $('div#uses_wrapper form').prepend('<div id="description_container"><span>&nbsp;</span></div>');
+            $('div#uses_wrapper form').prepend('<p id="description_container"><span>&nbsp;</span></p>');
+
             // change use_levels buttons order
             $('#uses_display').children('div.use_display').each(function () {
                 // iterate buttons in reverse order

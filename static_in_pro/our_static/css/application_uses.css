@@ -334,4 +334,9 @@ span.description_text {
         opacity: 0.5;
     }
 
+    #hover_description_name {
+        color: rgb(230, 107, 49);
+        font-size: 15px;
+    }
+
 }
