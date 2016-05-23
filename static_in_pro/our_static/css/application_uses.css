@@ -304,14 +304,17 @@ span.description_text {
 
     #desktop_levels {
         width: 80px;
-        height: 240px;
+        position: relative;
+        top: 7px;
+        /*height: 240px;*/
+        /*padding-bottom: 50px;*/
     }
 
     .level_text {
         display: block;
-        height: 50px;
+        /*height: 40px;*/
         width: 80px;
-        margin: 5px 0 25px 0;
+        /*padding: 0 0 45px 0;*/
         font-size: 22px;
         font-family: "Bariol";
         font-weight: bold;
@@ -319,15 +322,16 @@ span.description_text {
     }
 
     .level_text_high {
-
+        padding-bottom: 48px;
     }
 
     .level_text_med {
-
+        opacity: 0.75;
+        padding-bottom: 48px;
     }
 
     .level_text_low {
-
+        opacity: 0.5;
     }
 
 }
