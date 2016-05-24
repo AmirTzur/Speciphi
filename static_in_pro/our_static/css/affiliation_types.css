@@ -151,7 +151,7 @@ span.description_text {
 @media only screen and (min-width: 480px) {
     .type_display {
         position: relative;
-        right: 45px;
+        right: 40px;
     }
 
     .type_button {
@@ -206,7 +206,7 @@ span.description_text {
     }
 
     span.description_text {
-        width: 175px;
+        width: 200px;
     }
 
     #mobile_types_list {
@@ -255,6 +255,10 @@ span.description_text {
     #types_second_row {
         padding-bottom: 10px;
         padding-top: 0;
+    }
+
+    #mobile_types_list {
+        display: none;
     }
 
     .type_button {
