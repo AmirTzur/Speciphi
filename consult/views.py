@@ -65,8 +65,8 @@ def affiliation(request, product=None):
     }
 
     if product == 'Laptop':
-        Product_id = 1  # Laptop product ID
-
+        Product_id = 2  # Laptop product ID
+        print(product)
     if product:
         # connect to djarooDB
         try:
@@ -78,6 +78,7 @@ def affiliation(request, product=None):
                 # Output: Affiliations - id, Affiliations names, descriptions and images
                 cursor.execute('CALL getProductAffiliations(%s)', [Product_id])
                 affiliations = dictfetchall(cursor)
+                print()
                 cursor.close()
 
             cursor = connection.cursor()
@@ -117,7 +118,46 @@ def affiliation(request, product=None):
             })
         if ConsultationProcess_id:
             request.session['ConsultationProcess_id'] = ConsultationProcess_id[0]
-
+        # copy form input tags to Affiliations dict
+        # check if instead of double loop, first take out the name attr from the input using xml parsing
+        for f in form:
+            for a in affiliations:
+                if str(a['name']) in str(f):
+                    a['form_input'] = str(f)
+        # Get deals data for results feature and create dictionary of deals
+        # for each results category: {sort_indicator: brand, model, image_url,
+        #                                             offers[{deal_id, deal_url, vendor_name, price}, {}, ]}
+        offers = [
+            {'sort_indicator': 'Best Match', 'brand': 'Apple', 'model': 'Macbook Pro', 'image_url': 'http://ecx.images-amazon.com/images/I/41lmJ1hPMnL._SL160_.jpg',
+             'offers': [{'deal_id': 111, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B00GZB8D0M%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
+                         'price': 950}, {'deal_id': 222, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1000}]
+             },
+            {'sort_indicator': 'Most Purchased', 'brand': 'Lenovo', 'model': 'Yoga 3', 'image_url': 'http://ecx.images-amazon.com/images/I/41238W8tcjL._SL160_.jpg',
+             'offers': [{'deal_id': 333, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B00VQP3DNY%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
+                         'price': 1050}, {'deal_id': 444, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1100}]
+             },
+            {'sort_indicator': 'Type Popular', 'brand': 'Dell', 'model': 'XPS', 'image_url': 'http://ecx.images-amazon.com/images/I/218dheiyUrL._SL160_.jpg',
+             'offers': [{'deal_id': 555, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B00SQG3MQE%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
+                         'price': 1150}, {'deal_id': 666, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1200}]
+             },
+            {'sort_indicator': 'Cost Effective', 'brand': 'Asus', 'model': 'Zenbook 133X', 'image_url': 'http://ecx.images-amazon.com/images/I/41-6oCGJqwL._SL160_.jpg',
+             'offers': [{'deal_id': 777, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B01BLU6ERK%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
+                         'price': 1250}, {'deal_id': 888, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1300}]
+             },
+            {'sort_indicator': 'Stylish', 'brand': 'Sony', 'model': 'Bomber 304', 'image_url': 'http://ecx.images-amazon.com/images/I/41sgEA0JL-L._SL160_.jpg',
+             'offers': [{'deal_id': 999, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B018AX3YGU%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
+                         'price': 1350}, {'deal_id': 121, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1400}]
+             },
+        ]
+        total_results = 1435
+        context.update({
+            "Product_id": Product_id,
+            "affiliationsLength": len(affiliations),
+            "affiliations": affiliations,
+            "ConsultationProcess_id": ConsultationProcess_id[0],
+            "offers": offers[0:3],
+            "total_results": total_results,
+        })
     return render(request, "affiliation.html", context)
 
     # Always return an HttpResponseRedirect after successfully dealing
@@ -291,8 +331,46 @@ def NewConsulteeAffiliation(request):
                 cursor.close()
         except Error as e:
             print(e)
-
-        response_data['result'] = 'Create post successful!'
+        offers = [
+            {'sort_indicator': 'Best Match', 'brand': 'Affle', 'model': 'Macbook Froombook',
+             'image_url': 'http://ecx.images-amazon.com/images/I/51T4mO8USwL._SL160_.jpg',
+             'offers': [{'deal_id': 111,
+                         'deal_url': 'http://www.amazon.com/gp/offer-listing/B01C7UGP04%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                         'vendor_name': 'Amazon',
+                         'price': 2150}, {'deal_id': 222, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1000}]
+             },
+            {'sort_indicator': 'Most Purchased', 'brand': 'Denovo', 'model': 'Yona 3',
+             'image_url': 'http://ecx.images-amazon.com/images/I/41sgEA0JL-L._SL160_.jpg',
+             'offers': [{'deal_id': 333,
+                         'deal_url': 'http://www.amazon.com/gp/offer-listing/B00VX4K8AY%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                         'vendor_name': 'Amazon',
+                         'price': 2250}, {'deal_id': 444, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1100}]
+             },
+            {'sort_indicator': 'Type Popular', 'brand': 'Nell', 'model': 'PPS',
+             'image_url': 'http://ecx.images-amazon.com/images/I/11g7mTNdxLL._SL160_.jpg',
+             'offers': [{'deal_id': 555,
+                         'deal_url': 'http://www.amazon.com/gp/offer-listing/B0143Q3TLS%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                         'vendor_name': 'Amazon',
+                         'price': 2550}, {'deal_id': 666, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1200}]
+             },
+            {'sort_indicator': 'Cost Effective', 'brand': 'Azuz', 'model': 'Benbook 133X',
+             'image_url': 'http://ecx.images-amazon.com/images/I/51ePHH0Re8L._SL160_.jpg',
+             'offers': [{'deal_id': 777,
+                         'deal_url': 'http://www.amazon.com/gp/offer-listing/B00J39HLEM%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                         'vendor_name': 'Amazon',
+                         'price': 2750}, {'deal_id': 888, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1300}]
+             },
+            {'sort_indicator': 'Stylish', 'brand': 'Rony', 'model': 'Romber 304',
+             'image_url': 'http://ecx.images-amazon.com/images/I/41gL4chShUL._SL160_.jpg',
+             'offers': [{'deal_id': 999,
+                         'deal_url': 'http://www.amazon.com/gp/offer-listing/B01COPL3PO%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                         'vendor_name': 'Amazon',
+                         'price': 2800}, {'deal_id': 121, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1400}]
+             },
+        ]
+        total_results = 1450
+        response_data['total_results'] = total_results
+        response_data['offers'] = offers
         return HttpResponse(
             json.dumps(response_data),
             content_type="application/json"
