@@ -12,9 +12,8 @@
 
 #uses_display {
     overflow: hidden;
-    margin-top: 8px;
     padding-top: 20px;
-    padding-bottom: 30px;
+    padding-bottom: 5px;
 }
 
 #mobile_uses_list {

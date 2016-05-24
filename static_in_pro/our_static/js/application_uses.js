@@ -69,12 +69,12 @@ $(document).ready(function () {
         if (window.matchMedia("(min-width: 992px)").matches) {
             // get pressed level of use
             var selected_use_level = $(this).prop('value');
-            var that = this;
+            var that_button = this;
             $(this).parent().children('span').each(function () {
                 // update description div
                 if ($(this).prop('id') == 'description_' + selected_use_level) {
                     $('#description_container').children('span').html($(this).html());
-                    $('#description_container').prepend("<span id='hover_description_name'>" + $(that).text() + "<span>");
+                    $('#description_container').prepend("<span id='hover_description_name'>" + $(that_button).text() + "<span>");
                 }
             });
             // color buttons
