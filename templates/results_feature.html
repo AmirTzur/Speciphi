@@ -1,0 +1,54 @@
+{% load staticfiles %}
+
+
+<head>
+    <link href="{% static 'css/results_feature.css' %}" rel="stylesheet">
+    <!-- jQuery UI Style -->
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.min.css" />
+</head>
+<body>
+    <!-- Footer: Results Feature -->
+    {# The <footer> element is not supported in Internet Explorer 8 and earlier versions #}
+    <footer id="results-feature" class="footer" style="display: none">
+        <div id="results-container" class="container-fluid">
+            <div class="hidden-xs col-sm-12">
+                <div id="close-mode">
+                    <button id="open-btn" class="control-btn center-block" type="button"></button>
+                    <span>current results</span>
+                </div>
+                <div id="open-mode">
+                    <button id="close-btn" class="control-btn center-block" type="button"></button>
+                    <div id="price-slider" class="center-block">
+                        <label for="slider-min"></label>
+                        <input type="text" id="slider-min" class="price-tag" readonly>
+                        <div id="slider-range"></div>
+                        <label for="slider-max"></label>
+                        <input type="text" id="slider-max" class="price-tag" readonly>
+                    </div>
+                    <div id="deals-wrapper">
+                        <div id="total-results">
+                            <span>{{ total_results }}</span>
+                            <span>results</span>
+                            <a href="{% url 'results' %}">end process&nbsp;<i class="fa fa-forward fa-lg" aria-hidden="true"></i></a>
+                        </div>
+                        <div id="deals-list" class="list-group-horizontal center-block">
+                            {% for deal in offers %}
+                                <a href="{{ deal.offers.0.deal_url }}" target="_blank" class="list-group-item">
+                                    <div class="item-details">
+                                        <span>{{ deal.sort_indicator }}</span>
+                                        <span>${{ deal.offers.0.price }}</span>
+                                        <span>{{ deal.brand }}&nbsp;{{ deal.model }}</span>
+                                    </div>
+                                    <img src="{{ deal.image_url }}">
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery UI Scripts -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+</body>
