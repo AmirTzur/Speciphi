@@ -29,7 +29,7 @@
                         <div id="total-results">
                             <span>{{ total_results }}</span>
                             <span>results</span>
-                            <a href="{% url 'results' %}">end process&nbsp;<i class="fa fa-forward fa-lg" aria-hidden="true"></i></a>
+                            <a href="{% url 'results' product %}">end process&nbsp;<i class="fa fa-forward fa-lg" aria-hidden="true"></i></a>
                         </div>
                         <div id="deals-list" class="list-group-horizontal center-block">
                             {% for deal in offers %}

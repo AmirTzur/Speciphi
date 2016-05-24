@@ -22,4 +22,4 @@ function AJAX_setNewConsulteeAffiliation(object) {
                 console.log(xhr.status + ": " + xhr.responseText, errmsg, err); // provide a bit more info about the error to the console
             }
         });
-    }
+}

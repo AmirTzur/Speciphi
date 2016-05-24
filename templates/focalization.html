@@ -1,18 +1,14 @@
-{% extends 'djaroo_base.html' %}
+{% extends 'process_base.html' %}
 {% load staticfiles %}
 
 <title>
     {% block head_title %} Focalization {{ block.super }}{% endblock %}
 </title>
 
-{% block content %}
+{% block process_content %}
 
-    <!-- Feature: information elements -->
-{#    {% include "info_elements.html" %}#}
     <!-- Feature: Questions -->
 {#    {% include "focalization_questions.html" %}#}
-    <!-- Feature: results -->
-{#    {% include "results_feature.html" %}#}
 
     <!-- Scripts -->
 {#    {% include "focalization_js.html" %}#}

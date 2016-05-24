@@ -1,14 +1,16 @@
-{% extends 'djaroo_base.html' %}
+{% extends 'process_base.html' %}
 {% load staticfiles %}
 
 <title>
     {% block head_title %} Application {{ block.super }}{% endblock %}
 </title>
 
-{% block content %}
-    <!-- Feature: types -->
+{% block process_content %}
+
+    <!-- Feature: uses -->
     {% include "application_uses.html" %}
 
     <!-- Scripts -->
     {% include "application_js.html" %}
+
 {% endblock %}

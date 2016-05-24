@@ -20,15 +20,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^$', 'consult.views.home', name='home'),
-    url(r'^affiliation/$', 'consult.views.affiliation', name='affiliation'),
-    url(r'^application/$', 'consult.views.application', name='application'),
-    url(r'^focalization/$', 'consult.views.focalization', name='focalization'),
-    url(r'^comparison/$', 'consult.views.comparison', name='comparison'),
-    url(r'^results/$', 'consult.views.results', name='results'),
-    # url(r'^accounts/', include('allauth.urls')),
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^success_close/$', 'consult.views.success_close', name='success_close'),
-    url(r'^NewConsulteeAffiliation/$', 'consult.views.NewConsulteeAffiliation', name='NewConsulteeAffiliation'),
     url(r'^([a-zA-Z]\w+)/affiliation/$', 'consult.views.affiliation', name='affiliation'),
     url(r'^([a-zA-Z]\w+)/application/$', 'consult.views.application', name='application'),
     url(r'^([a-zA-Z]\w+)/focalization/$', 'consult.views.focalization', name='focalization'),
@@ -37,7 +28,8 @@ urlpatterns = [
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^admin/', include(admin.site.urls)),
-
+    url(r'^success_close/$', 'consult.views.success_close', name='success_close'),
+    url(r'^NewConsulteeAffiliation/$', 'consult.views.NewConsulteeAffiliation', name='NewConsulteeAffiliation'),
 ]
 
 if settings.DEBUG:

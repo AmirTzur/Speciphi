@@ -1,18 +1,14 @@
-{% extends 'djaroo_base.html' %}
+{% extends 'process_base.html' %}
 {% load staticfiles %}
 
 <title>
     {% block head_title %} Affiliation {{ block.super }}{% endblock %}
 </title>
 
-{% block content %}
+{% block process_content %}
 
-    <!-- Feature: information elements -->
-{#    {% include "info_elements.html" %}#}
     <!-- Feature: types -->
     {% include "affiliation_types.html" %}
-    <!-- Feature: results -->
-    {% include "results_feature.html" %}
 
     <!-- Scripts -->
     {% include "affiliation_js.html" %}
