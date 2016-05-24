@@ -171,8 +171,6 @@ $(document).ready(function () {
                 // update buttons style
                 UpdateColumn($(this).children('div.use_levels'), $(this).children('div.use_levels').attr('data-brand'));
             });
-
-
         }//end desktop screens
     }// end responsive query
 

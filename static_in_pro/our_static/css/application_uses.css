@@ -263,7 +263,6 @@ span.description_text {
         height: 50px;
         width: 50px;
         margin: 0 0 30px 0;
-        font-size: 20px;
     }
 
     /*none selected use_level_button # desktop*/
@@ -303,6 +302,7 @@ span.description_text {
         display: inline-block;
     }
 
+    /*holds the level (High/Med/Low) right to uses*/
     #desktop_levels {
         width: 80px;
         position: relative;
@@ -339,5 +339,38 @@ span.description_text {
         color: rgb(230, 107, 49);
         font-size: 15px;
     }
+}
 
+/* Large Devices, Wide Screens */
+@media only screen and (min-width: 1200px) {
+
+    .use_level_button {
+        height: 55px;
+        width: 55px;
+        margin: 0 0 38px 0;
+    }
+
+    /* 95 = 55 (button) + 40 (margin) */
+    .use_display {
+        width: 95px;
+
+    }
+
+    .use_name {
+        width: 95px;
+        padding-left: 3px;
+        padding-right: 3px;
+    }
+
+    .level_text_high {
+        padding-bottom: 64px;
+    }
+
+    .level_text_med {
+        padding-bottom: 63px;
+    }
+
+    #uses_display {
+        padding: 0;
+    }
 }
