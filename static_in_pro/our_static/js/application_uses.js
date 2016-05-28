@@ -132,6 +132,8 @@ $(document).ready(function () {
                 });
                 // remove "desktop style" from buttons
                 $('div.use_levels').children('button').removeClass('use_level_button_0 hide_text');
+                // $('div.use_level_button').addClass('center-block');
+
             }
 
         } //end mobile screens
@@ -171,6 +173,7 @@ $(document).ready(function () {
                 // update buttons style
                 UpdateColumn($(this).children('div.use_levels'), $(this).children('div.use_levels').attr('data-brand'));
             });
+
         }//end desktop screens
     }// end responsive query
 
