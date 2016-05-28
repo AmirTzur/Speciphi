@@ -54,7 +54,7 @@
                                         {% else %}
                                    href="{% url pages|keylist2:page product %}"
                                         {% endif %}
-                                        >{{ page }}
+                                >{{ page }}
                                 </a>
                             {% endfor %}
                         </li>
@@ -121,15 +121,15 @@
                         <!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="#">HTML</a></li>-->
                     </li>
                     <li role="presentation" class="divider"></li>
-{#                    {% for page in pages %}#}
-{#                        <li><a#}
-{#                                {% if page == 'Home' %}#}
-{#                                    href="{% url pages|keylist2:page %}"#}
-{#                                {% else %}#}
-{#                                    href="{% url pages|keylist2:page product %}"#}
-{#                                {% endif %}#}
-{#                                    class="text-align-center">{{ page }}</a></li>#}
-{#                    {% endfor %}#}
+                    {#                    {% for page in pages %}#}
+                    {#                        <li><a#}
+                    {#                                {% if page == 'Home' %}#}
+                    {#                                    href="{% url pages|keylist2:page %}"#}
+                    {#                                {% else %}#}
+                    {#                                    href="{% url pages|keylist2:page product %}"#}
+                    {#                                {% endif %}#}
+                    {#                                    class="text-align-center">{{ page }}</a></li>#}
+                    {#                    {% endfor %}#}
                 </ul>
             </div>
             {#right-side-nav#}
@@ -204,7 +204,8 @@
     {#    facebook script#}
     window.fbAsyncInit = function () {
         FB.init({
-            appId: '824594521003011',
+            {#            appId: '824594521003011', // local#}
+            appId: '658096024344639', //production
             xfbml: true,
             version: 'v2.5'
         });
