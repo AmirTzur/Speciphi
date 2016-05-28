@@ -132,8 +132,6 @@ $(document).ready(function () {
                 });
                 // remove "desktop style" from buttons
                 $('div.use_levels').children('button').removeClass('use_level_button_0 hide_text');
-                // $('div.use_level_button').addClass('center-block');
-
             }
 
         } //end mobile screens
@@ -228,22 +226,22 @@ $(document).ready(function () {
                 $(use_column).children('button').addClass('use_level_button_0');
                 break;
             case '1':
-                // remove top 2
+                // show only bottom button as filled
                 $($(use_column).children('button')[0]).addClass('use_level_button_0');
                 $($(use_column).children('button')[1]).addClass('use_level_button_0');
                 $($(use_column).children('button')[2]).removeClass('use_level_button_0');
                 break;
             case '2':
-                // remove top 1
+                // show only middle button as filled
                 $($(use_column).children('button')[0]).addClass('use_level_button_0');
                 $($(use_column).children('button')[1]).removeClass('use_level_button_0');
-                $($(use_column).children('button')[2]).removeClass('use_level_button_0');
+                $($(use_column).children('button')[2]).addClass('use_level_button_0');
                 break;
             case '3':
-                // show all fills
+                // show only top button as filled
                 $($(use_column).children('button')[0]).removeClass('use_level_button_0');
-                $($(use_column).children('button')[1]).removeClass('use_level_button_0');
-                $($(use_column).children('button')[2]).removeClass('use_level_button_0');
+                $($(use_column).children('button')[1]).addClass('use_level_button_0');
+                $($(use_column).children('button')[2]).addClass('use_level_button_0');
                 break;
             case '4':
                 // add "high level" style
