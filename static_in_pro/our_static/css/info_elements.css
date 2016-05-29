@@ -1,0 +1,11 @@
+#process-header-wrapper{
+    background-color: white;
+}
+/* Logo */
+#process-header-logo{
+    background: url('../img/logo/Logo.svg') no-repeat;
+    background-size: 105px 39px;
+}
+/* Title */
+
+/* Information Elements */

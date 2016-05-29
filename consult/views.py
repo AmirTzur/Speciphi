@@ -125,7 +125,7 @@ def affiliation(request, product=None):
                     a['form_input'] = str(f)
         # Get deals data for results feature and create dictionary of deals
         # for each results category: {sort_indicator: brand, model, image_url,
-        #                                             offers[{deal_id, deal_url, vendor_name, price}, {}, ]}
+        # offers[{deal_id, deal_url, vendor_name, price}, {}, ]}
         offers = [
             {'sort_indicator': 'Best Match', 'brand': 'Apple', 'model': 'Macbook Pro', 'image_url': 'http://ecx.images-amazon.com/images/I/41lmJ1hPMnL._SL160_.jpg',
              'offers': [{'deal_id': 111, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B00GZB8D0M%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
@@ -149,6 +149,11 @@ def affiliation(request, product=None):
              },
         ]
         total_results = 1435
+        # Get page Title and Description
+        page_title = 'Choose your type'
+        page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
+                    'Donec in maximus augue. Quisque euismod euismod posuere. ' \
+                    'Phasellus tempor sed felis ac porta.'
         context.update({
             "Product_id": Product_id,
             "affiliationsLength": len(affiliations),
@@ -156,6 +161,8 @@ def affiliation(request, product=None):
             "ConsultationProcess_id": ConsultationProcess_id[0],
             "offers": offers[0:3],
             "total_results": total_results,
+            "page_title": page_title,
+            "page_desc": page_desc,
         })
     return render(request, "affiliation.html", context)
 
