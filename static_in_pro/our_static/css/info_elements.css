@@ -1,11 +1,81 @@
 #process-header-wrapper{
     background-color: white;
 }
+/* Header - Left Side */
+#header-left{
+
+}
 /* Logo */
 #process-header-logo{
-    background: url('../img/logo/Logo.svg') no-repeat;
-    background-size: 105px 39px;
+    width: 105px;
+    height: 39px;
+    background: url("../img/logo/Logo.svg") no-repeat;
 }
 /* Title */
+#process-header-title{
+
+}
+#page-header{
+    font-size: 23px;
+    font-family: "Bariol";
+    color: rgb(230, 89, 42);
+    font-weight: bold;
+    font-style: italic;
+    line-height: 1.5;
+    text-align: center;
+}
+#page-desc{
+
+}
 
 /* Information Elements */
+
+
+/* Results Feature - Responsive */
+
+/* Extra small devices - 320px Design (phones, less than 480px) */
+@media (max-width: 767px) {
+    #process-header-logo{
+        display: block;
+    }
+    #process-header-title{
+        text-align: left;
+    }
+    #page-desc{
+        display: none;
+    }
+}
+/* Extra small devices - 480px Design (phones, less than 768 and greater than 480) */
+@media (min-width: 480px) and (max-width: 767px) {
+
+}
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    #header-left{
+
+    }
+    #process-header-logo{
+        display: inline-block;
+        width: 181px;
+        height: 67px;
+    }
+    #process-header-title{
+        display: inline-block;
+    }
+    #page-header{
+        display: block;
+    }
+    #page-desc{
+        display: block;
+        width: 225px;
+    }
+}
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+
+}
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+
+}
