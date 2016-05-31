@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <script type="text/javascript">
+        // for facebook login
         parent.closeIFrame();
+    </script>
+    <script type="text/javascript">
         // email confirmation
         if (window.self === window.top) // if window don't have parent (not an iframe), redirect to home page
         {
-{#            window.location = "http://localhost:8000";#}
-            // production
+            {#            window.location = "http://localhost:8000";#}
+            // redirect to production
             window.location = "http://www.djaroo.com";
         }
     </script>
