@@ -53,9 +53,9 @@
     </div>
 {% endblock %}
 <script>
-    if (window.self === window.top) // inside an iframe
+    if (window.self === window.top) // inside a popup
     {
-        document.getElementById('close_icon').style.display = 'none';
+        document.getElementById('close_icon').style.display = 'none'; // jquery didn't load here so use javascript
     }
 </script>
 </body>
