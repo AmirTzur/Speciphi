@@ -46,22 +46,17 @@
 {% endblock %}
 
 {% block extra_body %}
-    <div id="close_icon">
+    <div id="close_icon" style="position: absolute; top: 260px; left: 90%;">
         <a onclick="parent.closeIFrame();">
             <i class="fa fa-times"></i>
         </a>
     </div>
 {% endblock %}
-
 <script>
-    //try to close the iframe when url changed
-    {#    window.parent.document.getElementById("accounts_iframe").contentWindow.location.href = '#';#}
-    {#        alert(window.parent.document.getElementById("accounts_iframe").contentWindow.location);#}
-    {#    $(window).on('hashchange', function () {#}
-    {#        alert();#}
-    {#        $('#accounts_iframe', window.parent.document).remove();#}
-    {#        window.parent.reload();#}
-    {#    });#}
+    if (window.self === window.top) // inside an iframe
+    {
+        document.getElementById('close_icon').style.display = 'none';
+    }
 </script>
 </body>
 </html>
