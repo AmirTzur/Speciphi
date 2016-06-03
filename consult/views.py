@@ -1,3 +1,4 @@
+import time
 from django.shortcuts import render
 from collections import OrderedDict
 from django.db import connection, Error
@@ -5,7 +6,6 @@ from django.db import connection, Error
 from consult.forms import AffiliationsForm, UsesForm
 from django.http import HttpResponse
 from consult.models import Levelofuse
-# from pyipinfodb import pyipinfodb
 import urllib.request
 import json
 
@@ -29,8 +29,8 @@ def home(request):
             user_ip = x_forwarded_for.split(',')[0]
         else:
             user_ip = request.META.get('REMOTE_ADDR')
-        # get location by ip
         f = urllib.request.urlopen('http://ip-api.com/json/' + str(user_ip))
+        # get location by ip
         geo_data = f.read()
         f.close()
         geo_dict = json.loads(geo_data.decode('UTF-8'))
@@ -315,6 +315,9 @@ def application(request, product=None):
 
 
 def focalization(request, product=None):
+    # http://stackoverflow.com/questions/26566799/selenium-python-how-to-wait-until-the-page-is-loaded
+    from selenium import webdriver
+
     pages = OrderedDict()
     pages['Home'] = [False, "home"]
     pages['Affil'] = [False, "affiliation"]
@@ -322,11 +325,39 @@ def focalization(request, product=None):
     pages['Focal'] = [True, "focalization"]
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [False, "results"]
+
+    # upc = 889349130445
+    # url = 'http://www.rakuten.com/sr/searchresults#qu=' + str(upc)
+    # browser = webdriver.Firefox()
+    # browser.get(url)
+    # web_data = browser.page_source
+    # desired_content_is_loaded = False
+    # # loop until sku is loaded
+    # while not desired_content_is_loaded:
+    #     if 'data-sku="' not in web_data:
+    #         time.sleep(3)
+    #         web_data = browser.page_source
+    #         print('not found')
+    #     else:
+    #         desired_content_is_loaded = True
+    #         print('found')
+    #         start_index = int(web_data.index('data-sku="') + len('data-sku="'))
+    #         end_index = int(start_index + 9)
+    #         sku = web_data[start_index:end_index]
+    #         print(sku)
+
+    # sku = 259193368
+    # sku = str(sku)
+    # url = 'http://www.rakuten.com/prod/' + sku + '.html'
+    # browser = webdriver.Firefox()
+    # browser.get(url)
+    # web_data = browser.page_source
+    # # browser.quit()
     context = {
         "pages": pages,
         "product": product,
+        # "web_data": web_data,
     }
-
     return render(request, "focalization.html", context)
 
 
