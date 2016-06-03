@@ -2,47 +2,74 @@
     background-color: white;
 }
 /* Header - Left Side */
-#header-left{
-
-}
 /* Logo */
-#process-header-logo{
+.process-header-logo{
     width: 105px;
     height: 39px;
     background: url("../img/logo/Logo.svg") no-repeat;
 }
 /* Title */
-#process-header-title{
+.process-header-title{
 
 }
-#page-header{
-    font-size: 23px;
+.page-header{
+    font-size: 20px;
     font-family: "Bariol";
     color: rgb(230, 89, 42);
     font-weight: bold;
     font-style: italic;
-    line-height: 1.5;
+    line-height: 1.2;
     text-align: center;
+    border-bottom: none;
 }
 #page-desc{
+    font-size: 15px;
+    font-family: "Bariol";
+    /*color: rgba(38, 51, 46, 0.8);*/
+    line-height: 1.2;
+}
+/* Header - Right Side */
+/* Information Elements */
+#info-elements{
 
 }
+#info-elements svg{
+    float: right;
+    display: inline-block;
 
-/* Information Elements */
-
+}
+#info-elements svg:nth-last-of-type(1){
+    width: 28px;
+    height: 28px;
+    position: relative;
+    top: 45px;
+    margin-left: 6px;
+}
+#info-elements svg:nth-last-of-type(2){
+    width: 27px;
+    height: 27px;
+    position: relative;
+    top: 46px;
+    margin-left: 6px;
+}
+#info-elements svg:nth-last-of-type(3){
+    width: 32px;
+    height: 30px;
+    position: relative;
+    top: 44px;
+    margin-left: 4px;
+}
 
 /* Results Feature - Responsive */
 
 /* Extra small devices - 320px Design (phones, less than 480px) */
 @media (max-width: 767px) {
-    #process-header-logo{
+    .process-header-logo{
         display: block;
     }
-    #process-header-title{
+    .process-header-title{
         text-align: left;
-    }
-    #page-desc{
-        display: none;
+        margin-bottom: 12px;
     }
 }
 /* Extra small devices - 480px Design (phones, less than 768 and greater than 480) */
@@ -51,27 +78,52 @@
 }
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
-    #header-left{
-
-    }
-    #process-header-logo{
+    .process-header-logo{
         display: inline-block;
         width: 181px;
         height: 67px;
+        position: relative;
+        top: 26.5px;
+        float: left;
     }
-    #process-header-title{
+    .process-header-title{
         display: inline-block;
+        margin-bottom: 2px;
+        text-align: center;
     }
-    #page-header{
+    .page-header{
         display: block;
+        font-size: 30px;
+        margin: 0px;
+        padding: 0px;
     }
     #page-desc{
         display: block;
-        width: 225px;
+        width: 220px;
+        height: 72px;
+    }
+    #info-elements svg:nth-last-of-type(1){
+        width: 38px;
+        height: 38px;
+        top: 68px;
+        margin-left: 10px;
+    }
+    #info-elements svg:nth-last-of-type(2){
+        width: 37px;
+        height: 37px;
+        top: 69px;
+        margin-left: 10px;
+    }
+    #info-elements svg:nth-last-of-type(3){
+        width: 42px;
+        height: 40px;
+        top: 67px;
+        margin-left: 8px;
     }
 }
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
+
 
 }
 /* Large devices (large desktops, 1200px and up) */

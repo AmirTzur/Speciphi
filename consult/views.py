@@ -153,7 +153,7 @@ def affiliation(request, product=None):
         page_title = 'Choose your type'
         page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
                     'Donec in maximus augue. Quisque euismod euismod posuere. ' \
-                    'Phasellus tempor sed felis ac porta.'
+                    'Phasellus tempor.'
         context.update({
             "Product_id": Product_id,
             "affiliationsLength": len(affiliations),
