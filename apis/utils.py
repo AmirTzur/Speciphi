@@ -40,7 +40,6 @@ def get_sku(upc=None):
     while len(upc) < 12:
         upc = '0' + upc
         print('added zero', upc)
-
     url = 'http://www.rakuten.com/sr/searchresults#qu=' + upc
     browser = webdriver.Firefox()
     browser.get(url)
@@ -263,12 +262,10 @@ def get_spec(sku=None):
     term = '<th>Flash Memory Capacity </th>'
     if term in web_data:
         specs_dic['flashMemoryCapacity'] = get_spec_val(web_data, term)
-
     # remove space at beginning of values
     for key, value in specs_dic.items():
         if ' ' in value and value.index(' ') == 0:
             specs_dic[key] = value[1:]
-
     return specs_dic
 
 
@@ -317,7 +314,7 @@ class LaptopSpecs(object):
                      'solidStateDriveCapacity', 'processorSpeed', 'processorType', 'processorModel', 'processorCore',
                      'processorManufacturer', 'operatingSystem', 'operatingSystemArchitecture',
                      'operatingSystemPlatform', 'limitedWarranty', 'headphone.microphoneComboPort', 'microHdmi',
-                     'touchScreen', 'flashMemoryCapacity'
+                     'touchScreen', 'flashMemoryCapacity',
                      ]
         # open spec's (output) csv
         output_csv_file = open('specs.csv', 'w', encoding='utf-8', newline='')
@@ -332,7 +329,6 @@ class LaptopSpecs(object):
                     # header
                     for key in spec_keys:
                         row.append(key)
-                    # row.append('spec')
                     print(row)
                     print()
                     csv_writer.writerow(row)
@@ -347,7 +343,6 @@ class LaptopSpecs(object):
                             row.append(spec_dict[key])
                         else:
                             row.append('')
-                    # row.append(spec_dict)
                     print(row)
                     # write row to csv
                     csv_writer.writerow(row)
