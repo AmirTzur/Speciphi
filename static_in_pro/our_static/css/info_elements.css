@@ -123,11 +123,24 @@
 }
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
-
-
+    .process-header-logo{
+        display: inline-block;
+        width: 198px;
+        height: 74px;
+        position: relative;
+        top: 23px;
+        /*float: left;*/
+    }
+    .page-header{
+        font-size: 45px;
+    }
+    #page-desc{
+        width: 320px;
+        height: 54px;
+        font-size: 15px;
+    }
 }
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
-
 
 }
