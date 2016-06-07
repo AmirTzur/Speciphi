@@ -282,10 +282,17 @@ def application(request, product=None):
              },
         ]
         total_results = 1435
+        # Get page Title and Description
+        page_title = 'Choose your uses'
+        page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
+                    'Donec in maximus augue. Quisque euismod euismod posuere. ' \
+                    'Phasellus tempor.'
         context.update({
             "template_uses": template_uses,
             "offers": offers[0:3],
             "total_results": total_results,
+            "page_title": page_title,
+            "page_desc": page_desc,
         })
 
     return render(request, "application.html", context)
@@ -299,9 +306,16 @@ def focalization(request, product=None):
     pages['Focal'] = [True, "focalization"]
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [False, "results"]
+    # Get page Title and Description
+    page_title = 'Choose your focal'
+    page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
+                'Donec in maximus augue. Quisque euismod euismod posuere. ' \
+                'Phasellus tempor.'
     context = {
         "pages": pages,
         "product": product,
+        "page_title": page_title,
+        "page_desc": page_desc,
     }
 
     return render(request, "focalization.html", context)
@@ -315,8 +329,15 @@ def comparison(request, product=None):
     pages['Focal'] = [False, "focalization"]
     pages['Compar'] = [True, "comparison"]
     pages['Results'] = [False, "results"]
+    # Get page Title and Description
+    page_title = 'Choose your comp'
+    page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
+                'Donec in maximus augue. Quisque euismod euismod posuere. ' \
+                'Phasellus tempor.'
     context = {
         "pages": pages,
+        "page_title": page_title,
+        "page_desc": page_desc,
     }
     return render(request, "comparison.html", context)
 
