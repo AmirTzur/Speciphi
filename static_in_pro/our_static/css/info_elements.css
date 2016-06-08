@@ -33,31 +33,36 @@
 #info-elements{
 
 }
-#info-elements svg{
+#info-elements button{
     float: right;
     display: inline-block;
-
+    width: 32px;
+    height: 50px;
+    padding: 0px;
+    position: relative;
+    top: 25px;
+    background-color: transparent;
+    border: none;
 }
-#info-elements svg:nth-last-of-type(1){
+#info-elements svg{
     width: 28px;
     height: 28px;
-    position: relative;
-    top: 45px;
-    margin-left: 6px;
 }
-#info-elements svg:nth-last-of-type(2){
-    width: 27px;
-    height: 27px;
+#info-statistic svg{
     position: relative;
-    top: 46px;
-    margin-left: 6px;
+    left: -1px;
 }
-#info-elements svg:nth-last-of-type(3){
-    width: 32px;
-    height: 30px;
+.info-notification{
     position: relative;
-    top: 44px;
-    margin-left: 4px;
+    left: 5px;
+    top: 1.5px;
+    z-index: 10;
+    border-radius: 5px;
+    background-color: #e6592a;
+}
+.info-notification:empty {
+    display: inline-block;
+    visibility: hidden;
 }
 
 /* Results Feature - Responsive */
@@ -102,23 +107,21 @@
         width: 220px;
         height: 72px;
     }
-    #info-elements svg:nth-last-of-type(1){
+    #info-elements button{
+        width: 42px;
+        height: 60px;
+        position: relative;
+        top: 48px;
+        /*border: solid 1px;*/
+        border: none;
+    }
+    #info-elements svg{
         width: 38px;
         height: 38px;
-        top: 68px;
-        margin-left: 10px;
     }
-    #info-elements svg:nth-last-of-type(2){
-        width: 37px;
-        height: 37px;
-        top: 69px;
-        margin-left: 10px;
-    }
-    #info-elements svg:nth-last-of-type(3){
-        width: 42px;
-        height: 40px;
-        top: 67px;
-        margin-left: 8px;
+    .info-notification{
+        left: 9px;
+        top: 3px;
     }
 }
 /* Medium devices (desktops, 992px and up) */
@@ -129,7 +132,6 @@
         height: 74px;
         position: relative;
         top: 23px;
-        /*float: left;*/
     }
     .page-header{
         font-size: 45px;
