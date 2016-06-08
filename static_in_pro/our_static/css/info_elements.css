@@ -1,6 +1,7 @@
 #process-header-wrapper{
     background-color: white;
 }
+
 /* Header - Left Side */
 /* Logo */
 .process-header-logo{
@@ -28,6 +29,7 @@
     /*color: rgba(38, 51, 46, 0.8);*/
     line-height: 1.2;
 }
+
 /* Header - Right Side */
 /* Information Elements */
 #info-elements{
@@ -112,8 +114,6 @@
         height: 60px;
         position: relative;
         top: 48px;
-        /*border: solid 1px;*/
-        border: none;
     }
     #info-elements svg{
         width: 38px;
