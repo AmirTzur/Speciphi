@@ -74,8 +74,8 @@ def get_spec(sku=None):
     # end position
     if '<h2>More Buying Options</h2>' in web_data:
         end_index = int(web_data.index('<h2>More Buying Options</h2>'))
-    # elif '<div class="title">Featured Products</div>' in web_data:
-    #     end_index = int(web_data.index('<div class="title">Featured Products</div>'))
+    elif '<div class="title">Featured Products</div>' in web_data:
+        end_index = int(web_data.index('<div class="title">Featured Products</div>'))
     else:
         return {'sku': 0}
     web_data = web_data[start_index:end_index]
@@ -106,7 +106,7 @@ def get_spec(sku=None):
     term = '<th>UPC 14</th>'
     if term in web_data:
         specs_dic['Upc14'] = get_spec_val(web_data, term)
-    term = '<th>battery Chemistry </th>'
+    term = '<th>Battery Chemistry </th>'
     if term in web_data:
         specs_dic['BatteryChemistry'] = get_spec_val(web_data, term)
     term = '<th>Number of Cells </th>'
@@ -271,11 +271,11 @@ def get_spec(sku=None):
 
 class LaptopSpecs(object):
     def upcs_to_skus(self):
-        # open sku's (output) csv
-        output_csv_file = open('skus.csv', 'w', encoding='utf-8', newline='')
+        # open sku's csv (output)
+        output_csv_file = open('skus_output.csv', 'w', encoding='utf-8', newline='')
         csv_writer = csv.writer(output_csv_file)
-        # read from upc's (input) csv
-        with open('ebayUniqueUpcList.csv', 'r') as csv_file:
+        # read from upc's csv (input)
+        with open('upcs_input.csv', 'r') as csv_file:
             reader = csv.reader(csv_file)
             counter = 0
             for row in reader:
@@ -317,10 +317,10 @@ class LaptopSpecs(object):
                      'touchScreen', 'flashMemoryCapacity',
                      ]
         # open spec's (output) csv
-        output_csv_file = open('specs.csv', 'w', encoding='utf-8', newline='')
+        output_csv_file = open('specs_output.csv', 'w', encoding='utf-8', newline='')
         csv_writer = csv.writer(output_csv_file)
         # read from upc's (input) csv
-        with open('skus_1-1917.csv', 'r') as csv_file:
+        with open('skus_input.csv', 'r') as csv_file:
             reader = csv.reader(csv_file)
             counter = 0
             for row in reader:
@@ -343,7 +343,7 @@ class LaptopSpecs(object):
                             row.append(spec_dict[key])
                         else:
                             row.append('')
-                    print(row)
+                    # print(row)
                     # write row to csv
                     csv_writer.writerow(row)
                 except TimeoutException as e:
