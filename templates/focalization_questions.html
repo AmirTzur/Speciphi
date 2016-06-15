@@ -1,0 +1,22 @@
+{% load staticfiles %}
+<head>
+    <link href="{% static 'css/focalization_questions.css' %}" rel="stylesheet">
+</head>
+
+<body>
+<div class="container-fluid">
+    {% for question in questions %}
+        <p>name: {{ question.general_name }}</p>
+        <p>id: {{ question.id }}</p>
+        <p>questions: </p>
+        {% for ques in question.my_questions %}
+            <p>title: {{ ques.title }}</p>
+            <p>question: {{ ques.question }}</p>
+            <p>answers: </p>
+            {% for ans in ques.answers %}
+                <p>{{ ans }}</p>
+            {% endfor %}
+        {% endfor %}
+    {% endfor %}
+</div>
+</body>
