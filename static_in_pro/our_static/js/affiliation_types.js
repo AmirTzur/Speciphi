@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    var lastTypeName;
+    var $lastType;
     // click on list will display selected type
     $('div#mobile_types_list ul li').on('click', function () {
         var pressed_type = $(this).context.innerText;
@@ -15,26 +17,6 @@ $(document).ready(function () {
             return $(this).prop('id') == pressed_type;
         }).css('display', 'block');
     });
-    // on checkbox change, set or remove type list color
-    $(':checkbox').change(function () {
-        var checked_type = $(this).prop('name');
-        if ($(this).is(":checked")) {
-            // set list color
-            $('div#mobile_types_list ul').children().filter(function () {
-                return $(this).context.innerText == checked_type;
-            }).css('color', '#E6592A');
-        }
-        else {
-            // remove type list color
-            $('div#mobile_types_list ul').children().filter(function () {
-                var mobile_list_type = $(this).context.innerText;
-                // inner <i> adds a weird space at beginning of innerText - remove it
-                if (!(/^[0-9a-zA-Z]+$/.test(mobile_list_type.charAt(0))))
-                    mobile_list_type = mobile_list_type.substring(1);
-                return mobile_list_type == checked_type;
-            }).css('color', 'white');
-        }
-    });
     // on button click, change checkbox value
     $('div#types_display div button').click(function () {
         $(this).children('input[type=checkbox]').prop('checked', !$(this).children('input[type=checkbox]').is(':checked')).change();
@@ -49,8 +31,10 @@ $(document).ready(function () {
     function WidthChange() {
         // mobile screens
         if (window.matchMedia("(max-width: 991px)").matches) {
-            // show type list
+            // show type list and
             $('div#mobile_types_list').css('display', 'block');
+            lastTypeName = $('div#mobile_types_list ul li:nth-child(1)')[0].innerText;
+            $lastType = $('div#mobile_types_list ul li:nth-child(1)')[0];
             // if was in desktop layout - move types back to .types_display and delete #types_first&second_row
             if ($('div#types_display div:nth-child(1)').hasClass('row')) {
                 $('div#types_first_row').children().each(function (index) {
@@ -79,20 +63,51 @@ $(document).ready(function () {
                 // show first type
                 $('div#types_display div:nth-child(1)').css('display', 'block');
             }
-            // color checked types on type list (needed also when a user press back button)
+            // color checked types on type list
             $('div#types_display').children().filter(function () {
                 if ($(this).children('button.type_button').children('input[type=checkbox]').is(':checked')) {
                     var checked_type = $(this).prop('id');
                     // change color
                     $('div#mobile_types_list ul').children().filter(function () {
                         return $(this).context.innerText == checked_type;
-                    }).css('color', '#E6592A');
+                    }).css('color', 'rgb(230, 89, 42)');
                 }
             });
-
+            // color first type
+            $('div#mobile_types_list ul li:nth-child(1)').css({'color': 'black'});
+            // on list click:
+            // 'new': color black
+            // 'old' checked - color red
+            // 'old': not checked - color white
+            $('div#mobile_types_list ul li').on('click', function () {
+                $(this).css('color', 'black');
+                // get last selected type and if not checked - color list type to default (white)
+                var $lastButton = $('div#types_display').children('div.type_display').filter(function () {
+                    if ($(this).prop('id') == lastTypeName) {
+                        return $(this);
+                    }
+                });
+                $lastButton = $lastButton.children('button');
+                if ($($lastButton).parent('div.type_display').css('display') == 'block') {
+                    $($lastType).css('color', 'black');
+                }
+                else if ($lastButton.children('input[type=checkbox]').is(':checked') == true) {
+                    $($lastType).css('color', 'rgb(230, 89, 42)');
+                }
+                else {
+                    $($lastType).css('color', 'white');
+                }
+                // update checked types
+                lastTypeName = $(this).context.innerText;
+                $lastType = $(this);
+            });
         } //end mobile screens
         // desktop screens
         else if (window.matchMedia("(min-width: 992px)").matches) {
+            // reset checked types
+            lastTypeName = null;
+            $lastType = null;
+            $('div#mobile_types_list ul li').css('color', 'white');
             // hide type list
             $('div#mobile_types_list').css('display', 'none');
             // insert types into rows
@@ -113,7 +128,7 @@ $(document).ready(function () {
                     else if (index > 5 && index < 10) {
                         $(this).appendTo('div#types_second_row');
                     } else if (index > 9) {
-                        alert("wired.. got more then 8 types?!");
+                        alert("weired.. got more then 8 types?!");
                     }
                 });
             }
@@ -130,14 +145,3 @@ $(document).ready(function () {
         WidthChange();
     }
 });
-
-//var mq_xs = window.matchMedia("(max-width: 767px)");
-//var mq_md = window.matchMedia("(min-width: 992px) and (max-width: 1199px)");
-//if (window.matchMedia("(max-width: 767px)").matches) {//extra-small screens
-//}
-//else if (window.matchMedia("(min-width: 768px) and (max-width: 991px)").matches) {//small screens
-//}
-//else if (window.matchMedia("(min-width: 992px) and (max-width: 1199px)").matches) {//medium screens
-//}
-//else if (window.matchMedia("(min-width: 1200px)").matches) {//large screens
-//}

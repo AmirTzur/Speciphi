@@ -3,7 +3,7 @@
 # mysql -- exp1db
 # db username -- amir_exp1
 # password -- firstexp2280djarooproject
-# webfaction ssh: username=amirtz ; password=long012B2848short!@elad
+# webfaction ssh: server: amirtz.webfactional.com ; name=amirtz ; password=long012B2848short!@elad
 
 # superuser: username=djaroo_admin ; password=become@3737!dont#ativ050run1987%
 

@@ -1,11 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title></title>
-    <script type="text/javascript">parent.closeIFrame();</script>
-</head>
-<body>
-
-</body>
-</html>
+{#<!DOCTYPE html>#}
+{#<html lang="en">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <title></title>#}
+{#    <script type="text/javascript">parent.closeIFrame();#}
+{#    if (window.self === window.top) // if window don't have parent (not an iframe), redirect to home page#}
+{#    {#}
+        {#            window.location = "http://localhost:8000";#}
+{#        // production#}
+{#        window.location = "http://www.djaroo.com";#}
+{#    }#}
+{#    </script>#}
+{#</head>#}
+{#<body>#}
+{#</body>#}
+{#</html>#}

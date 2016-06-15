@@ -171,6 +171,7 @@ $(document).ready(function () {
                 // update buttons style
                 UpdateColumn($(this).children('div.use_levels'), $(this).children('div.use_levels').attr('data-brand'));
             });
+
         }//end desktop screens
     }// end responsive query
 
@@ -225,22 +226,22 @@ $(document).ready(function () {
                 $(use_column).children('button').addClass('use_level_button_0');
                 break;
             case '1':
-                // remove top 2
+                // show only bottom button as filled
                 $($(use_column).children('button')[0]).addClass('use_level_button_0');
                 $($(use_column).children('button')[1]).addClass('use_level_button_0');
                 $($(use_column).children('button')[2]).removeClass('use_level_button_0');
                 break;
             case '2':
-                // remove top 1
+                // show only middle button as filled
                 $($(use_column).children('button')[0]).addClass('use_level_button_0');
                 $($(use_column).children('button')[1]).removeClass('use_level_button_0');
-                $($(use_column).children('button')[2]).removeClass('use_level_button_0');
+                $($(use_column).children('button')[2]).addClass('use_level_button_0');
                 break;
             case '3':
-                // show all fills
+                // show only top button as filled
                 $($(use_column).children('button')[0]).removeClass('use_level_button_0');
-                $($(use_column).children('button')[1]).removeClass('use_level_button_0');
-                $($(use_column).children('button')[2]).removeClass('use_level_button_0');
+                $($(use_column).children('button')[1]).addClass('use_level_button_0');
+                $($(use_column).children('button')[2]).addClass('use_level_button_0');
                 break;
             case '4':
                 // add "high level" style

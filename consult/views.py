@@ -1,10 +1,13 @@
+import time
 from django.shortcuts import render
 from collections import OrderedDict
 from django.db import connection, Error
 
+from apis.utils import get_spec_val, find_nth
 from consult.forms import AffiliationsForm, UsesForm
 from django.http import HttpResponse
 from consult.models import Levelofuse
+import urllib.request
 import json
 
 
@@ -18,6 +21,8 @@ def home(request):
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [False, "results"]
 
+    # new user
+    user_location = None
     if 'Entrance_id' not in request.session:
         # get user ip
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -25,6 +30,14 @@ def home(request):
             user_ip = x_forwarded_for.split(',')[0]
         else:
             user_ip = request.META.get('REMOTE_ADDR')
+        f = urllib.request.urlopen('http://ip-api.com/json/' + str(user_ip))
+        # get location by ip
+        geo_data = f.read()
+        f.close()
+        geo_dict = json.loads(geo_data.decode('UTF-8'))
+        if geo_dict['status'] == 'success':
+            user_location = str(geo_dict['country'] + ', ' + geo_dict['city'])
+
         # connect to djarooDB
         try:
             cursor = connection.cursor()
@@ -33,7 +46,10 @@ def home(request):
             else:
                 # Input: Entrance_ip, Entrance_country
                 # Output: Creates new entry in Entrances Table, Entrance_id
-                cursor.execute('call newEntrance(%s,"")', [user_ip])
+                if user_location:
+                    cursor.execute('call newEntrance(%s,%s)', [user_ip, user_location])
+                else:
+                    cursor.execute('call newEntrance(%s,"")', [user_ip])
                 Entrance_id = cursor.fetchone()
                 cursor.close()
                 if Entrance_id:
@@ -127,24 +143,39 @@ def affiliation(request, product=None):
         # for each results category: {sort_indicator: brand, model, image_url,
         #                                             offers[{deal_id, deal_url, vendor_name, price}, {}, ]}
         offers = [
-            {'sort_indicator': 'Best Match', 'brand': 'Apple', 'model': 'Macbook Pro', 'image_url': 'http://ecx.images-amazon.com/images/I/41lmJ1hPMnL._SL160_.jpg',
-             'offers': [{'deal_id': 111, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B00GZB8D0M%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
+            {'sort_indicator': 'Best Match', 'brand': 'Apple', 'model': 'Macbook Pro',
+             'image_url': 'http://ecx.images-amazon.com/images/I/41lmJ1hPMnL._SL160_.jpg',
+             'offers': [{'deal_id': 111,
+                         'deal_url': 'http://www.amazon.com/gp/offer-listing/B00GZB8D0M%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                         'vendor_name': 'Amazon',
                          'price': 950}, {'deal_id': 222, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1000}]
              },
-            {'sort_indicator': 'Most Purchased', 'brand': 'Lenovo', 'model': 'Yoga 3', 'image_url': 'http://ecx.images-amazon.com/images/I/41238W8tcjL._SL160_.jpg',
-             'offers': [{'deal_id': 333, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B00VQP3DNY%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
+            {'sort_indicator': 'Most Purchased', 'brand': 'Lenovo', 'model': 'Yoga 3',
+             'image_url': 'http://ecx.images-amazon.com/images/I/41238W8tcjL._SL160_.jpg',
+             'offers': [{'deal_id': 333,
+                         'deal_url': 'http://www.amazon.com/gp/offer-listing/B00VQP3DNY%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                         'vendor_name': 'Amazon',
                          'price': 1050}, {'deal_id': 444, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1100}]
              },
-            {'sort_indicator': 'Type Popular', 'brand': 'Dell', 'model': 'XPS', 'image_url': 'http://ecx.images-amazon.com/images/I/218dheiyUrL._SL160_.jpg',
-             'offers': [{'deal_id': 555, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B00SQG3MQE%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
+            {'sort_indicator': 'Type Popular', 'brand': 'Dell', 'model': 'XPS',
+             'image_url': 'http://ecx.images-amazon.com/images/I/218dheiyUrL._SL160_.jpg',
+             'offers': [{'deal_id': 555,
+                         'deal_url': 'http://www.amazon.com/gp/offer-listing/B00SQG3MQE%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                         'vendor_name': 'Amazon',
                          'price': 1150}, {'deal_id': 666, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1200}]
              },
-            {'sort_indicator': 'Cost Effective', 'brand': 'Asus', 'model': 'Zenbook 133X', 'image_url': 'http://ecx.images-amazon.com/images/I/41-6oCGJqwL._SL160_.jpg',
-             'offers': [{'deal_id': 777, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B01BLU6ERK%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
+            {'sort_indicator': 'Cost Effective', 'brand': 'Asus', 'model': 'Zenbook 133X',
+             'image_url': 'http://ecx.images-amazon.com/images/I/41-6oCGJqwL._SL160_.jpg',
+             'offers': [{'deal_id': 777,
+                         'deal_url': 'http://www.amazon.com/gp/offer-listing/B01BLU6ERK%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                         'vendor_name': 'Amazon',
                          'price': 1250}, {'deal_id': 888, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1300}]
              },
-            {'sort_indicator': 'Stylish', 'brand': 'Sony', 'model': 'Bomber 304', 'image_url': 'http://ecx.images-amazon.com/images/I/41sgEA0JL-L._SL160_.jpg',
-             'offers': [{'deal_id': 999, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B018AX3YGU%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
+            {'sort_indicator': 'Stylish', 'brand': 'Sony', 'model': 'Bomber 304',
+             'image_url': 'http://ecx.images-amazon.com/images/I/41sgEA0JL-L._SL160_.jpg',
+             'offers': [{'deal_id': 999,
+                         'deal_url': 'http://www.amazon.com/gp/offer-listing/B018AX3YGU%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                         'vendor_name': 'Amazon',
                          'price': 1350}, {'deal_id': 121, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1400}]
              },
         ]
@@ -285,6 +316,9 @@ def application(request, product=None):
 
 
 def focalization(request, product=None):
+    # http://stackoverflow.com/questions/26566799/selenium-python-how-to-wait-until-the-page-is-loaded
+    from selenium import webdriver
+
     pages = OrderedDict()
     pages['Home'] = [False, "home"]
     pages['Affil'] = [False, "affiliation"]
@@ -292,11 +326,230 @@ def focalization(request, product=None):
     pages['Focal'] = [True, "focalization"]
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [False, "results"]
+
+    # upc = 889349130445
+    # url = 'http://www.rakuten.com/sr/searchresults#qu=' + str(upc)
+    # browser = webdriver.Firefox()
+    # browser.get(url)
+    # web_data = browser.page_source
+    # desired_content_is_loaded = False
+    # # loop until sku is loaded
+    # while not desired_content_is_loaded:
+    #     if 'data-sku="' not in web_data:
+    #         time.sleep(3)
+    #         web_data = browser.page_source
+    #         print('not found')
+    #     else:
+    #         desired_content_is_loaded = True
+    #         print('found')
+    #         start_index = int(web_data.index('data-sku="') + len('data-sku="'))
+    #         end_index = int(start_index + 9)
+    #         sku = web_data[start_index:end_index]
+    #         print(sku)
+
+    sku = 260728715
+    sku = str(sku)
+    url = 'http://www.rakuten.com/prod/' + sku + '.html'
+    browser = webdriver.Firefox()
+    browser.get(url)
+    web_data = browser.page_source
+    browser.quit()
+    # take only specification section
+    # start position
+    if '<h2>Specifications</h2>' in web_data:
+        start_index = int(web_data.index('<h2>Specifications</h2>'))
+    else:
+        return {'sku': 0}
+    # end position
+    if '<h2>More Buying Options</h2>' in web_data:
+        end_index = int(web_data.index('<h2>More Buying Options</h2>'))
+    elif '<div class="title">Featured Products</div>' in web_data:
+        end_index = int(web_data.index('<div class="title">Featured Products</div>'))
+    else:
+        return {'sku': 0}
+    web_data = web_data[start_index:end_index]
+    # create specifications dictionary
+    specs_dic = {'sku': sku}
+    # text of anchor tags
+    if '<th>Manufacturer</th>' in web_data:
+        # take just the text after found string
+        temp_data = web_data[web_data.index('<th>Manufacturer</th>') + len('<th>Manufacturer</th>'):]
+        start_index = find_nth(temp_data, '>', 2) + 1
+        end_index = temp_data.index('</a>')
+        specs_dic['Manufacturer'] = temp_data[start_index:end_index]
+    if '<th>Product Guide</th>' in web_data:
+        temp_data = web_data[web_data.index('<th>Manufacturer</th>') + len('<th>Manufacturer</th>'):]
+        start_index = find_nth(temp_data, '>', 2) + 1
+        end_index = temp_data.index('</a>')
+        specs_dic['productGuide'] = temp_data[start_index:end_index]
+    # text of table column
+    term = '<th>Mfg Part#</th>'
+    if term in web_data:
+        specs_dic['mfgPart'] = get_spec_val(web_data, term)
+    term = '<th>SKU</th>'
+    if term in web_data:
+        specs_dic['Sku'] = get_spec_val(web_data, term)
+    term = '<th>UPC</th>'
+    if term in web_data:
+        specs_dic['Upc'] = get_spec_val(web_data, term)
+    term = '<th>UPC 14</th>'
+    if term in web_data:
+        specs_dic['Upc14'] = get_spec_val(web_data, term)
+    term = '<th>battery Chemistry </th>'
+    if term in web_data:
+        specs_dic['BatteryChemistry'] = get_spec_val(web_data, term)
+    term = '<th>Number of Cells </th>'
+    if term in web_data:
+        specs_dic['numberOfCells'] = get_spec_val(web_data, term)
+    term = '<th>Maximum Battery Run Time </th>'
+    if term in web_data:
+        specs_dic['maximumBatteryRunTime'] = get_spec_val(web_data, term)
+    term = '<th>Finger Print Reader </th>'
+    if term in web_data:
+        specs_dic['fingerPrintReader'] = get_spec_val(web_data, term)
+    term = '<th>Front Camera/Webcam </th>'
+    if term in web_data:
+        specs_dic['frontCamera'] = get_spec_val(web_data, term)
+    term = '<th>HDMI </th>'
+    if term in web_data:
+        specs_dic['Hdmi'] = get_spec_val(web_data, term)
+    term = '<th>Network (RJ-45) </th>'
+    if term in web_data:
+        specs_dic['networkRJ45'] = get_spec_val(web_data, term)
+    term = '<th>Total Number of USB Ports </th>'
+    if term in web_data:
+        specs_dic['totalNumberOfUsbPorts'] = get_spec_val(web_data, term)
+    term = '<th>Number of USB 3.0 Ports </th>'
+    if term in web_data:
+        specs_dic['numberOfUsb3.0Ports'] = get_spec_val(web_data, term)
+    term = '<th>Aspect Ratio </th>'
+    if term in web_data:
+        specs_dic['aspectRatio'] = get_spec_val(web_data, term)
+    term = '<th>Screen Resolution </th>'
+    if term in web_data:
+        specs_dic['screenResolution'] = get_spec_val(web_data, term)
+    term = '<th>Screen Size </th>'
+    if term in web_data:
+        specs_dic['screenSize'] = get_spec_val(web_data, term)
+    term = '<th>Graphics Controller Manufacturer </th>'
+    if term in web_data:
+        specs_dic['graphicsControllerManufacturer'] = get_spec_val(web_data, term)
+    term = '<th>Graphics Controller Model </th>'
+    if term in web_data:
+        specs_dic['graphicsControllerModel'] = get_spec_val(web_data, term)
+    term = '<th>Graphics Memory Technology </th>'
+    if term in web_data:
+        specs_dic['graphicsMemoryTechnology'] = get_spec_val(web_data, term)
+    term = '<th>Graphics Memory Accessibility </th>'
+    if term in web_data:
+        specs_dic['graphicsMemoryAccessibility'] = get_spec_val(web_data, term)
+    term = '<th>Display Screen Technology </th>'
+    if term in web_data:
+        specs_dic['displayScreenTechnology'] = get_spec_val(web_data, term)
+    term = '<th>Product Type </th>'
+    if term in web_data:
+        specs_dic['productType'] = get_spec_val(web_data, term)
+    term = '<th>Manufacturer Part Number </th>'
+    if term in web_data:
+        specs_dic['manufacturerPartNumber'] = get_spec_val(web_data, term)
+    term = '<th>Manufacturer </th>'
+    if term in web_data:
+        specs_dic['manufacturer'] = get_spec_val(web_data, term)
+    term = '<th>Product Model </th>'
+    if term in web_data:
+        specs_dic['productModel'] = get_spec_val(web_data, term)
+    term = '<th>Product Name </th>'
+    if term in web_data:
+        specs_dic['productName'] = get_spec_val(web_data, term)
+    term = '<th>Product Series </th>'
+    if term in web_data:
+        specs_dic['productSeries'] = get_spec_val(web_data, term)
+    term = '<th>Brand Name </th>'
+    if term in web_data:
+        specs_dic['brandName'] = get_spec_val(web_data, term)
+    term = '<th>Standard Memory </th>'
+    if term in web_data:
+        specs_dic['standardMemory'] = get_spec_val(web_data, term)
+    term = '<th>Memory Technology </th>'
+    if term in web_data:
+        specs_dic['memoryTechnology'] = get_spec_val(web_data, term)
+    term = '<th>Package Contents </th>'
+    if term in web_data:
+        specs_dic['packageContents'] = get_spec_val(web_data, term)
+    term = '<th>Green Compliant </th>'
+    if term in web_data:
+        specs_dic['greenCompliant'] = get_spec_val(web_data, term)
+    term = '<th>Green Compliance Certificate/Authority </th>'
+    if term in web_data:
+        specs_dic['greenComplianceCertificate'] = get_spec_val(web_data, term)
+    term = '<th>Bluetooth </th>'
+    if term in web_data:
+        specs_dic['bluetooth'] = get_spec_val(web_data, term)
+    term = '<th>Wireless LAN </th>'
+    if term in web_data:
+        specs_dic['wirelessLAN'] = get_spec_val(web_data, term)
+    term = '<th>Wireless LAN Standard </th>'
+    if term in web_data:
+        specs_dic['wirelessLANStandard'] = get_spec_val(web_data, term)
+    term = '<th>Weight (Approximate) </th>'
+    if term in web_data:
+        specs_dic['weightApproximate'] = get_spec_val(web_data, term)
+    term = '<th>Color </th>'
+    if term in web_data:
+        specs_dic['color'] = get_spec_val(web_data, term)
+    term = '<th>Height </th>'
+    if term in web_data:
+        specs_dic['height'] = get_spec_val(web_data, term)
+    term = '<th>Width </th>'
+    if term in web_data:
+        specs_dic['width'] = get_spec_val(web_data, term)
+    term = '<th>Depth </th>'
+    if term in web_data:
+        specs_dic['depth'] = get_spec_val(web_data, term)
+    term = '<th>Optical Drive Type </th>'
+    if term in web_data:
+        specs_dic['opticalDriveType'] = get_spec_val(web_data, term)
+    term = '<th>Solid State Drive Capacity </th>'
+    if term in web_data:
+        specs_dic['solidStateDriveCapacity'] = get_spec_val(web_data, term)
+    term = '<th>Processor Speed </th>'
+    if term in web_data:
+        specs_dic['processorSpeed'] = get_spec_val(web_data, term)
+    term = '<th>Processor Type </th>'
+    if term in web_data:
+        specs_dic['processorType'] = get_spec_val(web_data, term)
+    term = '<th>Processor Model </th>'
+    if term in web_data:
+        specs_dic['processorModel'] = get_spec_val(web_data, term)
+    term = '<th>Processor Core </th>'
+    if term in web_data:
+        specs_dic['processorCore'] = get_spec_val(web_data, term)
+    term = '<th>Processor Manufacturer </th>'
+    if term in web_data:
+        specs_dic['processorManufacturer'] = get_spec_val(web_data, term)
+    term = '<th>Operating System </th>'
+    if term in web_data:
+        specs_dic['operatingSystem'] = get_spec_val(web_data, term)
+    term = '<th>Operating System Architecture </th>'
+    if term in web_data:
+        specs_dic['operatingSystemArchitecture'] = get_spec_val(web_data, term)
+    term = '<th>Operating System Platform </th>'
+    if term in web_data:
+        specs_dic['operatingSystemPlatform'] = get_spec_val(web_data, term)
+    term = '<th>Limited Warranty </th>'
+    if term in web_data:
+        specs_dic['limitedWarranty'] = get_spec_val(web_data, term)
+
+    # remove space at beginning of values
+    for key, value in specs_dic.items():
+        if ' ' in value and value.index(' ') == 0:
+            specs_dic[key] = value[1:]
+    print(specs_dic)
     context = {
         "pages": pages,
         "product": product,
+        # "web_data": web_data,
     }
-
     return render(request, "focalization.html", context)
 
 
@@ -346,6 +599,21 @@ def dictfetchall(cursor):
         dict(zip(columns, row))
         for row in cursor.fetchall()
         ]
+
+
+# # Find the nth occurrence of substring in a string
+# def find_nth(haystack, needle, n):
+#     start = haystack.find(needle)
+#     while start >= 0 and n > 1:
+#         start = haystack.find(needle, start + len(needle))
+#         n -= 1
+#     return start
+#
+#
+# # parse spec value
+# def get_spec_val(data, term):
+#     data = data[data.index(term) + len(term):]
+#     return data[find_nth(data, '>', 1) + 1:data.index('</td>')]
 
 
 def NewConsulteeAffiliation(request):

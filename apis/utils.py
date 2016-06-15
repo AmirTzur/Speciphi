@@ -7,7 +7,6 @@ import bottlenose
 import lxml
 from lxml import objectify
 
-
 from django.conf import settings
 
 # eBay-Python sdk
@@ -17,6 +16,340 @@ from ebaysdk.trading import Connection as Trading
 
 # model to store local data from eBay
 from .models import EbayLaptopDeal
+from selenium import webdriver
+from selenium.common.exceptions import TimeoutException
+
+
+# Find the nth occurrence of substring in a string
+def find_nth(haystack, needle, n):
+    start = haystack.find(needle)
+    while start >= 0 and n > 1:
+        start = haystack.find(needle, start + len(needle))
+        n -= 1
+    return start
+
+
+# parse spec value
+def get_spec_val(data, term):
+    data = data[data.index(term) + len(term):]
+    return data[find_nth(data, '>', 1) + 1:data.index('</td>')]
+
+
+def get_sku(upc=None):
+    upc = str(upc)  # check 12 digits
+    while len(upc) < 12:
+        upc = '0' + upc
+        print('added zero', upc)
+    url = 'http://www.rakuten.com/sr/searchresults#qu=' + upc
+    browser = webdriver.Firefox()
+    browser.get(url)
+    web_data = browser.page_source
+    browser.quit()
+    if 'data-sku="' in web_data:
+        print('found')
+        start_index = int(web_data.index('data-sku="') + len('data-sku="'))
+        end_index = int(start_index + 9)
+        sku = web_data[start_index:end_index]
+        # browser.quit()
+        return sku
+    else:
+        print('not found')
+        # browser.quit()
+        return '0'
+
+
+def get_spec(sku=None):
+    sku = str(sku)
+    url = 'http://www.rakuten.com/prod/' + sku + '.html'
+    browser = webdriver.Firefox()
+    browser.get(url)
+    web_data = browser.page_source
+    browser.quit()
+    # take only specification section
+    # start position
+    if '<h2>Specifications</h2>' in web_data:
+        start_index = int(web_data.index('<h2>Specifications</h2>'))
+    else:
+        return {'sku': 0}
+    # end position
+    if '<h2>More Buying Options</h2>' in web_data:
+        end_index = int(web_data.index('<h2>More Buying Options</h2>'))
+    elif '<div class="title">Featured Products</div>' in web_data:
+        end_index = int(web_data.index('<div class="title">Featured Products</div>'))
+    else:
+        return {'sku': 0}
+    web_data = web_data[start_index:end_index]
+    # create specifications dictionary
+    specs_dic = {'sku': sku}
+    # text of anchor tags
+    if '<th>Manufacturer</th>' in web_data:
+        # take just the text after found string
+        temp_data = web_data[web_data.index('<th>Manufacturer</th>') + len('<th>Manufacturer</th>'):]
+        start_index = find_nth(temp_data, '>', 2) + 1
+        end_index = temp_data.index('</a>')
+        specs_dic['Manufacturer'] = temp_data[start_index:end_index]
+    if '<th>Product Guide</th>' in web_data:
+        temp_data = web_data[web_data.index('<th>Manufacturer</th>') + len('<th>Manufacturer</th>'):]
+        start_index = find_nth(temp_data, '>', 2) + 1
+        end_index = temp_data.index('</a>')
+        specs_dic['productGuide'] = temp_data[start_index:end_index]
+        # text of table column
+    term = '<th>Mfg Part#</th>'
+    if term in web_data:
+        specs_dic['mfgPart'] = get_spec_val(web_data, term)
+    term = '<th>SKU</th>'
+    if term in web_data:
+        specs_dic['Sku'] = get_spec_val(web_data, term)
+    term = '<th>UPC</th>'
+    if term in web_data:
+        specs_dic['Upc'] = get_spec_val(web_data, term)
+    term = '<th>UPC 14</th>'
+    if term in web_data:
+        specs_dic['Upc14'] = get_spec_val(web_data, term)
+    term = '<th>Battery Chemistry </th>'
+    if term in web_data:
+        specs_dic['BatteryChemistry'] = get_spec_val(web_data, term)
+    term = '<th>Number of Cells </th>'
+    if term in web_data:
+        specs_dic['numberOfCells'] = get_spec_val(web_data, term)
+    term = '<th>Maximum Battery Run Time </th>'
+    if term in web_data:
+        specs_dic['maximumBatteryRunTime'] = get_spec_val(web_data, term)
+    term = '<th>Finger Print Reader </th>'
+    if term in web_data:
+        specs_dic['fingerPrintReader'] = get_spec_val(web_data, term)
+    term = '<th>Front Camera/Webcam </th>'
+    if term in web_data:
+        specs_dic['frontCamera'] = get_spec_val(web_data, term)
+    term = '<th>HDMI </th>'
+    if term in web_data:
+        specs_dic['Hdmi'] = get_spec_val(web_data, term)
+    term = '<th>Network (RJ-45) </th>'
+    if term in web_data:
+        specs_dic['networkRJ45'] = get_spec_val(web_data, term)
+    term = '<th>Total Number of USB Ports </th>'
+    if term in web_data:
+        specs_dic['totalNumberOfUsbPorts'] = get_spec_val(web_data, term)
+    term = '<th>Number of USB 3.0 Ports </th>'
+    if term in web_data:
+        specs_dic['numberOfUsb3.0Ports'] = get_spec_val(web_data, term)
+    term = '<th>Aspect Ratio </th>'
+    if term in web_data:
+        specs_dic['aspectRatio'] = get_spec_val(web_data, term)
+    term = '<th>Screen Resolution </th>'
+    if term in web_data:
+        specs_dic['screenResolution'] = get_spec_val(web_data, term)
+    term = '<th>Screen Size </th>'
+    if term in web_data:
+        specs_dic['screenSize'] = get_spec_val(web_data, term)
+    term = '<th>Graphics Controller Manufacturer </th>'
+    if term in web_data:
+        specs_dic['graphicsControllerManufacturer'] = get_spec_val(web_data, term)
+    term = '<th>Graphics Controller Model </th>'
+    if term in web_data:
+        specs_dic['graphicsControllerModel'] = get_spec_val(web_data, term)
+    term = '<th>Graphics Memory Technology </th>'
+    if term in web_data:
+        specs_dic['graphicsMemoryTechnology'] = get_spec_val(web_data, term)
+    term = '<th>Graphics Memory Accessibility </th>'
+    if term in web_data:
+        specs_dic['graphicsMemoryAccessibility'] = get_spec_val(web_data, term)
+    term = '<th>Display Screen Technology </th>'
+    if term in web_data:
+        specs_dic['displayScreenTechnology'] = get_spec_val(web_data, term)
+    term = '<th>Product Type </th>'
+    if term in web_data:
+        specs_dic['productType'] = get_spec_val(web_data, term)
+    term = '<th>Manufacturer Part Number </th>'
+    if term in web_data:
+        specs_dic['manufacturerPartNumber'] = get_spec_val(web_data, term)
+    term = '<th>Manufacturer </th>'
+    if term in web_data:
+        specs_dic['manufacturer'] = get_spec_val(web_data, term)
+    term = '<th>Product Model </th>'
+    if term in web_data:
+        specs_dic['productModel'] = get_spec_val(web_data, term)
+    term = '<th>Product Name </th>'
+    if term in web_data:
+        specs_dic['productName'] = get_spec_val(web_data, term)
+    term = '<th>Product Series </th>'
+    if term in web_data:
+        specs_dic['productSeries'] = get_spec_val(web_data, term)
+    term = '<th>Brand Name </th>'
+    if term in web_data:
+        specs_dic['brandName'] = get_spec_val(web_data, term)
+    term = '<th>Standard Memory </th>'
+    if term in web_data:
+        specs_dic['standardMemory'] = get_spec_val(web_data, term)
+    term = '<th>Memory Technology </th>'
+    if term in web_data:
+        specs_dic['memoryTechnology'] = get_spec_val(web_data, term)
+    term = '<th>Package Contents </th>'
+    if term in web_data:
+        specs_dic['packageContents'] = get_spec_val(web_data, term)
+    term = '<th>Green Compliant </th>'
+    if term in web_data:
+        specs_dic['greenCompliant'] = get_spec_val(web_data, term)
+    term = '<th>Green Compliance Certificate/Authority </th>'
+    if term in web_data:
+        specs_dic['greenComplianceCertificate'] = get_spec_val(web_data, term)
+    term = '<th>Bluetooth </th>'
+    if term in web_data:
+        specs_dic['bluetooth'] = get_spec_val(web_data, term)
+    term = '<th>Wireless LAN </th>'
+    if term in web_data:
+        specs_dic['wirelessLAN'] = get_spec_val(web_data, term)
+    term = '<th>Wireless LAN Standard </th>'
+    if term in web_data:
+        specs_dic['wirelessLANStandard'] = get_spec_val(web_data, term)
+    term = '<th>Weight (Approximate) </th>'
+    if term in web_data:
+        specs_dic['weightApproximate'] = get_spec_val(web_data, term)
+    term = '<th>Color </th>'
+    if term in web_data:
+        specs_dic['color'] = get_spec_val(web_data, term)
+    term = '<th>Height </th>'
+    if term in web_data:
+        specs_dic['height'] = get_spec_val(web_data, term)
+    term = '<th>Width </th>'
+    if term in web_data:
+        specs_dic['width'] = get_spec_val(web_data, term)
+    term = '<th>Depth </th>'
+    if term in web_data:
+        specs_dic['depth'] = get_spec_val(web_data, term)
+    term = '<th>Optical Drive Type </th>'
+    if term in web_data:
+        specs_dic['opticalDriveType'] = get_spec_val(web_data, term)
+    term = '<th>Solid State Drive Capacity </th>'
+    if term in web_data:
+        specs_dic['solidStateDriveCapacity'] = get_spec_val(web_data, term)
+    term = '<th>Processor Speed </th>'
+    if term in web_data:
+        specs_dic['processorSpeed'] = get_spec_val(web_data, term)
+    term = '<th>Processor Type </th>'
+    if term in web_data:
+        specs_dic['processorType'] = get_spec_val(web_data, term)
+    term = '<th>Processor Model </th>'
+    if term in web_data:
+        specs_dic['processorModel'] = get_spec_val(web_data, term)
+    term = '<th>Processor Core </th>'
+    if term in web_data:
+        specs_dic['processorCore'] = get_spec_val(web_data, term)
+    term = '<th>Processor Manufacturer </th>'
+    if term in web_data:
+        specs_dic['processorManufacturer'] = get_spec_val(web_data, term)
+    term = '<th>Operating System </th>'
+    if term in web_data:
+        specs_dic['operatingSystem'] = get_spec_val(web_data, term)
+    term = '<th>Operating System Architecture </th>'
+    if term in web_data:
+        specs_dic['operatingSystemArchitecture'] = get_spec_val(web_data, term)
+    term = '<th>Operating System Platform </th>'
+    if term in web_data:
+        specs_dic['operatingSystemPlatform'] = get_spec_val(web_data, term)
+    term = '<th>Limited Warranty </th>'
+    if term in web_data:
+        specs_dic['limitedWarranty'] = get_spec_val(web_data, term)
+    term = '<th>Headphone/Microphone Combo Port </th>'
+    if term in web_data:
+        specs_dic['headphone.microphoneComboPort'] = get_spec_val(web_data, term)
+    term = '<th>Micro HDMI </th>'
+    if term in web_data:
+        specs_dic['microHdmi'] = get_spec_val(web_data, term)
+    term = '<th>Touchscreen </th>'
+    if term in web_data:
+        specs_dic['touchScreen'] = get_spec_val(web_data, term)
+    term = '<th>Flash Memory Capacity </th>'
+    if term in web_data:
+        specs_dic['flashMemoryCapacity'] = get_spec_val(web_data, term)
+    # remove space at beginning of values
+    for key, value in specs_dic.items():
+        if ' ' in value and value.index(' ') == 0:
+            specs_dic[key] = value[1:]
+    return specs_dic
+
+
+class LaptopSpecs(object):
+    def upcs_to_skus(self):
+        # open sku's csv (output)
+        output_csv_file = open('skus_output.csv', 'w', encoding='utf-8', newline='')
+        csv_writer = csv.writer(output_csv_file)
+        # read from upc's csv (input)
+        with open('upcs_input.csv', 'r') as csv_file:
+            reader = csv.reader(csv_file)
+            counter = 0
+            for row in reader:
+                print(counter)
+                if counter == 0:
+                    # header
+                    row.append('sku')
+                    print(row)
+                    print()
+                    csv_writer.writerow(row)
+                    counter += 1
+                    continue
+                try:
+                    # input: upc
+                    # output: sku
+                    sku = get_sku(row[1])
+                    row.append(sku)
+                    print(row)
+                    # write row to csv
+                    csv_writer.writerow(row)
+                except TimeoutException as e:
+                    print('TimeoutException', e)
+                print()
+                counter += 1
+
+    def skus_to_specs(self):
+        spec_keys = ['Manufacturer', 'productGuide', 'mfgPart', 'Sku', 'Upc', 'Upc14', 'BatteryChemistry',
+                     'numberOfCells', 'maximumBatteryRunTime', 'fingerPrintReader', 'frontCamera', 'Hdmi',
+                     'networkRJ45', 'totalNumberOfUsbPorts', 'numberOfUsb3.0Ports', 'aspectRatio',
+                     'screenResolution', 'screenSize', 'graphicsControllerManufacturer', 'graphicsControllerModel',
+                     'graphicsMemoryTechnology', 'graphicsMemoryAccessibility', 'displayScreenTechnology',
+                     'productType', 'manufacturerPartNumber', 'manufacturer', 'productModel', 'productName',
+                     'productSeries', 'brandName', 'standardMemory', 'memoryTechnology', 'packageContents',
+                     'greenCompliant', 'greenComplianceCertificate', 'bluetooth', 'wirelessLAN', 'wirelessLANStandard',
+                     'weightApproximate', 'color', 'height', 'width', 'depth', 'opticalDriveType',
+                     'solidStateDriveCapacity', 'processorSpeed', 'processorType', 'processorModel', 'processorCore',
+                     'processorManufacturer', 'operatingSystem', 'operatingSystemArchitecture',
+                     'operatingSystemPlatform', 'limitedWarranty', 'headphone.microphoneComboPort', 'microHdmi',
+                     'touchScreen', 'flashMemoryCapacity',
+                     ]
+        # open spec's (output) csv
+        output_csv_file = open('specs_output.csv', 'w', encoding='utf-8', newline='')
+        csv_writer = csv.writer(output_csv_file)
+        # read from upc's (input) csv
+        with open('skus_input.csv', 'r') as csv_file:
+            reader = csv.reader(csv_file)
+            counter = 0
+            for row in reader:
+                print(counter)
+                if counter == 0:
+                    # header
+                    for key in spec_keys:
+                        row.append(key)
+                    print(row)
+                    print()
+                    csv_writer.writerow(row)
+                    counter += 1
+                    continue
+                try:
+                    # input: sku
+                    # output: spec
+                    spec_dict = get_spec(row[2])
+                    for key in spec_keys:
+                        if key in spec_dict.keys():
+                            row.append(spec_dict[key])
+                        else:
+                            row.append('')
+                    # print(row)
+                    # write row to csv
+                    csv_writer.writerow(row)
+                except TimeoutException as e:
+                    print('TimeoutException', e)
+                print()
+                counter += 1
 
 
 class EbayClient(object):
@@ -25,6 +358,7 @@ class EbayClient(object):
     Installation of 'ebay-python' sdk (and probably 'lxml' package) is a must. read more: https://github.com/timotheus/ebaysdk-python
     Currently the methods supports eBay's Finding, Trading APIs and insert data into Laptop model.
     """
+
     def __init__(self, **kwargs):
         """
         To create new instance provide appid and domain address (sandbox or production).
@@ -95,7 +429,8 @@ class EbayClient(object):
         :return:
         """
         if price_range in self.item_deals.keys():
-            with open(os.path.join(settings.BASE_DIR, 'deals.ebay.json'), 'a', encoding='utf-8', newline='') as deals_json:
+            with open(os.path.join(settings.BASE_DIR, 'deals.ebay.json'), 'a', encoding='utf-8',
+                      newline='') as deals_json:
                 for items_in_range in self.item_deals[price_range]:
                     for items_group in items_in_range:
                         json.dump(items_group, deals_json, sort_keys=True, indent=4)
@@ -154,8 +489,10 @@ class EbayClient(object):
                                  'value': 'New'},
                                 {'name': 'ListingType',
                                  'value': 'FixedPrice'},
-                                {'name': 'MinPrice', 'value': min_price, 'paramName': 'Currency', 'paramValue': 'USD'},
-                                {'name': 'MaxPrice', 'value': max_price, 'paramName': 'Currency', 'paramValue': 'USD'},
+                                {'name': 'MinPrice', 'value': min_price, 'paramName': 'Currency',
+                                 'paramValue': 'USD'},
+                                {'name': 'MaxPrice', 'value': max_price, 'paramName': 'Currency',
+                                 'paramValue': 'USD'},
                                 {'name': 'HideDuplicateItems', 'value': True},
                             ],
                             'outputSelector': ['GalleryInfo', 'SellerInfo'],
@@ -174,8 +511,8 @@ class EbayClient(object):
                 self.item_deals[str(min_price) + '-' + str(max_price)] = items
                 return
             else:
-                self.pull_laptop_deals(min_price, int(max_price/2))
-                self.pull_laptop_deals(int(max_price/2)+1, max_price)
+                self.pull_laptop_deals(min_price, int(max_price / 2))
+                self.pull_laptop_deals(int(max_price / 2) + 1, max_price)
                 return
         return self.item_deals
 
@@ -225,13 +562,13 @@ class EbayClient(object):
                             item_data['Price'] = trading_item['ListingDetails']['ConvertedStartPrice']['value']
                         if 'ViewItemURL' in trading_item['ListingDetails'].keys():
                             item_data['URL'] = trading_item['ListingDetails']['ViewItemURL']
-                    # Extract picture url (if exist) - usually return list (csv -> R conflict !!!)
-                    # if 'PictureDetails' in trading_item.keys():
-                    #     if 'PictureURL' in trading_item['PictureDetails'].keys():
-                    #         item_data['Image'] = trading_item['PictureDetails']['PictureURL']
-                    # Extract title (if exist)
-                    # if 'Title' in trading_item.keys():
-                    #     item_data['Title'] = trading_item['Title']
+                            # Extract picture url (if exist) - usually return list (csv -> R conflict !!!)
+                            # if 'PictureDetails' in trading_item.keys():
+                            #     if 'PictureURL' in trading_item['PictureDetails'].keys():
+                            #         item_data['Image'] = trading_item['PictureDetails']['PictureURL']
+                            # Extract title (if exist)
+                            # if 'Title' in trading_item.keys():
+                            #     item_data['Title'] = trading_item['Title']
                 deal_list.append(item_data)
             return deal_list
         else:
@@ -295,65 +632,66 @@ class EbayClient(object):
             print(e)
             print(e.response.dict())
 
+            # class DeliciousClient(object):
+            #
+            #     interval = 0
+            #
+            #     def __init__(self, username, password):
+            #         self.username, self.password = username, password
+            #
+            #     def fetch(self, **params):
+            #         delta = time.time() - DeliciousClient.interval
+            #         if delta < 2:
+            #             time.sleep(2 - delta)
+            #         DeliciousClient.interval = time.time()
+            #         url = 'https://%s:%s@api.del.icio.us/v1/posts/recent' % (self.username, self.password)
+            #         return self.fetch_xml(url)
+            #
+            #     def fetch_xml(self, url):
+            #         u = urllib.FancyURLopener(None)
+            #         usock = u.open(url)
+            #         rawdata = usock.read()
+            #         usock.close()
+            #         return xml_parser.fromstring(rawdata)
+            #
+            #     def __getattr__(self, method):
+            #         return DeliciousClient(self.username, self.password, '%s/%s' % (self.method, method))
+            #
+            #     def __repr__(self):
+            #         return "<DeliciousClient>"
 
-# class DeliciousClient(object):
-#
-#     interval = 0
-#
-#     def __init__(self, username, password):
-#         self.username, self.password = username, password
-#
-#     def fetch(self, **params):
-#         delta = time.time() - DeliciousClient.interval
-#         if delta < 2:
-#             time.sleep(2 - delta)
-#         DeliciousClient.interval = time.time()
-#         url = 'https://%s:%s@api.del.icio.us/v1/posts/recent' % (self.username, self.password)
-#         return self.fetch_xml(url)
-#
-#     def fetch_xml(self, url):
-#         u = urllib.FancyURLopener(None)
-#         usock = u.open(url)
-#         rawdata = usock.read()
-#         usock.close()
-#         return xml_parser.fromstring(rawdata)
-#
-#     def __getattr__(self, method):
-#         return DeliciousClient(self.username, self.password, '%s/%s' % (self.method, method))
-#
-#     def __repr__(self):
-#         return "<DeliciousClient>"
+            # def insert_laptop(data):
+            #     """
+            #     Insert new data to Laptop table (if it is not exist).
+            #     :param data: data is a dictionary from ebay API response
+            #     :return: none
+            #     """
+            #     for key, value in data.iteritems():
+            #
+            #         obj, created = Laptop.objects.get_or_create(
+            #             first_name='John',
+            #             last_name='Lennon',
+            #             # defaults={'birthday': date(1940, 10, 9)}
+            #         )
 
-# def insert_laptop(data):
-#     """
-#     Insert new data to Laptop table (if it is not exist).
-#     :param data: data is a dictionary from ebay API response
-#     :return: none
-#     """
-#     for key, value in data.iteritems():
-#
-#         obj, created = Laptop.objects.get_or_create(
-#             first_name='John',
-#             last_name='Lennon',
-#             # defaults={'birthday': date(1940, 10, 9)}
-#         )
+            # def create_link(data):
+            #     for post in data.findall('post'):
+            #         info = dict((k, smart_unicode(post.get(k))) for k in post.keys())
+            #         b, created = Link.objects.get_or_create(
+            #             url = info['href'],
+            #             description = info['extended'],
+            #             tags = info.get('tag', ''),
+            #             date = parsedate(info['time']),
+            #             title = info['description']
+            #         )
 
-# def create_link(data):
-#     for post in data.findall('post'):
-#         info = dict((k, smart_unicode(post.get(k))) for k in post.keys())
-#         b, created = Link.objects.get_or_create(
-#             url = info['href'],
-#             description = info['extended'],
-#             tags = info.get('tag', ''),
-#             date = parsedate(info['time']),
-#             title = info['description']
-#         )
 
 class AmazonClient(object):
     """
 
     limits: one query per second per associate tag
     """
+
     def __init__(self, **kwargs):
         """
         To create new instance provide Amazon credentials:
@@ -385,7 +723,8 @@ class AmazonClient(object):
 
     def save_deals(self, amazon_deals):
         # save list of deals (dict) to json file
-        with open(os.path.join(settings.BASE_DIR, 'deals.amazon.json'), 'a', encoding='utf-8', newline='') as deals_json:
+        with open(os.path.join(settings.BASE_DIR, 'deals.amazon.json'), 'a', encoding='utf-8',
+                  newline='') as deals_json:
             for items_group in amazon_deals:
                 json.dump(items_group, deals_json, sort_keys=True, indent=4)
                 deals_json.write(',\n')
@@ -395,28 +734,28 @@ class AmazonClient(object):
         # save json data to new csv file
         header = []
         with open(os.path.join(settings.BASE_DIR, 'deals.amazon.json'), 'r', encoding='utf-8') as amazon_deals:
-                io_str = amazon_deals.read()
-                json_parsed = json.loads(io_str)
-                deals_data = json_parsed['amazon_deals']
+            io_str = amazon_deals.read()
+            json_parsed = json.loads(io_str)
+            deals_data = json_parsed['amazon_deals']
+            for item in deals_data:
+                for key in item.keys():
+                    if key not in header:
+                        header.append(str(key))
+            header.sort()
+            # open a file for writing
+            with open(os.path.join(settings.BASE_DIR, 'amazon.data.csv'), 'w', encoding='utf-8') as amazon_data:
+                # create the csv writer object
+                csv_writer = csv.writer(amazon_data)
+                csv_writer.writerow(header)
                 for item in deals_data:
-                    for key in item.keys():
-                        if key not in header:
-                            header.append(str(key))
-                header.sort()
-                # open a file for writing
-                with open(os.path.join(settings.BASE_DIR, 'amazon.data.csv'), 'w', encoding='utf-8') as amazon_data:
-                    # create the csv writer object
-                    csv_writer = csv.writer(amazon_data)
-                    csv_writer.writerow(header)
-                    for item in deals_data:
-                        item_values = []
-                        for title in header:
-                            if title in item.keys():
-                                item_values.append(str(item[title]))
-                            else:
-                                item_values.append('')
-                        csv_writer.writerow(item_values)
-                amazon_data.close()
+                    item_values = []
+                    for title in header:
+                        if title in item.keys():
+                            item_values.append(str(item[title]))
+                        else:
+                            item_values.append('')
+                    csv_writer.writerow(item_values)
+            amazon_data.close()
         amazon_deals.close()
 
     def fetch_deals(self):
@@ -448,7 +787,8 @@ class AmazonClient(object):
         amazon_data = {}
         amazon = bottlenose.Amazon(self.amazon_id, self.amazon_key, self.amazon_tag, MaxQPS=0.9)
         # Item lookup call: IdType=UPC , SearchIndex=Electronics (US market) , node=493964
-        amazon_response = amazon.ItemLookup(ItemId=upc, ResponseGroup='Large', SearchIndex='Electronics', IdType='UPC')
+        amazon_response = amazon.ItemLookup(ItemId=upc, ResponseGroup='Large', SearchIndex='Electronics',
+                                            IdType='UPC')
         response_elem = objectify.fromstring(amazon_response.decode('utf-8'))
         item_path = objectify.ObjectPath("ItemLookupResponse.Items.Item")
         if item_path.hasattr(response_elem):
@@ -462,7 +802,7 @@ class AmazonClient(object):
                 else:
                     amazon_data[medium_tag] = str(amazon_attr.text)
         else:
-            print('The following UPC does not contain Item tag: '+upc)
+            print('The following UPC does not contain Item tag: ' + upc)
         return amazon_data
 
     def breake_obj(self, attr_obj, obj_data):
@@ -475,7 +815,7 @@ class AmazonClient(object):
         if attr_obj.text:
             obj_tag = attr_obj.tag.split('}')[1]
             parent_tag = attr_obj.getparent().tag.split('}')[1]
-            full_tag = str(parent_tag+'>'+obj_tag)
+            full_tag = str(parent_tag + '>' + obj_tag)
             obj_data[full_tag] = self.val_insert(full_tag, attr_obj.text, obj_data)
             # print('break_obj_simple_str: tag: '+full_tag+' val: '+obj_data[full_tag])
             return obj_data
@@ -483,17 +823,17 @@ class AmazonClient(object):
             for sub_attr in attr_obj.iterchildren("*"):
                 obj_tag = sub_attr.tag.split('}')[1]
                 parent_tag = sub_attr.getparent().tag.split('}')[1]
-                full_tag = str(parent_tag+'>'+obj_tag)
+                full_tag = str(parent_tag + '>' + obj_tag)
                 if not sub_attr.text:
                     if full_tag == 'ItemAttributes>Feature':
-                        print('object child (recursion): '+full_tag)
+                        print('object child (recursion): ' + full_tag)
                         print(type(attr_obj))
                         print(attr_obj.text)
                     obj_dict = self.breake_obj(sub_attr, {})
                     obj_data.update(obj_dict)
                     if full_tag == 'ItemAttributes>Feature':
-                        print('obj_data after executing '+full_tag)
-                    # print(obj_data)
+                        print('obj_data after executing ' + full_tag)
+                        # print(obj_data)
                 else:
                     obj_data[full_tag] = self.val_insert(full_tag, sub_attr.text, obj_data)
                     # print('simple child (base type): '+full_tag+' with value:'+obj_data[full_tag])
@@ -516,4 +856,4 @@ class AmazonClient(object):
                 return multi_values
         else:
             return str(tag_value)
-    # get list of upc -> for each upc extract details ->  get large response -> parse xml -> save to self.item_deals -> export to json -> export to csv
+            # get list of upc -> for each upc extract details ->  get large response -> parse xml -> save to self.item_deals -> export to json -> export to csv
