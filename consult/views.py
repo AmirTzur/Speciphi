@@ -154,6 +154,14 @@ def affiliation(request, product=None):
         page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
                     'Donec in maximus augue. Quisque euismod euismod posuere. ' \
                     'Phasellus tempor.'
+        information_content = {
+            "statistic": ["S1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+            "insight": ["I1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                        "I2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                        "I3-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+            "objective": ["O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                          "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
+        }
         context.update({
             "Product_id": Product_id,
             "affiliationsLength": len(affiliations),
@@ -163,6 +171,7 @@ def affiliation(request, product=None):
             "total_results": total_results,
             "page_title": page_title,
             "page_desc": page_desc,
+            "information_content": information_content,
         })
     return render(request, "affiliation.html", context)
 
@@ -287,12 +296,24 @@ def application(request, product=None):
         page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
                     'Donec in maximus augue. Quisque euismod euismod posuere. ' \
                     'Phasellus tempor.'
+        information_content = {
+            "statistic": [
+                "S1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+            "insight": [
+                "I1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                "I2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                "I3-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+            "objective": [
+                "O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
+        }
         context.update({
             "template_uses": template_uses,
             "offers": offers[0:3],
             "total_results": total_results,
             "page_title": page_title,
             "page_desc": page_desc,
+            "information_content": information_content,
         })
 
     return render(request, "application.html", context)
@@ -311,11 +332,23 @@ def focalization(request, product=None):
     page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
                 'Donec in maximus augue. Quisque euismod euismod posuere. ' \
                 'Phasellus tempor.'
+    information_content = {
+        "statistic": [
+            "S1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+        "insight": [
+            "I1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "I2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "I3-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+        "objective": [
+            "O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
+    }
     context = {
         "pages": pages,
         "product": product,
         "page_title": page_title,
         "page_desc": page_desc,
+        "information_content": information_content,
     }
 
     return render(request, "focalization.html", context)
@@ -334,10 +367,22 @@ def comparison(request, product=None):
     page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
                 'Donec in maximus augue. Quisque euismod euismod posuere. ' \
                 'Phasellus tempor.'
+    information_content = {
+        "statistic": [
+            "S1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+        "insight": [
+            "I1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "I2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "I3-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+        "objective": [
+            "O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
+    }
     context = {
         "pages": pages,
         "page_title": page_title,
         "page_desc": page_desc,
+        "information_content": information_content,
     }
     return render(request, "comparison.html", context)
 
