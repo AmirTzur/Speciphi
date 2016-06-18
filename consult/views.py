@@ -333,99 +333,132 @@ def focalization(request, product=None):
             "general_name": "Screen",
             "id": 1,
             "my_questions": [
-                {"title": "Screen type",
-                 "question": "what would be the best screen type for ya?",
-                 "answers": ["mat", "flat", "something else"]},
-                {"title": "Screen resolution",
-                 "question": "do you fucking care about res?",
-                 "answers": ["Yes Sir!", "No Sir!", "Fuck You Sir!"]},
-                {"title": "Screen therapy",
-                 "question": "Does your eyes hurts?",
-                 "answers": ["most of the day", "NEVER!"]},
+                {
+                    "q_id": 1,
+                    "title": "Screen type",
+                    "question": "what would be the best screen type for ya?",
+                    "answers": ["mat", "flat", "something else"]},
+                {
+                    "q_id": 2,
+                    "title": "Screen resolution",
+                    "question": "do you fucking care about res?",
+                    "answers": ["Yes Sir!", "No Sir!", "Fuck You Sir!"]},
+                {
+                    "q_id": 3,
+                    "title": "Screen therapy",
+                    "question": "Does your eyes hurts?",
+                    "answers": ["most of the day", "NEVER!"]},
             ]
         },
         {
             "general_name": "Warranty",
             "id": 2,
             "my_questions": [
-                {"title": "Warranty type",
-                 "question": "what would be the best Warranty type for ya?",
-                 "answers": ["Good one", "Bad one", "will not tell!"]},
-                {"title": "Warranty period",
-                 "question": "do you fucking care about warranty?",
-                 "answers": ["long one", "short"]},
-                {"title": "free Warranty",
-                 "question": "Would you like that?",
-                 "answers": ["no", "free", "stuff"]}
+                {
+                    "q_id": 1,
+                    "title": "Warranty type",
+                    "question": "what would be the best Warranty type for ya?",
+                    "answers": ["Good one", "Bad one", "will not tell!"]},
+                {
+                    "q_id": 2,
+                    "title": "Warranty period",
+                    "question": "do you fucking care about warranty?",
+                    "answers": ["long one", "short"]},
+                {
+                    "q_id": 3,
+                    "title": "free Warranty",
+                    "question": "Would you like that?",
+                    "answers": ["no", "free", "stuff"]}
             ]
         },
         {
             "general_name": "Connections",
             "id": 4,
             "my_questions": [
-                {"title": "Accessories 1",
-                 "question": "How much would you use external accessories with your product?",
-                 "answers": ["Only the laptop itself", "Averagely", "Most of the time"]},
-                {"title": "Connections 2",
-                 "question": "do you fucking care about connections?",
-                 "answers": ["lots", "not a lot"]},
-                {"title": "Connections 3",
-                 "question": "Would you like that connected?",
-                 "answers": ["no", "yes", "not sure!"]}
+                {
+                    "q_id": 1,
+                    "title": "Accessories 1",
+                    "question": "How much would you use external accessories with your product?",
+                    "answers": ["Only the laptop itself", "Averagely", "Most of the time"]},
+                {
+                    "q_id": 2,
+                    "title": "Connections 2",
+                    "question": "do you fucking care about connections?",
+                    "answers": ["lots", "not a lot"]},
+                {
+                    "q_id": 3,
+                    "title": "Connections 3",
+                    "question": "Would you like that connected?",
+                    "answers": ["no", "yes", "not sure!"]}
             ]
         },
         {
             "general_name": "Special Needs",
             "id": 5,
             "my_questions": [
-                {"title": "Special 1",
-                 "question": "1 How much would you use external Special with your product?",
-                 "answers": ["Only the laptop itself", "Averagely", "Most of the time"]},
-                {"title": "Special 2",
-                 "question": "2 do you fucking care about Special?",
-                 "answers": ["lots", "not a lot"]},
-                {"title": "Special 3",
-                 "question": "3 Would you like that Special?",
-                 "answers": ["no", "yes", "not sure!"]}
+                {
+                    "q_id": 1,
+                    "title": "Special 1",
+                    "question": "1 How much would you use external Special with your product?",
+                    "answers": ["Only the laptop itself", "Averagely", "Most of the time"]},
+                {
+                    "q_id": 2,
+                    "title": "Special 2",
+                    "question": "2 do you fucking care about Special?",
+                    "answers": ["lots", "not a lot"]},
+                {
+                    "q_id": 3,
+                    "title": "Special 3",
+                    "question": "3 Would you like that Special?",
+                    "answers": ["no", "yes", "not sure!"]}
             ]
         },
         {
             "general_name": "Dimensions",
             "id": 7,
             "my_questions": [
-                {"title": "Dimensions 1",
-                 "question": "1 How much would you use Dimensions with your product?",
-                 "answers": ["Only the laptop itself", "Averagely", "Most of the time"]},
-                {"title": "Dimensions 2",
-                 "question": "2 do you fucking care about Dimensions?",
-                 "answers": ["lots", "not a lot"]},
-                {"title": "Dimensions 3",
-                 "question": "3 Would you like that Dimensions?",
-                 "answers": ["no", "yes", "not sure!"]}
+                {
+                    "q_id": 1,
+                    "title": "Dimensions 1",
+                    "question": "1 How much would you use Dimensions with your product?",
+                    "answers": ["Only the laptop itself", "Averagely", "Most of the time"]},
+                {
+                    "q_id": 2,
+                    "title": "Dimensions 2",
+                    "question": "2 do you fucking care about Dimensions?",
+                    "answers": ["lots", "not a lot"]},
             ]
         },
         {
             "general_name": "Operation System",
             "id": 8,
             "my_questions": [
-                {"title": "Operation System 1",
-                 "question": "1 How much would you use Operation System with your product?",
-                 "answers": ["Only the laptop itself", "Averagely", "Most of the time"]},
-                {"title": "Operation System 2",
-                 "question": "2 do you fucking care about Operation System?",
-                 "answers": ["lots", "not a lot"]},
-                {"title": "Operation System 3",
-                 "question": "3 Would you like that Operation System?",
-                 "answers": ["no", "yes", "not sure!"]}
+                {
+                    "q_id": 1,
+                    "title": "Operation System 1",
+                    "question": "1 How much would you use Operation System with your product?",
+                    "answers": ["Only the laptop itself", "Averagely", "Most of the time"]},
+                {
+                    "q_id": 2,
+                    "title": "Operation System 2",
+                    "question": "2 do you fucking care about Operation System?",
+                    "answers": ["lots", "not a lot"]},
+                {
+                    "q_id": 3,
+                    "title": "Operation System 3",
+                    "question": "3 Would you like that Operation System?",
+                    "answers": ["no", "yes", "not sure!"]}
             ]
         },
         {
             "general_name": "Dummy Question",
             "id": 10,
             "my_questions": [
-                {"title": "Elad's Title",
-                 "question": "What would you like do develop today sir?",
-                 "answers": ["Java, Sir", "Basic Sir", "Dunno Sir!", "Python Plz! Sir!"]}
+                {
+                    "q_id": 1,
+                    "title": "Elad's Title",
+                    "question": "What would you like do develop today sir?",
+                    "answers": ["Java, Sir", "Basic Sir", "Dunno Sir!", "Python Plz! Sir!"]}
             ]
         },
 
