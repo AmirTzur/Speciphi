@@ -2,17 +2,35 @@ $(document).ready(function () {
     // show and save first question
     $('div.questions').first().children('div.question').first().css('display', 'inline-block');
     var $current_question = $('div.questions').first().children('div.question').first();
-    // prevent default button action
+    // button's click
     $('button.answer').click(function (event) {
+        // don't send form
         event.preventDefault();
-        // sent taltul question and answer id using ajax
+        // update button pressed indicator
+        // color 'on & off' state
+
+        if ($(this).attr('value') == '0') {
+
+            // cancel selected brothers and color them 'off'
+            $(this).siblings('button').attr('value', '0');
+            $(this).siblings('button').css('background-color', 'rgb(240, 240, 240)');
+            // check and color 'on'
+            $(this).attr('value', '1');
+            $(this).css('background-color', 'rgb(220, 220, 220)');
+        }
+        else if ($(this).attr('value') == '1') {
+            // un check and color 'off'
+            $(this).attr('value', '0');
+            $(this).css('background-color', 'rgb(240, 240, 240)');
+        }
+        // IMPLEMENT: sent taltul question and answer id using ajax
     });
-    // show questions according to select chose
+    // display questions according to select chose
     $('select').on('change', function () {
         $('div.question').css('display', 'none');
-        $('div#questions_' + this.value + ' div:nth-child(1)').css('display', 'inline-block');
-        // update current question
-        $current_question = $('div#questions_' + this.value + ' div:nth-child(1)');
+        var display_question = $('#questions_list').find(":selected").text()[1];
+        // display and update current question
+        $current_question = $('div#questions_' + this.value + ' div.question:nth-child(' + display_question + ')').css('display', 'inline-block');
     });
     // forward to next questions
     $('#question_nav_right').on('click', function () {

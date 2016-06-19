@@ -2,6 +2,14 @@ div.container-fluid {
     background-color: #E5B34D;
 }
 
+#questions_wrapper {
+    width: auto;
+    height: auto;
+    overflow: hidden;
+    /* Next_btn is relative to #types wrapper*/
+    position: relative;
+}
+
 select#questions_list {
     margin-top: 30px;
     margin-bottom: 8px;

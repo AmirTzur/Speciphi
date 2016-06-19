@@ -23,7 +23,7 @@
                                 <p class="question_text">{{ ques.question }}</p>
                                 <div class="answers">
                                     {% for ans in ques.answers %}
-                                        <button class="answer btn">{{ ans }}</button>
+                                        <button class="answer btn" id="{{ ans }}" value="0">{{ ans }}</button>
                                     {% endfor %}
                                 </div>
                             </div>
