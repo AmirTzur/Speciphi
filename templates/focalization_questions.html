@@ -7,7 +7,7 @@
 <div class="container-fluid">
     <div id="questions_wrapper">
         <form action="{% url 'results' product %}" method="POST">{% csrf_token %}
-            <select id="questions_list">
+            <select id="questions_list" class="selectpicker show-tick">
                 {% for question in questions %}
                     <option value="{{ question.id }}">{{ question.general_name }}&nbsp
                         1/{{ question.my_questions|length }}</option>
@@ -21,9 +21,9 @@
                             <div class="question" id="question_{{ ques.q_id }}" style="display: none;">
                                 <p class="title_text">{{ ques.title }}</p>
                                 <p class="question_text">{{ ques.question }}</p>
-                                <div class="answers row">
+                                <div class="answers">
                                     {% for ans in ques.answers %}
-                                        <button class="answer">{{ ans }}</button>
+                                        <button class="answer btn">{{ ans }}</button>
                                     {% endfor %}
                                 </div>
                             </div>

@@ -11,5 +11,4 @@ $(document).ready(function () {
         $('div.question').css('display', 'none');
         $('div#questions_' + this.value + ' div:nth-child(1)').css('display', 'inline-block');
     });
-
 });

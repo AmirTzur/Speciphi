@@ -22,6 +22,7 @@ div.question {
 p.title_text {
     font-size: 22px;
     color: rgb(249, 178, 51);
+    margin-bottom: 5px;
 }
 
 p.question_text {
@@ -30,14 +31,21 @@ p.question_text {
 
 div.answers {
     position: absolute;
-    right: 2px;
-    bottom: 2px;
+    bottom: 0;
 }
 
 button.answer {
-    width: 70px;
-    height: 25px;
-    margin: 10px;
+    width: 185px;
+    height: 28px;
+    display: block;
+    margin: 2px auto 0;
+    outline: none !important;
+    background-color: rgb(240, 240, 240);
+    font-weight: bold;
+}
+
+button.answer:hover {
+    background-color: rgb(230, 230, 230);
 }
 
 div#questions_holder {
@@ -82,4 +90,18 @@ div#questions_holder {
 #next_page svg image {
     width: 65px;
     height: 65px;
+}
+
+@media only screen and (min-width: 380px) {
+    #question_nav_left {
+        position: relative;
+        left: -50px;
+        top: 18px;
+    }
+
+    #question_nav_right {
+        position: relative;
+        left: 50px;
+        top: 18px;
+    }
 }

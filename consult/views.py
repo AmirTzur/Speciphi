@@ -463,8 +463,6 @@ def focalization(request, product=None):
         },
 
     ]
-    print(questions)
-
     context.update({"questions": questions})
     return render(request, "focalization.html", context)
 
