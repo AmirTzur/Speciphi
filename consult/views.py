@@ -435,7 +435,7 @@ def focalization(request, product=None):
             "my_questions": [
                 {
                     "q_id": 1,
-                    "title": "Operation System 1",
+                    "title": "Operation System",
                     "question": "1 How much would you use Operation System with your product?",
                     "answers": ["Only the laptop itself", "Averagely", "Most of the time"]},
                 {

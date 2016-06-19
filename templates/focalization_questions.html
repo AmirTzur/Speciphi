@@ -7,16 +7,16 @@
 <div class="container-fluid">
     <div id="questions_wrapper">
         <form action="{% url 'results' product %}" method="POST">{% csrf_token %}
-            <select id="questions_list" class="selectpicker show-tick">
+            <select id="questions_list">
                 {% for question in questions %}
-                    <option value="{{ question.id }}">{{ question.general_name }}&nbsp
-                        1/{{ question.my_questions|length }}</option>
+                    <option value="{{ question.id }}">(1/{{ question.my_questions|length }})&nbsp{{ question.general_name }}
+                        </option>
                 {% endfor %}
             </select>
             <div id="questions_holder">
-                <div style="display: inline" id="question_nav_left"><a><i class="fa fa-caret-left fa-lg"></i></a></div>
+                <div id="question_nav_left"><a><i class="fa fa-caret-left fa-lg"></i></a></div>
                 {% for question in questions %}
-                    <div style="display: inline" class="questions" id="questions_{{ question.id }}">
+                    <div class="questions" id="questions_{{ question.id }}">
                         {% for ques in question.my_questions %}
                             <div class="question" id="question_{{ ques.q_id }}" style="display: none;">
                                 <p class="title_text">{{ ques.title }}</p>
@@ -30,7 +30,7 @@
                         {% endfor %}
                     </div>
                 {% endfor %}
-                <div style="display: inline" id="question_nav_right"><a><i class="fa fa-caret-right fa-lg"></i></a></div>
+                <div id="question_nav_right"><a><i class="fa fa-caret-right fa-lg"></i></a></div>
             </div>
 
             <br>

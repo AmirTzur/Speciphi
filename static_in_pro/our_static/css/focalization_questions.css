@@ -16,17 +16,19 @@ div.question {
     width: 185px;
     height: 220px;
     /*answers will be relative to question*/
-    position: relative;
+    /*position: relative;*/
 }
 
 p.title_text {
     font-size: 22px;
     color: rgb(249, 178, 51);
     margin-bottom: 5px;
+    cursor: default;
 }
 
 p.question_text {
     font-weight: bold;
+    cursor: default;
 }
 
 div.answers {
@@ -42,6 +44,7 @@ button.answer {
     outline: none !important;
     background-color: rgb(240, 240, 240);
     font-weight: bold;
+    line-height: 0;
 }
 
 button.answer:hover {
@@ -52,13 +55,19 @@ div#questions_holder {
     position: relative;
 }
 
+.questions {
+    display: inline;
+}
+
 #question_nav_left {
+    display: inline;
     position: absolute;
     left: 20px;
     top: 70px;
 }
 
 #question_nav_right {
+    display: inline;
     position: absolute;
     right: 15px;
     top: 70px;
@@ -67,11 +76,13 @@ div#questions_holder {
 #question_nav_left a {
     color: rgb(230, 89, 42);
     font-size: 22px;
+    cursor: pointer;
 }
 
 #question_nav_right a {
     color: rgb(230, 89, 42);
     font-size: 22px;
+    cursor: pointer;
 }
 
 #next_page {
@@ -94,14 +105,12 @@ div#questions_holder {
 
 @media only screen and (min-width: 380px) {
     #question_nav_left {
-        position: relative;
-        left: -50px;
-        top: 18px;
+        position: absolute;
+        right: 310px;
     }
 
     #question_nav_right {
-        position: relative;
-        left: 50px;
-        top: 18px;
+        position: absolute;
+        left: 310px;
     }
 }
