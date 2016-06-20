@@ -93,6 +93,17 @@ div#questions_holder {
     cursor: pointer;
 }
 
+.question_indicator {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    border: 1px solid white;
+}
+
+.indicator_on {
+    background-color: white;
+}
+
 #next_page {
     border: none;
     position: absolute;

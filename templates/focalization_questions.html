@@ -9,8 +9,8 @@
         <form action="{% url 'results' product %}" method="POST">{% csrf_token %}
             <select id="questions_list">
                 {% for question in questions %}
-                    <option value="{{ question.id }}">(1/{{ question.my_questions|length }})&nbsp{{ question.general_name }}
-                        </option>
+                    <option value="{{ question.id }}"
+                    >(1/{{ question.my_questions|length }})&nbsp{{ question.general_name }}</option>
                 {% endfor %}
             </select>
             <div id="questions_holder">
@@ -32,7 +32,13 @@
                 {% endfor %}
                 <div id="question_nav_right"><a><i class="fa fa-caret-right fa-lg"></i></a></div>
             </div>
-
+            <br>
+            <div id="question_indicators">
+                <div class="question_indicator indicator_on" style="display: none"></div>
+                <div class="question_indicator" style="display: none"></div>
+                <div class="question_indicator" style="display: none"></div>
+                <div class="question_indicator" style="display: none"></div>
+            </div>
             <br>
             <label id="next_page">
                 <input type="submit" name="image" style="display: none">

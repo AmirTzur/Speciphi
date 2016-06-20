@@ -2,15 +2,17 @@ $(document).ready(function () {
     // show and save first question
     $('div.questions').first().children('div.question').first().css('display', 'inline-block');
     var $current_question = $('div.questions').first().children('div.question').first();
-    // button's click
+    // show question indicator
+    $current_question.parent('div.questions').children('div.question').each(function (index) {
+        $('#question_indicators div:nth-child(' + parseInt(index + 1) + ')').css('display', 'inline-block');
+    });
+    // answer's click
     $('button.answer').click(function (event) {
         // don't send form
         event.preventDefault();
         // update button pressed indicator
         // color 'on & off' state
-
         if ($(this).attr('value') == '0') {
-
             // cancel selected brothers and color them 'off'
             $(this).siblings('button').attr('value', '0');
             $(this).siblings('button').css('background-color', 'rgb(240, 240, 240)');
@@ -31,6 +33,17 @@ $(document).ready(function () {
         var display_question = $('#questions_list').find(":selected").text()[1];
         // display and update current question
         $current_question = $('div#questions_' + this.value + ' div.question:nth-child(' + display_question + ')').css('display', 'inline-block');
+        // hide last question indicator
+        $('.question_indicator').css('display', 'none');
+        $('#question_indicators').children('div.indicator_on').removeClass('indicator_on');
+        // show current question indicator
+        $current_question.parent('div.questions').children('div.question').each(function (index) {
+            $('#question_indicators div:nth-child(' + parseInt(index + 1) + ')').css('display', 'inline-block');
+            // fill indicator
+            if (index + 1 == display_question) {
+                $('#question_indicators div.question_indicator:nth-child(' + display_question + ')').addClass('indicator_on');
+            }
+        });
     });
     // forward to next questions
     $('#question_nav_right').on('click', function () {
@@ -60,6 +73,8 @@ $(document).ready(function () {
             });
             // update current question
             $current_question = $current_question.next('div');
+            // update question indicator
+            $('div#question_indicators').children('div.indicator_on').removeClass('indicator_on').next('div.question_indicator').addClass('indicator_on');
         }
     });
     // backward to last question
@@ -86,6 +101,9 @@ $(document).ready(function () {
             });
             // update current question
             $current_question = $current_question.prev('div');
+            // update question indicator
+            $('div#question_indicators').children('div.indicator_on').removeClass('indicator_on').prev('div.question_indicator').addClass('indicator_on');
+
         }
     });
 });

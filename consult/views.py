@@ -458,7 +458,8 @@ def focalization(request, product=None):
                     "q_id": 1,
                     "title": "Elad's Title",
                     "question": "What would you like do develop today sir?",
-                    "answers": ["Java, Sir", "Basic Sir", "Dunno Sir!", "Python Plz! Sir!"]}
+                    "answers": ["Java, Sir", "Basic Sir", "Dunno Sir!", "Python Plz! Sir!"]
+                }
             ]
         },
 
