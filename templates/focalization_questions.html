@@ -10,7 +10,7 @@
             <select id="questions_list">
                 {% for question in questions %}
                     <option value="{{ question.id }}"
-                    >(1/{{ question.my_questions|length }})&nbsp{{ question.general_name }}</option>
+                    >(0/{{ question.my_questions|length }})&nbsp{{ question.general_name }}</option>
                 {% endfor %}
             </select>
             <div id="questions_holder">
