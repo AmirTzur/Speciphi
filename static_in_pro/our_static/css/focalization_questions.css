@@ -19,24 +19,37 @@ select#questions_list {
     outline: 0;
 }
 
+select#questions_list {
+    font-family: "Bariol";
+    font-size: 17px;
+}
+
+select#questions_list option {
+    font-size: 17px;
+    font-family: "Bariol";
+    line-height: 1.2;
+}
+
 div.question {
     background-color: white;
     width: 185px;
     height: 220px;
-    /*answers will be relative to question*/
-    /*position: relative;*/
 }
 
 p.title_text {
     font-size: 22px;
+    font-family: "Bariol";
     color: rgb(249, 178, 51);
     margin-bottom: 5px;
     cursor: default;
 }
 
 p.question_text {
-    font-weight: bold;
     cursor: default;
+    font-size: 16px;
+    font-family: "Bariol";
+    margin: 0;
+    line-height: 1.1;
 }
 
 div.answers {
@@ -51,8 +64,11 @@ button.answer {
     margin: 2px auto 0;
     outline: none !important;
     background-color: rgb(240, 240, 240);
-    font-weight: bold;
+    font-size: 14px;
+    font-family: "Myriad Hebrew";
+    /*font-weight: bold;*/
     line-height: 0;
+    border-radius: 0;
 }
 
 button.answer:hover {
@@ -91,6 +107,10 @@ div#questions_holder {
     color: rgb(230, 89, 42);
     font-size: 22px;
     cursor: pointer;
+}
+
+#question_indicators {
+    margin-bottom: 30px;
 }
 
 .question_indicator {

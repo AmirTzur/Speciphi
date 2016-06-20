@@ -15,15 +15,25 @@ $(document).ready(function () {
         if ($(this).attr('value') == '0') {
             // cancel selected brothers and color them 'off'
             $(this).siblings('button').attr('value', '0');
-            $(this).siblings('button').css('background-color', 'rgb(240, 240, 240)');
+            $(this).siblings('button').css({
+                'background-color': 'rgb(240, 240, 240)',
+                'font-weight': 'normal'
+            });
             // check and color 'on'
             $(this).attr('value', '1');
-            $(this).css('background-color', 'rgb(220, 220, 220)');
+            $(this).css({
+                'background-color': 'rgb(220, 220, 220)',
+                'font-weight': 'bold'
+            });
+
         }
         else if ($(this).attr('value') == '1') {
             // un check and color 'off'
             $(this).attr('value', '0');
-            $(this).css('background-color', 'rgb(240, 240, 240)');
+            $(this).css({
+                'background-color': 'rgb(240, 240, 240)',
+                'font-weight': 'normal'
+            });
         }
         // IMPLEMENT: sent taltul question and answer id using ajax
     });
@@ -62,9 +72,6 @@ $(document).ready(function () {
                             inner_text = String(inner_text).replace('(2', '(3');
                             break;
                         case '3':
-                            inner_text = String(inner_text).replace('(3', '(4');
-                            break;
-                        case '4':
                             inner_text = String(inner_text).replace('(3', '(4');
                             break;
                     }
