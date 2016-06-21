@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    // $('select').select2({
+    //     minimumResultsForSearch: Infinity
+    // });
     // show and save first question
     $('div.questions').first().children('div.question').first().css('display', 'inline-block');
     var $current_question = $('div.questions').first().children('div.question').first();
