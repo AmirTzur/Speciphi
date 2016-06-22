@@ -14,6 +14,7 @@ $(document).ready(function () {
         // if not selected before - increase select box number of questions answered
         var increase_answered = true;
         $(this).parent('div.answers').children('button.answer').each(function () {
+            // if already selected
             if ($(this).attr('value') == '1') {
                 increase_answered = false;
             }
@@ -53,50 +54,17 @@ $(document).ready(function () {
         });
 
         // update questions number on select box
-        if (increase_answered) {
-            $('select#questions_list').children('option').each(function () {
-                if ('questions_' + $(this).prop('value') == $current_question.parent('div').prop('id')) {
-                    var inner_text = $(this).text();
-                    switch (inner_text[1]) {
-                        case '0':
-                            inner_text = String(inner_text).replace('(0', '(1');
-                            break;
-                        case '1':
-                            inner_text = String(inner_text).replace('(1', '(2');
-                            break;
-                        case '2':
-                            inner_text = String(inner_text).replace('(2', '(3');
-                            break;
-                        case '3':
-                            inner_text = String(inner_text).replace('(3', '(4');
-                            break;
-                    }
-                    $(this).text(inner_text);
-                }
-            });
-        } else if (decrease_answered) {
-            $('select#questions_list').children('option').each(function () {
-                if ('questions_' + $(this).prop('value') == $current_question.parent('div').prop('id')) {
-                    var inner_text = $(this).text();
-                    switch (inner_text[1]) {
-                        case '1':
-                            inner_text = String(inner_text).replace('(1', '(0');
-                        case '2':
-                            inner_text = String(inner_text).replace('(2', '(1');
-                            break;
-                        case '3':
-                            inner_text = String(inner_text).replace('(3', '(2');
-                            break;
-                        case '4':
-                            inner_text = String(inner_text).replace('(4', '(3');
-                            break;
-                    }
-                    $(this).text(inner_text);
-                }
-            });
+        if (increase_answered || decrease_answered) {
+            var $current_subject = $('select#questions_list option[value=' + $current_question.parent('div').prop('id').substring('questions_'.length) + ']');
+            UpdateAnsweredNumber($current_subject, increase_answered, true);
+            if (window.matchMedia("(min-width: 992px)").matches) {
+                $current_subject = $('button#questions_circle_' + $current_question.parent('div').prop('id').substring('questions_'.length));
+                UpdateAnsweredNumber($current_subject, increase_answered, false);
+            }
         }
         // IMPLEMENT: sent taltul question and answer id using ajax
     });
+
     // display questions according to select chose
     $('select').on('change', function () {
         $('div.question').css('display', 'none');
@@ -145,7 +113,7 @@ $(document).ready(function () {
             if (desktop_flag) {
                 // display only 1 question
                 $current_question.siblings('div.question').css('display', 'none');
-                // select displayed questions
+                // select last displayed questions
                 $("select#questions_list").val($current_question.parent('div.questions').prop('id').substring('questions_'.length));
             }
             desktop_flag = false;
@@ -192,10 +160,11 @@ $(document).ready(function () {
                         $current_question = $('div#questions_' + pressed_subject_id).children('div.question').first();
                     }
                 });
+
             } // end first desktop entry
             // show current question brothers
             $current_question.parent('div.questions').children('div.question').css('display', 'inline-block');
-            // update number of answered questions
+            // update number of answered questions (from mobile select box)
             $('select#questions_list').children('option').each(function () {
                 $('button#questions_circle_' + $(this).val()).text($(this).text()[1] + $(this).text()[2] + $(this).text()[3]);
             });
@@ -213,3 +182,78 @@ $(document).ready(function () {
         WidthChange();
     }
 });
+
+function UpdateAnsweredNumber($subject, increase, mobile) {
+    var inner_text = $subject.text();
+
+    if (mobile) {
+        if (increase) {
+            // get text of current questions subject (select option)
+            switch (inner_text[1]) {
+                case '0':
+                    inner_text = String(inner_text).replace('(0', '(1');
+                    break;
+                case '1':
+                    inner_text = String(inner_text).replace('(1', '(2');
+                    break;
+                case '2':
+                    inner_text = String(inner_text).replace('(2', '(3');
+                    break;
+                case '3':
+                    inner_text = String(inner_text).replace('(3', '(4');
+                    break;
+            }
+        } else {
+            switch (inner_text[1]) {
+                case '1':
+                    inner_text = String(inner_text).replace('(1', '(0');
+                    break;
+                case '2':
+                    inner_text = String(inner_text).replace('(2', '(1');
+                    break;
+                case '3':
+                    inner_text = String(inner_text).replace('(3', '(2');
+                    break;
+                case '4':
+                    inner_text = String(inner_text).replace('(4', '(3');
+                    break;
+            }
+        }
+    } else {
+        // desktop
+        console.log(increase);
+        if (increase) {
+            // get text of current questions subject (select option)
+            switch (inner_text[0]) {
+                case '0':
+                    inner_text = String(inner_text).replace('0/', '1/');
+                    break;
+                case '1':
+                    inner_text = String(inner_text).replace('1/', '2/');
+                    break;
+                case '2':
+                    inner_text = String(inner_text).replace('2/', '3/');
+                    break;
+                case '3':
+                    inner_text = String(inner_text).replace('3/', '4/');
+                    break;
+            }
+        } else {
+            switch (inner_text[0]) {
+                case '1':
+                    inner_text = String(inner_text).replace('1/', '0/');
+                    break;
+                case '2':
+                    inner_text = String(inner_text).replace('2/', '1/');
+                    break;
+                case '3':
+                    inner_text = String(inner_text).replace('3/', '2/');
+                    break;
+                case '4':
+                    inner_text = String(inner_text).replace('4/', '3/');
+                    break;
+            }
+        }
+    }
+    $subject.text(inner_text);
+}
