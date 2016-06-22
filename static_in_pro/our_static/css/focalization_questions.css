@@ -284,4 +284,37 @@ div#questions_holder {
         height: 60px;
     }
 
+    /* Medium Devices, Desktops */
+    @media only screen and (min-width: 992px) {
+
+        select#questions_list {
+            display: none;
+        }
+
+        button.questions_circle {
+            width: 53px;
+            height: 53px;
+            border-radius: 50%;
+            border: 2px solid white;
+            padding: 10px;
+            margin: 10px 30px 30px 30px;
+            color: white;
+            background-color: transparent;
+            outline: none;
+            font-family: "Myriad Hebrew";
+            font-size: 22px;
+            line-height: 1.2;
+        }
+
+        span.questions_subject {
+            color: white;
+            font-size: 20px;
+            font-family: "Bariol";
+            line-height: 1.2;
+            width: 100px;
+            text-align: center;
+            margin: auto;
+        }
+
+    }
 }

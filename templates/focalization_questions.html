@@ -9,7 +9,7 @@
         <form action="{% url 'results' product %}" method="POST">{% csrf_token %}
             <select id="questions_list">
                 {% for question in questions %}
-                    <option value="{{ question.id }}"
+                    <option value="{{ question.id }}" data-brand="{{ question.general_name }}"
                     >(0/{{ question.my_questions|length }})&nbsp{{ question.general_name }}</option>
                 {% endfor %}
             </select>

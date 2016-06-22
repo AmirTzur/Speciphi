@@ -1,7 +1,4 @@
 $(document).ready(function () {
-    // $('select').select2({
-    //     minimumResultsForSearch: Infinity
-    // });
     // show and save first question
     $('div.questions').first().children('div.question').first().css('display', 'inline-block');
     var $current_question = $('div.questions').first().children('div.question').first();
@@ -138,4 +135,47 @@ $(document).ready(function () {
 
         }
     });
+
+    // responsive query
+    function WidthChange() {
+        // mobile screens
+        if (window.matchMedia("(max-width: 991px)").matches) {
+
+        } //end mobile screens
+        // desktop screens
+        else if (window.matchMedia("(min-width: 992px)").matches) {
+            // create questions row container
+            $('#questions_list').before(
+                "<div id='desktop_questions_list' class='row'>" +
+                "</div>"
+            );
+            // add elements to questions container
+            $('select#questions_list').children('option').each(function () {
+                $('div#desktop_questions_list').append(
+                    "<div id='questions_desktop_container_" + $(this).attr('value') + "' class='questions_desktop_container' style='display: inline-block'>" +
+                    "<span class='questions_subject' style='display: block;'>" + $(this).attr('data-brand') +
+                    "</span>" +
+                    "<button id='questions_circle_" + $(this).attr('value') + "' class='questions_circle' style='display: block;'>" +
+                    $(this).text()[1] + $(this).text()[2] + $(this).text()[3] +
+                    "</button>" +
+                    "</div>"
+                )
+            });
+            // questions circle action
+            $('button.questions_circle').click(function (event) {
+                event.preventDefault();
+            });
+
+        }//end desktop screens
+    }// end responsive query
+
+// media query event handler
+    if (matchMedia) {
+        // define break points
+        var mq_mobile = window.matchMedia("(max-width: 991px)");
+        // add listeners and callback
+        mq_mobile.addListener(WidthChange);
+        // invoke layout function
+        WidthChange();
+    }
 });
