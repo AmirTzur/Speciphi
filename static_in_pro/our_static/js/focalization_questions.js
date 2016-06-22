@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    var desktop_flag = false;
     // show and save first question
     $('div.questions').first().children('div.question').first().css('display', 'inline-block');
     var $current_question = $('div.questions').first().children('div.question').first();
@@ -99,7 +100,7 @@ $(document).ready(function () {
     // display questions according to select chose
     $('select').on('change', function () {
         $('div.question').css('display', 'none');
-        var display_question = $('#questions_list').find(":selected").text()[1];
+        // var display_question = $('#questions_list').find(":selected").text()[1];
         // display first question and update current question
         $current_question = $('div#questions_' + this.value + ' div.question:nth-child(1)').css('display', 'inline-block');
         // hide last question indicator
@@ -140,30 +141,63 @@ $(document).ready(function () {
     function WidthChange() {
         // mobile screens
         if (window.matchMedia("(max-width: 991px)").matches) {
-
+            // if was on desktop
+            if (desktop_flag) {
+                // display only 1 question
+                $current_question.siblings('div.question').css('display', 'none');
+                // select displayed questions
+                $("select#questions_list").val($current_question.parent('div.questions').prop('id').substring('questions_'.length));
+            }
+            desktop_flag = false;
         } //end mobile screens
         // desktop screens
         else if (window.matchMedia("(min-width: 992px)").matches) {
-            // create questions row container
-            $('#questions_list').before(
-                "<div id='desktop_questions_list' class='row'>" +
-                "</div>"
-            );
-            // add elements to questions container
-            $('select#questions_list').children('option').each(function () {
-                $('div#desktop_questions_list').append(
-                    "<div id='questions_desktop_container_" + $(this).attr('value') + "' class='questions_desktop_container' style='display: inline-block'>" +
-                    "<span class='questions_subject' style='display: block;'>" + $(this).attr('data-brand') +
-                    "</span>" +
-                    "<button id='questions_circle_" + $(this).attr('value') + "' class='questions_circle' style='display: block;'>" +
-                    $(this).text()[1] + $(this).text()[2] + $(this).text()[3] +
-                    "</button>" +
+            desktop_flag = true;
+            // on first desktop entry
+            if (!$('#desktop_questions_list').length) {
+                // create questions row container
+                $('#questions_list').before(
+                    "<div id='desktop_questions_list' class='row'>" +
                     "</div>"
-                )
-            });
-            // questions circle action
-            $('button.questions_circle').click(function (event) {
-                event.preventDefault();
+                );
+                // add elements to questions container
+                $('select#questions_list').children('option').each(function () {
+                    $('div#desktop_questions_list').append(
+                        "<div id='questions_desktop_container_" + $(this).attr('value') + "' class='questions_desktop_container' style='display: inline-block'>" +
+                        "<span class='questions_subject' style='display: block;'>" + $(this).attr('data-brand') +
+                        "</span>" +
+                        "<button id='questions_circle_" + $(this).attr('value') + "' class='questions_circle' style='display: block;'>" +
+                        $(this).text()[1] + $(this).text()[2] + $(this).text()[3] +
+                        "</button>" +
+                        "</div>"
+                    )
+                });
+                // questions circle action
+                $('button.questions_circle').click(function (event) {
+                    event.preventDefault();
+                });
+                // display pressed subject questions ( only if user didn't press on displayed subject)
+                $('div.questions_desktop_container').click(function () {
+                    var pressed_subject_id = $(this).children('button').prop('id')[$(this).children('button').prop('id').length - 2];
+                    pressed_subject_id += $(this).children('button').prop('id')[$(this).children('button').prop('id').length - 1];
+                    var displayed_subject_id = $current_question.parent('div').attr('id')[$current_question.parent('div').attr('id').length - 2];
+                    displayed_subject_id += $current_question.parent('div').attr('id')[$current_question.parent('div').attr('id').length - 1];
+                    if (pressed_subject_id != displayed_subject_id) {
+                        if (pressed_subject_id.indexOf('_') == 0) {
+                            pressed_subject_id = pressed_subject_id[1];
+                        }
+                        $('div.question').css('display', 'none');
+                        $('div#questions_' + pressed_subject_id + ' div.question').css('display', 'inline-block');
+                        // update current question
+                        $current_question = $('div#questions_' + pressed_subject_id).children('div.question').first();
+                    }
+                });
+            } // end first desktop entry
+            // show current question brothers
+            $current_question.parent('div.questions').children('div.question').css('display', 'inline-block');
+            // update number of answered questions
+            $('select#questions_list').children('option').each(function () {
+                $('button#questions_circle_' + $(this).val()).text($(this).text()[1] + $(this).text()[2] + $(this).text()[3]);
             });
 
         }//end desktop screens
