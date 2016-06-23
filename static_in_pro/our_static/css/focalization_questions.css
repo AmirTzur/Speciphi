@@ -150,6 +150,14 @@ div#desktop_questions_list {
     display: none;
 }
 
+hr#line_separator {
+    display: none;
+}
+
+div#questions_desktop_container_display, div#questions_desktop_container_display span, div#questions_desktop_container_display div {
+    display: none;
+}
+
 @media only screen and (min-width: 380px) {
     #question_nav_left {
         position: absolute;
@@ -297,11 +305,18 @@ div#desktop_questions_list {
 
         div#desktop_questions_list {
             display: block;
-            margin-top: 10px;
+            margin-top: 3px;
         }
 
         span.questions_subject {
             cursor: pointer;
+            color: white;
+            font-size: 20px;
+            font-family: "Bariol";
+            line-height: 1.2;
+            width: 100px;
+            text-align: center;
+            margin: auto;
         }
 
         button.questions_circle {
@@ -317,16 +332,6 @@ div#desktop_questions_list {
             font-family: "Myriad Hebrew";
             font-size: 22px;
             line-height: 1.2;
-        }
-
-        span.questions_subject {
-            color: white;
-            font-size: 20px;
-            font-family: "Bariol";
-            line-height: 1.2;
-            width: 100px;
-            text-align: center;
-            margin: auto;
         }
 
         div.question {
@@ -351,7 +356,7 @@ div#desktop_questions_list {
 
         p.title_text {
             font-size: 24px;
-            margin-top: 5px;
+            margin-top: 10px;
             margin-bottom: 5px;
         }
 
@@ -381,15 +386,51 @@ div#desktop_questions_list {
 
         div#questions_holder {
             vertical-align: top;
-            margin-top: 78px;
+            margin-top: -60px;
+            margin-bottom: -15px;
         }
 
-        hr {
+        hr#line_separator {
             width: 100%;
             height: 4px;
             background: white;
             position: absolute;
-            top: 250px;
+            top: 240px;
+            display: block;
+        }
+
+        div#questions_desktop_container_display {
+            padding-bottom: 15px;
+            position: relative;
+            top: -15px;
+            display: inline-block;
+        }
+
+        span#questions_subject_display {
+            cursor: pointer;
+            color: rgb(230, 89, 42);
+            font-size: 20px;
+            font-family: "Bariol";
+            line-height: 1.2;
+            width: 100px;
+            text-align: center;
+            margin: auto;
+        }
+
+        div#questions_circle_display {
+            cursor: pointer;
+            width: 53px;
+            height: 53px;
+            border-radius: 50%;
+            padding: 12px 0 0 0;
+            margin: 10px 30px 0 30px;
+            color: rgb(230, 89, 42);
+            background-color: white;
+            outline: none;
+            font-family: "Myriad Hebrew";
+            font-size: 22px;
+            line-height: 1.2;
+            /*display: block;*/
         }
 
     }
