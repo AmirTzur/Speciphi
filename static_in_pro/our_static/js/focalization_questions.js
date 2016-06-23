@@ -99,6 +99,7 @@ $(document).ready(function () {
                         "</div>"
                     )
                 });
+
                 // prevent questions circle action
                 $('button.questions_circle').on('click', PD);
 
@@ -112,6 +113,7 @@ $(document).ready(function () {
                         // update current question
                         $current_question = $('div#questions_' + pressed_subject_id).children('div.question').first();
                         StyleQuestions($current_question);
+                        UpdateDisplaySubject($current_question);
                     }
                 });
                 // add line separator
@@ -121,22 +123,19 @@ $(document).ready(function () {
                 $('hr#line_separator').before(
                     "<div id='questions_desktop_container_display'>" +
                     "<span id='questions_subject_display' style='display: block;'>" +
-                    "Some Subject" +
                     "</span>" +
                     "<div id='questions_circle_display' style='display: block;'>" +
-                    '1/3' +
                     "</div>" +
                     "</div>"
                 );
             } // end first desktop entry
 
-
             // show current question brothers
             $current_question.parent('div.questions').children('div.question').css('display', 'inline-block');
             StyleQuestions($current_question);
 
-            // mark current subject CONTINUE IMPLEMENT####################################
-            // $('div#questions_desktop_container_' + $current_question.parent('div.questions').prop('id').substring('questions_'.length)).children().css('color', 'black');
+            // fill displayed subject content
+            UpdateDisplaySubject($current_question);
 
             // update number of answered questions (from mobile select box)
             $('select#questions_list').children('option').each(function () {
@@ -274,6 +273,13 @@ $(document).ready(function () {
         }
     }
 
+    function UpdateDisplaySubject($current) {
+        var subject_text = $('div#questions_desktop_container_' + $current.parent('div.questions').prop('id').substring('questions_'.length)).children('span').text();
+        $('span#questions_subject_display').text(subject_text);
+        var subject_answered = $('button#questions_circle_' + $current.parent('div.questions').prop('id').substring('questions_'.length)).text();
+        $('div#questions_circle_display').text(subject_answered);
+    }
+
     function PD(event) {
         event.preventDefault();
     }
@@ -328,6 +334,7 @@ $(document).ready(function () {
             if (window.matchMedia("(min-width: 992px)").matches) {
                 $current_subject = $('button#questions_circle_' + $current_question.parent('div').prop('id').substring('questions_'.length));
                 UpdateAnsweredNumber($current_subject, increase_answered, false);
+                UpdateDisplaySubject($current_question);
             }
         }
     }

@@ -415,6 +415,9 @@ div#questions_desktop_container_display, div#questions_desktop_container_display
             width: 100px;
             text-align: center;
             margin: auto;
+            width: 100px;
+            height: 48px;
+            padding-top: 8px;
         }
 
         div#questions_circle_display {
