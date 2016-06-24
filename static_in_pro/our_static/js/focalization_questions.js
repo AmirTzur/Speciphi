@@ -129,18 +129,8 @@ $(document).ready(function () {
                     "</div>"
                 );
 
-                // switch to side question
-                $(document).on('click', '.side_question', function () {
-                    // switch sides
-                    if ($(this).next('div.question').length) {
-                        $(this).insertAfter($(this).next('div.question'));
-                        StyleQuestions($(this).prev());
-                    } else if ($(this).prev('div.question').length) {
-                        $(this).insertBefore($(this).prev('div.question'));
-                        StyleQuestions($(this).next());
-                    }
-                    UnStyleQuestion($(this));
-                });
+                // on small question click, center (with animation) and bigger question clicked
+                $(document).on('click', '.side_question', SwitchQuestion);
 
             } // end first desktop entry
 
@@ -250,7 +240,7 @@ $(document).ready(function () {
         switch ($questions.length) {
             case 2:
                 // style first question
-                StyleQuestion($questions.first());
+                StyleQuestionSmall($questions.first());
                 // center second question
                 $questions.parent().css('marginLeft', '');
                 $questions.parent().css('marginLeft', '-=215px');
@@ -258,44 +248,96 @@ $(document).ready(function () {
             case 3:
                 $('div.questions').css('marginLeft', '');
                 // style first question
-                StyleQuestion($questions.first());
+                StyleQuestionSmall($questions.first());
                 // style last question
-                StyleQuestion($questions.last());
+                StyleQuestionSmall($questions.last());
                 break;
             default:
                 $('div.questions').css('marginLeft', '');
                 break;
         }
+    }
 
-        function StyleQuestion($question) {
+    function StyleQuestionSmall($question, animate) {
+        if (animate) {
+            $question.addClass('side_question_animate');
+            $question.animate({
+                width: '215px',
+                height: '120px'
+            }, {duration: 500, queue: false});
+            $('div#questions_holder').animate({paddingTop: '80px'}, {duration: 500, queue: false});
+        } else {
             $question.addClass('side_question');
-            $question.children('div.answers').addClass('side_answers');
-            // if question was answered - show only answer and disable button click
-            var hided_siblings = false;
-            $($question.children('div.answers')).children('button').each(function () {
-                if ($(this).attr('value') == '1') {
-                    // hide brothers
-                    $(this).siblings('button').css('display', 'none');
-                    hided_siblings = true;
-                }
-            });
-            // disable buttons click
-            $($question.children('div.answers')).children('button.answer').off('click', AnswerClick);
-            // question wasn't answered - hide all answers
-            if (!hided_siblings) {
-                $question.children('div.answers').css('display', 'none');
+        }
+        $question.children('div.answers').addClass('side_answers');
+
+        // if question was answered - show only answer and disable button click
+        var hided_siblings = false;
+        $($question.children('div.answers')).children('button').each(function () {
+            if ($(this).attr('value') == '1') {
+                // hide brothers
+                $(this).siblings('button').css('display', 'none');
+                hided_siblings = true;
             }
+        });
+        // disable buttons click
+        $($question.children('div.answers')).children('button.answer').off('click', AnswerClick);
+        // question wasn't answered - hide all answers
+        if (!hided_siblings) {
+            $question.children('div.answers').css('display', 'none');
         }
     }
 
-    function UnStyleQuestion($question) {
+    function StyleQuestionNormal($question, animate) {
         $question.removeClass('side_question');
+        if (animate) {
+            $question.removeClass('side_question_animate');
+            // temporary height just for animation
+            $question.css({'height': '120px'});
+            // animate bigger and un padding simultaneously
+            $question.animate({height: '185px'}, {duration: 500, queue: false});
+            $('div#questions_holder').animate({paddingTop: '15px'}, {duration: 500, queue: false});
+        }
+
         $($question.children('div.answers')).removeClass('side_answers');
         // bind answer button functionality
         $($question.children('div.answers')).children('button.answer').on('click', AnswerClick);
         // show all answers
         $question.children('div.answers').css('display', '');
         $($question.children('div.answers')).children('button.answer').css('display', '');
+    }
+
+
+    // invoked on small/side question click
+    function SwitchQuestion() {
+        // switch sides
+        if ($(this).next('div.question').length) {
+            // left question pressed
+            // animate middle to small, animate all moves right, switch and animate new middle to big
+
+            // animate moddle to small
+            StyleQuestionSmall($(this).parent('div.questions').children('div.question:nth-child(2)'), true);
+            var $that = $(this);
+            // wait and animate all moves right, swipe and middle to big
+            var wait1 = setInterval(function () {
+                if (!$('div.question').is(':animated')) {
+                    clearInterval(wait1);
+                    // This piece of code will be executed
+                    // after element is complete.
+                    $that.parent('div.questions').children('div.question:nth-child(3)').animate({marginRight: '-=500px'}, 'slow'
+                        , function () {
+                            $($that.next()).next().insertBefore($that);
+                            $that.prev().css('margin-right', '4px');
+                            StyleQuestionNormal($that, true);
+                        });
+                }
+            }, 200);
+        }
+        else if ($(this).prev('div.question').length) {
+            $(this).insertBefore($(this).prev('div.question'));
+            StyleQuestions($(this).next());
+            StyleQuestionNormal($(this));
+        }
     }
 
     function UpdateDisplaySubject($current) {
@@ -310,7 +352,6 @@ $(document).ready(function () {
     }
 
     function AnswerClick() {
-        console.log($(this).val());
         var $button = $(this);
         // if not selected before - increase select box number of questions answered
         var increase_answered = true;
@@ -364,5 +405,6 @@ $(document).ready(function () {
             }
         }
     }
+
 
 });

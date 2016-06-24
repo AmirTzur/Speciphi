@@ -334,6 +334,11 @@ div#questions_desktop_container_display, div#questions_desktop_container_display
             line-height: 1.2;
         }
 
+        div#questions_holder {
+            height: 200px;
+            padding-top: auto;
+        }
+
         div.question {
             width: 300px;
             height: 185px;
@@ -348,16 +353,19 @@ div#questions_desktop_container_display, div#questions_desktop_container_display
             cursor: pointer;
         }
 
-        div.side_question p.title_text {
-            font-size: 20px;
+        div.side_question_animate {
+            vertical-align: bottom;
             cursor: pointer;
-
         }
 
-        div.side_question p.question_text {
+        div.side_question p.title_text, div.side_question_animate p.title_text {
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        div.side_question p.question_text, div.side_question_animate p.question_text {
             font-size: 14px;
             cursor: pointer;
-
         }
 
         p.title_text {
@@ -413,7 +421,6 @@ div#questions_desktop_container_display, div#questions_desktop_container_display
         }
 
         span#questions_subject_display {
-            cursor: pointer;
             color: rgb(230, 89, 42);
             font-size: 20px;
             font-family: "Bariol";
@@ -427,7 +434,6 @@ div#questions_desktop_container_display, div#questions_desktop_container_display
         }
 
         div#questions_circle_display {
-            cursor: pointer;
             width: 53px;
             height: 53px;
             border-radius: 50%;
