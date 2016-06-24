@@ -338,20 +338,26 @@ div#questions_desktop_container_display, div#questions_desktop_container_display
             width: 300px;
             height: 185px;
             vertical-align: top;
+            margin: 0 4px 0 4px;
         }
 
         div.side_question {
             width: 215px;
             height: 120px;
             vertical-align: bottom;
+            cursor: pointer;
         }
 
         div.side_question p.title_text {
             font-size: 20px;
+            cursor: pointer;
+
         }
 
         div.side_question p.question_text {
             font-size: 14px;
+            cursor: pointer;
+
         }
 
         p.title_text {

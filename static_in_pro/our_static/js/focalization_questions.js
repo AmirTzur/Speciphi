@@ -128,6 +128,20 @@ $(document).ready(function () {
                     "</div>" +
                     "</div>"
                 );
+
+                // switch to side question
+                $(document).on('click', '.side_question', function () {
+                    // switch sides
+                    if ($(this).next('div.question').length) {
+                        $(this).insertAfter($(this).next('div.question'));
+                        StyleQuestions($(this).prev());
+                    } else if ($(this).prev('div.question').length) {
+                        $(this).insertBefore($(this).prev('div.question'));
+                        StyleQuestions($(this).next());
+                    }
+                    UnStyleQuestion($(this));
+                });
+
             } // end first desktop entry
 
             // show current question brothers
@@ -238,6 +252,7 @@ $(document).ready(function () {
                 // style first question
                 StyleQuestion($questions.first());
                 // center second question
+                $questions.parent().css('marginLeft', '');
                 $questions.parent().css('marginLeft', '-=215px');
                 break;
             case 3:
@@ -261,16 +276,26 @@ $(document).ready(function () {
                 if ($(this).attr('value') == '1') {
                     // hide brothers
                     $(this).siblings('button').css('display', 'none');
-                    // disable button click
-                    $(this).off('click', AnswerClick);
                     hided_siblings = true;
                 }
             });
+            // disable buttons click
+            $($question.children('div.answers')).children('button.answer').off('click', AnswerClick);
             // question wasn't answered - hide all answers
             if (!hided_siblings) {
                 $question.children('div.answers').css('display', 'none');
             }
         }
+    }
+
+    function UnStyleQuestion($question) {
+        $question.removeClass('side_question');
+        $($question.children('div.answers')).removeClass('side_answers');
+        // bind answer button functionality
+        $($question.children('div.answers')).children('button.answer').on('click', AnswerClick);
+        // show all answers
+        $question.children('div.answers').css('display', '');
+        $($question.children('div.answers')).children('button.answer').css('display', '');
     }
 
     function UpdateDisplaySubject($current) {
@@ -285,6 +310,7 @@ $(document).ready(function () {
     }
 
     function AnswerClick() {
+        console.log($(this).val());
         var $button = $(this);
         // if not selected before - increase select box number of questions answered
         var increase_answered = true;
