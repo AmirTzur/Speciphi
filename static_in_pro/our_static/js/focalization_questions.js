@@ -17,21 +17,7 @@ $(document).ready(function () {
     // IMPLEMENT: sent taltul question and answer id using ajax
 
     // display questions according to select chose
-    $('select').on('change', function () {
-        $('div.question').css('display', 'none');
-        // var display_question = $('#questions_list').find(":selected").text()[1];
-        // display first question and update current question
-        $current_question = $('div#questions_' + this.value + ' div.question:nth-child(1)').css('display', 'inline-block');
-        // hide last question indicator
-        $('.question_indicator').css('display', 'none');
-        $('#question_indicators').children('div.indicator_on').removeClass('indicator_on');
-        // show current question indicator
-        $current_question.parent('div.questions').children('div.question').each(function (index) {
-            $('#question_indicators div:nth-child(' + parseInt(index + 1) + ')').css('display', 'inline-block');
-        });
-        // fill first indicator
-        $('#question_indicators div.question_indicator:nth-child(1)').addClass('indicator_on');
-    });
+    $('select').on('change', DisplayMobileQuestionAndIndicator);
 
     // forward to next questions
     $('#question_nav_right').on('click', function () {
@@ -84,6 +70,7 @@ $(document).ready(function () {
                 $('button.answer').off('click', AnswerClick);
                 $('button.answer').on('click', AnswerClick);
 
+                DisplayMobileQuestionAndIndicator();
             }
             desktop_flag = false;
         } //end mobile screens
@@ -170,6 +157,27 @@ $(document).ready(function () {
         WidthChange();
     }
 
+    function DisplayMobileQuestionAndIndicator() {
+        $('div.question').css('display', 'none');
+        // display first question and update current question
+        if (this.value) {
+            // select box
+            $current_question = $('div#questions_' + this.value + ' div.question:nth-child(1)').css('display', 'inline-block');
+        } else {
+            // desktop to mobile
+            $current_question = $current_question.parent('div.questions').children('div.question').first().css('display', 'inline-block');
+        }
+        // hide last question indicator
+        $('.question_indicator').css('display', 'none');
+        $('#question_indicators').children('div.indicator_on').removeClass('indicator_on');
+        // show current question indicator
+        $current_question.parent('div.questions').children('div.question').each(function (index) {
+            $('#question_indicators div:nth-child(' + parseInt(index + 1) + ')').css('display', 'inline-block');
+        });
+        // fill first indicator
+        $('#question_indicators div.question_indicator:nth-child(1)').addClass('indicator_on');
+    }
+
     function StyleQuestions($current) {
         // if 1 questions - normal
         // if 2 questions - 1st-cutted, 2nd-normal
@@ -214,13 +222,17 @@ $(document).ready(function () {
                         clearInterval(wait1);
                         // executed after element is complete:
                         // move all to right
-                        $that.parent('div.questions').children('div.question:nth-child(3)').animate({marginRight: '-=500px'}, 'slow'
+                        $that.parent('div.questions').children('div.question:nth-child(3)').animate({marginRight: '-=450px'}, 'slow'
                             , function () {
                                 // switch places
-                                $($that.next()).next().insertBefore($that);
-                                $that.prev().css('margin-right', '4px');
-                                // bigger middle question
-                                StyleQuestionNormal($that, true);
+                                $($that.next()).next().fadeToggle('fast', function () {
+                                    $($that.next()).next().insertBefore($that);
+                                    $that.prev().css('margin-right', '4px');
+                                    $that.prev().fadeToggle('fast', function () {
+                                        // bigger middle question
+                                        StyleQuestionNormal($that, true);
+                                    });
+                                });
                             });
                     }
                 }, 200);
@@ -233,13 +245,16 @@ $(document).ready(function () {
                         clearInterval(wait2);
                         // executed after element is complete:
                         // move all to left
-                        $that.parent('div.questions').children('div.question:nth-child(1)').animate({marginLeft: '-=500px'}, 'slow'
+                        $that.parent('div.questions').children('div.question:nth-child(1)').animate({marginLeft: '-=450px'}, 'slow'
                             , function () {
-                                // switch places
-                                $($that.prev()).prev().insertAfter($that);
-                                $that.next().css('margin-left', '');
-                                // bigger middle question
-                                StyleQuestionNormal($that, true);
+                                $($that.prev()).prev().fadeToggle('fast', function () {
+                                    $($that.prev()).prev().insertAfter($that);
+                                    $that.next().css('margin-left', '4px');
+                                    $that.next().fadeToggle('fast', function () {
+                                        // bigger middle question
+                                        StyleQuestionNormal($that, true);
+                                    });
+                                });
                             });
                     }
                 }, 200);
@@ -327,19 +342,27 @@ $(document).ready(function () {
         $question.removeClass('side_question_animate');
         if (animate) {
             // temporary height just for animation
-            $question.css({'height': '120px'});
+            $question.css({'height': '120px', 'width': '215px'});
             // animate bigger and un padding simultaneously
-            $question.animate({height: '185px'}, {duration: 500, queue: false});
+            $question.animate({height: '185px', width: '300px'}, {duration: 500, queue: false});
             $('div#questions_holder').animate({paddingTop: '15px'}, {duration: 500, queue: false});
-            $question.css({'width': '300px'});
+            // $question.css({'width': '300px'});
+
         }
-        // bigger the buttons
-        $($question.children('div.answers')).removeClass('side_answers');
-        // bind answer button functionality
-        $($question.children('div.answers')).children('button.answer').on('click', AnswerClick);
-        // show all answers
-        $question.children('div.answers').css('display', '');
-        $($question.children('div.answers')).children('button.answer').css('display', '');
+        var wait5 = setInterval(function () {
+            if (!$('div.question').is(':animated')) {
+                clearInterval(wait5);
+                // executed after element is complete:
+                // bigger the buttons
+                $($question.children('div.answers')).removeClass('side_answers');
+                // bind answer button functionality
+                $($question.children('div.answers')).children('button.answer').on('click', AnswerClick);
+                // show all answers
+                $question.children('div.answers').css('display', '');
+                $($question.children('div.answers')).children('button.answer').css('display', '');
+            }
+        }, 200);
+
     }
 
 
@@ -355,7 +378,6 @@ $(document).ready(function () {
     }
 
     function AnswerClick() {
-        console.log(this);
         var $button = $(this);
         // if not selected before - increase select box number of questions answered
         var increase_answered = true;
