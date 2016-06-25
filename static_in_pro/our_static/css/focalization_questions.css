@@ -334,6 +334,23 @@ div#questions_desktop_container_display, div#questions_desktop_container_display
             line-height: 1.2;
         }
 
+        div.questions_desktop_container:hover span.questions_subject {
+            color: black;
+        }
+
+        div.questions_desktop_container:hover button.questions_circle {
+            color: black;
+            border: 2px solid black;
+
+        }
+
+        /*span.questions_subject:hover {*/
+        /*color: black;*/
+        /*}*/
+        /*button.questions_circle:hover {*/
+        /*color: black;*/
+        /*border: 2px solid black;*/
+        /*}*/
         div#questions_holder {
             height: 200px;
             padding-top: auto;
@@ -356,6 +373,11 @@ div#questions_desktop_container_display, div#questions_desktop_container_display
         div.side_question_animate {
             vertical-align: bottom;
             cursor: pointer;
+        }
+
+        div.side_question:hover, div.side_question_animate:hover {
+            background-color: rgb(240, 240, 240);
+
         }
 
         div.side_question p.title_text, div.side_question_animate p.title_text {
