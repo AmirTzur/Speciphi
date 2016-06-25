@@ -131,6 +131,8 @@ $(document).ready(function () {
 
                 // on small question click, center (with animation) and bigger question clicked
                 $(document).on('click', '.side_question', SwitchQuestion);
+                $(document).on('click', '.side_question_animate', SwitchQuestion);
+
 
             } // end first desktop entry
 
@@ -258,8 +260,63 @@ $(document).ready(function () {
         }
     }
 
+    // invoked on small/side question click
+    // animate: middle to small, animate all moves right/left, switch places, animate new middle to big
+    function SwitchQuestion() {
+        var $that = $(this);
+        // animate middle to small
+        StyleQuestionSmall($(this).parent('div.questions').children('div.question:nth-child(2)'), true);
+        // left or right question pressed
+        if ($(this).next('div.question').length) {
+            // left question pressed
+            // wait last animate to finish
+            var wait1 = setInterval(function () {
+                if (!$('div.question').is(':animated')) {
+                    clearInterval(wait1);
+                    // executed after element is complete:
+                    // move all to right
+                    $that.parent('div.questions').children('div.question:nth-child(3)').animate({marginRight: '-=500px'}, 'slow'
+                        , function () {
+                            // switch places
+                            $($that.next()).next().insertBefore($that);
+                            $that.prev().css('margin-right', '4px');
+                            // bigger middle question
+                            StyleQuestionNormal($that, true);
+                        });
+                }
+            }, 200);
+        }
+        else if ($(this).prev('div.question').length) {
+            // right question pressed
+            // wait last animate to finish
+            var wait2 = setInterval(function () {
+                if (!$('div.question').is(':animated')) {
+                    clearInterval(wait2);
+                    // executed after element is complete:
+                    // move all to left
+                    $that.parent('div.questions').children('div.question:nth-child(1)').animate({marginLeft: '-=500px'}, 'slow'
+                        , function () {
+                            // switch places
+                            $($that.prev()).prev().insertAfter($that);
+                            $that.next().css('margin-left', '4px');
+                            // bigger middle question
+                            StyleQuestionNormal($that, true);
+                        });
+                }
+            }, 200);
+
+            // animate middle to small
+            // StyleQuestionSmall($(this).parent('div.questions').children('div.question:nth-child(2)'), true);
+            // $(this).insertBefore($(this).prev('div.question'));
+            // StyleQuestions($(this).next());
+            // StyleQuestionNormal($(this));
+        }
+    }
+
     function StyleQuestionSmall($question, animate) {
+        // make it small
         if (animate) {
+            // add reduced style and animate the rest
             $question.addClass('side_question_animate');
             $question.animate({
                 width: '215px',
@@ -269,6 +326,7 @@ $(document).ready(function () {
         } else {
             $question.addClass('side_question');
         }
+        // small buttons
         $question.children('div.answers').addClass('side_answers');
 
         // if question was answered - show only answer and disable button click
@@ -290,15 +348,16 @@ $(document).ready(function () {
 
     function StyleQuestionNormal($question, animate) {
         $question.removeClass('side_question');
+        $question.removeClass('side_question_animate');
         if (animate) {
-            $question.removeClass('side_question_animate');
             // temporary height just for animation
             $question.css({'height': '120px'});
             // animate bigger and un padding simultaneously
             $question.animate({height: '185px'}, {duration: 500, queue: false});
             $('div#questions_holder').animate({paddingTop: '15px'}, {duration: 500, queue: false});
+            $question.css({'width': '300px'});
         }
-
+        // bigger the buttons
         $($question.children('div.answers')).removeClass('side_answers');
         // bind answer button functionality
         $($question.children('div.answers')).children('button.answer').on('click', AnswerClick);
@@ -307,38 +366,6 @@ $(document).ready(function () {
         $($question.children('div.answers')).children('button.answer').css('display', '');
     }
 
-
-    // invoked on small/side question click
-    function SwitchQuestion() {
-        // switch sides
-        if ($(this).next('div.question').length) {
-            // left question pressed
-            // animate middle to small, animate all moves right, switch and animate new middle to big
-
-            // animate moddle to small
-            StyleQuestionSmall($(this).parent('div.questions').children('div.question:nth-child(2)'), true);
-            var $that = $(this);
-            // wait and animate all moves right, swipe and middle to big
-            var wait1 = setInterval(function () {
-                if (!$('div.question').is(':animated')) {
-                    clearInterval(wait1);
-                    // This piece of code will be executed
-                    // after element is complete.
-                    $that.parent('div.questions').children('div.question:nth-child(3)').animate({marginRight: '-=500px'}, 'slow'
-                        , function () {
-                            $($that.next()).next().insertBefore($that);
-                            $that.prev().css('margin-right', '4px');
-                            StyleQuestionNormal($that, true);
-                        });
-                }
-            }, 200);
-        }
-        else if ($(this).prev('div.question').length) {
-            $(this).insertBefore($(this).prev('div.question'));
-            StyleQuestions($(this).next());
-            StyleQuestionNormal($(this));
-        }
-    }
 
     function UpdateDisplaySubject($current) {
         var subject_text = $('div#questions_desktop_container_' + $current.parent('div.questions').prop('id').substring('questions_'.length)).children('span').text();
