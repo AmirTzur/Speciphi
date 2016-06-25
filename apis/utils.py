@@ -296,59 +296,6 @@ class EbayClient(object):
             print(e.response.dict())
 
 
-# class DeliciousClient(object):
-#
-#     interval = 0
-#
-#     def __init__(self, username, password):
-#         self.username, self.password = username, password
-#
-#     def fetch(self, **params):
-#         delta = time.time() - DeliciousClient.interval
-#         if delta < 2:
-#             time.sleep(2 - delta)
-#         DeliciousClient.interval = time.time()
-#         url = 'https://%s:%s@api.del.icio.us/v1/posts/recent' % (self.username, self.password)
-#         return self.fetch_xml(url)
-#
-#     def fetch_xml(self, url):
-#         u = urllib.FancyURLopener(None)
-#         usock = u.open(url)
-#         rawdata = usock.read()
-#         usock.close()
-#         return xml_parser.fromstring(rawdata)
-#
-#     def __getattr__(self, method):
-#         return DeliciousClient(self.username, self.password, '%s/%s' % (self.method, method))
-#
-#     def __repr__(self):
-#         return "<DeliciousClient>"
-
-# def insert_laptop(data):
-#     """
-#     Insert new data to Laptop table (if it is not exist).
-#     :param data: data is a dictionary from ebay API response
-#     :return: none
-#     """
-#     for key, value in data.iteritems():
-#
-#         obj, created = Laptop.objects.get_or_create(
-#             first_name='John',
-#             last_name='Lennon',
-#             # defaults={'birthday': date(1940, 10, 9)}
-#         )
-
-# def create_link(data):
-#     for post in data.findall('post'):
-#         info = dict((k, smart_unicode(post.get(k))) for k in post.keys())
-#         b, created = Link.objects.get_or_create(
-#             url = info['href'],
-#             description = info['extended'],
-#             tags = info.get('tag', ''),
-#             date = parsedate(info['time']),
-#             title = info['description']
-#         )
-
 class AmazonClient(object):
     """
 
@@ -517,3 +464,322 @@ class AmazonClient(object):
         else:
             return str(tag_value)
     # get list of upc -> for each upc extract details ->  get large response -> parse xml -> save to self.item_deals -> export to json -> export to csv
+
+
+class DealsHandler(object):
+
+    def __init__(self, **kwargs):
+        """
+        To create new instance provide Amazon credentials:
+            AWS_ACCESS_KEY_ID = AKIAJZXUIQUQZ34J3E5Q
+            AWS_SECRET_ACCESS_KEY = 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
+            AWS_ASSOCIATE_TAG = djaroo10-20
+        """
+        # Amazon Credentials
+        self.amazon_id = kwargs.get('amazon_id', 'AKIAJZXUIQUQZ34J3E5Q')
+        self.amazon_key = kwargs.get('amazon_key', '6ZHpC651IZ6WmW0dC9Y9DfVO6ORYGYpR633zdbj/')
+        self.amazon_tag = kwargs.get('amazon_tag', 'djaroo10-20')
+        # eBay Production Credentials
+        self.devid = '63ffcffb-5194-4b29-99f6-46243937f140'
+        self.token = 'AgAAAA**AQAAAA**aAAAAA**EHIVVw**nY+sHZ2PrBmdj6wVnY+sEZ2PrA2dj6AEloelDpeFqAWdj6x9nY+seQ**RcUCAA**AAMAAA**1AYoROp8ljS5LeygbB7JOsWbm1WZ87v/CkBJue4l0DMf0daQme2sNhQCT+K2Kr2Bhs/GGdFEwJUMQYfzbZ8Dwob5FRLEWlfno6qiSnqVDKls2+cVfqi6NRfre53capvWz8PrFNU0wnn2FfDXN/41YAHxJXLCJRfHdLJGDxKKcjnCDZOkJNOnbZTs+qLwXBI6/iQqUrAi87PhoBu8G81GSphGj50hn/th60j14rmyu4MDJTR3Az5YcOQfNQRbty3iRBzfkbJwCpG0ilNKHBlDoS2E708othrY3nqGiZ6GAKt2EPJT2Bhq5vKze1hCuHY5KQe8513MRJRJ0L5uaCARRgT1Wsega2IkXfwV6oWlgVxe1zD002iCGBYI7pezRdAIaEbguX7dwSmU0ZWeoP3HMBHwSTfM6gv0AMIYkf0vCwDohdTx2M+FkAzOCQy03oaVWsH/iu+1ahguhiHojfkHsovc3cT5WB5E3oLObhGq1R2Uilt15rUQp4m8J1UILo5vTvwPpB3ctub4xSTd+onFdCtl4qnQfEBQ9Fh2TINB/ONpEt0EksdP3ghV6Yoys84Yy6Ii56YDuDEKWU45ekHJMOZW55XbZdM7v4jBx5y78KkFb99UNn+a+jPSGvHHUX/SDXwz5XEQ8s/S+C7LMiAZJ/8kVDQJFZIR58vJwCYOy2mIZZxddCy/a1TZaGfh/B87AaRMSN+aMMvKcetLyA/+3+/qb9+3eHGh5Gf5RRDfIfkmXowjNy/jhsG5GIwfNqe7'
+        self.domain = 'svcs.ebay.com'
+        self.appid = 'PieceOfA-ae60-404f-b9e8-963d4cb77c54'
+        self.certid = '275a3f6b-1ba6-4b6f-a276-0e8b90f94628'
+        # self.min_price = kwargs.get('min_price', 800)
+        # self.max_price = kwargs.get('max_price', 850)
+        # self.item_deals = {}
+
+    def fetch_deals(self):
+        mvp_deals = {
+            "amazon_deals": [],
+            "ebay_deals": [],
+        }
+        counter = 0
+        # Get list of upc from text file
+        upc_list = self.pull_upc()
+        print('successful UPC extraction')
+        # For each upc extract details
+        for item_upc in upc_list:
+            if counter % 5 == 0:
+                # 5 second sleep to avoid timeout error
+                time.sleep(5)
+                print('5 sec break')
+            # Get amazon "large response" and parse xml
+            item_dict = self.get_item(item_upc)
+            if item_dict:
+                mvp_deals["amazon_deals"].append(item_dict)
+            counter += 1
+        print('successful amazon deals data extraction')
+        self.save_deals(mvp_deals["amazon_deals"])
+        # reconstruct json and than execute create_csv
+        # self.create_csv()
+
+    def pull_upc(self):
+        # pull upc list from existing csv file
+        upcs = []
+        with open(os.path.join(settings.BASE_DIR, 'laptop.upc.list.txt'), 'r', encoding='utf-8') as amazon_data:
+            for upc_raw in amazon_data:
+                deal_upc = upc_raw.split('\n')[0]
+                if deal_upc not in upcs:
+                    upcs.append(deal_upc)
+        amazon_data.close()
+        print(upcs)
+        return upcs
+
+    def get_item(self, upc='887276124025'):
+        """
+         :param upc:
+        :return:
+        """
+        amazon_data = {}
+        amazon = bottlenose.Amazon(self.amazon_id, self.amazon_key, self.amazon_tag, MaxQPS=0.9)
+        # Item lookup call: IdType=UPC , SearchIndex=Electronics (US market) , node=493964
+        amazon_response = amazon.ItemLookup(ItemId=upc, ResponseGroup='Large', SearchIndex='Electronics',
+                                            IdType='UPC')
+        response_elem = objectify.fromstring(amazon_response.decode('utf-8'))
+        item_path = objectify.ObjectPath("ItemLookupResponse.Items.Item")
+        if item_path.hasattr(response_elem):
+            # Extract data from Amazon xml response
+            for amazon_attr in response_elem.Items.Item.iterchildren("*"):
+                tag_str = amazon_attr.tag
+                medium_tag = tag_str.split('}')[1]
+                if self.selected_tag(medium_tag):
+                    if not amazon_attr.text:
+                        obj_data = self.breake_obj(amazon_attr, {})
+                        amazon_data.update(obj_data)
+                    else:
+                        amazon_data[medium_tag] = str(amazon_attr.text)
+                # else:
+                #     print('tag: ' + medium_tag + ' is not include')
+        else:
+            print('The following UPC does not contain Item tag: ' + upc)
+        return amazon_data
+
+    def selected_tag(self, tag_name):
+        selected_tags = ['ASIN', 'Offers', 'Offers>Offer', 'Offer>OfferListing',
+                         'CustomerReviews', 'CustomerReviews>HasReviews', 'CustomerReviews>IFrameURL',
+                         'DetailPageURL', 'ItemAttributes', 'ItemAttributes>MPN', 'ItemAttributes>Model',
+                         'ItemAttributes>UPC', 'LargeImage', 'LargeImage>Height',
+                         'LargeImage>Width', 'LargeImage>URL', 'MediumImage', 'MediumImage>Height', 'MediumImage>Width',
+                         'MediumImage>URL', 'SmallImage', 'SmallImage>Height', 'SmallImage>Width', 'SmallImage>URL',
+                         'ItemAttributes>ListPrice', 'ListPrice', 'ListPrice>Amount', 'ListPrice>CurrencyCode',
+                         'ListPrice>FormattedPrice', 'OfferSummary>LowestNewPrice', 'LowestNewPrice',
+                         'LowestNewPrice>Amount', 'LowestNewPrice>CurrencyCode', 'LowestNewPrice>FormattedPrice',
+                         'Offer>OfferAttributes', 'OfferAttributes', 'OfferAttributes>Condition',
+                         'OfferSummary', 'OfferSummary>TotalNew', 'Offers>MoreOffersUrl',
+                         'OfferListing>Price', 'Price', 'Price>Amount', 'Price>CurrencyCode',
+                         'Price>FormattedPrice', 'SalesRank', 'ItemAttributes>UPCList', 'UPCList',
+                         'UPCList>UPCListElement']
+        if tag_name in selected_tags:
+            return True
+        else:
+            return False
+
+    def breake_obj(self, attr_obj, obj_data):
+        """
+        :param attr_obj:
+        :param obj_data:
+        :return:
+        """
+        if attr_obj.text:
+            obj_tag = attr_obj.tag.split('}')[1]
+            parent_tag = attr_obj.getparent().tag.split('}')[1]
+            full_tag = str(parent_tag + '>' + obj_tag)
+            if self.selected_tag(full_tag):
+                obj_data[full_tag] = self.val_insert(full_tag, attr_obj.text, obj_data)
+            # else:
+            #     print('tag: '+full_tag+' is not include')
+            # print('break_obj_simple_str: tag: '+full_tag+' val: '+obj_data[full_tag])
+            return obj_data
+        else:
+            for sub_attr in attr_obj.iterchildren("*"):
+                obj_tag = sub_attr.tag.split('}')[1]
+                parent_tag = sub_attr.getparent().tag.split('}')[1]
+                full_tag = str(parent_tag + '>' + obj_tag)
+                if self.selected_tag(full_tag):
+                    if not sub_attr.text:
+                        obj_dict = self.breake_obj(sub_attr, {})
+                        obj_data.update(obj_dict)
+                        if full_tag == 'ItemAttributes>Feature':
+                            print('obj_data after executing ' + full_tag)
+                            # print(obj_data)
+                    else:
+                        obj_data[full_tag] = self.val_insert(full_tag, sub_attr.text, obj_data)
+                        # print('simple child (base type): '+full_tag+' with value:'+obj_data[full_tag])
+                # else:
+                #     print('tag: ' + full_tag + ' is not include')
+        return obj_data
+
+    def val_insert(self, tag_name, tag_value, item_dict):
+        """
+        :param tag_name:
+        :param tag_value:
+        :param item_dict:
+        :return:
+        """
+        if tag_name in item_dict.keys():
+            if isinstance(item_dict[tag_name], list):
+                item_dict[tag_name].append(str(tag_value))
+                return item_dict[tag_name]
+            else:
+                multi_values = [item_dict[tag_name], str(tag_value), ]
+                return multi_values
+        else:
+            return str(tag_value)
+
+    def save_deals(self, amazon_deals):
+        # save list of deals (dict) to json file
+        with open(os.path.join(settings.BASE_DIR, 'laptop.deals.json'), 'a', encoding='utf-8',
+                  newline='') as deals_json:
+            for items_group in amazon_deals:
+                json.dump(items_group, deals_json, sort_keys=True, indent=4)
+                deals_json.write(',\n')
+        deals_json.close()
+        # save list of deals (dict) to json file - MVP data
+        with open(os.path.join(settings.BASE_DIR, 'laptop.deals.mvp.json'), 'a', encoding='utf-8',
+                  newline='') as deals_json:
+            for items_group in amazon_deals:
+                mvp_dict = {}
+                if 'LowestNewPrice>Amount' in items_group.keys():
+                    lowest_new = self.parse_price(items_group['LowestNewPrice>Amount'])
+                else:
+                    lowest_new = -1
+                if 'Price>Amount' in items_group.keys():
+                    price = self.parse_price(items_group['Price>Amount'])
+                else:
+                    price = -1
+                if 'ListPrice>Amount' in items_group.keys():
+                    list_price = self.parse_price(items_group['ListPrice>Amount'])
+                else:
+                    list_price = -1
+                if lowest_new > 0:
+                    mvp_dict['amazon_price'] = lowest_new
+                elif price > 0:
+                    mvp_dict['amazon_price'] = price
+                else:
+                    mvp_dict['amazon_price'] = list_price
+                if 'LargeImage>URL' in items_group.keys():
+                    mvp_dict['amazon_image'] = items_group['LargeImage>URL']
+                if 'DetailPageURL' in items_group.keys():
+                    mvp_dict['amazon_link'] = items_group['DetailPageURL']
+                if 'SalesRank' in items_group.keys():
+                    mvp_dict['amazon_sales_rank'] = items_group['SalesRank']
+                if 'ItemAttributes>UPC' in items_group.keys():
+                    mvp_dict['UPC'] = items_group['ItemAttributes>UPC']
+                json.dump(mvp_dict, deals_json, sort_keys=True, indent=4)
+                deals_json.write(',\n')
+            deals_json.close()
+
+    def parse_price(self, price_str):
+        try:
+            return float(price_str) / 100
+        except ValueError:
+            return -1
+
+    def create_csv(self):
+        # save json data to new csv file
+        header = []
+        with open(os.path.join(settings.BASE_DIR, 'laptop.deals.json'), 'r', encoding='utf-8') as amazon_deals:
+            io_str = amazon_deals.read()
+            json_parsed = json.loads(io_str)
+            deals_data = json_parsed['amazon_deals']
+            for item in deals_data:
+                for key in item.keys():
+                    if key not in header:
+                        header.append(str(key))
+            header.sort()
+            # open a file for writing
+            with open(os.path.join(settings.BASE_DIR, 'laptop.deals.csv'), 'w', encoding='utf-8') as amazon_data:
+                # create the csv writer object
+                csv_writer = csv.writer(amazon_data)
+                csv_writer.writerow(header)
+                for item in deals_data:
+                    item_values = []
+                    for title in header:
+                        if title in item.keys():
+                            item_values.append(str(item[title]))
+                        else:
+                            item_values.append('')
+                    csv_writer.writerow(item_values)
+            amazon_data.close()
+        amazon_deals.close()
+
+        # save json data to new csv file - mvp
+        header = []
+        with open(os.path.join(settings.BASE_DIR, 'laptop.deals.mvp.json'), 'r', encoding='utf-8') as amazon_deals:
+            io_str = amazon_deals.read()
+            json_parsed = json.loads(io_str)
+            deals_data = json_parsed['amazon_deals']
+            for item in deals_data:
+                for key in item.keys():
+                    if key not in header:
+                        header.append(str(key))
+            header.sort()
+            # open a file for writing
+            with open(os.path.join(settings.BASE_DIR, 'laptop.deals.mvp.csv'), 'w', encoding='utf-8') as amazon_data:
+                # create the csv writer object
+                csv_writer = csv.writer(amazon_data)
+                csv_writer.writerow(header)
+                for item in deals_data:
+                    item_values = []
+                    for title in header:
+                        if title in item.keys():
+                            item_values.append(str(item[title]))
+                        else:
+                            item_values.append('')
+                    csv_writer.writerow(item_values)
+            amazon_data.close()
+        amazon_deals.close()
+
+# class DeliciousClient(object):
+#
+#     interval = 0
+#
+#     def __init__(self, username, password):
+#         self.username, self.password = username, password
+#
+#     def fetch(self, **params):
+#         delta = time.time() - DeliciousClient.interval
+#         if delta < 2:
+#             time.sleep(2 - delta)
+#         DeliciousClient.interval = time.time()
+#         url = 'https://%s:%s@api.del.icio.us/v1/posts/recent' % (self.username, self.password)
+#         return self.fetch_xml(url)
+#
+#     def fetch_xml(self, url):
+#         u = urllib.FancyURLopener(None)
+#         usock = u.open(url)
+#         rawdata = usock.read()
+#         usock.close()
+#         return xml_parser.fromstring(rawdata)
+#
+#     def __getattr__(self, method):
+#         return DeliciousClient(self.username, self.password, '%s/%s' % (self.method, method))
+#
+#     def __repr__(self):
+#         return "<DeliciousClient>"
+
+# def insert_laptop(data):
+#     """
+#     Insert new data to Laptop table (if it is not exist).
+#     :param data: data is a dictionary from ebay API response
+#     :return: none
+#     """
+#     for key, value in data.iteritems():
+#
+#         obj, created = Laptop.objects.get_or_create(
+#             first_name='John',
+#             last_name='Lennon',
+#             # defaults={'birthday': date(1940, 10, 9)}
+#         )
+
+# def create_link(data):
+#     for post in data.findall('post'):
+#         info = dict((k, smart_unicode(post.get(k))) for k in post.keys())
+#         b, created = Link.objects.get_or_create(
+#             url = info['href'],
+#             description = info['extended'],
+#             tags = info.get('tag', ''),
+#             date = parsedate(info['time']),
+#             title = info['description']
+#         )
