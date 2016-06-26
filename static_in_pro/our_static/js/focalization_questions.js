@@ -117,6 +117,9 @@ $(document).ready(function () {
                         StyleQuestions($current_question);
                         UpdateDisplaySubject($current_question);
                     }
+                    $('div.questions_desktop_container').removeClass('current_subject');
+                    $('div#questions_desktop_container_' + $current_question.parent('div.questions').prop('id').substring('questions_'.length)).addClass('current_subject');
+
                 });
                 // add line separator
                 $('div#questions_holder').before('<hr id="line_separator"/>');
@@ -148,6 +151,10 @@ $(document).ready(function () {
             $('select#questions_list').children('option').each(function () {
                 $('button#questions_circle_' + $(this).val()).text($(this).text()[1] + $(this).text()[2] + $(this).text()[3]);
             });
+
+            // color current subject
+            $('div.questions_desktop_container').removeClass('current_subject');
+            $('div#questions_desktop_container_' + $current_question.parent('div.questions').prop('id').substring('questions_'.length)).addClass('current_subject');
 
         }//end desktop screens
     }// end responsive query

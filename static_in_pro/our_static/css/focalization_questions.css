@@ -345,7 +345,15 @@ div#questions_desktop_container_display, div#questions_desktop_container_display
         div.questions_desktop_container:hover button.questions_circle {
             color: rgb(230, 89, 42);
             border: 2px solid rgb(230, 89, 42);
+        }
 
+        div.current_subject span.questions_subject {
+            color: rgb(230, 89, 42);
+        }
+
+        div.current_subject button.questions_circle {
+            color: rgb(230, 89, 42);
+            border: 2px solid rgb(230, 89, 42);
         }
 
         div#questions_holder {
