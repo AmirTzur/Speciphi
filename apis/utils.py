@@ -506,6 +506,7 @@ class DealsHandler(object):
                 print('5 sec break')
             # Get amazon "large response" and parse xml
             item_dict = self.get_item(item_upc)
+            item_dict['UPC'] = str(item_upc)
             if item_dict:
                 mvp_deals["amazon_deals"].append(item_dict)
             counter += 1
@@ -641,15 +642,15 @@ class DealsHandler(object):
             for items_group in amazon_deals:
                 mvp_dict = {}
                 if 'LowestNewPrice>Amount' in items_group.keys():
-                    lowest_new = self.parse_price(items_group['LowestNewPrice>Amount'])
+                    lowest_new = self.parse_price(str(items_group['LowestNewPrice>Amount']))
                 else:
                     lowest_new = -1
                 if 'Price>Amount' in items_group.keys():
-                    price = self.parse_price(items_group['Price>Amount'])
+                    price = self.parse_price(str(items_group['Price>Amount']))
                 else:
                     price = -1
                 if 'ListPrice>Amount' in items_group.keys():
-                    list_price = self.parse_price(items_group['ListPrice>Amount'])
+                    list_price = self.parse_price(str(items_group['ListPrice>Amount']))
                 else:
                     list_price = -1
                 if lowest_new > 0:
@@ -661,11 +662,12 @@ class DealsHandler(object):
                 if 'LargeImage>URL' in items_group.keys():
                     mvp_dict['amazon_image'] = items_group['LargeImage>URL']
                 if 'DetailPageURL' in items_group.keys():
-                    mvp_dict['amazon_link'] = items_group['DetailPageURL']
+                    mvp_dict['amazon_link'] = str(items_group['DetailPageURL'])
                 if 'SalesRank' in items_group.keys():
-                    mvp_dict['amazon_sales_rank'] = items_group['SalesRank']
+                    mvp_dict['amazon_sales_rank'] = str(items_group['SalesRank'])
                 if 'ItemAttributes>UPC' in items_group.keys():
-                    mvp_dict['UPC'] = items_group['ItemAttributes>UPC']
+                    mvp_dict['amazon_UPC'] = str(items_group['ItemAttributes>UPC'])
+                mvp_dict['UPC'] = str(items_group['UPC'])
                 json.dump(mvp_dict, deals_json, sort_keys=True, indent=4)
                 deals_json.write(',\n')
             deals_json.close()
