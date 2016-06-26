@@ -40,7 +40,6 @@ $(document).ready(function () {
             $current_question = $current_question.prev('div');
             // update question indicator
             $('div#question_indicators').children('div.indicator_on').removeClass('indicator_on').prev('div.question_indicator').addClass('indicator_on');
-
         }
     });
 
@@ -392,7 +391,6 @@ $(document).ready(function () {
         }, 200);
 
     }
-
 
     function UpdateDisplaySubject($current) {
         var subject_text = $('div#questions_desktop_container_' + $current.parent('div.questions').prop('id').substring('questions_'.length)).children('span').text();
