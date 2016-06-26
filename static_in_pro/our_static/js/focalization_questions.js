@@ -50,10 +50,15 @@ $(document).ready(function () {
         if (window.matchMedia("(max-width: 991px)").matches) {
             // if was on desktop
             if (desktop_flag) {
+                // finish animating
+                if ($('div.question').is(':animated')) {
+                    $('div.question').finish();
+                }
                 // display only 1 question
                 $current_question.siblings('div.question').css('display', 'none');
                 // select last displayed questions
                 $("select#questions_list").val($current_question.parent('div.questions').prop('id').substring('questions_'.length));
+                console.log($("select#questions_list").val($current_question.parent('div.questions').prop('id').substring('questions_'.length)));
                 // remove side question style
                 $('div.question').removeClass('side_question');
                 $('div.question').removeClass('side_question_animate');
@@ -130,6 +135,7 @@ $(document).ready(function () {
                 // on small question click, center (with animation) and bigger question clicked
                 $(document).on('click', '.side_question', SwitchQuestion);
                 $(document).on('click', '.side_question_animate', SwitchQuestion);
+
             } // end first desktop entry
 
             // show current question brothers
@@ -210,6 +216,7 @@ $(document).ready(function () {
     // animate: middle to small, animate all moves right/left, switch places, animate new middle to big
     function SwitchQuestion() {
         var $that = $(this);
+        $current_question = $(this);
         // 3 questions
         if ($(this).siblings('div.question').length == 2) {
             // animate middle to small
@@ -221,19 +228,29 @@ $(document).ready(function () {
                     if (!$('div.question').is(':animated')) {
                         clearInterval(wait1);
                         // executed after element is complete:
-                        // move all to right
-                        $that.parent('div.questions').children('div.question:nth-child(3)').animate({marginRight: '-=450px'}, 'slow'
-                            , function () {
-                                // switch places
-                                $($that.next()).next().fadeToggle('fast', function () {
-                                    $($that.next()).next().insertBefore($that);
-                                    $that.prev().css('margin-right', '4px');
-                                    $that.prev().fadeToggle('fast', function () {
-                                        // bigger middle question
-                                        StyleQuestionNormal($that, true);
-                                    });
-                                });
+                        // toggle and remove right question
+                        $($current_question.next()).next().toggle('slow', function () {
+                            $(this).remove();
+                        });
+                        // copy right question to the other side (while he is toggled)
+                        var $switch = $($current_question.next()).next().clone().insertBefore($current_question).css('display', 'none');
+                        $($switch.children('div.answers')).children('button.answer').on('click', PD);
+                        // hide button
+                        $($current_question.next()).next().children('div.answers').children('button.answer').toggleClass('hidden', 150);
+                        // animate copied element entrance from the left
+                        $switch.toggle('slow', function () {
+                            $($switch.parent('div.questions')).children('div.question').css({
+                                'overflow': '',
+                                'padding': '',
+                                'margin-top': '',
+                                'margin-bottom': '',
+                                'opacity': ''
                             });
+                        });
+                        // replace default toggle display attr to inline-block
+                        if ($switch.is(':visible'))
+                            $switch.css('display', 'inline-block');
+                        StyleQuestionNormal($current_question, true);
                     }
                 }, 200);
             }
@@ -244,18 +261,29 @@ $(document).ready(function () {
                     if (!$('div.question').is(':animated')) {
                         clearInterval(wait2);
                         // executed after element is complete:
-                        // move all to left
-                        $that.parent('div.questions').children('div.question:nth-child(1)').animate({marginLeft: '-=450px'}, 'slow'
-                            , function () {
-                                $($that.prev()).prev().fadeToggle('fast', function () {
-                                    $($that.prev()).prev().insertAfter($that);
-                                    $that.next().css('margin-left', '4px');
-                                    $that.next().fadeToggle('fast', function () {
-                                        // bigger middle question
-                                        StyleQuestionNormal($that, true);
-                                    });
-                                });
+                        // toggle and remove left question
+                        $($current_question.prev()).prev().toggle('slow', function () {
+                            $(this).remove();
+                        });
+                        // copy left question to the other side (while he is toggled)
+                        var $switch = $($current_question.prev()).prev().clone().insertAfter($current_question).css('display', 'none');
+                        $($switch.children('div.answers')).children('button.answer').on('click', PD);
+                        // hide button
+                        $($current_question.prev()).prev().children('div.answers').children('button.answer').toggleClass('hidden', 150);
+                        // animate copied element entrance from the left
+                        $switch.toggle('slow', function () {
+                            $($switch.parent('div.questions')).children('div.question').css({
+                                'overflow': '',
+                                'padding': '',
+                                'margin-top': '',
+                                'margin-bottom': '',
+                                'opacity': ''
                             });
+                        });
+                        // replace default toggle display attr to inline-block
+                        if ($switch.is(':visible'))
+                            $switch.css('display', 'inline-block');
+                        StyleQuestionNormal($current_question, true);
                     }
                 }, 200);
             }
@@ -271,7 +299,7 @@ $(document).ready(function () {
                         clearInterval(wait3);
                         // executed after element is complete:
                         // move all to right
-                        $that.parent('div.questions').children('div.question:nth-child(2)').animate({marginRight: '-=450px'}, 'slow'
+                        $that.parent('div.questions').children('div.question:nth-child(2)').animate({marginRight: '-=450px'}, 450
                             , function () {
                                 // bigger middle question
                                 StyleQuestionNormal($that, true);
@@ -289,7 +317,7 @@ $(document).ready(function () {
                         clearInterval(wait4);
                         // executed after element is complete:
                         // move all to left
-                        $that.parent('div.questions').children('div.question:nth-child(1)').animate({'margin-left': '-=450px'}, 'slow'
+                        $that.parent('div.questions').children('div.question:nth-child(1)').animate({'margin-left': '-=450px'}, 450
                             , function () {
                                 // bigger middle question
                                 StyleQuestionNormal($that, true);
