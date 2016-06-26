@@ -1,6 +1,12 @@
 $(document).ready(function () {
     var desktop_flag = false;
+    // add space (or 2) when (1/X) (or X=1) to select box options
+    OptionsSpacesFix();
 
+    // // try
+    // $('button.questions_circle').on('click',function () {
+    //     console.log('123');
+    // });
     // show and save first question
     $('div.questions').first().children('div.question').first().css('display', 'inline-block');
     var $current_question = $('div.questions').first().children('div.question').first();
@@ -68,7 +74,9 @@ $(document).ready(function () {
 
                 // reset margins
                 $('div.questions').css({'margin-left': '', 'margin-right': ''});
+                $('div.questions').removeClass('two_questions_fix');
                 $('div.question').css({'width': '', 'height': '', 'margin-left': '', 'margin-right': ''});
+
 
                 // reset bind answer button functionality
                 $('button.answer').off('click', AnswerClick);
@@ -81,6 +89,7 @@ $(document).ready(function () {
         // desktop screens
         else if (window.matchMedia("(min-width: 992px)").matches) {
             desktop_flag = true;
+
 
             // on first desktop entry
             if (!$('#desktop_questions_list').length) {
@@ -191,6 +200,7 @@ $(document).ready(function () {
     }
 
     function StyleQuestions($current) {
+
         // if 1 questions - normal
         // if 2 questions - 1st-cutted, 2nd-normal
         // if 3 questions - 1st-cutted, 2nd-normal, 3rd-cutted
@@ -198,22 +208,25 @@ $(document).ready(function () {
         switch ($questions.length) {
             case 2:
                 // style first question
-                StyleQuestionSmall($questions.first());
+                StyleQuestionSmall($questions.first(), false);
                 // remove margin from last time
                 $questions.first().css({'margin-right': '', 'margin-left': ''});
                 // center second question
                 $questions.parent().css('margin-left', '');
-                $questions.parent().css('margin-left', '-=225px');
+                // $questions.parent().css('margin-left', -=225px);
+                $questions.parent().addClass('two_questions_fix');
                 break;
             case 3:
-                $('div.questions').css('marginLeft', '');
+                $('div.questions').removeClass('two_questions_fix');
+                $('div.questions').css('margin-left', '');
                 // style first question
-                StyleQuestionSmall($questions.first());
+                StyleQuestionSmall($questions.first(), false);
                 // style last question
-                StyleQuestionSmall($questions.last());
+                StyleQuestionSmall($questions.last(), false);
                 break;
             default:
-                $('div.questions').css('marginLeft', '');
+                $('div.questions').removeClass('two_questions_fix');
+                $('div.questions').css('margin-left', '');
                 break;
         }
     }
@@ -221,12 +234,31 @@ $(document).ready(function () {
     // invoked on small/side question click
     // animate: middle to small, animate all moves right/left, switch places, animate new middle to big
     function SwitchQuestion() {
-        var $that = $(this);
+
+        var small_q_width, small_q_height, small_q_padding_top, small_q_margin_right, normal_q_width, normal_q_height;
+
+        if ($(window).width() < 1200) {
+            small_q_width = '215px';
+            small_q_height = '120px';
+            small_q_padding_top = '80px';
+            small_q_margin_right = '-=450px';
+            normal_q_width = '300px';
+            normal_q_height = '185px';
+
+        } else {
+            small_q_width = '260px';
+            small_q_height = '155px';
+            small_q_padding_top = '90px';
+            small_q_margin_right = '-=535';
+            normal_q_width = '355px';
+            normal_q_height = '230px';
+
+        }
         $current_question = $(this);
         // 3 questions
         if ($(this).siblings('div.question').length == 2) {
             // animate middle to small
-            StyleQuestionSmall($(this).parent('div.questions').children('div.question:nth-child(2)'), true);
+            StyleQuestionSmall($(this).parent('div.questions').children('div.question:nth-child(2)'), true, small_q_width, small_q_height, small_q_padding_top);
             // left question pressed
             if ($(this).next('div.question').length) {
                 // wait last animate to finish
@@ -244,19 +276,11 @@ $(document).ready(function () {
                         // hide button
                         $($current_question.next()).next().children('div.answers').children('button.answer').toggleClass('hidden', 150);
                         // animate copied element entrance from the left
-                        $switch.toggle('slow', function () {
-                            $($switch.parent('div.questions')).children('div.question').css({
-                                'overflow': '',
-                                'padding': '',
-                                'margin-top': '',
-                                'margin-bottom': '',
-                                'opacity': ''
-                            });
-                        });
+                        $switch.toggle('slow');
                         // replace default toggle display attr to inline-block
                         if ($switch.is(':visible'))
                             $switch.css('display', 'inline-block');
-                        StyleQuestionNormal($current_question, true);
+                        StyleQuestionNormal($current_question, true, small_q_width, small_q_height, normal_q_width, normal_q_height);
                     }
                 }, 200);
             }
@@ -289,7 +313,7 @@ $(document).ready(function () {
                         // replace default toggle display attr to inline-block
                         if ($switch.is(':visible'))
                             $switch.css('display', 'inline-block');
-                        StyleQuestionNormal($current_question, true);
+                        StyleQuestionNormal($current_question, true, small_q_width, small_q_height, normal_q_width, normal_q_height);
                     }
                 }, 200);
             }
@@ -298,17 +322,17 @@ $(document).ready(function () {
             // left question pressed
             if ($(this).next('div.question').length) {
                 // animate middle to small
-                StyleQuestionSmall($(this).parent('div.questions').children('div.question:nth-child(2)'), true);
+                StyleQuestionSmall($(this).parent('div.questions').children('div.question:nth-child(2)'), true, small_q_width, small_q_height, small_q_padding_top);
                 // wait last animate to finish
                 var wait3 = setInterval(function () {
                     if (!$('div.question').is(':animated')) {
                         clearInterval(wait3);
                         // executed after element is complete:
                         // move all to right
-                        $that.parent('div.questions').children('div.question:nth-child(2)').animate({marginRight: '-=450px'}, 450
+                        $current_question.parent('div.questions').children('div.question:nth-child(2)').animate({marginRight: small_q_margin_right}, 450
                             , function () {
                                 // bigger middle question
-                                StyleQuestionNormal($that, true);
+                                StyleQuestionNormal($current_question, true, small_q_width, small_q_height, normal_q_width, normal_q_height);
                             });
                     }
                 }, 200);
@@ -316,38 +340,56 @@ $(document).ready(function () {
             // right question pressed
             else if ($(this).prev('div.question').length) {
                 // animate middle to small
-                StyleQuestionSmall($(this).parent('div.questions').children('div.question:nth-child(1)'), true);
+                StyleQuestionSmall($(this).parent('div.questions').children('div.question:nth-child(1)'), true, small_q_width, small_q_height, small_q_padding_top);
                 // wait last animate to finish
                 var wait4 = setInterval(function () {
                     if (!$('div.question').is(':animated')) {
                         clearInterval(wait4);
                         // executed after element is complete:
                         // move all to left
-                        $that.parent('div.questions').children('div.question:nth-child(1)').animate({'margin-left': '-=450px'}, 450
+                        $current_question.parent('div.questions').children('div.question:nth-child(1)').animate({'margin-left': '-=450px'}, 450
                             , function () {
                                 // bigger middle question
-                                StyleQuestionNormal($that, true);
-                                $that.parent('div.questions').children('div.question').css({
-                                    'margin-left': '',
-                                    'margin-right': ''
-                                });
+                                StyleQuestionNormal($current_question, true, small_q_width, small_q_height, normal_q_width, normal_q_height);
                             });
                     }
                 }, 200);
             }
         }
+        // remove inline css
+        var wait7 = setInterval(function () {
+            if (!$('div.question').is(':animated')) {
+                clearInterval(wait7);
+                // executed after element is complete:
+                $current_question.parent('div.questions').children('div.question').css({
+                    'margin-left': '',
+                    'margin-right': '',
+                    'overflow': '',
+                    'padding': '',
+                    'margin-top': '',
+                    'margin-bottom': '',
+                    'opacity': '',
+                    'width': '',
+                    'height': ''
+                });
+            }
+        }, 200);
+
     }
 
-    function StyleQuestionSmall($question, animate) {
+    function StyleQuestionSmall($question, animate, small_q_width, small_q_height, small_q_padding_top) {
         // make it small
         if (animate) {
             // add reduced style and animate the rest
             $question.addClass('side_question_animate');
             $question.animate({
-                width: '215px',
-                height: '120px'
+                width: small_q_width,
+                height: small_q_height
             }, {duration: 500, queue: false});
-            $('div#questions_holder').animate({paddingTop: '80px'}, {duration: 500, queue: false});
+            $('div#questions_holder').animate({paddingTop: small_q_padding_top}, {
+                duration: 500,
+                queue: false
+            });
         } else {
             $question.addClass('side_question');
         }
@@ -369,18 +411,26 @@ $(document).ready(function () {
         if (!hided_siblings) {
             $question.children('div.answers').css('display', 'none');
         }
+
+        var wait4 = setInterval(function () {
+            if (!$('div.question').is(':animated')) {
+                clearInterval(wait4);
+                // executed after element is complete:
+                $question.addClass('side_question');
+                $question.removeClass('side_question_animate');
+            }
+        }, 200);
     }
 
-    function StyleQuestionNormal($question, animate) {
+    function StyleQuestionNormal($question, animate, small_q_width, small_q_height, normal_q_width, normal_q_height) {
         $question.removeClass('side_question');
         $question.removeClass('side_question_animate');
         if (animate) {
             // temporary height just for animation
-            $question.css({'height': '120px', 'width': '215px'});
+            $question.css({'width': small_q_width, 'height': small_q_height});
             // animate bigger and un padding simultaneously
-            $question.animate({height: '185px', width: '300px'}, {duration: 500, queue: false});
+            $question.animate({width: normal_q_width, height: normal_q_height}, {duration: 500, queue: false});
             $('div#questions_holder').animate({paddingTop: '15px'}, {duration: 500, queue: false});
-            // $question.css({'width': '300px'});
 
         }
         var wait5 = setInterval(function () {
@@ -394,6 +444,8 @@ $(document).ready(function () {
                 // show all answers
                 $question.children('div.answers').css('display', '');
                 $($question.children('div.answers')).children('button.answer').css('display', '');
+                // remove inline css
+                $question.css({'width': '', 'height': ''});
             }
         }, 200);
 
@@ -462,6 +514,7 @@ $(document).ready(function () {
                 UpdateAnsweredNumber($current_subject, increase_answered, false);
                 UpdateDisplaySubject($current_question);
             }
+            OptionsSpacesFix();
         }
     }
 
@@ -538,4 +591,22 @@ $(document).ready(function () {
         $subject.text(inner_text);
     }
 
+    // add space (or 2) when (1/X) (or X=1)
+    function OptionsSpacesFix() {
+        $('select#questions_list').children('option').each(function () {
+            var options = $(this).text();
+            var answers_part = options.substring(0, 5);
+            var count_1s = (answers_part.match(/1/g) || []).length;
+            // add 1 space (default)
+            if (count_1s == 0) {
+                $(this).text(answers_part + String.fromCharCode(160) + $(this).attr('data-brand'));
+                // add 2 spaces
+            } else if (count_1s == 1) {
+                $(this).text(answers_part + String.fromCharCode(160) + String.fromCharCode(160) + $(this).attr('data-brand'));
+                // add 3 spaces
+            } else if (count_1s == 2) {
+                $(this).text(answers_part + String.fromCharCode(160) + String.fromCharCode(160) + String.fromCharCode(160) + $(this).attr('data-brand'));
+            }
+        });
+    }
 });
