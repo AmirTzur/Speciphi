@@ -47,10 +47,10 @@ div#mobile_types_list ul li:first-child {
     padding-top: 10px;
 }
 
-#mobile_types_list ul li:hover {
-    opacity: 0.7;
-    color: rgb(230, 89, 42) !important;
-}
+/*#mobile_types_list ul li:hover {*/
+    /*opacity: 0.7;*/
+    /*color: rgb(230, 89, 42) !important;*/
+/*}*/
 
 .type_button {
     /* so checkbox position will be determined according to type_button */
@@ -194,7 +194,7 @@ span.description_text {
 
     .type_button {
         margin-top: 90px;
-        margin-bottom: 110px;
+        margin-bottom: 70px;
         width: 180px;
         height: 180px;
         font-size: 30px;

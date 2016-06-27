@@ -1,0 +1,63 @@
+{% load staticfiles %}
+<head>
+    <link href="{% static 'css/focalization_questions.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="http://gregfranko.com/jquery.selectBoxIt.js/css/jquery.selectBoxIt.css"/>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/base/jquery-ui.css"/>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div id="questions_wrapper">
+        <form action="{% url 'results' product %}" method="POST">{% csrf_token %}
+            <select id="questions_list">
+                {% for question in questions %}
+                    <option value="{{ question.id }}" data-brand="{{ question.general_name }}"
+                    >(0/{{ question.my_questions|length }})&nbsp{{ question.general_name }}</option>
+                {% endfor %}
+            </select>
+            <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+            <script src="http://gregfranko.com/jquery.selectBoxIt.js/js/jquery.selectBoxIt.min.js"></script>
+            <script>
+                $('select#questions_list').selectBoxIt();
+                $('span#questions_listSelectBoxIt').css('width', '');
+                $('ul#questions_listSelectBoxItOptions').css('min-width', '');
+                $('span#questions_listSelectBoxItText').css('max-width', '');
+            </script>
+            <div id="questions_holder" class="row">
+                <div id="question_nav_left"><a><i class="fa fa-caret-left fa-lg"></i></a></div>
+                {% for question in questions %}
+                    <div class="questions" id="questions_{{ question.id }}">
+                        {% for ques in question.my_questions %}
+                            <div class="question" id="question_{{ ques.q_id }}" style="display: none;">
+                                <p class="title_text">{{ ques.title }}</p>
+                                <p class="question_text">{{ ques.question }}</p>
+                                <div class="answers">
+                                    {% for ans in ques.answers %}
+                                        <button class="answer btn" id="{{ ans }}" value="0">{{ ans }}</button>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+                <div id="question_nav_right"><a><i class="fa fa-caret-right fa-lg"></i></a></div>
+            </div>
+            <br>
+            <div id="question_indicators">
+                <div class="question_indicator indicator_on" style="display: none"></div>
+                <div class="question_indicator" style="display: none"></div>
+                <div class="question_indicator" style="display: none"></div>
+                <div class="question_indicator" style="display: none"></div>
+            </div>
+            <br>
+            <label id="next_page">
+                <input type="submit" name="image" style="display: none">
+                <svg width="37px" height="37px" viewBox="0 0 65 65">
+                    <image width="65px" height="65px"
+                           xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEEAAABBCAMAAAC5KTl3AAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAA/FBMVEUAAADmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSrmWSr63tT408bthWP////1varpb0bypo3oZDj99PH86ePukHHwm3/relXzspz3yLgAAAA+z5V5AAAAQ3RSTlMABDlrlLra7fsSarTyRq/4AVDKyy3DB4uKJEvxYHH+XF1O/CgpCNPCT1FFrhP5abk8bJPY5fo9Loxe1MTMsEe187vmyrRG9gAAAAFiS0dEAIgFHUgAAAAJcEhZcwAACxIAAAsSAdLdfvwAAAJ2SURBVFjDtZh7V9pAEMVXQyBggCAiPvGJlVaEqi3UR9UOuoqAwvf/MG4AKUl2diY99v4JZ35nczN7dzZCIFpYtBJ2MuWAk0raCWtxQcRSOrPkQlDuUibNrs/m8qBTPpfllHuFZcBVLHgUYKUEZpVWjPWrZQcoOWurOGC9SNaPH2UdA2xssgAAmxt6wBb9BLMn2dIBtitsAEBlOwrYiQNQiN0wYG8/FgBgfy8IOOCaOGfn4TygehQbAHBUnSOs/QMAoDzXyqH32Hl45BCcWYN7X0J/SSmfnhmI0sc2O4YoQcruC42oTQnLWoLsdUlCcQL4CnqClP0BhZhEzjeUICVlac4HnNQNBMrSup+dGTASCEtPFaFBEWTvFSc0VEPnSYKyFLUjXxVNYBCUpW8Ioim+8wiopZZIcAmqw3SWnglb8+tQIgyNpbZI6pb2PEIYUUvPRUpv0NsDwghbeiF+YO9p0EMYTwE7XIEB4AVbRcgOdA1dbAl+nwfWoPdh0Mfrg/v1QvsuHjt4fTgzzrX9gNdHc8uO0ZNSu9HP+PsC2RmW+MklIIHX5OWDMhBJGZUPjIwyBX+Dk5NSDvGkPKWzWsqRIa3rJ37c54wE84kxPi9E1kDov4JR0zG5iBHIk3N6booaQhiSp/fH2e2VdIQRPUHM5ofIDKPqO4wpxmn9HYPKwb96lIETtfFZjjMBhWY5cRh/nnQD8+QnzLRC7Macq3/9h9n+E+4X6o7jMgEucsdRE/4lC3B5IFBV24y7XrsqTGpdEYCrliDkFa4N9dc1jwL4yt7UteX1m9+c8rHS1u1dqPzu1uLf/cfyvz/cJ1MVcP8k703fH94Bf21j474on00AAAAASUVORK5CYII="/>
+                </svg>
+            </label>
+        </form>
+    </div>
+</div>
+</body>

@@ -1,10 +1,13 @@
+import time
 from django.shortcuts import render
 from collections import OrderedDict
 from django.db import connection, Error
 
+from apis.utils import get_spec_val, find_nth
 from consult.forms import AffiliationsForm, UsesForm
 from django.http import HttpResponse
 from consult.models import Levelofuse
+import urllib.request
 import json
 
 
@@ -18,6 +21,8 @@ def home(request):
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [False, "results"]
 
+    # new user
+    user_location = None
     if 'Entrance_id' not in request.session:
         # get user ip
         x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -25,6 +30,14 @@ def home(request):
             user_ip = x_forwarded_for.split(',')[0]
         else:
             user_ip = request.META.get('REMOTE_ADDR')
+        f = urllib.request.urlopen('http://ip-api.com/json/' + str(user_ip))
+        # get location by ip
+        geo_data = f.read()
+        f.close()
+        geo_dict = json.loads(geo_data.decode('UTF-8'))
+        if geo_dict['status'] == 'success':
+            user_location = str(geo_dict['country'] + ', ' + geo_dict['city'])
+
         # connect to djarooDB
         try:
             cursor = connection.cursor()
@@ -33,7 +46,10 @@ def home(request):
             else:
                 # Input: Entrance_ip, Entrance_country
                 # Output: Creates new entry in Entrances Table, Entrance_id
-                cursor.execute('call newEntrance(%s,"")', [user_ip])
+                if user_location:
+                    cursor.execute('call newEntrance(%s,%s)', [user_ip, user_location])
+                else:
+                    cursor.execute('call newEntrance(%s,"")', [user_ip])
                 Entrance_id = cursor.fetchone()
                 cursor.close()
                 if Entrance_id:
@@ -127,24 +143,39 @@ def affiliation(request, product=None):
         # for each results category: {sort_indicator: brand, model, image_url,
         # offers[{deal_id, deal_url, vendor_name, price}, {}, ]}
         offers = [
-            {'sort_indicator': 'Best Match', 'brand': 'Apple', 'model': 'Macbook Pro', 'image_url': 'http://ecx.images-amazon.com/images/I/41lmJ1hPMnL._SL160_.jpg',
-             'offers': [{'deal_id': 111, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B00GZB8D0M%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
+            {'sort_indicator': 'Best Match', 'brand': 'Apple', 'model': 'Macbook Pro',
+             'image_url': 'http://ecx.images-amazon.com/images/I/41lmJ1hPMnL._SL160_.jpg',
+             'offers': [{'deal_id': 111,
+                         'deal_url': 'http://www.amazon.com/gp/offer-listing/B00GZB8D0M%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                         'vendor_name': 'Amazon',
                          'price': 950}, {'deal_id': 222, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1000}]
              },
-            {'sort_indicator': 'Most Purchased', 'brand': 'Lenovo', 'model': 'Yoga 3', 'image_url': 'http://ecx.images-amazon.com/images/I/41238W8tcjL._SL160_.jpg',
-             'offers': [{'deal_id': 333, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B00VQP3DNY%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
+            {'sort_indicator': 'Most Purchased', 'brand': 'Lenovo', 'model': 'Yoga 3',
+             'image_url': 'http://ecx.images-amazon.com/images/I/41238W8tcjL._SL160_.jpg',
+             'offers': [{'deal_id': 333,
+                         'deal_url': 'http://www.amazon.com/gp/offer-listing/B00VQP3DNY%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                         'vendor_name': 'Amazon',
                          'price': 1050}, {'deal_id': 444, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1100}]
              },
-            {'sort_indicator': 'Type Popular', 'brand': 'Dell', 'model': 'XPS', 'image_url': 'http://ecx.images-amazon.com/images/I/218dheiyUrL._SL160_.jpg',
-             'offers': [{'deal_id': 555, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B00SQG3MQE%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
+            {'sort_indicator': 'Type Popular', 'brand': 'Dell', 'model': 'XPS',
+             'image_url': 'http://ecx.images-amazon.com/images/I/218dheiyUrL._SL160_.jpg',
+             'offers': [{'deal_id': 555,
+                         'deal_url': 'http://www.amazon.com/gp/offer-listing/B00SQG3MQE%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                         'vendor_name': 'Amazon',
                          'price': 1150}, {'deal_id': 666, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1200}]
              },
-            {'sort_indicator': 'Cost Effective', 'brand': 'Asus', 'model': 'Zenbook 133X', 'image_url': 'http://ecx.images-amazon.com/images/I/41-6oCGJqwL._SL160_.jpg',
-             'offers': [{'deal_id': 777, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B01BLU6ERK%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
+            {'sort_indicator': 'Cost Effective', 'brand': 'Asus', 'model': 'Zenbook 133X',
+             'image_url': 'http://ecx.images-amazon.com/images/I/41-6oCGJqwL._SL160_.jpg',
+             'offers': [{'deal_id': 777,
+                         'deal_url': 'http://www.amazon.com/gp/offer-listing/B01BLU6ERK%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                         'vendor_name': 'Amazon',
                          'price': 1250}, {'deal_id': 888, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1300}]
              },
-            {'sort_indicator': 'Stylish', 'brand': 'Sony', 'model': 'Bomber 304', 'image_url': 'http://ecx.images-amazon.com/images/I/41sgEA0JL-L._SL160_.jpg',
-             'offers': [{'deal_id': 999, 'deal_url': 'http://www.amazon.com/gp/offer-listing/B018AX3YGU%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-', 'vendor_name': 'Amazon',
+            {'sort_indicator': 'Stylish', 'brand': 'Sony', 'model': 'Bomber 304',
+             'image_url': 'http://ecx.images-amazon.com/images/I/41sgEA0JL-L._SL160_.jpg',
+             'offers': [{'deal_id': 999,
+                         'deal_url': 'http://www.amazon.com/gp/offer-listing/B018AX3YGU%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                         'vendor_name': 'Amazon',
                          'price': 1350}, {'deal_id': 121, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1400}]
              },
         ]
@@ -351,6 +382,143 @@ def focalization(request, product=None):
         "information_content": information_content,
     }
 
+    questions = [
+        {
+            "general_name": "Screen",
+            "id": 1,
+            "my_questions": [
+                {
+                    "q_id": 1,
+                    "title": "Screen type",
+                    "question": "what would be the best screen type for ya?",
+                    "answers": ["mat", "flat", "something else"]},
+                {
+                    "q_id": 2,
+                    "title": "Screen resolution",
+                    "question": "do you fucking care about res?",
+                    "answers": ["Yes Sir!", "No Sir!", "Fuck You Sir!"]},
+                {
+                    "q_id": 3,
+                    "title": "Screen therapy",
+                    "question": "Does your eyes hurts?",
+                    "answers": ["most of the day", "NEVER!"]},
+            ]
+        },
+        {
+            "general_name": "Warranty",
+            "id": 2,
+            "my_questions": [
+                {
+                    "q_id": 1,
+                    "title": "Warranty type",
+                    "question": "what would be the best Warranty type for ya?",
+                    "answers": ["Good one", "Bad one", "will not tell!"]},
+                {
+                    "q_id": 2,
+                    "title": "Warranty period",
+                    "question": "do you fucking care about warranty?",
+                    "answers": ["long one", "short"]},
+                {
+                    "q_id": 3,
+                    "title": "free Warranty",
+                    "question": "Would you like that?",
+                    "answers": ["no", "free", "stuff"]}
+            ]
+        },
+        {
+            "general_name": "Connections",
+            "id": 4,
+            "my_questions": [
+                {
+                    "q_id": 1,
+                    "title": "Accessories 1",
+                    "question": "How much would you use external accessories with your product?",
+                    "answers": ["Only the laptop itself", "Averagely", "Most of the time"]},
+                {
+                    "q_id": 2,
+                    "title": "Connections 2",
+                    "question": "do you fucking care about connections?",
+                    "answers": ["lots", "not a lot"]},
+                {
+                    "q_id": 3,
+                    "title": "Connections 3",
+                    "question": "Would you like that connected?",
+                    "answers": ["no", "yes", "not sure!"]}
+            ]
+        },
+        {
+            "general_name": "Special Needs",
+            "id": 5,
+            "my_questions": [
+                {
+                    "q_id": 1,
+                    "title": "Special 1",
+                    "question": "1 How much would you use external Special with your product?",
+                    "answers": ["Only the laptop itself", "Averagely", "Most of the time"]},
+                {
+                    "q_id": 2,
+                    "title": "Special 2",
+                    "question": "2 do you fucking care about Special?",
+                    "answers": ["lots", "not a lot"]},
+                {
+                    "q_id": 3,
+                    "title": "Special 3",
+                    "question": "3 Would you like that Special?",
+                    "answers": ["no", "yes", "not sure!"]}
+            ]
+        },
+        {
+            "general_name": "Dimensions",
+            "id": 7,
+            "my_questions": [
+                {
+                    "q_id": 1,
+                    "title": "Dimensions 1",
+                    "question": "1 How much would you use Dimensions with your product?",
+                    "answers": ["Only the laptop itself", "Averagely", "Most of the time"]},
+                {
+                    "q_id": 2,
+                    "title": "Dimensions 2",
+                    "question": "2 do you fucking care about Dimensions?",
+                    "answers": ["lots", "not a lot"]},
+            ]
+        },
+        {
+            "general_name": "Operation System",
+            "id": 8,
+            "my_questions": [
+                {
+                    "q_id": 1,
+                    "title": "Operation System",
+                    "question": "1 How much would you use Operation System with your product?",
+                    "answers": ["Only the laptop itself", "Averagely", "Most of the time"]},
+                {
+                    "q_id": 2,
+                    "title": "Operation System 2",
+                    "question": "2 do you fucking care about Operation System?",
+                    "answers": ["lots", "not a lot"]},
+                {
+                    "q_id": 3,
+                    "title": "Operation System 3",
+                    "question": "3 Would you like that Operation System?",
+                    "answers": ["no", "yes", "not sure!"]}
+            ]
+        },
+        {
+            "general_name": "Dummy Question",
+            "id": 10,
+            "my_questions": [
+                {
+                    "q_id": 1,
+                    "title": "Elad's Title",
+                    "question": "What would you like do develop today sir?",
+                    "answers": ["Java, Sir", "Basic Sir", "Dunno Sir!", "Python Plz! Sir!"]
+                }
+            ]
+        },
+
+    ]
+    context.update({"questions": questions})
     return render(request, "focalization.html", context)
 
 
@@ -419,6 +587,21 @@ def dictfetchall(cursor):
         dict(zip(columns, row))
         for row in cursor.fetchall()
         ]
+
+
+# # Find the nth occurrence of substring in a string
+# def find_nth(haystack, needle, n):
+#     start = haystack.find(needle)
+#     while start >= 0 and n > 1:
+#         start = haystack.find(needle, start + len(needle))
+#         n -= 1
+#     return start
+#
+#
+# # parse spec value
+# def get_spec_val(data, term):
+#     data = data[data.index(term) + len(term):]
+#     return data[find_nth(data, '>', 1) + 1:data.index('</td>')]
 
 
 def NewConsulteeAffiliation(request):

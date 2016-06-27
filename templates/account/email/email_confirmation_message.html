@@ -1,10 +1,45 @@
-{% load account %}{% user_display user as user_display %}{% load i18n %}{% autoescape off %}
-{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}Hello from {{ site_name }}!
+{% load account %}
+{% user_display user as user_display %}
+{% load i18n %}
 
-    <p>You're receiving this e-mail because user {{ user_display }} at {{ site_domain }} has given yours as an
-        e-mail address to connect their account.
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Confirma tu correo men</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+<body style="margin: 0; padding: 0;">
+{% autoescape off %}
+<div style="padding: 50px 45px 50px 45px;background-color: #E5DFD3;">
+    <p>
+        {% blocktrans with site_name=current_site.name %}Hello from {{ site_name }}!{% endblocktrans %}
     </p>
-    To confirm this is correct, go to {{ activate_url }}
-{% endblocktrans %}{% endautoescape %}
-{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}Thank you from {{ site_name }}!
-    {{ site_domain }}{% endblocktrans %}
+    <p>
+        {% blocktrans with site_domain=current_site.domain %}
+            You're receiving this e-mail because user {{ user_display }} at {{ site_domain }} has given yours as an
+            e-mail address to connect their account.
+        {% endblocktrans %}
+    </p>
+    <p>
+        To confirm this is correct, go to
+    </p>
+
+    {{ activate_url }}
+    {% endautoescape %}
+    </p>
+    <p align="center">
+        <img src="http://writtent.com/blog/wp-content/uploads/2013/07/the-best-time-to-send-email.jpg"
+             alt="Djaroo.com"
+             width="400" height="201" style="display: block;"/>
+    </p>
+    <p>
+        {% blocktrans with site_name=current_site.name %}We love you at {{ site_name }}!{% endblocktrans %}
+    </p>
+    <p>
+        {% blocktrans with site_domain=current_site.domain %}http://{{ site_domain }}{% endblocktrans %}
+    </p>
+</div>
+</body>
+</html>
