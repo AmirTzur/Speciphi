@@ -88,7 +88,7 @@
     line-height: 1.2;
     text-align: left;
     height: 90px;
-    padding: 22px 28px 2px 8px;
+    padding: 0px 28px 2px 8px;
     margin: 0;
 }
 #info-box button{
@@ -104,13 +104,37 @@
     float: right;
     display: inline-block;
     position: relative;
-    top: -35px;
+    top: -57px;
     right: -1px;
     width: 24px;
     height: 38px;
 }
 .info-type{
     display: none;
+}
+#info-pagination{
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+    position: relative;
+    left: 10px;
+    top: -1px;
+}
+#info-pagination button{
+    float: none!important;
+    margin: 0px 2px 0px 2px !important;
+    position: relative;
+    top: 0px !important;
+    right: 0px !important;
+    color: #000;
+    opacity: 0.25;
+}
+#info-pagination span{
+    color: #000;
+    opacity: 0.6;
+}
+#info-pagination button:hover{
+    opacity: 0.5;
 }
 /* Results Feature - Responsive */
 
@@ -197,7 +221,7 @@
         margin-left: 10px;
     }
     #info-box svg{
-        top: -40px;
+        top: -62px;
         width: 28px;
         height: 44.5px;
     }

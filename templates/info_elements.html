@@ -41,8 +41,14 @@
                 </button>
                 <!-- Open Mode - Information box with descriptive text -->
                 <div id="info-box">
-                    <!-- x button + pagination + text style + js events  -->
+                    <!-- Close Button + pagination + text style + js events  -->
                     <button id="info-close" type="button" class="close">&times;</button>
+                    <!-- Pagination Controllers -->
+                    <div id="info-pagination" class="center-block">
+                        <button><i class="fa fa-chevron-left" aria-hidden="true"></i></button>
+                        <span id="pagination-counter">0</span>
+                        <button><i class="fa fa-chevron-right" aria-hidden="true"></i></button>
+                    </div>
                     <div id="statistic-text" class="info-type">
                         {% for info_text in information_content.statistic %}
                             <p class="box-text">{{ info_text }}</p>
