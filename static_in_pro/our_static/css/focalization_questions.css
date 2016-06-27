@@ -18,20 +18,36 @@ option {
     background-color: rgb(240, 240, 240);
 }
 
-select#questions_list {
-    margin-top: 30px;
-    margin-bottom: 8px;
-    width: 185px;
+/*select#questions_list {*/
+/*margin-top: 30px;*/
+/*margin-bottom: 8px;*/
+/*width: 185px;*/
+/*height: 40px;*/
+/*outline: 0;*/
+/*font-family: "Bariol";*/
+/*font-size: 17px;*/
+/*}*/
+
+/*select#questions_list option {*/
+/*font-size: 17px;*/
+/*font-family: "Bariol";*/
+/*line-height: 1.2;*/
+/*}*/
+
+#questions_listSelectBoxIt {
+    margin-top: 23px;
+    width: 186px;
     height: 40px;
-    outline: 0;
+}
+
+span.selectboxit-text {
+    line-height: 35px !important;
     font-family: "Bariol";
     font-size: 17px;
 }
 
-select#questions_list option {
-    font-size: 17px;
-    font-family: "Bariol";
-    line-height: 1.2;
+.selectboxit {
+    border-radius: 0 !important;
 }
 
 div.question {
@@ -173,7 +189,10 @@ div#questions_desktop_container_display, div#questions_desktop_container_display
 /* Custom Mini i-pad screen*/
 @media only screen and (min-width: 480px) {
 
-    select#questions_list {
+    /*select#questions_list {*/
+    /*width: 210px;*/
+    /*}*/
+    #questions_listSelectBoxIt {
         width: 210px;
     }
 
@@ -213,16 +232,39 @@ div#questions_desktop_container_display, div#questions_desktop_container_display
 /* Small Devices, Tablets */
 @media only screen and (min-width: 768px) {
 
-    select#questions_list {
+    /*select#questions_list {*/
+    /*margin-top: 100px;*/
+    /*margin-bottom: 25px;*/
+    /*width: 450px;*/
+    /*height: 65px;*/
+    /*font-size: 25px;*/
+    /*}*/
+    /*select#questions_list option {*/
+    /*font-size: 20px;*/
+    /*}*/
+    #questions_listSelectBoxIt {
         margin-top: 100px;
-        margin-bottom: 25px;
         width: 450px;
         height: 65px;
-        font-size: 25px;
     }
 
-    select#questions_list option {
-        font-size: 20px;
+    span.selectboxit-text {
+        line-height: 35px !important;
+        font-family: "Bariol";
+        font-size: 22px;
+    }
+
+    /*center selected text*/
+    span.selectboxit {
+        padding: 12px !important;
+    }
+
+    a.selectboxit-option-anchor {
+        font-size: 18px !important;
+    }
+
+    div#questions_holder {
+        margin-top: 10px;
     }
 
     div.question {
@@ -301,6 +343,10 @@ div#questions_desktop_container_display, div#questions_desktop_container_display
 @media only screen and (min-width: 992px) {
 
     select#questions_list, #question_nav_left, #question_nav_right, #question_indicators {
+        display: none;
+    }
+
+    span#questions_listSelectBoxItContainer {
         display: none;
     }
 

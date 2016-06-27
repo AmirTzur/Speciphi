@@ -1,6 +1,8 @@
 {% load staticfiles %}
 <head>
     <link href="{% static 'css/focalization_questions.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="http://gregfranko.com/jquery.selectBoxIt.js/css/jquery.selectBoxIt.css"/>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/themes/base/jquery-ui.css"/>
 </head>
 
 <body>
@@ -13,6 +15,14 @@
                     >(0/{{ question.my_questions|length }})&nbsp{{ question.general_name }}</option>
                 {% endfor %}
             </select>
+            <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+            <script src="http://gregfranko.com/jquery.selectBoxIt.js/js/jquery.selectBoxIt.min.js"></script>
+            <script>
+                $('select#questions_list').selectBoxIt();
+                $('span#questions_listSelectBoxIt').css('width', '');
+                $('ul#questions_listSelectBoxItOptions').css('min-width', '');
+                $('span#questions_listSelectBoxItText').css('max-width', '');
+            </script>
             <div id="questions_holder" class="row">
                 <div id="question_nav_left"><a><i class="fa fa-caret-left fa-lg"></i></a></div>
                 {% for question in questions %}
@@ -51,17 +61,3 @@
     </div>
 </div>
 </body>
-
-{#{% for question in questions %}#}
-{#    <p>name: {{ question.general_name }}</p>#}
-{#    <p>id: {{ question.id }}</p>#}
-{#    <p>questions: </p>#}
-{#    {% for ques in question.my_questions %}#}
-{#        <p>title: {{ ques.title }}</p>#}
-{#        <p>question: {{ ques.question }}</p>#}
-{#        <p>answers: </p>#}
-{#        {% for ans in ques.answers %}#}
-{#            <p>{{ ans }}</p>#}
-{#        {% endfor %}#}
-{#    {% endfor %}#}
-{#{% endfor %}#}
