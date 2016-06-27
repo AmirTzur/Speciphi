@@ -479,6 +479,9 @@ div#questions_desktop_container_display, div#questions_desktop_container_display
         margin-left: -225px;
     }
 
+    .two_questions_fix_left {
+        margin-left: 454px !important
+    }
 }
 
 /* Large Devices, Wide Screens */
@@ -533,5 +536,9 @@ div#questions_desktop_container_display, div#questions_desktop_container_display
 
     .two_questions_fix {
         margin-left: -270px;
+    }
+
+    .two_questions_fix_left {
+        margin-left: 539px !important
     }
 }

@@ -3,10 +3,6 @@ $(document).ready(function () {
     // add space (or 2) when (1/X) (or X=1) to select box options
     OptionsSpacesFix();
 
-    // // try
-    // $('button.questions_circle').on('click',function () {
-    //     console.log('123');
-    // });
     // show and save first question
     $('div.questions').first().children('div.question').first().css('display', 'inline-block');
     var $current_question = $('div.questions').first().children('div.question').first();
@@ -68,6 +64,8 @@ $(document).ready(function () {
                 $('div.question').removeClass('side_question');
                 $('div.question').removeClass('side_question_animate');
                 $('div.answers').removeClass('side_answers');
+                $('div.question').removeClass('two_questions_fix_left');
+
                 // show all answers
                 $('div.answers').css('display', '');
                 $('button.answer').css('display', '');
@@ -89,8 +87,6 @@ $(document).ready(function () {
         // desktop screens
         else if (window.matchMedia("(min-width: 992px)").matches) {
             desktop_flag = true;
-
-
             // on first desktop entry
             if (!$('#desktop_questions_list').length) {
                 // create questions row container
@@ -207,13 +203,17 @@ $(document).ready(function () {
         var $questions = $($current.parent('div.questions')).children('div.question');
         switch ($questions.length) {
             case 2:
-                // style first question
-                StyleQuestionSmall($questions.first(), false);
+                if ($questions.hasClass('two_questions_fix_left')) {
+                    StyleQuestionNormal($questions.first(), false);
+                    StyleQuestionSmall($($questions.first()).next(), false);
+                } else {
+                    StyleQuestionSmall($questions.first(), false);
+                    // the next is already Normal
+                }
                 // remove margin from last time
                 $questions.first().css({'margin-right': '', 'margin-left': ''});
                 // center second question
                 $questions.parent().css('margin-left', '');
-                // $questions.parent().css('margin-left', -=225px);
                 $questions.parent().addClass('two_questions_fix');
                 break;
             case 3:
@@ -235,7 +235,7 @@ $(document).ready(function () {
     // animate: middle to small, animate all moves right/left, switch places, animate new middle to big
     function SwitchQuestion() {
 
-        var small_q_width, small_q_height, small_q_padding_top, small_q_margin_right, normal_q_width, normal_q_height;
+        var small_q_width, small_q_height, small_q_padding_top, small_q_margin_right, normal_q_width, normal_q_height, temp_margin_left_two_q;
 
         if ($(window).width() < 1200) {
             small_q_width = '215px';
@@ -244,6 +244,8 @@ $(document).ready(function () {
             small_q_margin_right = '-=450px';
             normal_q_width = '300px';
             normal_q_height = '185px';
+            temp_margin_left_two_q = '454px';
+
 
         } else {
             small_q_width = '260px';
@@ -252,6 +254,8 @@ $(document).ready(function () {
             small_q_margin_right = '-=535';
             normal_q_width = '355px';
             normal_q_height = '230px';
+            temp_margin_left_two_q = '539px';
+
 
         }
         $current_question = $(this);
@@ -301,15 +305,7 @@ $(document).ready(function () {
                         // hide button
                         $($current_question.prev()).prev().children('div.answers').children('button.answer').toggleClass('hidden', 150);
                         // animate copied element entrance from the left
-                        $switch.toggle('slow', function () {
-                            $($switch.parent('div.questions')).children('div.question').css({
-                                'overflow': '',
-                                'padding': '',
-                                'margin-top': '',
-                                'margin-bottom': '',
-                                'opacity': ''
-                            });
-                        });
+                        $switch.toggle('slow');
                         // replace default toggle display attr to inline-block
                         if ($switch.is(':visible'))
                             $switch.css('display', 'inline-block');
@@ -329,16 +325,27 @@ $(document).ready(function () {
                         clearInterval(wait3);
                         // executed after element is complete:
                         // move all to right
-                        $current_question.parent('div.questions').children('div.question:nth-child(2)').animate({marginRight: small_q_margin_right}, 450
-                            , function () {
-                                // bigger middle question
-                                StyleQuestionNormal($current_question, true, small_q_width, small_q_height, normal_q_width, normal_q_height);
-                            });
+                        $current_question.parent('div.questions').children('div.question:nth-child(2)').animate({'margin-right': small_q_margin_right}, 450);
+                    }
+                }, 200);
+                var wait8 = setInterval(function () {
+                    if (!$('div.question').is(':animated')) {
+                        clearInterval(wait8);
+                        // executed after element is complete:
+                        // remove inline css leftovers and keep it on the right side
+                        $current_question.parent('div.questions').children('div.question:nth-child(2)').css({'margin-right': ''});
+                        $current_question.addClass('two_questions_fix_left');
+                        // bigger middle question
+                        StyleQuestionNormal($current_question, true, small_q_width, small_q_height, normal_q_width, normal_q_height);
                     }
                 }, 200);
             }
             // right question pressed
             else if ($(this).prev('div.question').length) {
+                $('div.question').removeClass('two_questions_fix_left');
+                // temporary css for animation
+                $current_question.prev().css('margin-left', temp_margin_left_two_q);
+                console.log($current_question.prev().css('margin-left'));
                 // animate middle to small
                 StyleQuestionSmall($(this).parent('div.questions').children('div.question:nth-child(1)'), true, small_q_width, small_q_height, small_q_padding_top);
                 // wait last animate to finish
@@ -347,11 +354,17 @@ $(document).ready(function () {
                         clearInterval(wait4);
                         // executed after element is complete:
                         // move all to left
-                        $current_question.parent('div.questions').children('div.question:nth-child(1)').animate({'margin-left': '-=450px'}, 450
-                            , function () {
-                                // bigger middle question
-                                StyleQuestionNormal($current_question, true, small_q_width, small_q_height, normal_q_width, normal_q_height);
-                            });
+                        $current_question.prev().animate({'margin-left': small_q_margin_right}, 450);
+                    }
+                }, 200);
+                var wait9 = setInterval(function () {
+                    if (!$('div.question').is(':animated')) {
+                        clearInterval(wait9);
+                        // executed after element is complete:
+                        // remove inline css leftovers and keep it on the right side
+                        $current_question.parent('div.questions').children('div.question:nth-child(2)').css({'margin-left': ''});
+                        // bigger middle question
+                        StyleQuestionNormal($current_question, true, small_q_width, small_q_height, normal_q_width, normal_q_height);
                     }
                 }, 200);
             }
