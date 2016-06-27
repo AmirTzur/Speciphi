@@ -57,9 +57,16 @@ $(document).ready(function () {
                 }
                 // display only 1 question
                 $current_question.siblings('div.question').css('display', 'none');
-                // select last displayed questions
+                // select last displayed questions # adjusted to new select box
                 $("select#questions_list").val($current_question.parent('div.questions').prop('id').substring('questions_'.length));
-                console.log($("select#questions_list").val($current_question.parent('div.questions').prop('id').substring('questions_'.length)));
+                $('ul#questions_listSelectBoxItOptions').children('li.selectboxit-option').each(function () {
+                    if ($(this).data('val') == $current_question.parent('div.questions').prop('id').substring('questions_'.length)) {
+                        $('li.selectboxit-option').removeClass('selectboxit-focus selectboxit-selected');
+                        $(this).addClass('selectboxit-focus selectboxit-selected');
+                        $('span#questions_listSelectBoxItText').val($(this).data('val'));
+                        $('span#questions_listSelectBoxItText').text($(this).text());
+                    }
+                });
                 // remove side question style
                 $('div.question').removeClass('side_question');
                 $('div.question').removeClass('side_question_animate');
@@ -120,7 +127,6 @@ $(document).ready(function () {
                         // update current question
                         $current_question = $('div#questions_' + pressed_subject_id).children('div.question').first();
                         StyleQuestions($current_question);
-                        UpdateDisplaySubject($current_question);
                     }
                     $('div.questions_desktop_container').removeClass('current_subject');
                     $('div#questions_desktop_container_' + $current_question.parent('div.questions').prop('id').substring('questions_'.length)).addClass('current_subject');
@@ -149,8 +155,6 @@ $(document).ready(function () {
             $current_question.parent('div.questions').children('div.question').css('display', 'inline-block');
             StyleQuestions($current_question);
 
-            // fill displayed subject content
-            UpdateDisplaySubject($current_question);
 
             // update number of answered questions (from mobile select box)
             $('select#questions_list').children('option').each(function () {
@@ -161,6 +165,8 @@ $(document).ready(function () {
             $('div.questions_desktop_container').removeClass('current_subject');
             $('div#questions_desktop_container_' + $current_question.parent('div.questions').prop('id').substring('questions_'.length)).addClass('current_subject');
 
+            // fill displayed subject content
+            UpdateDisplaySubject($current_question);
         }//end desktop screens
     }// end responsive query
 
@@ -602,24 +608,33 @@ $(document).ready(function () {
             }
         }
         $subject.text(inner_text);
+        $('ul#questions_listSelectBoxItOptions').children('li.selectboxit-option').each(function () {
+            if ($(this).data('val') == $subject.val()) {
+                // update select text
+                $('#questions_listSelectBoxItText').text(inner_text);
+                // update option text
+                var $child = $(this).children('a.selectboxit-option-anchor').children('span');
+                console.log($(this).children('a.selectboxit-option-anchor').text(inner_text).prepend($child));
+            }
+        });
     }
 
     // add space (or 2) when (1/X) (or X=1)
     function OptionsSpacesFix() {
-        $('select#questions_list').children('option').each(function () {
-            var options = $(this).text();
-            var answers_part = options.substring(0, 5);
-            var count_1s = (answers_part.match(/1/g) || []).length;
-            // add 1 space (default)
-            if (count_1s == 0) {
-                $(this).text(answers_part + String.fromCharCode(160) + $(this).attr('data-brand'));
-                // add 2 spaces
-            } else if (count_1s == 1) {
-                $(this).text(answers_part + String.fromCharCode(160) + String.fromCharCode(160) + $(this).attr('data-brand'));
-                // add 3 spaces
-            } else if (count_1s == 2) {
-                $(this).text(answers_part + String.fromCharCode(160) + String.fromCharCode(160) + String.fromCharCode(160) + $(this).attr('data-brand'));
-            }
-        });
+        // $('select#questions_list').children('option').each(function () {
+        //     var options = $(this).text();
+        //     var answers_part = options.substring(0, 5);
+        //     var count_1s = (answers_part.match(/1/g) || []).length;
+        //     // add 1 space (default)
+        //     if (count_1s == 0) {
+        //         $(this).text(answers_part + String.fromCharCode(160) + $(this).attr('data-brand'));
+        //         // add 2 spaces
+        //     } else if (count_1s == 1) {
+        //         $(this).text(answers_part + String.fromCharCode(160) + String.fromCharCode(160) + $(this).attr('data-brand'));
+        //         // add 3 spaces
+        //     } else if (count_1s == 2) {
+        //         $(this).text(answers_part + String.fromCharCode(160) + String.fromCharCode(160) + String.fromCharCode(160) + $(this).attr('data-brand'));
+        //     }
+        // });
     }
 });
