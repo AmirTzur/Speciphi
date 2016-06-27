@@ -1,0 +1,253 @@
+#process-header-wrapper{
+    background-color: white;
+}
+
+/* Header - Left Side */
+/* Logo */
+.process-header-logo{
+    width: 105px;
+    height: 39px;
+    background: url("../img/logo/Logo.svg") no-repeat;
+}
+/* Title */
+.process-header-title{
+
+}
+.page-header{
+    font-size: 20px;
+    font-family: "Bariol";
+    color: rgb(230, 89, 42);
+    font-weight: bold;
+    font-style: italic;
+    line-height: 1.2;
+    text-align: center;
+    border-bottom: none;
+}
+#page-desc{
+    font-size: 15px;
+    font-family: "Bariol";
+    /*color: rgba(38, 51, 46, 0.8);*/
+    line-height: 1.2;
+}
+
+/* Header - Right Side */
+/* Information Elements */
+#info-elements{
+
+}
+#info-elements button{
+    float: right;
+    display: inline-block;
+    width: 32px;
+    height: 50px;
+    padding: 0px;
+    position: relative;
+    top: 25px;
+    background-color: transparent;
+    border: none;
+}
+#info-elements svg{
+    width: 28px;
+    height: 28px;
+}
+#info-statistic svg{
+    position: relative;
+    left: -1px;
+}
+.info-notification{
+    position: relative;
+    left: 5px;
+    top: 1.5px;
+    z-index: 10;
+    border-radius: 5px;
+    background-color: #e6592a;
+}
+.info-notification:empty {
+    display: inline-block;
+    visibility: hidden;
+}
+#info-box{
+    display: none;
+    margin: 0 auto;
+    position: absolute;
+    right: 15px;
+    top: -15px;
+    z-index: 100;
+    height: 90px;
+    width: 220%;
+    background-color: #7ecad8;
+    /*#6ad874*/
+    /*border: solid 1px blue;*/
+    border-radius: 10px;
+}
+.box-text{
+    font-size: 14px;
+    font-family: "Bariol";
+    color: rgb(255, 255, 255);
+    font-style: italic;
+    line-height: 1.2;
+    text-align: left;
+    height: 90px;
+    padding: 0px 28px 2px 8px;
+    margin: 0;
+}
+#info-box button{
+    float: right;
+    display: inline-block;
+    top: -1px;
+    right: 9px;
+    height: 10px;
+    width: 10px;
+    margin-left: 10px;
+}
+#info-box svg{
+    float: right;
+    display: inline-block;
+    position: relative;
+    top: -57px;
+    right: -1px;
+    width: 24px;
+    height: 38px;
+}
+.info-type{
+    display: none;
+}
+#info-pagination{
+    display: inline-block;
+    font-size: 12px;
+    font-weight: bold;
+    position: relative;
+    left: 10px;
+    top: -1px;
+}
+#info-pagination button{
+    float: none!important;
+    margin: 0px 2px 0px 2px !important;
+    position: relative;
+    top: 0px !important;
+    right: 0px !important;
+    color: #000;
+    opacity: 0.25;
+}
+#info-pagination span{
+    color: #000;
+    opacity: 0.6;
+}
+#info-pagination button:hover{
+    opacity: 0.5;
+}
+/* Results Feature - Responsive */
+
+/* Extra small devices - 320px Design (phones, less than 480px) */
+@media (max-width: 767px) {
+    .process-header-logo{
+        display: block;
+    }
+    .process-header-title{
+        text-align: left;
+        margin-bottom: 12px;
+    }
+}
+
+/* Extra small devices - xxxxx Design (phones, less than 768 and greater than xxxxx) */
+@media (min-width: 370px) and (max-width: 479px) {
+    #info-box {
+        width: 226%;
+    }
+}
+@media (min-width: 480px) and (max-width: 767px) {
+    #info-box {
+        width: 290px;
+    }
+}
+@media (min-width: 480px) and (max-width: 767px) {
+
+}
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    .process-header-logo{
+        display: inline-block;
+        width: 181px;
+        height: 67px;
+        position: relative;
+        top: 26.5px;
+        float: left;
+    }
+    .process-header-title{
+        display: inline-block;
+        margin-bottom: 2px;
+        text-align: center;
+    }
+    .page-header{
+        display: block;
+        font-size: 30px;
+        margin: 0px;
+        padding: 0px;
+    }
+    #page-desc{
+        display: block;
+        width: 220px;
+        height: 72px;
+    }
+    #info-elements button{
+        width: 42px;
+        height: 60px;
+        position: relative;
+        top: 48px;
+    }
+    #info-elements svg{
+        width: 38px;
+        height: 38px;
+    }
+    .info-notification{
+        left: 9px;
+        top: 3px;
+    }
+    #info-box {
+        top: -15px;
+        width: 100%;
+        height: 135px;
+    }
+    .box-text{
+        height: 135px;
+    }
+    #info-box button{
+        float: right;
+        display: inline-block;
+        top: -1px;
+        right: 11px;
+        height: 10px;
+        width: 10px;
+        margin-left: 10px;
+    }
+    #info-box svg{
+        top: -62px;
+        width: 28px;
+        height: 44.5px;
+    }
+}
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    .process-header-logo{
+        display: inline-block;
+        width: 198px;
+        height: 74px;
+        position: relative;
+        top: 23px;
+    }
+    .page-header{
+        font-size: 45px;
+    }
+    #page-desc{
+        width: 320px;
+        height: 54px;
+        font-size: 15px;
+    }
+    #info-box {
+        width: 85%;
+    }
+}
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+}
