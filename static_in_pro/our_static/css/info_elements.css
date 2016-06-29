@@ -1,3 +1,7 @@
+body button{
+    outline: none;
+}
+
 #process-header-wrapper{
     background-color: white;
 }
@@ -99,6 +103,7 @@
     height: 10px;
     width: 10px;
     margin-left: 10px;
+    z-index: 200;
 }
 #info-box svg{
     float: right;
@@ -119,6 +124,7 @@
     position: relative;
     left: 10px;
     top: -1px;
+    z-index: 105;
 }
 #info-pagination button{
     float: none!important;
