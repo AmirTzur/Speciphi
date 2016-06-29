@@ -603,8 +603,30 @@ def results(request, product=None):
     pages['Focal'] = [False, "focalization"]
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [True, "results"]
+    # Get page Title and Description
+    page_title = 'Your results'
+    page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
+                'Donec in maximus augue. Quisque euismod euismod posuere. ' \
+                'Phasellus tempor.'
+    information_content = {
+        "statistic": [
+            "S1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+        "insight": [
+            "I1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "I2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "I3-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+        "objective": [
+            "O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
+    }
+
     context = {
         "pages": pages,
+        "product": product,
+        "page_title": page_title,
+        "page_desc": page_desc,
+        "information_content": information_content,
+
     }
     return render(request, "results.html", context)
 

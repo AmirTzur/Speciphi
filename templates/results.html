@@ -1,0 +1,20 @@
+{% extends 'djaroo_base.html' %}
+{% load staticfiles %}
+
+<title>
+    {% block head_title %} Results {{ block.super }}{% endblock %}
+</title>
+
+{% block content %}
+    <!-- Feature: information elements -->
+    {% include "info_elements.html" %}
+
+    <!-- Main Section -->
+    <!-- Feature: Specification -->
+    {% include "results_specs.html" %}
+    <!-- Feature: Results -->
+    {% include "results_main.html" %}
+
+    <!-- Scripts -->
+    {% include "results_js.html" %}
+{% endblock %}
