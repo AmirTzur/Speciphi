@@ -1,20 +1,51 @@
 {% extends 'djaroo_base.html' %}
 {% load staticfiles %}
 
-<title>
-    {% block head_title %} Results {{ block.super }}{% endblock %}
-</title>
+<head>
+    <title>
+        {% block head_title %} Results {{ block.super }}{% endblock %}
+    </title>
+    <!--  Stylesheet -->
+    <link href="{% static 'css/results_specs.css' %}" rel="stylesheet">
+</head>
 
 {% block content %}
+
     <!-- Feature: information elements -->
     {% include "info_elements.html" %}
 
     <!-- Main Section -->
-    <!-- Feature: Specification -->
-    {% include "results_specs.html" %}
-    <!-- Feature: Results -->
-    {% include "results_main.html" %}
+    <!-- Container: Results Headers Section (my specs, best match, etc.) -->
+    <div class="container-fluid">
+        <!-- Raw: Headers -->
+        <div id="" class="row">
+            <!-- Column: My Specs -->
+            <div class="hidden-xs col-sm-4">
+
+            </div>
+            <!-- Column: Results Headers -->
+            <div class="col-xs-12 col-sm-8">
+
+            </div>
+        </div>
+    </div>
+    <!-- Container: Results Products and Filtering Section -->
+    <div class="container-fluid">
+        <!-- Raw: Main Results -->
+        <div id="" class="row">
+            <!-- Column: Filters -->
+            <div class="hidden-xs col-sm-4">
+                <!-- Feature: Specification -->
+                {% include "results_specs.html" %}
+            </div>
+            <!-- Column: Products -->
+            <div class="col-xs-12 col-sm-8">
+
+            </div>
+        </div>
+    </div>
 
     <!-- Scripts -->
     {% include "results_js.html" %}
+
 {% endblock %}
