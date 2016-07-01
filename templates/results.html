@@ -2,11 +2,14 @@
 {% load staticfiles %}
 
 <head>
+    <!--  Page Title -->
     <title>
         {% block head_title %} Results {{ block.super }}{% endblock %}
     </title>
     <!--  Stylesheet -->
-    <link href="{% static 'css/results_specs.css' %}" rel="stylesheet">
+    {% block stylesheets %}
+        <link href="{% static 'css/results.css' %}" rel="stylesheet">
+    {% endblock %}
 </head>
 
 {% block content %}
@@ -16,16 +19,27 @@
 
     <!-- Main Section -->
     <!-- Container: Results Headers Section (my specs, best match, etc.) -->
-    <div class="container-fluid">
+    <div id="headers-wrapper" class="container-fluid">
         <!-- Raw: Headers -->
-        <div id="" class="row">
+        <div class="row">
             <!-- Column: My Specs -->
             <div class="hidden-xs col-sm-4">
 
             </div>
             <!-- Column: Results Headers -->
             <div class="col-xs-12 col-sm-8">
-
+                <button>
+                    <span></span>
+                    <i class="fa fa-line-chart" aria-hidden="true"></i>
+                </button>
+                <button>
+                    <span></span>
+                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                </button>
+                <button>
+                    <span></span>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </button>
             </div>
         </div>
     </div>
