@@ -1,4 +1,37 @@
 #headers-wrapper{
     background-color: #e5b34d;
+    font-size: 18px;
+    font-family: "Bariol";
+    color: rgb(60, 65, 68);
+    font-style: italic;
+    text-align: center;
+}
+#headers-wrapper .row{
+    padding: 0px 15px 5px 15px;
     height: 85px;
 }
+#results-headers{
+    padding: 0px;
+}
+/* Results headers */
+#results-headers button{
+    border: none;
+    background-color: inherit;
+    line-height: 1.2;
+    width: 80px;
+    height: 85px;
+    padding: 0px;
+    margin: 0px 5px 0px 5px;
+}
+#results-headers button:hover{
+    color: white;
+}
+#results-headers button span{
+    display: block;
+    margin-bottom: 5px;
+}
+#results-headers button i{
+    font-size: 26px;
+}
+
+
