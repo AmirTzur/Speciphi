@@ -28,16 +28,16 @@
             </div>
             <!-- Column: Results Headers -->
             <div id="results-headers" class="col-xs-12 col-sm-8 center-block">
-                <button>
-                    <span>Category Favorable</span>
+                <button id="ind1">
+                    <span>{{ final_offers.1.sort_indicator }}</span>
                     <i class="fa fa-line-chart" aria-hidden="true"></i>
                 </button>
-                <button>
-                    <span>Best Match</span>
+                <button id="ind0">
+                    <span>{{ final_offers.0.sort_indicator }}</span>
                     <i class="fa fa-star" aria-hidden="true"></i>
                 </button>
-                <button>
-                    <span>Greatest Mobility</span>
+                <button id="ind2">
+                    <span>{{ final_offers.2.sort_indicator }}</span>
                     <i class="fa fa-thumbs-up" aria-hidden="true"></i>
                 </button>
             </div>
@@ -53,8 +53,30 @@
                 {% include "results_specs.html" %}
             </div>
             <!-- Column: Products -->
-            <div class="col-xs-12 col-sm-8">
+            <div id="results-section" class="col-xs-offset-2 col-xs-8 col-sm-8">
+                {% for deal in final_offers %}
+                    <div id="{{ deal.sort_indicator }}" class="results-deal">
+                        <a href="{{ deal.offers.0.deal_url }}" target="_blank" class="deal-link">
+                            <span>{{ deal.brand }}&nbsp;{{ deal.model }}</span>
+                            <img src="{{ deal.image_url }}">
+                        </a>
+                        <table class="table table-hover">
+                            <tbody>
+                                {% for key, val in deal.features.items %}
+                                    <tr>
+                                        <td>{{ key }}</td>
+                                        {% if key == 'Storage' %}
+                                            <td>{{ val.0 }}&nbsp;SSD<br>{{ val.1 }}&nbsp;HDD</td>
+                                        {% else %}
+                                            <td>{{ val }}</td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
 
+                {% endfor %}
             </div>
         </div>
     </div>

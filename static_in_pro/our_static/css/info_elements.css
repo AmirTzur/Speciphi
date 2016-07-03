@@ -166,9 +166,7 @@ body button{
         width: 290px;
     }
 }
-@media (min-width: 480px) and (max-width: 767px) {
 
-}
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
     .process-header-logo{
@@ -232,6 +230,7 @@ body button{
         height: 44.5px;
     }
 }
+
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
     .process-header-logo{
@@ -253,6 +252,7 @@ body button{
         width: 85%;
     }
 }
+
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
 

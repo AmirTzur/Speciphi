@@ -7,6 +7,7 @@ from django.db import connection, Error
 from consult.forms import AffiliationsForm, UsesForm
 from django.http import HttpResponse
 from consult.models import Levelofuse
+from collections import OrderedDict
 import urllib.request
 import json
 
@@ -603,11 +604,12 @@ def results(request, product=None):
     pages['Focal'] = [False, "focalization"]
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [True, "results"]
-    # Get page Title and Description
+    # Title and description
     page_title = 'Your results'
     page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
                 'Donec in maximus augue. Quisque euismod euismod posuere. ' \
                 'Phasellus tempor.'
+    # Information elements content
     information_content = {
         "statistic": [
             "S1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
@@ -619,14 +621,62 @@ def results(request, product=None):
             "O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
     }
-
+    # Final Results
+    # Features keys: Screen Size, Processor, Memory, Storage [ssd,hdd], GPU, Screen Resolution, Touch Screen,
+    #   Weight, Dimensions (WxHxD), Battery [chemistry,cells,wh], Color, Operating System, Model (manufacturer model)
+    final_offers = [
+        {'sort_indicator': 'Best Match', 'brand': 'Apple', 'model': 'Macbook Pro (Early 2015)',
+         'image_url': 'http://ecx.images-amazon.com/images/I/41lmJ1hPMnL._SL160_.jpg',
+         'offers': [{'deal_id': 111,
+                     'deal_url': 'http://www.amazon.com/gp/offer-listing/B00GZB8D0M%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                     'vendor_name': 'Amazon',
+                     'price': 950}, {'deal_id': 222, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1000}],
+         'features': OrderedDict([('Screen Size', '13.3"'), ('Processor', 'Intel Core i5-5600U'), ('Memory', '16GB'), ('Storage', ['256GB', '0GB']),
+                                  ('GPU', 'NVIDIA GeForce GTX 960M'), ('Screen Resolution', '3200 x 1800'), ('Touch Screen', 'No'),
+                                  ('Weight', '4 lb'), ('Dimensions (WxHxD)', '12.2x0.9x8"'), ('Battery', 'Li-Ion 4 cells 72Wh'), ('Color', 'Black'),
+                                  ('Operating System', 'Windows'), ('Model', 'MLLL/AH')]),
+         },
+        {'sort_indicator': 'Category Favorable', 'brand': 'Lenovo', 'model': 'ThinkPad P40 Yoga',
+         'image_url': 'http://ecx.images-amazon.com/images/I/41238W8tcjL._SL160_.jpg',
+         'offers': [{'deal_id': 333,
+                     'deal_url': 'http://www.amazon.com/gp/offer-listing/B00VQP3DNY%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                     'vendor_name': 'Amazon',
+                     'price': 1050}, {'deal_id': 444, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1100}],
+         'features': OrderedDict([('Screen Size', '14"'), ('Processor', 'Intel Core i7-4847HQ'), ('Memory', '8GB'), ('Storage', ['0GB', '1000GB']),
+                                  ('GPU', 'Intel HD Graphics 5500'), ('Screen Resolution', '1920 x 1080'), ('Touch Screen', 'Yes'),
+                                  ('Weight', '2.87 lb'), ('Dimensions (WxHxD)', '14x0.66x9.27"'), ('Battery', 'Li-Polymer 6 cells 56Wh'), ('Color', 'Black'),
+                                  ('Operating System', 'Windows'), ('Model', 'Yogab456')]),
+         },
+        {'sort_indicator': 'Greatest Mobility', 'brand': 'Dell', 'model': 'XPS 15',
+         'image_url': 'http://ecx.images-amazon.com/images/I/218dheiyUrL._SL160_.jpg',
+         'offers': [{'deal_id': 555,
+                     'deal_url': 'http://www.amazon.com/gp/offer-listing/B00SQG3MQE%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                     'vendor_name': 'Amazon',
+                     'price': 1150}, {'deal_id': 666, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1200}],
+         'features': OrderedDict([('Screen Size', '15.6"'), ('Processor', 'Intel Core i3-3200F'), ('Memory', '8GB'), ('Storage', ['256GB', '1000GB']),
+                                  ('GPU', 'NVIDIA Quadro M1000M'), ('Screen Resolution', '1920 x 1080'), ('Touch Screen', 'No'),
+                                  ('Weight', '6 lb'), ('Dimensions (WxHxD)', '12.2x1x8"'), ('Battery', 'Li-Ion 3 cells 44Wh'), ('Color', 'Black'),
+                                  ('Operating System', 'Windows'), ('Model', 'XPS13cc')]),
+         },
+        {'sort_indicator': 'Cost Effective', 'brand': 'Asus', 'model': 'Zenbook 133X',
+         'image_url': 'http://ecx.images-amazon.com/images/I/41-6oCGJqwL._SL160_.jpg',
+         'offers': [{'deal_id': 777,
+                     'deal_url': 'http://www.amazon.com/gp/offer-listing/B01BLU6ERK%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                     'vendor_name': 'Amazon',
+                     'price': 1250}, {'deal_id': 888, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1300}],
+         'features': OrderedDict([('Screen Size', '17"'), ('Processor', 'Intel Core i5-5600U'), ('Memory', '8GB'), ('Storage', ['256GB', '0GB']),
+                                  ('GPU', 'NVIDIA GeForce GTX 960M'), ('Screen Resolution', '1920 x 1080'), ('Touch Screen', 'No'),
+                                  ('Weight', '4.25 lb'), ('Dimensions (WxHxD)', '11x1.2x10"'), ('Battery', 'Li-Ion 4 cells 72Wh'), ('Color', 'Black'),
+                                  ('Operating System', 'Windows'), ('Model', 'Z3003U')]),
+         },
+    ]
     context = {
         "pages": pages,
         "product": product,
         "page_title": page_title,
         "page_desc": page_desc,
         "information_content": information_content,
-
+        "final_offers": final_offers[0:3],
     }
     return render(request, "results.html", context)
 

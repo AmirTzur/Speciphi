@@ -13,6 +13,7 @@
 #results-headers{
     padding: 0px;
 }
+
 /* Results headers */
 #results-headers button{
     border: none;
@@ -21,9 +22,9 @@
     width: 80px;
     height: 85px;
     padding: 0px;
-    margin: 0px 5px 0px 5px;
+    margin: 0% 1% 0% 1%;
 }
-#results-headers button:hover{
+#results-headers button:hover, #results-headers button:focus{
     color: white;
 }
 #results-headers button span{
@@ -34,4 +35,62 @@
     font-size: 26px;
 }
 
+/* Results Deals */
+#results-section .results-deal{
+    display: none;
+}
+/* Deal Header */
+.results-deal .deal-link span{
+    font-size: 18px;
+    display: block;
+}
+.results-deal .deal-link img{
+    width: 160px;
+}
+/* Deal Specification */
+.results-deal table{
+    font-size: 16px;
+    font-family: "Bariol";
+    /*color: rgb(60, 65, 68);*/
+}
+.results-deal table td:nth-child(1){
+    padding: 20px 0px 20px 0px;
+}
+.results-deal table td:nth-child(2){
+    padding: 20px 0px 20px 0px;
+}
 
+
+
+/* Results Feature - Responsive */
+
+/* Extra small devices - 320px Design (phones, less than 480px) */
+@media (max-width: 767px) {
+    .process-header-logo{
+        display: block;
+    }
+    .process-header-title{
+        text-align: left;
+        margin-bottom: 12px;
+    }
+}
+
+/* Extra small devices - xxxxx Design (phones, less than 768 and greater than xxxxx) */
+@media (min-width: 480px) and (max-width: 767px) {
+
+}
+
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+
+}
+
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+
+}
+
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+}
