@@ -23,8 +23,8 @@
         <!-- Raw: Headers -->
         <div class="row">
             <!-- Column: My Specs -->
-            <div class="hidden-xs col-sm-4">
-
+            <div class="hidden-xs col-sm-offset-1 col-sm-2" style="background-color: blue">
+                <span>specs</span>
             </div>
             <!-- Column: Results Headers -->
             <div id="results-headers" class="col-xs-12 col-sm-8 center-block">
@@ -44,16 +44,17 @@
         </div>
     </div>
     <!-- Container: Results Products and Filtering Section -->
-    <div class="container-fluid">
+    <div id="results-wrapper" class="container-fluid">
         <!-- Raw: Main Results -->
         <div id="" class="row">
             <!-- Column: Filters -->
-            <div class="hidden-xs col-sm-4">
+            <div class="hidden-xs col-sm-offset-1 col-sm-2" style="background-color: blue">
+                <span>specs</span>
                 <!-- Feature: Specification -->
                 {% include "results_specs.html" %}
             </div>
             <!-- Column: Products -->
-            <div id="results-section" class="col-xs-offset-2 col-xs-8 col-sm-8">
+            <div id="results-section" class="col-xs-offset-2 col-xs-8 col-sm-offset-0 col-sm-8">
                 {% for deal in final_offers %}
                     <div id="{{ deal.sort_indicator }}" class="results-deal">
                         <a href="{{ deal.offers.0.deal_url }}" target="_blank" class="deal-link">
