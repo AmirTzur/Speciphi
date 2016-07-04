@@ -23,8 +23,11 @@
         <!-- Raw: Headers -->
         <div class="row">
             <!-- Column: My Specs -->
-            <div class="hidden-xs col-sm-offset-1 col-sm-2" style="background-color: blue">
-                <span>specs</span>
+            <div id="my-specs" class="hidden-xs col-sm-3">
+                <button>
+                    <span>my specs</span>
+                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                </button>
             </div>
             <!-- Column: Results Headers -->
             <div id="results-headers" class="col-xs-12 col-sm-8 center-block">
@@ -48,7 +51,7 @@
         <!-- Raw: Main Results -->
         <div id="" class="row">
             <!-- Column: Filters -->
-            <div class="hidden-xs col-sm-offset-1 col-sm-2" style="background-color: blue">
+            <div class="hidden-xs col-sm-3" style="background-color: #e5dfd3">
                 <span>specs</span>
                 <!-- Feature: Specification -->
                 {% include "results_specs.html" %}
