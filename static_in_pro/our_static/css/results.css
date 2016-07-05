@@ -31,6 +31,7 @@
 #results-headers button i{
     font-size: 26px;
 }
+/* My Specs headers */
 #my-specs-btn{
     position: relative;
     top: 55px;
@@ -54,6 +55,60 @@
     position: relative;
     top: 1px;
     font-size: 26px;
+}
+/* My specs window */
+#my-specs-window{
+    display: none;
+    position: absolute;
+    top: 54px;
+    left: 110%;
+    z-index: 300;
+    width: 258px;
+    background-color: #e5ddcc;
+    border-radius: 10px;
+    padding: 5px;
+    font-family: "Bariol";
+    text-align: center;
+    border-color: rgba(154, 153, 145, 0.9);
+}
+#specs-close{
+    float: right;
+    display: inline-block;
+    position: relative;
+    top: -8px;
+    right: 8px;
+    height: 10px;
+    font-size: 135%;
+    width: 10px;
+    margin-left: 5px;
+    z-index: 310;
+}
+#my-specs-header{
+    font-size: 18px;
+    font-family: "Bariol";
+    color: rgb(229, 179, 77);
+    font-weight: bold;
+    line-height: 2.25;
+}
+#share-icons-container{
+
+}
+#share-icons-container button{
+    display: inline-block;
+    background-color: transparent;
+    border: none;
+}
+#share-icons-container button i{
+    font-size: 18px;
+    color: #3c4144;
+}
+#recommended-spec{
+    font-size: 14px;
+    margin: 5px 0px 10px 0px;
+    /*background-color: white;*/
+}
+#recommended-spec td{
+    border-color: white;
 }
 /* Results Deals */
 #results-wrapper .row{
@@ -89,7 +144,7 @@
 
 /* Extra small devices - 320px Design (phones, less than 480px) */
 @media (max-width: 767px) {
-    #results-headers button:hover, #results-headers button:focus{
+    #results-headers button:focus{
         color: white;
     }
 }
@@ -100,6 +155,7 @@
         padding: 5px 15px 5px 0px;
         height: 100px;
     }
+    /* My specs header */
     #my-specs{
         padding-left: 0px;
         padding-right: 0px;
@@ -107,6 +163,9 @@
     #results-headers button{
         width: 130px;
         margin-right: 3%;
+    }
+    #results-headers button:hover{
+        cursor: default;
     }
     #results-headers button span{
         width: 80px;

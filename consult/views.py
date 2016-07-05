@@ -670,6 +670,10 @@ def results(request, product=None):
                                   ('Operating System', 'Windows'), ('Model', 'Z3003U')]),
          },
     ]
+    recommended_spec = OrderedDict([('Screen Size', '13-15"'), ('Processor', 'Intel Core i5-5600U'), ('Memory', '8GB'),
+                                    ('Storage', ['8GB SSD', '1000GB HDD']), ('GPU', 'Intel HD Graphics 5500'),
+                                    ('Screen Resolution', '1920 x 1080'), ('Touch Screen', 'Yes'), ('Weight', '2.5-3 lb'),
+                                    ('Battery', 'Li-Polymer 6 cells 56Wh'), ('Operating System', ['Windows /', 'Chromebook'])])
     context = {
         "pages": pages,
         "product": product,
@@ -677,6 +681,7 @@ def results(request, product=None):
         "page_desc": page_desc,
         "information_content": information_content,
         "final_offers": final_offers[0:3],
+        "recommended_spec": recommended_spec,
     }
     return render(request, "results.html", context)
 

@@ -28,6 +28,38 @@
                     <span>my specs</span>
                     <i class="fa fa-file-text-o" aria-hidden="true"></i>
                 </button>
+                <div id="my-specs-window" class="well">
+                    <button id="specs-close" type="button" class="close">&times;</button>
+                    <span id="my-specs-header">Recommended Specification</span>
+                    <div id="share-icons-container">
+                        <button id="share-facebook">
+                            <i class="fa fa-facebook-square" aria-hidden="true"></i>
+                        </button>
+                        <button id="share-twitter">
+                            <i class="fa fa-twitter-square" aria-hidden="true"></i>
+                        </button>
+                        <button id="share-email">
+                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        </button>
+                        <button id="share-pdf">
+                            <i class="fa fa-print" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <table id="recommended-spec" class="table ">
+                        <tbody>
+                        {% for key, val in recommended_spec.items %}
+                            <tr>
+                                <td>{{ key }}</td>
+                                {% if key == 'Storage' or key == 'Operating System' %}
+                                    <td>{{ val.0 }}<br>{{ val.1 }}</td>
+                                {% else %}
+                                    <td>{{ val }}</td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <!-- Column: Results Headers -->
             <div id="results-headers" class="col-xs-12 col-sm-8 center-block">
