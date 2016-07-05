@@ -33,10 +33,12 @@
 }
 /* My Specs headers */
 #my-specs-btn{
+    float: left;
     position: relative;
     top: 55px;
     background-color: #3c4144;
     width: 100%;
+    max-width: 200px;
     height: 40px;
     border: none;
     border-top-right-radius: 10px;
