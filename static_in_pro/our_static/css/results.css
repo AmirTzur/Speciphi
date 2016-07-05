@@ -240,7 +240,8 @@
         font-size: 12px;
     }
     .dropdown-menu{
-        min-width: 85%!important;
+        min-width: 80%!important;
+        max-width: 99%;
     }
 
     /* Deal Specification */
