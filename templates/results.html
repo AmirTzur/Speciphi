@@ -96,6 +96,16 @@
                             <span>{{ deal.brand }}&nbsp;{{ deal.model }}</span>
                             <img src="{{ deal.image_url }}">
                         </a>
+                        <div id="select-price" class="btn-group dropdown">
+                            <a class="btn btn-primary" href="#"><i class="fa fa-usd" aria-hidden="true"></i> 1050 on Amazon</a>
+                            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+                                <span class="fa fa-caret-down" title="Toggle dropdown menu"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#"><i class="fa fa-usd" aria-hidden="true"></i> 800 on eBay</a></li>
+{#                                <li class="divider"></li>#}
+                            </ul>
+                        </div>
                         <table class="table table-hover">
                             <tbody>
                                 {% for key, val in deal.features.items %}
