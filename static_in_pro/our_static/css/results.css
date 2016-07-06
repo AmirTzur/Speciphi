@@ -149,6 +149,8 @@
     position: relative;
     left: -50%;
     width: 100%;
+    height: 30px;
+    border-radius: 5px;
     color: white;
     background-color: #337ab7;
 }
@@ -156,6 +158,8 @@
     color: white;
     font-weight: normal;
     font-size: 14px;
+    position: relative;
+    left: -7px;
 }
 #select-price ul li a:hover{
     color: #f3ede1 !important;
@@ -173,7 +177,9 @@
 .results-deal table td:nth-child(2){
     padding: 20px 0px 20px 0px;
 }
-
+.results-deal table tr:first-child td{
+    border-top: none!important;
+}
 
 
 /* Results Feature - Responsive */
