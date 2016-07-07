@@ -115,21 +115,12 @@
                 </span>
                 <ul class="dropdown-menu pull-center" role="menu" aria-labelledby="menu1">
                     <li><a href="#" class="text-align-center">About Us</a></li>
-                    <li><a href="#" class="text-align-center">Contact Us</a></li>
+                    <li><a href="{% url 'contact' %}" class="text-align-center">Contact Us</a></li>
                     <li><a href="#" class="text-align-center">FAQ</a></li>
                     <li><a href="#" class="text-align-center">Personal Zone</a>
                         <!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="#">HTML</a></li>-->
                     </li>
                     <li role="presentation" class="divider"></li>
-                    {#                    {% for page in pages %}#}
-                    {#                        <li><a#}
-                    {#                                {% if page == 'Home' %}#}
-                    {#                                    href="{% url pages|keylist2:page %}"#}
-                    {#                                {% else %}#}
-                    {#                                    href="{% url pages|keylist2:page product %}"#}
-                    {#                                {% endif %}#}
-                    {#                                    class="text-align-center">{{ page }}</a></li>#}
-                    {#                    {% endfor %}#}
                 </ul>
             </div>
             {#right-side-nav#}

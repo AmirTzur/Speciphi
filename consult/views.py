@@ -1,10 +1,12 @@
 import time
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from collections import OrderedDict
 from django.db import connection, Error
-
+from django.template.loader import get_template
+from django.core.mail import EmailMessage
+from django.template import Context
 from apis.utils import get_spec_val, find_nth
-from consult.forms import AffiliationsForm, UsesForm
+from consult.forms import AffiliationsForm, UsesForm, ContactForm
 from django.http import HttpResponse
 from consult.models import Levelofuse
 import urllib.request
@@ -494,6 +496,42 @@ def results(request, product=None):
         "pages": pages,
     }
     return render(request, "results.html", context)
+
+
+def contact(request):
+    form_class = ContactForm
+
+    # handle form submission
+    if request.method == 'POST':
+        form = form_class(data=request.POST)
+        if form.is_valid():
+            contact_name = request.POST.get('name', '')
+            contact_email = request.POST.get('email', '')
+            contact_phone = request.POST.get('phone', '')
+            form_content = request.POST.get('message', '')
+
+            # Email the profile with the contact information
+            template = get_template('contact_template.txt')
+            information = Context({
+                'contact_name': contact_name,
+                'contact_email': contact_email,
+                'contact_phone': contact_phone,
+                'form_content': form_content,
+            })
+            content = template.render(information)
+            email = EmailMessage(
+                "New contact form submission",
+                content,
+                "Djaroo Website", ['eladdan88@gmail.com', ],
+                headers={'Reply-To': contact_email}
+            )
+            email.send()
+            return redirect('contact')
+
+    context = {
+        "form": form_class,
+    }
+    return render(request, 'contact.html', context)
 
 
 def success_close(request):

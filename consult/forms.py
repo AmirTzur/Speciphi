@@ -26,3 +26,20 @@ class UsesForm(forms.Form):
                                                                                        'name': use['Uses_name'],
                                                                                        'value': use['value'],
                                                                                    }))
+
+
+class ContactForm(forms.Form):
+    name = forms.CharField(required=True)
+    email = forms.EmailField(required=False)
+    phone = forms.RegexField(required=False, regex=r'^\+?1?\d{9,15}$',
+                             error_message=(
+                                 "Phone number must be entered in the format: '+972555555', " +
+                                 "Up to 15 digits allowed."))
+    message = forms.CharField(required=True, widget=forms.Textarea)
+
+    def __init__(self, *args, **kwargs):
+        super(ContactForm, self).__init__(*args, **kwargs)
+        self.fields['name'].label = "Your name:"
+        self.fields['email'].label = "Email address:"
+        self.fields['phone'].label = "Phone number:"
+        self.fields['message'].label = "Message:"
