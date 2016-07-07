@@ -41,11 +41,14 @@
     <form class="login" method="POST" action="{% url 'account_login' %}">
         {% csrf_token %}
         {{ form.non_field_errors }}
-
+        {{ form.login.errors }}
         <input id="id_login" class="login-input" maxlength="30" name="login" placeholder="User name"
-               type="text"/>{{ form.login.errors }}<br>
+               type="text"/>
+        <br>
+        {{ form.password.errors }}
         <input id="id_password" class="login-input" name="password" placeholder="Password"
-               type="password"/>{{ form.password.errors }}<br>
+               type="password"/>
+        <br>
 
         <div class="remember-forgot-section" style="width: 85%; margin-top: 0px">
             <input id="id_remember" name="remember" type="checkbox"/>

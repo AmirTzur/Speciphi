@@ -499,18 +499,19 @@ def results(request, product=None):
 
 
 def contact(request):
-    form_class = ContactForm
-
+    # form_class = ContactForm
+    form = ContactForm
     # handle form submission
     if request.method == 'POST':
-        form = form_class(data=request.POST)
+        # form = form_class(data=request.POST)
+        form = ContactForm(data=request.POST)
         if form.is_valid():
             contact_name = request.POST.get('name', '')
             contact_email = request.POST.get('email', '')
             contact_phone = request.POST.get('phone', '')
             form_content = request.POST.get('message', '')
 
-            # Email the profile with the contact information
+            # Email the contact information
             template = get_template('contact_template.txt')
             information = Context({
                 'contact_name': contact_name,
@@ -518,10 +519,10 @@ def contact(request):
                 'contact_phone': contact_phone,
                 'form_content': form_content,
             })
-            content = template.render(information)
+            email_content = template.render(information)
             email = EmailMessage(
                 "New contact form submission",
-                content,
+                email_content,
                 "Djaroo Website", ['eladdan88@gmail.com', ],
                 headers={'Reply-To': contact_email}
             )
@@ -529,7 +530,7 @@ def contact(request):
             return redirect('contact')
 
     context = {
-        "form": form_class,
+        "form": form,
     }
     return render(request, 'contact.html', context)
 
