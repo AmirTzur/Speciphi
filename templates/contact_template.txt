@@ -4,8 +4,5 @@ Contact Name:
 Contact Email:
 {{ contact_email }}
 
-Contact Phone:
-{{ contact_phone }}
-
 Content:
 {{ form_content|safe|striptags }}

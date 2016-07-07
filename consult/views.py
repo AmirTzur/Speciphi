@@ -508,7 +508,6 @@ def contact(request):
         if form.is_valid():
             contact_name = request.POST.get('name', '')
             contact_email = request.POST.get('email', '')
-            contact_phone = request.POST.get('phone', '')
             form_content = request.POST.get('message', '')
 
             # Email the contact information
@@ -516,7 +515,6 @@ def contact(request):
             information = Context({
                 'contact_name': contact_name,
                 'contact_email': contact_email,
-                'contact_phone': contact_phone,
                 'form_content': form_content,
             })
             email_content = template.render(information)
