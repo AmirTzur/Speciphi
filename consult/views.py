@@ -525,7 +525,8 @@ def contact(request):
                 headers={'Reply-To': contact_email}
             )
             email.send()
-            return redirect('contact')
+            # return redirect('contact')
+            return render(request, 'contact.html', {"success": True, "contact_name": contact_name})
 
     context = {
         "form": form,
