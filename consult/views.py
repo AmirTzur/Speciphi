@@ -1,11 +1,9 @@
-import time
 from django.shortcuts import render, redirect
 from collections import OrderedDict
 from django.db import connection, Error
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
 from django.template import Context
-from apis.utils import get_spec_val, find_nth
 from consult.forms import AffiliationsForm, UsesForm, ContactForm
 from django.http import HttpResponse
 from consult.models import Levelofuse
@@ -143,7 +141,7 @@ def affiliation(request, product=None):
                     a['form_input'] = str(f)
         # Get deals data for results feature and create dictionary of deals
         # for each results category: {sort_indicator: brand, model, image_url,
-        #                                             offers[{deal_id, deal_url, vendor_name, price}, {}, ]}
+        # offers[{deal_id, deal_url, vendor_name, price}, {}, ]}
         offers = [
             {'sort_indicator': 'Best Match', 'brand': 'Apple', 'model': 'Macbook Pro',
              'image_url': 'http://ecx.images-amazon.com/images/I/41lmJ1hPMnL._SL160_.jpg',
@@ -182,6 +180,19 @@ def affiliation(request, product=None):
              },
         ]
         total_results = 1435
+        # Get page Title and Description
+        page_title = 'Choose your type'
+        page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
+                    'Donec in maximus augue. Quisque euismod euismod posuere. ' \
+                    'Phasellus tempor.'
+        information_content = {
+            "statistic": ["S1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+            "insight": ["I1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                        "I2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                        "I3-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+            "objective": ["O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                          "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
+        }
         context.update({
             "Product_id": Product_id,
             "affiliationsLength": len(affiliations),
@@ -189,6 +200,9 @@ def affiliation(request, product=None):
             "ConsultationProcess_id": ConsultationProcess_id[0],
             "offers": offers[0:3],
             "total_results": total_results,
+            "page_title": page_title,
+            "page_desc": page_desc,
+            "information_content": information_content,
         })
     return render(request, "affiliation.html", context)
 
@@ -308,10 +322,29 @@ def application(request, product=None):
              },
         ]
         total_results = 1435
+        # Get page Title and Description
+        page_title = 'Choose your uses'
+        page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
+                    'Donec in maximus augue. Quisque euismod euismod posuere. ' \
+                    'Phasellus tempor.'
+        information_content = {
+            "statistic": [
+                "S1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+            "insight": [
+                "I1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                "I2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                "I3-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+            "objective": [
+                "O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
+        }
         context.update({
             "template_uses": template_uses,
             "offers": offers[0:3],
             "total_results": total_results,
+            "page_title": page_title,
+            "page_desc": page_desc,
+            "information_content": information_content,
         })
 
     return render(request, "application.html", context)
@@ -325,9 +358,68 @@ def focalization(request, product=None):
     pages['Focal'] = [True, "focalization"]
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [False, "results"]
+    offers = [
+        {'sort_indicator': 'Best Match', 'brand': 'Apple', 'model': 'Macbook Pro',
+         'image_url': 'http://ecx.images-amazon.com/images/I/41lmJ1hPMnL._SL160_.jpg',
+         'offers': [{'deal_id': 111,
+                     'deal_url': 'http://www.amazon.com/gp/offer-listing/B00GZB8D0M%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                     'vendor_name': 'Amazon',
+                     'price': 950}, {'deal_id': 222, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1000}]
+         },
+        {'sort_indicator': 'Most Purchased', 'brand': 'Lenovo', 'model': 'Yoga 3',
+         'image_url': 'http://ecx.images-amazon.com/images/I/41238W8tcjL._SL160_.jpg',
+         'offers': [{'deal_id': 333,
+                     'deal_url': 'http://www.amazon.com/gp/offer-listing/B00VQP3DNY%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                     'vendor_name': 'Amazon',
+                     'price': 1050}, {'deal_id': 444, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1100}]
+         },
+        {'sort_indicator': 'Type Popular', 'brand': 'Dell', 'model': 'XPS',
+         'image_url': 'http://ecx.images-amazon.com/images/I/218dheiyUrL._SL160_.jpg',
+         'offers': [{'deal_id': 555,
+                     'deal_url': 'http://www.amazon.com/gp/offer-listing/B00SQG3MQE%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                     'vendor_name': 'Amazon',
+                     'price': 1150}, {'deal_id': 666, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1200}]
+         },
+        {'sort_indicator': 'Cost Effective', 'brand': 'Asus', 'model': 'Zenbook 133X',
+         'image_url': 'http://ecx.images-amazon.com/images/I/41-6oCGJqwL._SL160_.jpg',
+         'offers': [{'deal_id': 777,
+                     'deal_url': 'http://www.amazon.com/gp/offer-listing/B01BLU6ERK%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                     'vendor_name': 'Amazon',
+                     'price': 1250}, {'deal_id': 888, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1300}]
+         },
+        {'sort_indicator': 'Stylish', 'brand': 'Sony', 'model': 'Bomber 304',
+         'image_url': 'http://ecx.images-amazon.com/images/I/41sgEA0JL-L._SL160_.jpg',
+         'offers': [{'deal_id': 999,
+                     'deal_url': 'http://www.amazon.com/gp/offer-listing/B018AX3YGU%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                     'vendor_name': 'Amazon',
+                     'price': 1350}, {'deal_id': 121, 'deal_url': 'xxx', 'vendor_name': 'eBay', 'price': 1400}]
+         },
+    ]
+    total_results = 1435
+    # Get page Title and Description
+    page_title = 'Choose your focal'
+    page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
+                'Donec in maximus augue. Quisque euismod euismod posuere. ' \
+                'Phasellus tempor.'
+    information_content = {
+        "statistic": [
+            "S1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+        "insight": [
+            "I1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "I2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "I3-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+        "objective": [
+            "O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
+    }
     context = {
         "pages": pages,
+        "offers": offers[0:3],
+        "total_results": total_results,
         "product": product,
+        "page_title": page_title,
+        "page_desc": page_desc,
+        "information_content": information_content,
     }
 
     questions = [
@@ -478,8 +570,27 @@ def comparison(request, product=None):
     pages['Focal'] = [False, "focalization"]
     pages['Compar'] = [True, "comparison"]
     pages['Results'] = [False, "results"]
+    # Get page Title and Description
+    page_title = 'Choose your comp'
+    page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
+                'Donec in maximus augue. Quisque euismod euismod posuere. ' \
+                'Phasellus tempor.'
+    information_content = {
+        "statistic": [
+            "S1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+        "insight": [
+            "I1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "I2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "I3-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+        "objective": [
+            "O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
+    }
     context = {
         "pages": pages,
+        "page_title": page_title,
+        "page_desc": page_desc,
+        "information_content": information_content,
     }
     return render(request, "comparison.html", context)
 
