@@ -69,7 +69,7 @@ $(document).ready(function () {
 });
 
 //home orientation shape
-document.getElementById("screens_holder").firstElementChild.firstElementChild.id = "square";
+$('#screens_holder').children().first().children().first().prop('id', 'square');
 
 /* When the user clicks on the button,
  toggle between hiding and showing the dropdown content */
@@ -88,15 +88,6 @@ $('#myDropdown').css({
     "border-style": "solid",
     "border-width": "1px",
 });
-
-//adjust iframe size, evoke on iframe load
-//function IframeLoaded(obj) {
-//    var body = obj.contentWindow.document.body,
-//        html = obj.contentWindow.document.documentElement;
-//    var iframe_height = Math.max(html.scrollHeight, html.offsetHeight);
-//    $('#accounts_iframe').css('height', iframe_height);
-//}
-
 
 //close iframe by refreshing the parent page
 function closeIFrame() {
