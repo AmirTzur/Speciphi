@@ -4,7 +4,7 @@
 
 .header {
     color: rgb(230, 89, 42);
-    font-size: 27px;
+    font-size: 20px;
     padding: 10px;
 }
 
@@ -44,6 +44,15 @@ ul.errorlist li {
     text-align: initial;
 }
 
+#success_message {
+    height: 20px;
+    margin-bottom: 0;
+}
+
+textarea#id_message {
+    height: 114px;
+}
+
 /*================ media queries==================*/
 
 /* Extra Small Devices, Phones */
@@ -57,6 +66,19 @@ ul.errorlist li {
 
 /* Small Devices, Tablets */
 @media only screen and (min-width: 768px) {
+    #success_message {
+        display: block;
+        height: 50px;
+        /*margin-bottom: 10px;*/
+    }
+
+    textarea#id_message {
+        height: 154px;
+    }
+
+    .header {
+        font-size: 27px;
+    }
 
 }
 

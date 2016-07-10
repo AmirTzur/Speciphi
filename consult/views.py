@@ -216,10 +216,7 @@ def affiliation(request, product=None):
 
 
 def application(request, product=None):
-    if request.method == "POST":
-        print("application| POST")
-    elif request.method == "GET":
-        print("Application| GET")
+    print('application|')
     pages = OrderedDict()
     pages['Home'] = [False, "home"]
     pages['Affil'] = [False, "affiliation"]
@@ -354,6 +351,7 @@ def application(request, product=None):
 
 
 def focalization(request, product=None):
+    print('focalization|')
     pages = OrderedDict()
     pages['Home'] = [False, "home"]
     pages['Affil'] = [False, "affiliation"]
@@ -613,6 +611,7 @@ def results(request, product=None):
 
 
 def contact(request):
+    print('contact|')
     form = ContactForm
     page_title = 'Contact Us'
     page_desc = "Thank you for your interest in Djaroo's consulting platform. " \
@@ -623,7 +622,6 @@ def contact(request):
         "form": form,
     }
     if 'contact_name' in request.session:
-        print('session')
         success_message = request.session['contact_name'] + ", Thank you for applying us."
         context.update({
             "success_message": success_message,
@@ -632,14 +630,11 @@ def contact(request):
         return render(request, 'contact.html', context)
     # handle form submission
     if request.method == 'POST':
-        print('post')
         form = ContactForm(data=request.POST)
         if form.is_valid():
-            print('valid')
             contact_name = request.POST.get('name', '')
             contact_email = request.POST.get('email', '')
             form_content = request.POST.get('message', '')
-
             # Email the contact information
             template = get_template('contact_template.txt')
             information = Context({
@@ -664,20 +659,11 @@ def contact(request):
     return render(request, 'contact.html', context)
 
 
-def success_contact(request):
-    #     form = ContactForm
-    #     page_title = 'Contact Us'
-    #     page_desc = "Thank you for your interest in Djaroo's consulting platform. " \
-    #                 "Please fill in the following form and we'll get back to you shortly."
-    #     success_message = request.session['contact_name'] + ", Thank you for applying us."
-    #     del request.session['contact_name']
-    #     context = {
-    #         "page_title": page_title,
-    #         "page_desc": page_desc,
-    #         "success_message": success_message,
-    #         "form": form,
-    #     }
-    return redirect('contact')
+def about(request):
+    print('about|')
+    context = {
+    }
+    return render(request, 'about.html', context)
 
 
 def success_close(request):
