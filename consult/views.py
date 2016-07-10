@@ -4,7 +4,7 @@ from collections import OrderedDict
 from django.db import connection, Error
 
 # from apis.utils import get_spec_val, find_nth
-from consult.forms import AffiliationsForm, UsesForm
+from consult.forms import AffiliationsForm, UsesForm, FilterForm
 from django.http import HttpResponse
 from consult.models import Levelofuse
 from collections import OrderedDict
@@ -621,8 +621,30 @@ def results(request, product=None):
             "O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
             "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
     }
+    # Filtering Form
+    spec_filtering = OrderedDict(
+        [('Screen Size', ['11.6"', True, '13.3"', True, '14"', False, '15.6"', False, '17.4"', False]),
+         ('Processor', ['Intel Core i3', False, 'Intel Core i5', True, 'Intel Core i7', False,
+                        'Intel Core M', True, 'AMD X', True, 'AMD Y', False, 'Rocket', False]),
+         ('Memory', ['2', False, '4', False, '8', False, '12', True, '16', True, '32', True, '64', False]),
+         ('Storage', ['16', False, '32', False, '64', False, '128', False, '192', False, '256', True,
+                      '320', True, '500', True, '750', True, '1000', False, '1128', False]),
+         ('GPU', ['Intel HD Graphics', True, 'NVIDIA GeForce', False, 'AMD Radeon', True]),
+         ('Screen Resolution', ['1024 x 768', False, '1366 x 768', False, '1440 x 900', False,
+                                '1920 x 1080', True, '1920 x 1200', True, '2166 x 1440', True,
+                                '2560 x 1440', True, '2560 x 1600', True, '2880 x 1800', True,
+                                '3200 x 1800', True, '3860 x 2160', False]),
+         ('Touch Screen', ['Yes', True, 'No', False]),
+         ('Weight', ['1+ lb', True, '2+ lb', True, '3+ lb', True, '4+ lb', False]),
+         ('Operating System', ['Chromebook', False, 'Windows', False, 'OSX', True])])
+    filter_form = FilterForm(filtering_data=spec_filtering)
+    if request.method == 'POST':
+        filter_form = FilterForm(data=request.POST)
+        if filter_form.is_valid():
+            # need to implement filter change event: send params to db and get new results
+            print("Missing: extract relevant data from db")
     # Final Results
-    # Features keys: Screen Size, Processor, Memory, Storage [ssd,hdd], GPU, Screen Resolution, Touch Screen,
+    # Laptop Features (keys): Screen Size, Processor, Memory, Storage [ssd,hdd], GPU, Screen Resolution, Touch Screen,
     #   Weight, Dimensions (WxHxD), Battery [chemistry,cells,wh], Color, Operating System, Model (manufacturer model)
     final_offers = [
         {'sort_indicator': 'Category Favorable', 'brand': 'Lenovo', 'model': 'ThinkPad P40 Yoga',
@@ -693,20 +715,6 @@ def results(request, product=None):
                                     ('Storage', ['8GB SSD', '1000GB HDD']), ('GPU', 'Intel HD Graphics'),
                                     ('Screen Resolution', '1920 x 1080'), ('Touch Screen', 'Yes'), ('Weight', '2.5-3 lb'),
                                     ('Battery', 'Li-Polymer 6 cells 56Wh'), ('Operating System', ['Windows /', 'Chromebook'])])
-    spec_filtering = OrderedDict([('Screen Size', ['11.6"', True, '13.3"', True, '14"', False, '15.6"', False, '17.4"', False]),
-                                  ('Processor', ['Intel Core i3', False, 'Intel Core i5', True, 'Intel Core i7', False,
-                                                 'Intel Core M', True, 'AMD X', True, 'AMD Y', False, 'Rocket', False]),
-                                  ('Memory', ['2', False, '4', False, '8', False, '12', True, '16', True, '32', True, '64', False]),
-                                  ('Storage', ['16', False, '32', False, '64', False, '128', False, '192', False, '256', True,
-                                               '320', True, '500', True, '750', True, '1000', False, '1128', False]),
-                                  ('GPU', ['Intel HD Graphics', True, 'NVIDIA GeForce', False, 'AMD Radeon', True]),
-                                  ('Screen Resolution', ['1024 x 768', False, '1366 x 768', False, '1440 x 900', False,
-                                                         '1920 x 1080', True, '1920 x 1200', True, '2166 x 1440', True,
-                                                         '2560 x 1440', True, '2560 x 1600', True, '2880 x 1800', True,
-                                                         '3200 x 1800', True, '3860 x 2160', False]),
-                                  ('Touch Screen', ['Yes', True, 'No', False]),
-                                  ('Weight', ['1+ lb', True, '2+ lb', True, '3+ lb', True, '4+ lb', False]),
-                                  ('Operating System', ['Chromebook', False, 'Windows', False, 'OSX', True])])
     context = {
         "pages": pages,
         "product": product,
@@ -716,6 +724,7 @@ def results(request, product=None):
         "final_offers": final_offers[0:3],
         "recommended_spec": recommended_spec,
         "spec_filtering": spec_filtering,
+        "filter_form": filter_form,
     }
     return render(request, "results.html", context)
 
