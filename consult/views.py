@@ -186,12 +186,15 @@ def affiliation(request, product=None):
                     'Donec in maximus augue. Quisque euismod euismod posuere. ' \
                     'Phasellus tempor.'
         information_content = {
-            "statistic": ["S1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
-            "insight": ["I1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-                        "I2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-                        "I3-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
-            "objective": ["O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-                          "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
+            "statistic": [
+                "S1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+            "insight": [
+                "I1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                "I2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                "I3-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+            "objective": [
+                "O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
         }
         context.update({
             "Product_id": Product_id,
@@ -610,11 +613,17 @@ def results(request, product=None):
 
 
 def contact(request):
-    # form_class = ContactForm
     form = ContactForm
+    page_title = 'Contact Us'
+    page_desc = "Thank you for your interest in Djaroo's consulting platform. " \
+                "Please fill in the following form and we'll get back to you shortly."
+    context = {
+        "page_title": page_title,
+        "page_desc": page_desc,
+        "form": form,
+    }
     # handle form submission
     if request.method == 'POST':
-        # form = form_class(data=request.POST)
         form = ContactForm(data=request.POST)
         if form.is_valid():
             contact_name = request.POST.get('name', '')
@@ -636,10 +645,23 @@ def contact(request):
                 headers={'Reply-To': contact_email}
             )
             email.send()
-            # return redirect('contact')
-            return render(request, 'contact.html', {"success": True, "contact_name": contact_name})
+            request.session['contact_name'] = contact_name
+            return redirect('success_contact')
 
+    return render(request, 'contact.html', context)
+
+
+def success_contact(request):
+    form = ContactForm
+    page_title = 'Contact Us'
+    page_desc = "Thank you for your interest in Djaroo's consulting platform. " \
+                "Please fill in the following form and we'll get back to you shortly."
+    success_message = request.session['contact_name'] + ", Thank you for applying us."
+    del request.session['contact_name']
     context = {
+        "page_title": page_title,
+        "page_desc": page_desc,
+        "success_message": success_message,
         "form": form,
     }
     return render(request, 'contact.html', context)

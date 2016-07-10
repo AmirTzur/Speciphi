@@ -1,3 +1,7 @@
+.container-fluid {
+    background-color: #E5B34D;
+}
+
 .header {
     color: rgb(230, 89, 42);
     font-size: 27px;
@@ -6,7 +10,7 @@
 
 .bigicon {
     font-size: 35px;
-    color: rgb(230, 89, 42);
+    color: white;
 }
 
 .btn-primary {

@@ -1,0 +1,37 @@
+{% extends 'djaroo_base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <head>
+        <link href="{% static 'css/info_elements.css' %}" rel="stylesheet">
+    </head>
+    <!-- Feature: header -->
+    <div id="process-header-wrapper" class="container-fluid">
+        <!-- Raw:  -->
+        <div class="row">
+            <!-- Column: Logo and Page Title -->
+            <div class="visible-xs col-xs-7">
+                <div class="process-header-logo"></div>
+                <div class="process-header-title">
+                    <span class="page-header">{{ page_title }}</span>
+                </div>
+            </div>
+            <div class="hidden-xs col-sm-offset-1 col-sm-3">
+                <div class="process-header-logo"></div>
+            </div>
+            <div class="hidden-xs col-sm-4">
+                <div class="process-header-title">
+                    <span class="page-header">{{ page_title }}</span>
+                    <p id="page-desc">{{ page_desc }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block about_content %}
+
+        <!-- Overrides about pages content -->
+
+    {% endblock %}
+
+{% endblock %}

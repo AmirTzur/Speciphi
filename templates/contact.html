@@ -1,11 +1,11 @@
-{% extends 'djaroo_base.html' %}
+{% extends 'about_base.html' %}
 {% load staticfiles %}
 
 <title>
     {% block head_title %} Contact {{ block.super }}{% endblock %}
 </title>
 
-{% block content %}
+{% block about_content %}
 
     <head>
         <link href="{% static 'css/contact.css' %}" rel="stylesheet">
@@ -14,62 +14,53 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="well well-sm">
-                    {% if success %}
-                        <legend class="text-center header">{{ contact_name }}, Thanks you for your message. We'll get
-                            back to you shortly.
-                        </legend>
-                    {% else %}
-                        <form class="form-horizontal" method="post">
-                            {% csrf_token %}
-                            <fieldset>
-                                <legend class="text-center header">Contact us</legend>
-                                <legend>
-                                    <p style="font-size: 14px">Thank you for your interest in Kaltura's video platform.
-                                        Please fill in the following form and we'll get back to you shortly.
-                                    </p>
-                                </legend>
-
-                                <div class="form-group">
-                                <span class="col-md-1 col-md-offset-2 text-center">
+                {#                    {% if success %}#}
+                <legend class="text-center header">{{ contact_name }}, Thanks you for your message. We'll get
+                    back to you shortly.
+                </legend>
+                {#                    {% else %}#}
+                <form class="form-horizontal" method="post">
+                    {% csrf_token %}
+                    <fieldset>
+                        <div class="form-group">
+                                <span class="col-md-1 col-md-offset-3 text-center">
                                     <i class="fa fa-user bigicon"></i>
                                 </span>
-                                    <div class="col-md-6">
-                                        {{ form.name.errors }}
-                                        {{ form.name }}
-                                    </div>
-                                </div>
+                            <div class="col-md-4">
+                                {{ form.name.errors }}
+                                {{ form.name }}
+                            </div>
+                        </div>
 
-                                <div class="form-group">
-                                <span class="col-md-1 col-md-offset-2 text-center">
+                        <div class="form-group">
+                                <span class="col-md-1 col-md-offset-3 text-center">
                                     <i class="fa fa-envelope-o bigicon"></i>
                                 </span>
-                                    <div class="col-md-6">
-                                        {{ form.email.errors }}
-                                        {{ form.email }}
-                                    </div>
-                                </div>
+                            <div class="col-md-4">
+                                {{ form.email.errors }}
+                                {{ form.email }}
+                            </div>
+                        </div>
 
-                                <div class="form-group">
-                                <span class="col-md-1 col-md-offset-2 text-center">
+                        <div class="form-group">
+                                <span class="col-md-1 col-md-offset-3 text-center">
                                     <i class="fa fa-pencil-square-o bigicon"></i>
                                 </span>
-                                    <div class="col-md-6">
-                                        {{ form.message.errors }}
-                                        {{ form.message }}
-                                    </div>
-                                </div>
+                            <div class="col-md-4    ">
+                                {{ form.message.errors }}
+                                {{ form.message }}
+                            </div>
+                        </div>
 
-                                <div class="form-group">
-                                    <div class="col-md-12 text-center">
-                                        <button id="submit_button" type="submit" class="btn btn-primary btn-lg">Submit
-                                        </button>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </form>
-                    {% endif %}
-                </div>
+                        <div class="form-group">
+                            <div class="col-md-12 text-center">
+                                <button id="submit_button" type="submit" class="btn btn-primary btn-lg">Submit
+                                </button>
+                            </div>
+                        </div>
+                    </fieldset>
+                </form>
+                {#                    {% endif %}#}
             </div>
         </div>
     </div>
