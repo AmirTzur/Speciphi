@@ -690,9 +690,23 @@ def results(request, product=None):
          },
     ]
     recommended_spec = OrderedDict([('Screen Size', '13-15"'), ('Processor', 'Intel Core i5-5600U'), ('Memory', '8GB'),
-                                    ('Storage', ['8GB SSD', '1000GB HDD']), ('GPU', 'Intel HD Graphics 5500'),
+                                    ('Storage', ['8GB SSD', '1000GB HDD']), ('GPU', 'Intel HD Graphics'),
                                     ('Screen Resolution', '1920 x 1080'), ('Touch Screen', 'Yes'), ('Weight', '2.5-3 lb'),
                                     ('Battery', 'Li-Polymer 6 cells 56Wh'), ('Operating System', ['Windows /', 'Chromebook'])])
+    spec_filtering = OrderedDict([('Screen Size', ['11.6"', True, '13.3"', True, '14"', False, '15.6"', False, '17.4"', False]),
+                                  ('Processor', ['Intel Core i3', False, 'Intel Core i5', True, 'Intel Core i7', False,
+                                                 'Intel Core M', True, 'AMD X', True, 'AMD Y', False, 'Rocket', False]),
+                                  ('Memory', ['2', False, '4', False, '8', False, '12', True, '16', True, '32', True, '64', False]),
+                                  ('Storage', ['16', False, '32', False, '64', False, '128', False, '192', False, '256', True,
+                                               '320', True, '500', True, '750', True, '1000', False, '1128', False]),
+                                  ('GPU', ['Intel HD Graphics', True, 'NVIDIA GeForce', False, 'AMD Radeon', True]),
+                                  ('Screen Resolution', ['1024 x 768', False, '1366 x 768', False, '1440 x 900', False,
+                                                         '1920 x 1080', True, '1920 x 1200', True, '2166 x 1440', True,
+                                                         '2560 x 1440', True, '2560 x 1600', True, '2880 x 1800', True,
+                                                         '3200 x 1800', True, '3860 x 2160', False]),
+                                  ('Touch Screen', ['Yes', True, 'No', False]),
+                                  ('Weight', ['1+ lb', True, '2+ lb', True, '3+ lb', True, '4+ lb', False]),
+                                  ('Operating System', ['Chromebook', False, 'Windows', False, 'OSX', True])])
     context = {
         "pages": pages,
         "product": product,
@@ -701,6 +715,7 @@ def results(request, product=None):
         "information_content": information_content,
         "final_offers": final_offers[0:3],
         "recommended_spec": recommended_spec,
+        "spec_filtering": spec_filtering,
     }
     return render(request, "results.html", context)
 
