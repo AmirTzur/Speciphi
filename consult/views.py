@@ -1,10 +1,10 @@
-import time
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from collections import OrderedDict
 from django.db import connection, Error
-
-# from apis.utils import get_spec_val, find_nth
-from consult.forms import AffiliationsForm, UsesForm
+from django.template.loader import get_template
+from django.core.mail import EmailMessage
+from django.template import Context
+from consult.forms import AffiliationsForm, UsesForm, ContactForm
 from django.http import HttpResponse
 from consult.models import Levelofuse
 import urllib.request
@@ -186,12 +186,15 @@ def affiliation(request, product=None):
                     'Donec in maximus augue. Quisque euismod euismod posuere. ' \
                     'Phasellus tempor.'
         information_content = {
-            "statistic": ["S1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
-            "insight": ["I1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-                        "I2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-                        "I3-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
-            "objective": ["O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-                          "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
+            "statistic": [
+                "S1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+            "insight": [
+                "I1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                "I2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                "I3-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+            "objective": [
+                "O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+                "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
         }
         context.update({
             "Product_id": Product_id,
@@ -213,10 +216,7 @@ def affiliation(request, product=None):
 
 
 def application(request, product=None):
-    if request.method == "POST":
-        print("application| POST")
-    elif request.method == "GET":
-        print("Application| GET")
+    print('application|')
     pages = OrderedDict()
     pages['Home'] = [False, "home"]
     pages['Affil'] = [False, "affiliation"]
@@ -351,6 +351,7 @@ def application(request, product=None):
 
 
 def focalization(request, product=None):
+    print('focalization|')
     pages = OrderedDict()
     pages['Home'] = [False, "home"]
     pages['Affil'] = [False, "affiliation"]
@@ -607,6 +608,62 @@ def results(request, product=None):
         "pages": pages,
     }
     return render(request, "results.html", context)
+
+
+def contact(request):
+    print('contact|')
+    form = ContactForm
+    page_title = 'Contact Us'
+    page_desc = "Thank you for your interest in Djaroo's consulting platform. " \
+                "Please fill in the following form and we'll get back to you shortly."
+    context = {
+        "page_title": page_title,
+        "page_desc": page_desc,
+        "form": form,
+    }
+    if 'contact_name' in request.session:
+        success_message = request.session['contact_name'] + ", Thank you for applying us."
+        context.update({
+            "success_message": success_message,
+        })
+        del request.session['contact_name']
+        return render(request, 'contact.html', context)
+    # handle form submission
+    if request.method == 'POST':
+        form = ContactForm(data=request.POST)
+        if form.is_valid():
+            contact_name = request.POST.get('name', '')
+            contact_email = request.POST.get('email', '')
+            form_content = request.POST.get('message', '')
+            # Email the contact information
+            template = get_template('contact_template.txt')
+            information = Context({
+                'contact_name': contact_name,
+                'contact_email': contact_email,
+                'form_content': form_content,
+            })
+            email_content = template.render(information)
+            email = EmailMessage(
+                "New contact form submission",
+                email_content,
+                "Djaroo Website", ['eladdan88@gmail.com', ],
+                headers={'Reply-To': contact_email}
+            )
+            email.send()
+            request.session['contact_name'] = contact_name
+            return redirect('contact')
+        else:
+            context.update({
+                "form": form,
+            })
+    return render(request, 'contact.html', context)
+
+
+def about(request):
+    print('about|')
+    context = {
+    }
+    return render(request, 'about.html', context)
 
 
 def success_close(request):

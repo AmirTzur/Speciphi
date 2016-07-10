@@ -1,0 +1,93 @@
+.container-fluid {
+    background-color: #E5B34D;
+}
+
+.header {
+    color: rgb(230, 89, 42);
+    font-size: 20px;
+    padding: 10px;
+}
+
+.bigicon {
+    font-size: 35px;
+    color: white;
+}
+
+.btn-primary {
+    background-color: rgb(230, 89, 42);
+    border-color: transparent;
+}
+
+#submit_button:hover, #submit_button:focus, #submit_button:active {
+    background-color: rgb(215, 89, 42);
+    border-color: transparent;
+    outline: none;
+}
+
+ul.errorlist {
+    text-align: initial;
+}
+
+ul.errorlist li {
+    display: inline;
+    color: red;
+    font-size: 14px;
+}
+
+#id_name:focus, #id_email:focus, #id_message:focus {
+    border-color: rgba(230, 89, 42, 0.8);;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset, 0 0 8px rgba(230, 89, 42, 0.6);
+    outline: 0 none;
+}
+
+.form-group {
+    text-align: initial;
+}
+
+#success_message {
+    height: 20px;
+    margin-bottom: 0;
+}
+
+textarea#id_message {
+    height: 114px;
+}
+
+/*================ media queries==================*/
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 767px) {
+}
+
+/* Custom Mini i-pad screen*/
+@media only screen and (min-width: 480px) {
+
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width: 768px) {
+    #success_message {
+        display: block;
+        height: 50px;
+        /*margin-bottom: 10px;*/
+    }
+
+    textarea#id_message {
+        height: 154px;
+    }
+
+    .header {
+        font-size: 27px;
+    }
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width: 992px) {
+
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width: 1200px) {
+
+}

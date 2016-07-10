@@ -42,21 +42,29 @@
                         </a>
                         </li>
                         <li>
-                            {% for page in pages %}
-                                <a id="{{ page }}" class="figure-word"
-                                        {% if pages|keylist1:page %}
-                                   style="display: block; pointer-events:none; height: 28px;width: 60px; text-align: center; color: #E6592A;"
-                                        {% else %}
-                                   style="display: none; width: 60px; text-align: center; outline: none;"
-                                        {% endif %}
-                                        {% if page == 'Home' %}
-                                   href="{% url pages|keylist2:page %}"
-                                        {% else %}
-                                   href="{% url pages|keylist2:page product %}"
-                                        {% endif %}
-                                >{{ page }}
+                            {% if pages %}
+                                {% for page in pages %}
+                                    <a id="{{ page }}" class="figure-word"
+                                            {% if pages|keylist1:page %}
+                                       style="display: block; pointer-events:none; height: 28px;width: 60px; text-align: center; color: #E6592A;"
+                                            {% else %}
+                                       style="display: none; width: 60px; text-align: center; outline: none;"
+                                            {% endif %}
+                                            {% if page == 'Home' %}
+                                       href="{% url pages|keylist2:page %}"
+                                            {% else %}
+                                       href="{% url pages|keylist2:page product %}"
+                                            {% endif %}
+                                    >{{ page }}
+                                    </a>
+                                {% endfor %}
+                                {# not one of the process pages (contact, about us..) #}
+                            {% else %}
+                                <a class="figure-word"
+                                   style="display: block; width: 60px; text-align: center; outline: none;"
+                                   href="{% url 'home' %}"> Home
                                 </a>
-                            {% endfor %}
+                            {% endif %}
                         </li>
                         <li>
                             <a id="forward" class="button" style="cursor: default"
@@ -101,7 +109,6 @@
                     </div>
                 </ul>
             </div>
-
             {#center-side-nav#}
             <div class="dropdown" id="center-side-nav">
                 <span id="drop_left" style="display: none; padding-top: 15px;">
@@ -115,21 +122,12 @@
                 </span>
                 <ul class="dropdown-menu pull-center" role="menu" aria-labelledby="menu1">
                     <li><a href="#" class="text-align-center">About Us</a></li>
-                    <li><a href="#" class="text-align-center">Contact Us</a></li>
+                    <li><a href="{% url 'contact' %}" class="text-align-center">Contact Us</a></li>
                     <li><a href="#" class="text-align-center">FAQ</a></li>
                     <li><a href="#" class="text-align-center">Personal Zone</a>
                         <!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="#">HTML</a></li>-->
                     </li>
                     <li role="presentation" class="divider"></li>
-                    {#                    {% for page in pages %}#}
-                    {#                        <li><a#}
-                    {#                                {% if page == 'Home' %}#}
-                    {#                                    href="{% url pages|keylist2:page %}"#}
-                    {#                                {% else %}#}
-                    {#                                    href="{% url pages|keylist2:page product %}"#}
-                    {#                                {% endif %}#}
-                    {#                                    class="text-align-center">{{ page }}</a></li>#}
-                    {#                    {% endfor %}#}
                 </ul>
             </div>
             {#right-side-nav#}
@@ -153,7 +151,7 @@
                 <ul class="ul-bottom">
                     <div id="share_icons">
                         <li><a href="http://www.facebook.com/elad.dan" class="small-right-side-padding">
-                            <i class="fa fa-facebook-official fa-lg"></i></a></li>
+                            <i class="fa fa-facebook-square fa-lg"></i></a></li>
                         <li><a href="https://twitter.com/Djaroo_" class="small-sides-padding">
                             <i class="fa fa-twitter-square fa-lg"></i></a></li>
                         <li><a href="https://plus.google.com/" class="small-sides-padding">
@@ -178,29 +176,34 @@
         {name: "Compar", show: false},
         {name: "Results", show: false},
     ];
-    //update pages array with the current page
-    {% for page in pages %}
-        {% if pages|keylist1:page %}
-            for (var i = 0; i < pages.length; i++) {
-                pages[i].show = true;
-                if (pages[i].name == '{{ page }}') {
-                    break;
+
+    {% if pages %}
+        //update pages array with the current page
+        {% for page in pages %}
+            {% if pages|keylist1:page %}
+                for (var i = 0; i < pages.length; i++) {
+                    pages[i].show = true;
+                    if (pages[i].name == '{{ page }}') {
+                        break;
+                    }
                 }
-            }
-            ;
-        {% endif %}
-    {% endfor %}
+            {% endif %}
+        {% endfor %}
+        //color figure arrows according to current page and his neighbors
+        if (i == pages.length - 1 || !pages[i + 1].show) {
+            $('#forward').children().css('opacity', '0.6');
+        }
+        if (i == 0) {
+            $('#backward').children().css('opacity', '0.6');
 
-    //color figure arrows according to current page and his neighbors
-    if (i == pages.length - 1 || !pages[i + 1].show) {
+        } else {
+            $('#backward').css('cursor', 'pointer');
+        }
+    {% else %}
+        // contact us, about us etc..
         $('#forward').children().css('opacity', '0.6');
-    }
-    if (i == 0) {
         $('#backward').children().css('opacity', '0.6');
-
-    } else {
-        $('#backward').css('cursor', 'pointer');
-    }
+    {% endif %}
 
     {#    facebook script#}
     window.fbAsyncInit = function () {
