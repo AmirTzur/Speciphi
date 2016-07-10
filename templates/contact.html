@@ -14,11 +14,11 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                {#                    {% if success %}#}
-                <legend class="text-center header">{{ contact_name }}, Thanks you for your message. We'll get
-                    back to you shortly.
-                </legend>
-                {#                    {% else %}#}
+                <p class="text-center header" style="height: 50px">
+                    {% if success_message %}
+                        {{ success_message }}
+                    {% endif %}
+                </p>
                 <form class="form-horizontal" method="post">
                     {% csrf_token %}
                     <fieldset>
@@ -60,7 +60,6 @@
                         </div>
                     </fieldset>
                 </form>
-                {#                    {% endif %}#}
             </div>
         </div>
     </div>

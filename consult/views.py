@@ -622,10 +622,20 @@ def contact(request):
         "page_desc": page_desc,
         "form": form,
     }
+    if 'contact_name' in request.session:
+        print('session')
+        success_message = request.session['contact_name'] + ", Thank you for applying us."
+        context.update({
+            "success_message": success_message,
+        })
+        del request.session['contact_name']
+        return render(request, 'contact.html', context)
     # handle form submission
     if request.method == 'POST':
+        print('post')
         form = ContactForm(data=request.POST)
         if form.is_valid():
+            print('valid')
             contact_name = request.POST.get('name', '')
             contact_email = request.POST.get('email', '')
             form_content = request.POST.get('message', '')
@@ -646,25 +656,28 @@ def contact(request):
             )
             email.send()
             request.session['contact_name'] = contact_name
-            return redirect('success_contact')
-
+            return redirect('contact')
+        else:
+            context.update({
+                "form": form,
+            })
     return render(request, 'contact.html', context)
 
 
 def success_contact(request):
-    form = ContactForm
-    page_title = 'Contact Us'
-    page_desc = "Thank you for your interest in Djaroo's consulting platform. " \
-                "Please fill in the following form and we'll get back to you shortly."
-    success_message = request.session['contact_name'] + ", Thank you for applying us."
-    del request.session['contact_name']
-    context = {
-        "page_title": page_title,
-        "page_desc": page_desc,
-        "success_message": success_message,
-        "form": form,
-    }
-    return render(request, 'contact.html', context)
+    #     form = ContactForm
+    #     page_title = 'Contact Us'
+    #     page_desc = "Thank you for your interest in Djaroo's consulting platform. " \
+    #                 "Please fill in the following form and we'll get back to you shortly."
+    #     success_message = request.session['contact_name'] + ", Thank you for applying us."
+    #     del request.session['contact_name']
+    #     context = {
+    #         "page_title": page_title,
+    #         "page_desc": page_desc,
+    #         "success_message": success_message,
+    #         "form": form,
+    #     }
+    return redirect('contact')
 
 
 def success_close(request):
