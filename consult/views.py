@@ -646,7 +646,7 @@ def contact(request):
             email = EmailMessage(
                 "New contact form submission",
                 email_content,
-                "Djaroo Website", ['eladdan88@gmail.com', ],
+                "Djaroo Website", ['eladdan88@gmail.com', 'tzuramir@gmail.com', 'talzee10@gmail.com'],
                 headers={'Reply-To': contact_email}
             )
             email.send()
