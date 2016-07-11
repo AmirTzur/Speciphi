@@ -1,0 +1,48 @@
+{% extends 'about_base.html' %}
+{% load staticfiles %}
+
+<title>
+    {% block head_title %} About {{ block.super }}{% endblock %}
+</title>
+
+{% block about_content %}
+
+    <head>
+        <link href="{% static 'css/about.css' %}" rel="stylesheet">
+    </head>
+
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-xs-12 col-sm-6">
+                <p>
+                    text text text texttext texttext texttext texttext
+                    texttext texttext texttext texttext texttext texttext
+                    texttext texttext texttext texttext texttext texttext
+                    texttext texttext texttext texttext texttext texttext
+                </p>
+            </div>
+            <div class="col-xs-12 col-sm-6" style="background-color: black; height: 250px;">
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-4">
+                <img class="co-founder_img" src="{% static 'img/co-founders/AmirTzur.PNG' %}">
+                <p class="co-founder_title">Amir Tzur<br>CEO & Founder</p>
+            </div>
+
+            <div class="col-xs-12 col-sm-4">
+                <img class="co-founder_img" src="{% static 'img/co-founders/TalZeevi.PNG' %}">
+                <p class="co-founder_title">Tal Zeevi<br>CTO & Co-founder</p>
+            </div>
+
+            <div class="col-xs-12 col-sm-4">
+                <img class="co-founder_img" src="{% static 'img/co-founders/EladDan.PNG' %}">
+                <p class="co-founder_title">Elad Dan<br>CTO & Co-founder</p>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,54 @@
+.container-fluid {
+    background-color: #E5B34D;
+}
+
+div#co-founders_row, div#co-founders_row div.co-founder_circle {
+    /*display: block;*/
+}
+
+.co-founder_img {
+    width: 215px;
+    height: 240px;
+    border-radius: 50%;
+}
+p.co-founder_title {
+    font-family: "Bariol";
+    font-size: 22px;
+    color: rgb(230, 50, 42);
+    margin-bottom: 25px;
+}
+/*================ media queries==================*/
+
+/* Extra Small Devices, Phones */
+@media only screen and (max-width: 767px) {
+
+}
+
+/* Custom Mini i-pad screen*/
+@media only screen and (min-width: 480px) {
+    .co-founder_img {
+        width: 230px;
+        height: 250px;
+    }
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width: 768px) {
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width: 992px) {
+    .co-founder_img {
+        width: 250px;
+        height: 270px;
+    }
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width: 1200px) {
+    .co-founder_img {
+        width: 260px;
+        height: 290px;
+    }
+}
