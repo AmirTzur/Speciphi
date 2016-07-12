@@ -16,18 +16,18 @@ p.co-founder_title {
 }
 
 p#company_paragraph {
-    width: 270px;
-    height: 190px;
+    width: 235px;
+    height: 200px;
     margin: 0 auto 0 auto;
     font-family: "Bariol";
-    font-size: 15px;
+    font-size: 14px;
 }
 
 #company_pic {
-    width: 270px;
-    height: 190px;
+    width: 235px;
+    height: 200px;
     background-color: black;
-    margin: 0 auto 0 auto;
+    margin: -5px auto 0 auto;
 
 }
 
@@ -73,6 +73,7 @@ h2 span {
     #company_pic {
         width: 320px;
         height: 190px;
+        margin: 0 auto 0 auto;
     }
 
 }
@@ -145,7 +146,7 @@ h2 span {
     p#company_paragraph {
         width: 420px;
         height: 260px;
-        padding-top: 25px;
+        padding-top: 30px;
         font-size: 19px;
     }
 
@@ -154,7 +155,7 @@ h2 span {
         height: 260px;
     }
 
-        .well {
+    .well {
         height: 300px;
     }
 
