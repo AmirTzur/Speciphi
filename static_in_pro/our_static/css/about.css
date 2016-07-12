@@ -23,7 +23,7 @@ p#company_paragraph {
     font-size: 15px;
 }
 
-div#company_pic {
+#company_pic {
     width: 270px;
     height: 190px;
     background-color: black;
@@ -43,6 +43,10 @@ h2 span {
     background: #E5B34D;
     padding: 0 10px;
     font-size: 20px;
+}
+
+.well {
+    height: 230px;
 }
 
 /*================ media queries==================*/
@@ -66,7 +70,7 @@ h2 span {
 
     }
 
-    div#company_pic {
+    #company_pic {
         width: 320px;
         height: 190px;
     }
@@ -80,14 +84,14 @@ h2 span {
     }
 
     p#company_paragraph {
-        width: 350px;
-        height: 190px;
+        width: 290px;
+        height: 210px;
         padding-top: 15px;
     }
 
-    div#company_pic {
-        width: 350px;
-        height: 190px;
+    #company_pic {
+        width: 290px;
+        height: 210px;
     }
 
     h2 {
@@ -100,6 +104,10 @@ h2 span {
 
     h2 span {
         font-size: 25px;
+    }
+
+    .well {
+        height: 250px;
     }
 }
 
@@ -117,9 +125,13 @@ h2 span {
         font-size: 18px;
     }
 
-    div#company_pic {
+    #company_pic {
         width: 380px;
         height: 240px;
+    }
+
+    .well {
+        height: 280px;
     }
 }
 
@@ -132,13 +144,18 @@ h2 span {
 
     p#company_paragraph {
         width: 420px;
-        height: 240px;
+        height: 260px;
         padding-top: 25px;
         font-size: 19px;
     }
 
-    div#company_pic {
+    #company_pic {
         width: 420px;
-        height: 240px;
+        height: 260px;
     }
+
+        .well {
+        height: 300px;
+    }
+
 }
