@@ -2,21 +2,49 @@
     background-color: #E5B34D;
 }
 
-div#co-founders_row, div#co-founders_row div.co-founder_circle {
-    /*display: block;*/
-}
-
 .co-founder_img {
     width: 215px;
     height: 240px;
     border-radius: 50%;
 }
+
 p.co-founder_title {
     font-family: "Bariol";
     font-size: 22px;
     color: rgb(230, 50, 42);
     margin-bottom: 25px;
 }
+
+p#company_paragraph {
+    width: 270px;
+    height: 190px;
+    margin: 0 auto 0 auto;
+    font-family: "Bariol";
+    font-size: 15px;
+}
+
+div#company_pic {
+    width: 270px;
+    height: 190px;
+    background-color: black;
+    margin: 0 auto 0 auto;
+
+}
+
+h2 {
+    width: 100%;
+    text-align: center;
+    border-bottom: 2px solid white;
+    line-height: 0.1em;
+    margin: 30px 0 30px;
+}
+
+h2 span {
+    background: #E5B34D;
+    padding: 0 10px;
+    font-size: 20px;
+}
+
 /*================ media queries==================*/
 
 /* Extra Small Devices, Phones */
@@ -30,11 +58,49 @@ p.co-founder_title {
         width: 230px;
         height: 250px;
     }
+
+    p#company_paragraph {
+        width: 320px;
+        height: 190px;
+        font-size: 16px;
+
+    }
+
+    div#company_pic {
+        width: 320px;
+        height: 190px;
+    }
+
 }
 
 /* Small Devices, Tablets */
 @media only screen and (min-width: 768px) {
+    div#company_description {
+        margin: 15px auto 15px auto;
+    }
 
+    p#company_paragraph {
+        width: 350px;
+        height: 190px;
+        padding-top: 15px;
+    }
+
+    div#company_pic {
+        width: 350px;
+        height: 190px;
+    }
+
+    h2 {
+        width: 100%;
+        text-align: center;
+        border-bottom: 3px solid white;
+        line-height: 0.1em;
+        margin: 30px 0 30px;
+    }
+
+    h2 span {
+        font-size: 25px;
+    }
 }
 
 /* Medium Devices, Desktops */
@@ -43,12 +109,36 @@ p.co-founder_title {
         width: 250px;
         height: 270px;
     }
+
+    p#company_paragraph {
+        width: 380px;
+        height: 240px;
+        padding-top: 30px;
+        font-size: 18px;
+    }
+
+    div#company_pic {
+        width: 380px;
+        height: 240px;
+    }
 }
 
 /* Large Devices, Wide Screens */
 @media only screen and (min-width: 1200px) {
     .co-founder_img {
-        width: 260px;
-        height: 290px;
+        width: 250px;
+        height: 270px;
+    }
+
+    p#company_paragraph {
+        width: 420px;
+        height: 240px;
+        padding-top: 25px;
+        font-size: 19px;
+    }
+
+    div#company_pic {
+        width: 420px;
+        height: 240px;
     }
 }
