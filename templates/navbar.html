@@ -122,6 +122,7 @@
                 </span>
                 <ul class="dropdown-menu pull-center" role="menu" aria-labelledby="menu1">
                     <li><a href="{% url 'about' %}" class="text-align-center">About Us</a></li>
+                    {#                    <li><a href="#" class="text-align-center">About Us</a></li>#}
                     <li><a href="{% url 'contact' %}" class="text-align-center">Contact Us</a></li>
                     <li><a href="#" class="text-align-center">FAQ</a></li>
                     <li><a href="#" class="text-align-center">Personal Zone</a>
@@ -206,24 +207,24 @@
     {% endif %}
 
     {#    facebook script#}
-    window.fbAsyncInit = function () {
-        FB.init({
-            {#            appId: '824594521003011', // local#}
-            appId: '658096024344639', //production
-            xfbml: true,
-            version: 'v2.5'
-        });
-    };
-    (function (d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) {
-            return;
-        }
-        js = d.createElement(s);
-        js.id = id;
-        js.src = "//connect.facebook.net/en_US/sdk.js";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
+    {#    window.fbAsyncInit = function () {#}
+    {#        FB.init({#}
+    {#            appId: '824594521003011', // local#}
+    {#            appId: '658096024344639', //production#}
+    {#            xfbml: true,#}
+    {#            version: 'v2.5'#}
+    {#        });#}
+    {#    };#}
+    {#    (function (d, s, id) {#}
+    {#        var js, fjs = d.getElementsByTagName(s)[0];#}
+    {#        if (d.getElementById(id)) {#}
+    {#            return;#}
+    {#        }#}
+    {#        js = d.createElement(s);#}
+    {#        js.id = id;#}
+    {#        js.src = "//connect.facebook.net/en_US/sdk.js";#}
+    {#        fjs.parentNode.insertBefore(js, fjs);#}
+    {#    }(document, 'script', 'facebook-jssdk'));#}
 
 
 </script>

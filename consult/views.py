@@ -662,7 +662,7 @@ def contact(request):
 def about(request):
     print('about|')
     page_title = 'About Us'
-    page_desc = "Thank you for your interest in Djaroo's consulting platform. "
+    page_desc = ""
     context = {
         "page_title": page_title,
         "page_desc": page_desc,

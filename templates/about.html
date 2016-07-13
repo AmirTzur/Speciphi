@@ -12,32 +12,24 @@
     </head>
 
     <div class="container-fluid">
-        <div id="company_description" class="row">
-            <div class="col-xs-12 col-sm-6">
-                <div class="well">
-                    <p id="company_paragraph">
-                        We are a young startup company from Israel named Djaroo. Our vision is to change the way you are
-                        buying products, helping you to find the product that best suits your needs, and the right
-                        E-retailer purchase deals.
-                        Now days we are working diligently to develop an interactive consultation and digital marketing
-                        platform that will simplify your buying experience.
-                    </p>
-                </div>
-
+        <div id="company_description" class="row reverse_wrapper">
+            <div id="company_video_wrapper" class="col-xs-12 col-sm-offset-1 col-sm-4 reverse_first">
+                <iframe id="company_video" class="embed-responsive-item"
+                        src="https://www.youtube.com/embed/jSS1tF1Cgog"
+                        frameborder="0" allowfullscreen>
+                </iframe>
             </div>
-            <div class="col-xs-12 col-sm-6">
-                <div class="well">
-                    <iframe
-                            id="company_pic"
-                            class="embed-responsive-item"
-                            src="https://www.youtube.com/embed/jSS1tF1Cgog"
-                            frameborder="0"
-                            allowfullscreen
-                    >
-                    </iframe>
-                </div>
 
+            <div id="company_description_wrapper" class="col-xs-12 col-sm-6 col-md-5 reverse_second">
+                <p id="company_paragraph">
+                    We are a young startup company from Israel named Djaroo. Our vision is to change the way you are
+                    buying products, helping you to find the product that best suits your needs, and the right
+                    E-retailer purchase deals.
+                    Now days we are working diligently to develop an interactive consultation and digital marketing
+                    platform that will simplify your buying experience.
+                </p>
             </div>
+
         </div>
 
         <h2><span>Leadership</span></h2>
@@ -59,5 +51,7 @@
             </div>
         </div>
     </div>
+
+    <script src="{% static 'js/about.js' %}"></script>
 
 {% endblock %}
