@@ -646,7 +646,7 @@ def contact(request):
             email = EmailMessage(
                 "New contact form submission",
                 email_content,
-                "Djaroo Website", ['eladdan88@gmail.com', ],
+                "Djaroo Website", ['eladdan88@gmail.com', 'tzuramir@gmail.com', 'talzee10@gmail.com'],
                 headers={'Reply-To': contact_email}
             )
             email.send()
@@ -661,7 +661,11 @@ def contact(request):
 
 def about(request):
     print('about|')
+    page_title = 'About Us'
+    page_desc = ""
     context = {
+        "page_title": page_title,
+        "page_desc": page_desc,
     }
     return render(request, 'about.html', context)
 
