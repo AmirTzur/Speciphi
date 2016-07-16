@@ -6,9 +6,7 @@ $(document).ready(function(){
 
     // Mobile Filter Button
     var direction;
-    // var window_width = $(window).width();
     var filters_menu = $('#filters-menu');
-    // var menu_width_base = parseInt(filters_menu.css('width'));
     var filters_button = document.getElementById('filters-btn');
     var filter_button_jq = $('#filters-btn');
     var mc_filters = new Hammer(filters_button);
@@ -62,7 +60,6 @@ $(document).ready(function(){
                             left: '100%'
                         }, { duration: 800, queue: false });
                     });
-                    // filters_menu.width('130');
                 }
                 direction = ev.type;
                 break;
@@ -93,21 +90,6 @@ $(document).ready(function(){
     $('#filters-menu .checkbox input').on('change', function () {
         alert('ajax call on checkbox change');
     });
-    // function WidthChange() {
-    //     alert('change0');
-    //     if (window.matchMedia("(max-width: 767px)").matches) {
-    //         alert('change');
-    //         $('#filters-btn').css('right', '-5px');
-    //         $('#filters-menu').css('right', '-100%');
-    //     }
-    // }
-    // if (matchMedia) {
-    //     alert('change1');
-    //     var mq_mobile = window.matchMedia("(max-width: 767px)");
-    //     mq_mobile.addListener(WidthChange);
-    //     WidthChange();
-    //     alert('change2');
-    // }
 
 });
 
