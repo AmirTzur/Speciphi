@@ -1,8 +1,7 @@
 #filters-btn{
-    display: none;
     position: fixed;
-    top: 47.5%;
-    right: 79%;
+    top: 39.5%;
+    left: 94%;
     z-index: 501;
     width: 31px;
     height: 28px;
@@ -19,37 +18,39 @@
     color: rgb(229, 179, 77);
 }
 #filters-menu{
-    display: none;
     position: fixed;
-    right: 0%;
-    top: 47.5%;
-    height: 52.5%;
+    left: -100%;
+    top: 39.5%;
+    height: 60.5%;
     z-index: 500;
     font-family: "Bariol";
     font-style: normal;
     text-align: left;
-    padding: 15px 15px 15px 25px;
+    padding: 25px 15px 15px 10px;
     margin-bottom: 0px;
 }
 #filters-menu fieldset{
-    padding-bottom: 7px;
     margin-right: 15px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid rgb(255, 255, 255);
+    margin-bottom: 0px;
+    padding: 5px 0px 2px 0px;
+    border-top: 1px solid rgb(255, 255, 255);
     display: inline-block;
     text-align: left;
+    vertical-align: top;
+    width: 130px;
 }
 #filters-menu legend{
-    display: block;
+    /*display: block;*/
     float: left;
     position: relative;
-    width: auto;
+    width: 80%;
     margin-bottom: 0px;
     font-size: 14px;
+    font-weight: bold;
     border-bottom: none;
 }
 .checkbox{
-    display: block;
+    /*display: block;*/
     margin-bottom: 5px;
     margin-top: 5px;
     width: auto;
@@ -68,7 +69,11 @@
 /* Mobile Submit Button */
 #submit-btn{
     display: block;
+    margin-top: 15px;
+    position: relative;
+    left: -1%;
 }
+
 /* Results Feature - Responsive */
 
 /* Extra small devices - 320px Design (phones, less than 480px) */
@@ -77,9 +82,10 @@
         overflow-y: scroll;
     }
 }
-@media (min-width: 480px) {
-    #filters-btn {
-        right: 81%;
+/* Medium devices (480px and up) */
+@media (min-width: 479px) {
+    #filters-btn{
+        left: 96%;
     }
 }
 /* Small devices (tablets, 768px and up) */
@@ -99,16 +105,19 @@
         /*max-width: 300px;*/
         padding: 8px 15px 3px 25px;
     }
+    #filters-menu fieldset{
+        width: 100%;
+    }
     #filters-menu legend{
         margin-bottom: 4px;
     }
 }
-
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
-
+    #filters-btn{
+        left: 97%;
+    }
 }
-
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
 

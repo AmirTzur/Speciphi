@@ -622,32 +622,64 @@ def results(request, product=None):
             "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
     }
     # Filtering Form
-    spec_filtering = OrderedDict(
-        [('Screen Size', ['11.6"', True, '13.3"', True, '14"', False, '15.6"', False, '17.4"', False]),
-         ('Processor', ['Intel Core i3', False, 'Intel Core i5', True, 'Intel Core i7', False,
-                        'Intel Core M', True, 'AMD X', True, 'AMD Y', False, 'Rocket', False]),
-         ('Memory', ['2', False, '4', False, '8', False, '12', True, '16', True, '32', True, '64', False]),
-         ('Storage', ['16', False, '32', False, '64', False, '128', False, '192', False, '256', True,
-                      '320', True, '500', True, '750', True, '1000', False, '1128', False]),
-         ('GPU', ['Intel HD Graphics', True, 'NVIDIA GeForce', False, 'AMD Radeon', True]),
-         ('Screen Resolution', ['1024 x 768', False, '1366 x 768', False, '1440 x 900', False,
-                                '1920 x 1080', True, '1920 x 1200', True, '2166 x 1440', True,
-                                '2560 x 1440', True, '2560 x 1600', True, '2880 x 1800', True,
-                                '3200 x 1800', True, '3860 x 2160', False]),
-         ('Touch Screen', ['Yes', True, 'No', False]),
-         ('Weight', ['1+ lb', True, '2+ lb', True, '3+ lb', True, '4+ lb', False]),
-         ('Operating System', ['Chromebook', False, 'Windows', False, 'OSX', True])])
-    filter_form = FilterForm(filtering_data=spec_filtering)
+    # unit: " , GB x 2, lb.
+    filters_list = OrderedDict(
+        [('Screen Size', ['11.6"', '13.3"', '14"', '15.6"', '17.4"']),
+         ('Processor', ['Intel Core i3', 'Intel Core i5', 'Intel Core i7',
+                        'Intel Core M', 'AMD X', 'AMD Y', 'Rocket']),
+         ('Memory', ['2GB', '4GB', '8GB', '12GB', '16GB', '32GB', '64GB']),
+         ('Storage', ['16GB', '32GB', '64GB', '128GB', '192GB', '256GB',
+                      '320GB', '500GB', '750GB', '1000GB', '1128GB']),
+         ('GPU', ['Intel HD Graphics', 'NVIDIA GeForce', 'AMD Radeon']),
+         ('Screen Resolution', ['1024 x 768', '1366 x 768', '1440 x 900',
+                                '1920 x 1080', '1920 x 1200', '2166 x 1440',
+                                '2560 x 1440', '2560 x 1600', '2880 x 1800',
+                                '3200 x 1800', '3860 x 2160']),
+         ('Touch Screen', ['Yes', 'No']),
+         ('Weight', ['1-2 lb.', '2-3 lb.', '3-4 lb.', '4+ lb.']),
+         ('Operating System', ['Chromebook', 'Windows', 'OSX']),
+         ('Brand', ['Apple', 'Dell', 'Samsung'])])
+    filters_optional = OrderedDict(
+        [('Screen Size', ['13.3"', '14"', '15.6"']),
+         ('Processor', ['Intel Core i5', 'Intel Core i7',
+                        'AMD X']),
+         ('Memory', ['8GB', '12GB', '16GB', '32GB', '64GB']),
+         ('Storage', ['320GB', '500GB', '750GB', '1000GB']),
+         ('GPU', ['Intel HD Graphics', 'NVIDIA GeForce', 'AMD Radeon']),
+         ('Screen Resolution', [
+                                '1920 x 1080', '1920 x 1200', '2166 x 1440',
+                                '2560 x 1440', '2560 x 1600']),
+         ('Touch Screen', ['Yes', 'No']),
+         ('Weight', ['1-2 lb.', '2-3 lb.']),
+         ('Operating System', ['Chromebook', 'Windows']),
+         ('Brand', ['Apple', 'Dell'])])
+    filters_selected = OrderedDict(
+        [('Screen Size', ['13.3"', '14"', '15.6"']),
+         ('Processor', ['Intel Core i5', 'Intel Core i7']),
+         ('Memory', ['8GB']),
+         ('Storage', ['500GB', '750GB']),
+         ('GPU', ['NVIDIA GeForce']),
+         ('Screen Resolution', [
+             '2560 x 1440', '2560 x 1600']),
+         ('Touch Screen', []),
+         ('Weight', ['2-3 lb.']),
+         ('Operating System', ['Windows']),
+         ('Brand', ['Apple', 'Dell'])])
+    # filters_form = FilterForm(filters_list=filters_list, filters_optional=filters_optional,
+    #                           filters_selected=filters_selected)
     if request.method == 'POST':
-        filter_form = FilterForm(data=request.POST)
-        if filter_form.is_valid():
+        filters_form = FilterForm(data=request.POST)
+        if filters_form.is_valid():
             # need to implement filter change event: send params to db and get new results
             print("Missing: extract relevant data from db")
+    else:
+        filters_form = FilterForm(filters_list=filters_list, filters_optional=filters_optional,
+                                  filters_selected=filters_selected)
     # Final Results
     # Laptop Features (keys): Screen Size, Processor, Memory, Storage [ssd,hdd], GPU, Screen Resolution, Touch Screen,
     #   Weight, Dimensions (WxHxD), Battery [chemistry,cells,wh], Color, Operating System, Model (manufacturer model)
     final_offers = [
-        {'sort_indicator': 'Category Favorable', 'brand': 'Lenovo', 'model': 'ThinkPad P40 Yoga',
+        {'sort_indicator': 'Category Favorable', 'Brand': 'Lenovo', 'Line': 'ThinkPad P40 Yoga',
          'image_url': 'http://ecx.images-amazon.com/images/I/41238W8tcjL._SL160_.jpg',
          'offers': [{'deal_id': 333,
                      'deal_url': 'http://www.amazon.com/gp/offer-listing/B00VQP3DNY%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
@@ -665,7 +697,7 @@ def results(request, product=None):
                                   ('Battery', 'Li-Polymer 6 cells 56Wh'), ('Color', 'Black'),
                                   ('Operating System', 'Windows'), ('Model', 'Yogab456')]),
          },
-        {'sort_indicator': 'Best Match', 'brand': 'Apple', 'model': 'Macbook Pro (Early 2015)',
+        {'sort_indicator': 'Best Match', 'Brand': 'Apple', 'Line': 'Macbook Pro (Early 2015)',
          'image_url': 'http://ecx.images-amazon.com/images/I/41lmJ1hPMnL._SL160_.jpg',
          'offers': [{'deal_id': 111,
                      'deal_url': 'http://www.amazon.com/gp/offer-listing/B00GZB8D0M%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
@@ -680,7 +712,7 @@ def results(request, product=None):
                                   ('Weight', '4 lb'), ('Dimensions (WxHxD)', '12.2x0.9x8"'), ('Battery', 'Li-Ion 4 cells 72Wh'), ('Color', 'Black'),
                                   ('Operating System', 'Windows'), ('Model', 'MLLL/AH')]),
          },
-        {'sort_indicator': 'Greatest Mobility', 'brand': 'Dell', 'model': 'XPS 15',
+        {'sort_indicator': 'Greatest Mobility', 'Brand': 'Dell', 'Line': 'XPS 15',
          'image_url': 'http://ecx.images-amazon.com/images/I/218dheiyUrL._SL160_.jpg',
          'offers': [{'deal_id': 555,
                      'deal_url': 'http://www.amazon.com/gp/offer-listing/B00SQG3MQE%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
@@ -695,7 +727,7 @@ def results(request, product=None):
                                   ('Weight', '6 lb'), ('Dimensions (WxHxD)', '12.2x1x8"'), ('Battery', 'Li-Ion 3 cells 44Wh'), ('Color', 'Black'),
                                   ('Operating System', 'Windows'), ('Model', 'XPS13cc')]),
          },
-        {'sort_indicator': 'Cost Effective', 'brand': 'Asus', 'model': 'Zenbook 133X',
+        {'sort_indicator': 'Cost Effective', 'Brand': 'Asus', 'Line': 'Zenbook 133X',
          'image_url': 'http://ecx.images-amazon.com/images/I/41-6oCGJqwL._SL160_.jpg',
          'offers': [{'deal_id': 777,
                      'deal_url': 'http://www.amazon.com/gp/offer-listing/B01BLU6ERK%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
@@ -723,8 +755,10 @@ def results(request, product=None):
         "information_content": information_content,
         "final_offers": final_offers[0:3],
         "recommended_spec": recommended_spec,
-        "spec_filtering": spec_filtering,
-        "filter_form": filter_form,
+        "filters_list": filters_list,
+        "filters_optional": filters_optional,
+        "filters_selected": filters_selected,
+        "filters_form": filters_form,
     }
     return render(request, "results.html", context)
 

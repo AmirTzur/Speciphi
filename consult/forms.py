@@ -1,5 +1,5 @@
 from django import forms
-
+from collections import OrderedDict
 
 class AffiliationsForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -28,23 +28,52 @@ class UsesForm(forms.Form):
                                                                                    }))
 
 
-# Import filtering field (categories and types) from db
+# Import filtering fields (categories and types) from db
 class FilterForm(forms.Form):
     """
 
     """
-    ff_data = []
 
     def __init__(self, *args, **kwargs):
-        filtering_data = kwargs.get('filtering_data', {})
+        filters_list = kwargs.pop('filters_list', {})
+        filters_optional = kwargs.pop('filters_optional', {})
+        filters_selected = kwargs.pop('filters_selected', {})
         super(FilterForm, self).__init__(*args, **kwargs)
-        for field_key, field_val in filtering_data.items():
-            self.fields[filter_field['Uses_name'] + str(filter_field['value'])] = forms.BooleanField(required=False,
-                                                                                   widget=forms.CheckboxInput(attrs={
-                                                                                       'id': str(
-                                                                                           filter_field['Uses_id']) + '_' + str(
-                                                                                           filter_field['value']),
-                                                                                       'name': filter_field['Uses_name'],
-                                                                                       'value': filter_field['value'],
-                                                                                   }))
+        for field_key, field_vals in filters_list.items():
+            for spec in field_vals:
+                if spec in filters_optional[str(field_key)]:
+                    if spec in filters_selected[str(field_key)]:
+                        self.fields[str(field_key) + "_" + str(spec)] = forms.BooleanField(
+                            required=False,
+                            initial=True,
+                            label=str(spec),
+                            widget=forms.CheckboxInput(attrs={
+                                'id': str(field_key) + "-" + str(spec),
+                                'name': str(spec),
+                                'value': str(field_key) + "-" + str(spec),
+                                'disabled': False,
+                            }))
+                    else:
+                        self.fields[str(field_key) + "_" + str(spec)] = forms.BooleanField(
+                            required=False,
+                            initial=False,
+                            label=str(spec),
+                            widget=forms.CheckboxInput(attrs={
+                                'id': str(field_key) + "-" + str(spec),
+                                'name': str(spec),
+                                'value': str(field_key) + "-" + str(spec),
+                                'disabled': False,
+                            }))
+                else:
+                    self.fields[str(field_key) + "_" + str(spec)] = forms.BooleanField(
+                        required=False,
+                        initial=False,
+                        label=str(spec),
+                        widget=forms.CheckboxInput(attrs={
+                            'id': str(field_key) + "-" + str(spec),
+                            'name': str(spec),
+                            'value': str(field_key) + "-" + str(spec),
+                            'disabled': True,
+                        }))
+
 

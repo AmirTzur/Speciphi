@@ -92,7 +92,7 @@
                 {% for deal in final_offers %}
                     <div id="{{ deal.sort_indicator }}" class="results-deal">
                         <a href="{{ deal.offers.0.deal_url }}" target="_blank" class="deal-link">
-                            <span>{{ deal.brand }}&nbsp;{{ deal.model }}</span>
+                            <span>{{ deal.Brand }}&nbsp;{{ deal.Line }}</span>
                             <img src="{{ deal.image_url }}">
                         </a>
                         <div id="select-price" class="btn-group dropdown">
