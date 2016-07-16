@@ -39,23 +39,6 @@
     vertical-align: top;
     width: 130px;
 }
-#filters-menu legend{
-    /*display: block;*/
-    float: left;
-    position: relative;
-    width: 80%;
-    margin-bottom: 0px;
-    font-size: 14px;
-    font-weight: bold;
-    border-bottom: none;
-}
-.checkbox{
-    /*display: block;*/
-    margin-bottom: 5px;
-    margin-top: 5px;
-    width: auto;
-    text-align: left;
-}
 .feature-btn{
     float: left;
     background-color: transparent;
@@ -66,6 +49,22 @@
 .feature-btn i{
     font-size: 12px;
 }
+#filters-menu legend{
+    float: left;
+    position: relative;
+    width: 87%;
+    margin-bottom: 0px;
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: none;
+}
+.checkbox{
+    margin-bottom: 5px;
+    margin-top: 5px;
+    width: auto;
+    text-align: left;
+}
+
 /* Mobile Submit Button */
 #submit-btn{
     display: block;
