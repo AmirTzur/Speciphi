@@ -1,3 +1,7 @@
+body button{
+    outline: none;
+}
+
 #process-header-wrapper{
     background-color: white;
 }
@@ -99,6 +103,7 @@
     height: 10px;
     width: 10px;
     margin-left: 10px;
+    z-index: 200;
 }
 #info-box svg{
     float: right;
@@ -119,6 +124,7 @@
     position: relative;
     left: 10px;
     top: -1px;
+    z-index: 105;
 }
 #info-pagination button{
     float: none!important;
@@ -160,9 +166,7 @@
         width: 290px;
     }
 }
-@media (min-width: 480px) and (max-width: 767px) {
 
-}
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
     .process-header-logo{
@@ -226,6 +230,7 @@
         height: 44.5px;
     }
 }
+
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
     .process-header-logo{
@@ -247,6 +252,7 @@
         width: 85%;
     }
 }
+
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
 

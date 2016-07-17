@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
-from collections import OrderedDict
 from django.db import connection, Error
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
 from django.template import Context
-from consult.forms import AffiliationsForm, UsesForm, ContactForm
+from consult.forms import AffiliationsForm, UsesForm, ContactForm, FilterForm
 from django.http import HttpResponse
 from consult.models import Levelofuse
+from collections import OrderedDict
 import urllib.request
 import json
 
@@ -604,8 +604,161 @@ def results(request, product=None):
     pages['Focal'] = [False, "focalization"]
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [True, "results"]
+    # Title and description
+    page_title = 'Your results'
+    page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
+                'Donec in maximus augue. Quisque euismod euismod posuere. ' \
+                'Phasellus tempor.'
+    # Information elements content
+    information_content = {
+        "statistic": [
+            "S1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+        "insight": [
+            "I1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "I2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "I3-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+        "objective": [
+            "O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
+    }
+    # Filtering Form
+    # unit: " , GB x 2, lb.
+    filters_list = OrderedDict(
+        [('Screen Size', ['11.6"', '13.3"', '14"', '15.6"', '17.4"']),
+         ('Processor', ['Intel Core i3', 'Intel Core i5', 'Intel Core i7',
+                        'Intel Core M', 'AMD X', 'AMD Y', 'Rocket']),
+         ('Memory', ['2GB', '4GB', '8GB', '12GB', '16GB', '32GB', '64GB']),
+         ('Storage', ['16GB', '32GB', '64GB', '128GB', '192GB', '256GB',
+                      '320GB', '500GB', '750GB', '1000GB', '1128GB']),
+         ('GPU', ['Intel HD Graphics', 'NVIDIA GeForce', 'AMD Radeon']),
+         ('Screen Resolution', ['1024 x 768', '1366 x 768', '1440 x 900',
+                                '1920 x 1080', '1920 x 1200', '2166 x 1440',
+                                '2560 x 1440', '2560 x 1600', '2880 x 1800',
+                                '3200 x 1800', '3860 x 2160']),
+         ('Touch Screen', ['Yes', 'No']),
+         ('Weight', ['1-2 lb.', '2-3 lb.', '3-4 lb.', '4+ lb.']),
+         ('Operating System', ['Chromebook', 'Windows', 'OSX']),
+         ('Brand', ['Apple', 'Dell', 'Samsung'])])
+    filters_optional = OrderedDict(
+        [('Screen Size', ['13.3"', '14"', '15.6"']),
+         ('Processor', ['Intel Core i5', 'Intel Core i7',
+                        'AMD X']),
+         ('Memory', ['8GB', '12GB', '16GB', '32GB', '64GB']),
+         ('Storage', ['320GB', '500GB', '750GB', '1000GB']),
+         ('GPU', ['Intel HD Graphics', 'NVIDIA GeForce', 'AMD Radeon']),
+         ('Screen Resolution', [
+                                '1920 x 1080', '1920 x 1200', '2166 x 1440',
+                                '2560 x 1440', '2560 x 1600']),
+         ('Touch Screen', ['Yes', 'No']),
+         ('Weight', ['1-2 lb.', '2-3 lb.']),
+         ('Operating System', ['Chromebook', 'Windows']),
+         ('Brand', ['Apple', 'Dell'])])
+    filters_selected = OrderedDict(
+        [('Screen Size', ['13.3"', '14"', '15.6"']),
+         ('Processor', ['Intel Core i5', 'Intel Core i7']),
+         ('Memory', ['8GB']),
+         ('Storage', ['500GB', '750GB']),
+         ('GPU', ['NVIDIA GeForce']),
+         ('Screen Resolution', [
+             '2560 x 1440', '2560 x 1600']),
+         ('Touch Screen', []),
+         ('Weight', ['2-3 lb.']),
+         ('Operating System', ['Windows']),
+         ('Brand', ['Apple', 'Dell'])])
+    # filters_form = FilterForm(filters_list=filters_list, filters_optional=filters_optional,
+    #                           filters_selected=filters_selected)
+    if request.method == 'POST':
+        filters_form = FilterForm(data=request.POST)
+        if filters_form.is_valid():
+            # need to implement filter change event: send params to db and get new results
+            print("Missing: extract relevant data from db")
+    else:
+        filters_form = FilterForm(filters_list=filters_list, filters_optional=filters_optional,
+                                  filters_selected=filters_selected)
+    # Final Results
+    # Laptop Features (keys): Screen Size, Processor, Memory, Storage [ssd,hdd], GPU, Screen Resolution, Touch Screen,
+    #   Weight, Dimensions (WxHxD), Battery [chemistry,cells,wh], Color, Operating System, Model (manufacturer model)
+    final_offers = [
+        {'sort_indicator': 'Category Favorable', 'Brand': 'Lenovo', 'Line': 'ThinkPad P40 Yoga',
+         'image_url': 'http://ecx.images-amazon.com/images/I/41238W8tcjL._SL160_.jpg',
+         'offers': [{'deal_id': 333,
+                     'deal_url': 'http://www.amazon.com/gp/offer-listing/B00VQP3DNY%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                     'vendor_name': 'Amazon',
+                     'price': 1050},
+                    {'deal_id': 444,
+                     'deal_url': 'xxx',
+                     'vendor_name': 'eBay',
+                     'price': 1100}],
+         'features': OrderedDict([('Screen Size', '14"'), ('Processor', 'Intel Core i7-4847HQ'), ('Memory', '8GB'),
+                                  ('Storage', ['0GB', '1000GB']),
+                                  ('GPU', 'Intel HD Graphics 5500'), ('Screen Resolution', '1920 x 1080'),
+                                  ('Touch Screen', 'Yes'),
+                                  ('Weight', '2.87 lb'), ('Dimensions (WxHxD)', '14x0.66x9.27"'),
+                                  ('Battery', 'Li-Polymer 6 cells 56Wh'), ('Color', 'Black'),
+                                  ('Operating System', 'Windows'), ('Model', 'Yogab456')]),
+         },
+        {'sort_indicator': 'Best Match', 'Brand': 'Apple', 'Line': 'Macbook Pro (Early 2015)',
+         'image_url': 'http://ecx.images-amazon.com/images/I/41lmJ1hPMnL._SL160_.jpg',
+         'offers': [{'deal_id': 111,
+                     'deal_url': 'http://www.amazon.com/gp/offer-listing/B00GZB8D0M%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                     'vendor_name': 'Amazon',
+                     'price': 950},
+                    {'deal_id': 222,
+                     'deal_url': 'xxx',
+                     'vendor_name': 'eBay',
+                     'price': 1000}],
+         'features': OrderedDict([('Screen Size', '13.3"'), ('Processor', 'Intel Core i5-5600U'), ('Memory', '16GB'), ('Storage', ['256GB', '0GB']),
+                                  ('GPU', 'NVIDIA GeForce GTX 960M'), ('Screen Resolution', '3200 x 1800'), ('Touch Screen', 'No'),
+                                  ('Weight', '4 lb'), ('Dimensions (WxHxD)', '12.2x0.9x8"'), ('Battery', 'Li-Ion 4 cells 72Wh'), ('Color', 'Black'),
+                                  ('Operating System', 'Windows'), ('Model', 'MLLL/AH')]),
+         },
+        {'sort_indicator': 'Greatest Mobility', 'Brand': 'Dell', 'Line': 'XPS 15',
+         'image_url': 'http://ecx.images-amazon.com/images/I/218dheiyUrL._SL160_.jpg',
+         'offers': [{'deal_id': 555,
+                     'deal_url': 'http://www.amazon.com/gp/offer-listing/B00SQG3MQE%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                     'vendor_name': 'Amazon',
+                     'price': 1150},
+                    {'deal_id': 666,
+                     'deal_url': 'xxx',
+                     'vendor_name': 'eBay',
+                     'price': 1200}],
+         'features': OrderedDict([('Screen Size', '15.6"'), ('Processor', 'Intel Core i3-3200F'), ('Memory', '8GB'), ('Storage', ['256GB', '1000GB']),
+                                  ('GPU', 'NVIDIA Quadro M1000M'), ('Screen Resolution', '1920 x 1080'), ('Touch Screen', 'No'),
+                                  ('Weight', '6 lb'), ('Dimensions (WxHxD)', '12.2x1x8"'), ('Battery', 'Li-Ion 3 cells 44Wh'), ('Color', 'Black'),
+                                  ('Operating System', 'Windows'), ('Model', 'XPS13cc')]),
+         },
+        {'sort_indicator': 'Cost Effective', 'Brand': 'Asus', 'Line': 'Zenbook 133X',
+         'image_url': 'http://ecx.images-amazon.com/images/I/41-6oCGJqwL._SL160_.jpg',
+         'offers': [{'deal_id': 777,
+                     'deal_url': 'http://www.amazon.com/gp/offer-listing/B01BLU6ERK%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
+                     'vendor_name': 'Amazon',
+                     'price': 1250},
+                    {'deal_id': 888,
+                     'deal_url': 'xxx',
+                     'vendor_name': 'eBay',
+                     'price': 1300}],
+         'features': OrderedDict([('Screen Size', '17"'), ('Processor', 'Intel Core i5-5600U'), ('Memory', '8GB'), ('Storage', ['256GB', '0GB']),
+                                  ('GPU', 'NVIDIA GeForce GTX 960M'), ('Screen Resolution', '1920 x 1080'), ('Touch Screen', 'No'),
+                                  ('Weight', '4.25 lb'), ('Dimensions (WxHxD)', '11x1.2x10"'), ('Battery', 'Li-Ion 4 cells 72Wh'), ('Color', 'Black'),
+                                  ('Operating System', 'Windows'), ('Model', 'Z3003U')]),
+         },
+    ]
+    recommended_spec = OrderedDict([('Screen Size', '13-15"'), ('Processor', 'Intel Core i5-5600U'), ('Memory', '8GB'),
+                                    ('Storage', ['8GB SSD', '1000GB HDD']), ('GPU', 'Intel HD Graphics'),
+                                    ('Screen Resolution', '1920 x 1080'), ('Touch Screen', 'Yes'), ('Weight', '2.5-3 lb'),
+                                    ('Battery', 'Li-Polymer 6 cells 56Wh'), ('Operating System', ['Windows /', 'Chromebook'])])
     context = {
         "pages": pages,
+        "product": product,
+        "page_title": page_title,
+        "page_desc": page_desc,
+        "information_content": information_content,
+        "final_offers": final_offers[0:3],
+        "recommended_spec": recommended_spec,
+        "filters_list": filters_list,
+        "filters_optional": filters_optional,
+        "filters_selected": filters_selected,
+        "filters_form": filters_form,
     }
     return render(request, "results.html", context)
 

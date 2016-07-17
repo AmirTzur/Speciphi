@@ -1,0 +1,49 @@
+{% load staticfiles %}
+{% load djaroo_extras %}
+
+<head>
+    <link href="{% static 'css/results_specs.css' %}" rel="stylesheet">
+</head>
+
+<body>
+<!-- Open/Close Button for mobile -->
+<button id="filters-btn" class="">
+    <i class="fa fa-tasks fa-rotate-180" aria-hidden="true"></i>
+</button>
+<!-- Column: Filters -->
+<form action="{% url 'results' product %}" method="post" role="form" id="filters-menu" class="col-xs-10 col-sm-3 well" style="background-color: #e5dfd3"> {% csrf_token %}
+    <div style="display: block">
+    {% for feature_key, feature_vals in filters_list.items %}
+        <fieldset class="form-group" form="filters-menu">
+            <button id="" class="feature-btn">
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </button>
+            <legend>{{ feature_key }}</legend>
+            {% for spec in feature_vals %}
+                {% if spec in filters_optional|key:feature_key %}
+                    <div class="checkbox">
+                        <label for="{{feature_key}}-{{ spec }}">
+                            {% with feature_key|add:"_"|add:spec as field_name %}
+                            {{ filters_form|key:field_name }}
+                            {% endwith %}
+                            {{ spec }}
+                          </label>
+                    </div>
+                {% else %}
+                    <div class="checkbox disabled">
+                        <label for="{{feature_key}}-{{ spec }}">
+                            {% with feature_key|add:"_"|add:spec as field_name %}
+                            {{ filters_form|key:field_name }}
+                            {% endwith %}
+                            {{ spec }}
+                          </label>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </fieldset>
+    {% endfor %}
+    </div>
+    <button id="submit-btn" type="submit" class="btn btn-primary center-block">Submit</button>
+</form>
+
+</body>

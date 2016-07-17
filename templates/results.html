@@ -1,0 +1,132 @@
+{% extends 'djaroo_base.html' %}
+{% load staticfiles %}
+
+<head>
+    <!--  Page Title -->
+    <title>
+        {% block head_title %} Results {{ block.super }}{% endblock %}
+    </title>
+    <!--  Stylesheet -->
+    {% block stylesheets %}
+        <link href="{% static 'css/results.css' %}" rel="stylesheet">
+    {% endblock %}
+</head>
+
+{% block content %}
+
+    <!-- Feature: information elements -->
+    {% include "info_elements.html" %}
+
+    <!-- Main Section -->
+    <!-- Container: Results Headers Section (my specs, best match, etc.) -->
+    <div id="headers-wrapper" class="container-fluid">
+        <!-- Raw: Headers -->
+        <div class="row">
+            <!-- Column: My Specs -->
+            <div id="my-specs" class="hidden-xs col-sm-3">
+                <button id="my-specs-btn">
+                    <span>my specs</span>
+                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                </button>
+                <div id="my-specs-window" class="well">
+                    <button id="specs-close" type="button" class="close">&times;</button>
+                    <span id="my-specs-header">Recommended Specification</span>
+                    <div id="share-icons-container">
+                        <button id="share-facebook">
+                            <i class="fa fa-facebook-square" aria-hidden="true"></i>
+                        </button>
+                        <button id="share-twitter">
+                            <i class="fa fa-twitter-square" aria-hidden="true"></i>
+                        </button>
+                        <button id="share-email">
+                            <i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        </button>
+                        <button id="share-pdf">
+                            <i class="fa fa-print" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <table id="recommended-spec" class="table ">
+                        <tbody>
+                        {% for key, val in recommended_spec.items %}
+                            <tr>
+                                <td>{{ key }}</td>
+                                {% if key == 'Storage' or key == 'Operating System' %}
+                                    <td>{{ val.0 }}<br>{{ val.1 }}</td>
+                                {% else %}
+                                    <td>{{ val }}</td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Column: Results Headers -->
+            <div id="results-headers" class="col-xs-12 col-sm-8 center-block">
+                <button id="ind0">
+                    <span>{{ final_offers.0.sort_indicator }}</span>
+                    <i class="fa fa-line-chart" aria-hidden="true"></i>
+                </button>
+                <button id="ind1">
+                    <span>{{ final_offers.1.sort_indicator }}</span>
+                    <i class="fa fa-star" aria-hidden="true"></i>
+                </button>
+                <button id="ind2">
+                    <span>{{ final_offers.2.sort_indicator }}</span>
+                    <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <!-- Container: Results Products and Filtering Section -->
+    <div id="results-wrapper" class="container-fluid">
+        <!-- Raw: Main Results -->
+        <div id="" class="row">
+            <!-- Column: Filters -->
+            <div class="">
+                <!-- Feature: Specification -->
+                {% include "results_specs.html" %}
+            </div>
+            <!-- Column: Products -->
+            <div id="results-section" class="col-xs-offset-2 col-xs-8 col-sm-offset-0 col-sm-8">
+                {% for deal in final_offers %}
+                    <div id="{{ deal.sort_indicator }}" class="results-deal">
+                        <a href="{{ deal.offers.0.deal_url }}" target="_blank" class="deal-link">
+                            <span>{{ deal.Brand }}&nbsp;{{ deal.Line }}</span>
+                            <img src="{{ deal.image_url }}">
+                        </a>
+                        <div id="select-price" class="btn-group dropdown">
+                            <a class="btn btn-primary" href="{{ deal.offers.0.deal_url }}" target="_blank"><i class="fa fa-usd" aria-hidden="true"></i> 1050 on Amazon</a>
+                            <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+                                <span class="fa fa-caret-down" title="Toggle dropdown menu"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="{{ deal.offers.1.deal_url }}" target="_blank"><i class="fa fa-usd" aria-hidden="true"></i> 800 on eBay</a></li>
+{#                                <li class="divider"></li>#}
+                            </ul>
+                        </div>
+                        <table class="table table-hover">
+                            <tbody>
+                                {% for key, val in deal.features.items %}
+                                    <tr>
+                                        <td>{{ key }}</td>
+                                        {% if key == 'Storage' %}
+                                            <td>{{ val.0 }}&nbsp;SSD<br>{{ val.1 }}&nbsp;HDD</td>
+                                        {% else %}
+                                            <td>{{ val }}</td>
+                                        {% endif %}
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    {% include "results_js.html" %}
+
+{% endblock %}

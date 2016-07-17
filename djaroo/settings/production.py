@@ -33,7 +33,7 @@ if not settings.DEBUG:
     # SECURITY WARNING: don't run with debug turned on in production!
     DEBUG = False
 
-    ALLOWED_HOSTS = ['djaroo.com', 'www.djaroo.com']
+    ALLOWED_HOSTS = ['djaroo.com', 'www.djaroo.com', 'speciphi.com', 'www.speciphi.com']
 
     EMAIL_HOST = 'smtp.gmail.com'
     EMAIL_HOST_USER = 'djaroo.superuser@gmail.com'

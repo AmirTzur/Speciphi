@@ -1,0 +1,123 @@
+#filters-btn{
+    position: fixed;
+    top: 39.5%;
+    left: 94%;
+    z-index: 501;
+    width: 31px;
+    height: 28px;
+    background-color: rgba(152, 147, 136, 0.95);
+    border-radius: 4px;
+    padding: 0px;
+    border: none;
+}
+#filters-btn i{
+    position: relative;
+    top: -1px;
+    left: -0.52px;
+    font-size: 28px;
+    color: rgb(229, 179, 77);
+}
+#filters-menu{
+    position: fixed;
+    left: -100%;
+    top: 39.5%;
+    height: 60.5%;
+    z-index: 500;
+    font-family: "Bariol";
+    font-style: normal;
+    text-align: left;
+    padding: 25px 15px 15px 10px;
+    margin-bottom: 0px;
+}
+#filters-menu fieldset{
+    margin-right: 15px;
+    margin-bottom: 0px;
+    padding: 5px 0px 2px 0px;
+    border-top: 1px solid rgb(255, 255, 255);
+    display: inline-block;
+    text-align: left;
+    vertical-align: top;
+    width: 130px;
+}
+.feature-btn{
+    float: left;
+    background-color: transparent;
+    padding: 0px;
+    border: none;
+    margin-right: 5px;
+}
+.feature-btn i{
+    font-size: 12px;
+}
+#filters-menu legend{
+    float: left;
+    position: relative;
+    width: 87%;
+    margin-bottom: 0px;
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: none;
+}
+.checkbox{
+    margin-bottom: 5px;
+    margin-top: 5px;
+    width: auto;
+    text-align: left;
+}
+
+/* Mobile Submit Button */
+#submit-btn{
+    display: block;
+    margin-top: 15px;
+    position: relative;
+    left: -1%;
+}
+
+/* Results Feature - Responsive */
+
+/* Extra small devices - 320px Design (phones, less than 480px) */
+@media (max-width: 767px) {
+    #filters-menu{
+        overflow-y: scroll;
+    }
+}
+/* Medium devices (480px and up) */
+@media (min-width: 479px) {
+    #filters-btn{
+        left: 96%;
+    }
+}
+/* Small devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+    #filters-btn{
+        display: none!important;
+    }
+    #submit-btn{
+        display: none;
+    }
+    #filters-menu{
+        display: block;
+        position: relative;
+        left: 0%;
+        top: 0%;
+        z-index: 0;
+        /*max-width: 300px;*/
+        padding: 8px 15px 3px 25px;
+    }
+    #filters-menu fieldset{
+        width: 100%;
+    }
+    #filters-menu legend{
+        margin-bottom: 4px;
+    }
+}
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+    #filters-btn{
+        left: 97%;
+    }
+}
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+}
