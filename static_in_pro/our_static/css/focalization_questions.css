@@ -50,6 +50,12 @@ span.selectboxit-text {
     border-radius: 0 !important;
 }
 
+.selectboxit-selected {
+
+    background: #ADD8E6;
+
+}
+
 div.question {
     background-color: white;
     width: 185px;
@@ -261,6 +267,12 @@ div#questions_desktop_container_display, div#questions_desktop_container_display
 
     a.selectboxit-option-anchor {
         font-size: 18px !important;
+    }
+
+    .selectboxit-default-arrow {
+        border-top: 14px solid rgb(230, 89, 42) !important;
+        border-right: 7px solid transparent !important;
+        border-left: 7px solid transparent !important;
     }
 
     div#questions_holder {

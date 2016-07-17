@@ -1,5 +1,4 @@
 from django import forms
-from collections import OrderedDict
 
 class AffiliationsForm(forms.Form):
     def __init__(self, *args, **kwargs):
@@ -28,7 +27,6 @@ class UsesForm(forms.Form):
                                                                                    }))
 
 
-# Import filtering fields (categories and types) from db
 class FilterForm(forms.Form):
     """
 
@@ -77,3 +75,17 @@ class FilterForm(forms.Form):
                         }))
 
 
+class ContactForm(forms.Form):
+    name = forms.CharField(required=True,
+                           widget=forms.TextInput(attrs={'placeholder': 'Your Name', 'class': 'form-control'}),
+                           error_messages={'required': 'This field is required.'})
+    email = forms.EmailField(required=False,
+                             widget=forms.EmailInput(attrs={'placeholder': 'Email Address', 'class': 'form-control'}))
+    message = forms.CharField(required=True, widget=forms.Textarea(
+        attrs={'placeholder': 'Enter your massage for us here. We will get back to you within 1 business day.',
+               'class': 'form-control', 'rows': '7'}))
+
+    def clean_name(self):
+        data = self.cleaned_data['name']
+        if not data.replace(' ', '').isalpha():
+            raise forms.ValidationError("Name should contain only letters and space .")

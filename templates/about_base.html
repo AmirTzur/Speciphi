@@ -1,0 +1,51 @@
+{% extends 'djaroo_base.html' %}
+{% load staticfiles %}
+
+{% block content %}
+    <head>
+        <link href="{% static 'css/info_elements.css' %}" rel="stylesheet">
+        <style>
+            p.page-desc-mobile {
+                width: 303px;
+                margin: 0 auto 5px auto;
+            }
+
+            span.page-header-mobile {
+                font-size: 24px;
+            }
+        </style>
+    </head>
+    <!-- Feature: header -->
+    <div id="process-header-wrapper" class="container-fluid">
+        <!-- Raw:  -->
+        <div class="row">
+            <!-- Column: Logo and Page Title (mobile) -->
+            <div class="visible-xs">
+                <div class="" style="display: block">
+                    <span class="page-header page-header-mobile">{{ page_title }}</span>
+                </div>
+
+                <div style="display: block">
+                    <p id="page-desc" class="page-desc-mobile">{{ page_desc }}</p>
+                </div>
+            </div>
+            <!-- Column: Logo and Page Title (desktop) -->
+            <div class="hidden-xs col-sm-offset-1 col-sm-3">
+                <div class="process-header-logo"></div>
+            </div>
+            <div class="hidden-xs col-sm-4">
+                <div class="process-header-title">
+                    <span class="page-header">{{ page_title }}</span>
+                    <p id="page-desc">{{ page_desc }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% block about_content %}
+
+        <!-- Overrides about pages content -->
+
+    {% endblock %}
+
+{% endblock %}
