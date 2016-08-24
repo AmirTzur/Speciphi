@@ -64,7 +64,39 @@
     width: auto;
     text-align: left;
 }
-
+/* Slider */
+#price-slider{
+    /*display: block;*/
+    /*padding: 10px 0px 10px 0px;*/
+}
+#slider-range{
+    display: inline-block;
+    width: 40px;
+    height: 4px;
+    background: #e6592a;
+    border: none;
+}
+/* Slider Controls */
+#slider-range span {
+    border-radius: 50%;
+    border-color: rgb(229, 179, 77);
+    background: rgb(229, 179, 77);
+    width: 16px;
+    height: 16px;
+    /*z-index: 10;*/
+}
+#slider-range span:hover{
+    cursor: pointer;
+}
+#slider-range span:active, span:focus{
+    outline: none;
+}
+/* Slider - Selected Range */
+#slider-range div{
+    background: #e6592a;
+    border: none;
+    /*height: 4px;*/
+}
 /* Mobile Submit Button */
 #submit-btn{
     display: block;

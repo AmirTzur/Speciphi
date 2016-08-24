@@ -665,16 +665,16 @@ def results(request, product=None):
          ('Weight', ['2-3 lb.']),
          ('Operating System', ['Windows']),
          ('Brand', ['Apple', 'Dell'])])
-    # filters_form = FilterForm(filters_list=filters_list, filters_optional=filters_optional,
-    #                           filters_selected=filters_selected)
-    if request.method == 'POST':
-        filters_form = FilterForm(data=request.POST)
-        if filters_form.is_valid():
-            # need to implement filter change event: send params to db and get new results
-            print("Missing: extract relevant data from db")
-    else:
-        filters_form = FilterForm(filters_list=filters_list, filters_optional=filters_optional,
-                                  filters_selected=filters_selected)
+    filters_form = FilterForm(filters_list=filters_list, filters_optional=filters_optional,
+                              filters_selected=filters_selected)
+    # if request.method == 'POST':
+    #     filters_form = FilterForm(data=request.POST)
+    #     if filters_form.is_valid():
+    #         # need to implement filter change event: send params to db and get new results
+    #         print("Missing: extract relevant data from db")
+    # else:
+    #     filters_form = FilterForm(filters_list=filters_list, filters_optional=filters_optional,
+    #                               filters_selected=filters_selected)
     # Final Results
     # Laptop Features (keys): Screen Size, Processor, Memory, Storage [ssd,hdd], GPU, Screen Resolution, Touch Screen,
     #   Weight, Dimensions (WxHxD), Battery [chemistry,cells,wh], Color, Operating System, Model (manufacturer model)

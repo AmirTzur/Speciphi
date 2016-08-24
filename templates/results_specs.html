@@ -3,6 +3,8 @@
 
 <head>
     <link href="{% static 'css/results_specs.css' %}" rel="stylesheet">
+    <!-- jQuery UI Style -->
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.min.css" />
 </head>
 
 <body>
@@ -13,6 +15,15 @@
 <!-- Column: Filters -->
 <form action="{% url 'results' product %}" method="post" role="form" id="filters-menu" class="col-xs-10 col-sm-3 well" style="background-color: #e5dfd3"> {% csrf_token %}
     <div style="display: block">
+        <fieldset class="form-group" form="filters-menu">
+            <div id="price-slider" class="center-block">
+                <label for="slider-min"></label>
+                <input type="text" id="slider-min" class="price-tag" readonly>
+                <div id="slider-range"></div>
+                <label for="slider-max"></label>
+                <input type="text" id="slider-max" class="price-tag" readonly>
+        </div>
+        </fieldset>
     {% for feature_key, feature_vals in filters_list.items %}
         <fieldset class="form-group" form="filters-menu">
             <button id="" class="feature-btn">
@@ -45,5 +56,8 @@
     </div>
     <button id="submit-btn" type="submit" class="btn btn-primary center-block">Submit</button>
 </form>
+
+<!-- jQuery UI Scripts -->
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 
 </body>
