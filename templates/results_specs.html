@@ -15,7 +15,8 @@
 <!-- Column: Filters -->
 <form action="{% url 'results' product %}" method="post" role="form" id="filters-menu" class="col-xs-10 col-sm-3 well" style="background-color: #e5dfd3"> {% csrf_token %}
     <div style="display: block">
-        <fieldset class="form-group" form="filters-menu">
+        <fieldset id="price-slider-field" class="form-group" form="filters-menu">
+            <legend>Price Range</legend>
             <div id="price-slider" class="center-block">
                 <label for="slider-min"></label>
                 <input type="text" id="slider-min" class="price-tag" readonly>

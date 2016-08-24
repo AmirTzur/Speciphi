@@ -77,7 +77,7 @@ $(document).ready(function(){
             if (window.matchMedia('(max-width: 767px)').matches) {
                 filters_menu.css('left', '100%');
                 filters_menu.width('130');
-                $('#filters-menu fieldset').width('130');
+                $('#filters-menu fieldset').width('100%');
             } else if (window.matchMedia('(min-width: 768px)').matches){
                 filters_menu.css('left', '0');
                 filters_menu.width('');

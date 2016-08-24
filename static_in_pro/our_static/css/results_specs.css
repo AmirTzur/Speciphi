@@ -26,7 +26,7 @@
     font-family: "Bariol";
     font-style: normal;
     text-align: left;
-    padding: 25px 15px 15px 10px;
+    padding: 30px 0px 15px 0px;
     margin-bottom: 0px;
 }
 #filters-menu fieldset{
@@ -37,7 +37,7 @@
     display: inline-block;
     text-align: left;
     vertical-align: top;
-    width: 130px;
+    width: 100%;
 }
 .feature-btn{
     float: left;
@@ -65,13 +65,29 @@
     text-align: left;
 }
 /* Slider */
+#filters-menu fieldset:nth-child(1){
+    border: none;
+    margin-bottom: 10px;
+}
+#filters-menu fieldset:nth-child(1) legend{
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: center;
+    background-color: rgb(50,57,78);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 2.3;
+}
 #price-slider{
-    /*display: block;*/
-    /*padding: 10px 0px 10px 0px;*/
+
 }
 #slider-range{
     display: inline-block;
-    width: 40px;
+    position: relative;
+    top: -3px;
+    width: 40%;
     height: 4px;
     background: #e6592a;
     border: none;
@@ -97,6 +113,16 @@
     border: none;
     /*height: 4px;*/
 }
+.price-tag{
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 1.5;
+    width: 60px;
+    border: none;
+    background-color: transparent;
+
+}
 /* Mobile Submit Button */
 #submit-btn{
     display: block;
@@ -117,6 +143,9 @@
 @media (min-width: 479px) {
     #filters-btn{
         left: 96%;
+    }
+    #slider-range{
+        width: 60%;
     }
 }
 /* Small devices (tablets, 768px and up) */
