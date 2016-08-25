@@ -64,25 +64,45 @@
     width: auto;
     text-align: left;
 }
-/* Advisors */
+/* Menu Type */
+#menu-type-field{
+    margin-left: 5px;
+}
+#menu-type-field .btn-default{
+    border-color: #bfbdad;
+    color: #202b4e;
+}
 #filters-menu fieldset:nth-child(1){
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 #filters-menu fieldset:nth-child(1) legend{
     display: block;
     width: 100%;
-    margin-bottom: 10px;
+    margin-bottom: 4px;
+    margin-left: 5px;
+    color: #232323;
+    font-size: 15px;
+    font-weight: bold;
+}
+/* Advisors */
+#filters-menu fieldset:nth-child(2){
+    margin-bottom: 0px;
+}
+#filters-menu fieldset:nth-child(2) legend{
+    display: block;
+    width: 100%;
+    margin-bottom: 2px;
     margin-left: 5px;
     color: #232323;
     font-size: 15px;
     font-weight: bold;
 }
 /* Slider */
-#filters-menu fieldset:nth-child(2){
+#filters-menu fieldset:nth-child(3){
     border: none;
     margin-bottom: 10px;
 }
-#filters-menu fieldset:nth-child(2) legend{
+#filters-menu fieldset:nth-child(3) legend{
     display: block;
     width: 100%;
     margin-bottom: 10px;
@@ -127,12 +147,10 @@
 .price-tag{
     text-align: center;
     font-size: 13px;
-    font-weight: bold;
     line-height: 1.5;
     width: 60px;
     border: none;
     background-color: transparent;
-
 }
 /* Mobile Submit Button */
 #submit-btn{
@@ -173,14 +191,16 @@
         left: 0%;
         top: 0%;
         z-index: 0;
-        /*max-width: 300px;*/
-        padding: 8px 15px 3px 25px;
-    }
-    #filters-menu fieldset{
-        width: 100%;
+        padding: 0px;
     }
     #filters-menu legend{
         margin-bottom: 4px;
+    }
+    #slider-range{
+        width: 35%;
+    }
+    .price-tag{
+        width: 50px;
     }
 }
 /* Medium devices (desktops, 992px and up) */
@@ -188,8 +208,19 @@
     #filters-btn{
         left: 97%;
     }
+    #slider-range{
+        width: 48%;
+    }
+    .price-tag{
+        width: 55px;
+    }
 }
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
-
+    #slider-range{
+        width: 50%;
+    }
+    .price-tag{
+        width: 60px;
+    }
 }

@@ -15,6 +15,17 @@
 <!-- Column: Filters -->
 <form action="{% url 'results' product %}" method="post" role="form" id="filters-menu" class="col-xs-10 col-sm-3 well" style="background-color: #e5dfd3"> {% csrf_token %}
     <div style="display: block">
+        <fieldset id="" class="form-group" form="filters-form">
+            <legend>Menu Type</legend>
+            <div id="menu-type-field" class="btn-group center-block" data-toggle="buttons">
+                <label class="btn btn-sm btn-default active">
+                    <input type="radio" name="menu-type" id="need-based" autocomplete="off" checked> Needs
+                </label>
+                <label class="btn btn-sm btn-default">
+                    <input type="radio" name="menu-type" id="specs-based" autocomplete="off"> Specs
+                </label>
+            </div>
+        </fieldset>
         <fieldset id="info-field" class="form-group" form="filters-form">
             <legend>Info Advisors</legend>
             <!-- Feature: information elements -->
