@@ -85,37 +85,199 @@
                 </label>
             </div>
         </fieldset>
-
-        <!-- Specs Section -->
-    {% for feature_key, feature_vals in filters_list.items %}
-        <fieldset class="form-group" form="filters-menu">
-            <button id="" class="feature-btn">
-                <i class="fa fa-chevron-right" aria-hidden="true"></i>
-            </button>
-            <legend>{{ feature_key }}</legend>
-            {% for spec in feature_vals %}
-                {% if spec in filters_optional|key:feature_key %}
-                    <div class="checkbox">
-                        <label for="{{feature_key}}-{{ spec }}">
-                            {% with feature_key|add:"_"|add:spec as field_name %}
-                            {{ filters_form|key:field_name }}
-                            {% endwith %}
-                            {{ spec }}
-                        </label>
-                    </div>
-                {% else %}
-                    <div class="checkbox disabled">
-                        <label for="{{feature_key}}-{{ spec }}">
-                            {% with feature_key|add:"_"|add:spec as field_name %}
-                            {{ filters_form|key:field_name }}
-                            {% endwith %}
-                            {{ spec }}
-                        </label>
-                    </div>
-                {% endif %}
-            {% endfor %}
+        <!-- NL-Type Section -->
+        <!-- !!! Replace with view list of affiliations !!! -->
+        <fieldset id="nl-needs-field" class="form-group nl-menu" form="filters-form">
+            <legend>My Needs</legend>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Low</th>
+                        <th>Medium</th>
+                        <th>High</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Gaming</td>
+                        <td>
+                            <input id="gamingl" name="gamingl" type="checkbox" value="gamingl">
+                        </td>
+                        <td>
+                            <input id="gamingm" name="gamingm" type="checkbox" value="gamingm">
+                        </td>
+                        <td>
+                            <input id="gamingh" name="gamingh" type="checkbox" value="gamingh">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Watch Movies</td>
+                        <td>
+                            <input id="watchingmoviesl" name="watchingmoviesl" type="checkbox" value="watchingmoviesl">
+                        </td>
+                        <td>
+                            <input id="watchingmoviesm" name="watchingmoviesm" type="checkbox" value="watchingmoviesm">
+                        </td>
+                        <td>
+                            <input id="watchingmoviesh" name="watchingmoviesh" type="checkbox" value="watchingmoviesh">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Photo Editing</td>
+                        <td>
+                            <input id="" name="" type="checkbox" value="">
+                        </td>
+                        <td>
+                            <input id="" name="" type="checkbox" value="">
+                        </td>
+                        <td>
+                            <input id="" name="" type="checkbox" value="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Social Media</td>
+                        <td>
+                            <input id="" name="" type="checkbox" value="">
+                        </td>
+                        <td>
+                            <input id="" name="" type="checkbox" value="">
+                        </td>
+                        <td>
+                            <input id="" name="" type="checkbox" value="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>MS Office</td>
+                        <td>
+                            <input id="" name="" type="checkbox" value="">
+                        </td>
+                        <td>
+                            <input id="" name="" type="checkbox" value="">
+                        </td>
+                        <td>
+                            <input id="" name="" type="checkbox" value="">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Programming</td>
+                        <td>
+                            <input id="" name="" type="checkbox" value="">
+                        </td>
+                        <td>
+                            <input id="" name="" type="checkbox" value="">
+                        </td>
+                        <td>
+                            <input id="" name="" type="checkbox" value="">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </fieldset>
-    {% endfor %}
+        <!-- NL-Question Section -->
+        <!-- !!! Replace with view list of affiliations !!! -->
+        <fieldset id="nl-questions-field" class="form-group nl-menu" form="filters-form">
+            <legend>Questions</legend>
+            <div id="" class="question-block">
+                <p class="">
+                    <span>Size vs Weight</span><br>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit? Proin tristique elit neque,
+                    pellentesque elementum sapien tristique eu.
+                </p>
+                <div id="" class="btn-group center-block answer-block" data-toggle="buttons">
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off" checked> Yes
+                    </label>
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off"> No
+                    </label>
+                </div>
+            </div>
+            <div id="" class="question-block">
+                <p class="">
+                    <span>Hybrid Laptop?</span><br>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit? Proin tristique elit neque,
+                    pellentesque elementum sapien tristique eu.
+                </p>
+                <div id="" class="btn-group center-block" data-toggle="buttons">
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off" checked> Yes
+                    </label>
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off"> No
+                    </label>
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off"> Nice to have
+                    </label>
+                </div>
+            </div>
+            <div id="" class="question-block">
+                <p class="">
+                    <span>Mobility</span><br>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit? Proin tristique elit neque,
+                    pellentesque elementum sapien tristique eu.
+                </p>
+                <div id="" class="btn-group center-block" data-toggle="buttons">
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off" checked> Yes
+                    </label>
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off"> No
+                    </label>
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off"> Nice to have
+                    </label>
+                </div>
+            </div>
+            <div id="" class="question-block">
+                <p class="">
+                    <span>Style & Brand</span><br>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit? Proin tristique elit neque,
+                    pellentesque elementum sapien tristique eu.
+                </p>
+                <div id="" class="btn-group center-block" data-toggle="buttons">
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off" checked> Yes
+                    </label>
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off"> No
+                    </label>
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off"> Nice to have
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+{#        <!-- Specs Section -->#}
+{#    {% for feature_key, feature_vals in filters_list.items %}#}
+{#        <fieldset class="form-group" form="filters-menu">#}
+{#            <button id="" class="feature-btn">#}
+{#                <i class="fa fa-chevron-right" aria-hidden="true"></i>#}
+{#            </button>#}
+{#            <legend>{{ feature_key }}</legend>#}
+{#            {% for spec in feature_vals %}#}
+{#                {% if spec in filters_optional|key:feature_key %}#}
+{#                    <div class="checkbox">#}
+{#                        <label for="{{feature_key}}-{{ spec }}">#}
+{#                            {% with feature_key|add:"_"|add:spec as field_name %}#}
+{#                            {{ filters_form|key:field_name }}#}
+{#                            {% endwith %}#}
+{#                            {{ spec }}#}
+{#                        </label>#}
+{#                    </div>#}
+{#                {% else %}#}
+{#                    <div class="checkbox disabled">#}
+{#                        <label for="{{feature_key}}-{{ spec }}">#}
+{#                            {% with feature_key|add:"_"|add:spec as field_name %}#}
+{#                            {{ filters_form|key:field_name }}#}
+{#                            {% endwith %}#}
+{#                            {{ spec }}#}
+{#                        </label>#}
+{#                    </div>#}
+{#                {% endif %}#}
+{#            {% endfor %}#}
+{#        </fieldset>#}
+{#    {% endfor %}#}
     </div>
     <button id="submit-btn" type="submit" class="btn btn-primary center-block">Submit</button>
 </form>

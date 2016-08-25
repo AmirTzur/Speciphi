@@ -71,39 +71,26 @@
 }
 #menu-type-field .btn-default{
     border-color: #bfbdad;
-    color: #202b4e;
+    color: #0a6488;
 }
-#filters-menu fieldset:nth-child(1){
-    margin-bottom: 10px;
+/* Menu-Type/Advisors/Price-Range Fields */
+#filters-menu fieldset:nth-child(n+1):nth-child(-n+3){
+    margin-bottom: 8px;
 }
-#filters-menu fieldset:nth-child(1) legend{
+#filters-menu fieldset:nth-child(n+1):nth-child(-n+3) legend{
     display: block;
     width: 100%;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
     margin-left: 5px;
     color: #232323;
     font-size: 15px;
     font-weight: bold;
 }
-/* Advisors */
-#filters-menu fieldset:nth-child(2){
-    margin-bottom: 0px;
-}
-#filters-menu fieldset:nth-child(2) legend{
-    display: block;
-    width: 100%;
-    margin-bottom: 2px;
-    margin-left: 5px;
-    color: #232323;
-    font-size: 15px;
-    font-weight: bold;
-}
-/* Slider */
-#filters-menu fieldset:nth-child(n+3):nth-child(-n+4){
+#filters-menu fieldset:nth-child(n+4):nth-child(-n+6){
     border: none;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
-#filters-menu fieldset:nth-child(n+3):nth-child(-n+4) legend{
+#filters-menu fieldset:nth-child(n+4):nth-child(-n+6) legend{
     display: block;
     width: 100%;
     margin-bottom: 10px;
@@ -114,6 +101,7 @@
     font-weight: bold;
     line-height: 2.3;
 }
+/* Slider */
 #slider-range{
     display: inline-block;
     position: relative;
@@ -152,6 +140,41 @@
     width: 60px;
     border: none;
     background-color: transparent;
+}
+/* NL Needs */
+#nl-needs-field table{
+    margin-bottom: 0px;
+}
+#nl-needs-field table thead th{
+    text-align: center;
+    color: #646469;
+}
+#nl-needs-field .table thead tr th{
+    border-bottom: none;
+}
+#nl-needs-field table tbody tr td:nth-child(n+2){
+    text-align: center;
+}
+#nl-needs-field .table tbody tr td{
+    border-top: 1px solid #bdcfdc;
+}
+/* NL Questions */
+.question-block{
+    /*text-align: left;*/
+    float: left;
+    display: block;
+    width: 90%;
+    margin-left: 5px;
+    margin-bottom: 10px;
+}
+.question-block p{
+    text-align: left;
+}
+.question-block p span{
+    font-weight: bold;
+}
+.answer-block{
+    display: block;
 }
 /* Mobile Submit Button */
 #submit-btn{
@@ -194,8 +217,14 @@
         z-index: 0;
         padding: 0px;
     }
+    #filters-menu fieldset:nth-child(n+1):nth-child(-n+3) legend{
+        font-size: 13px;
+    }
+    #filters-menu fieldset:nth-child(n+4):nth-child(-n+6) legend{
+        font-size: 14px;
+    }
     #filters-menu legend{
-        margin-bottom: 6px;
+        margin-bottom: 4px;
     }
     #slider-range{
         width: 35%;
@@ -203,6 +232,16 @@
     .price-tag{
         width: 50px;
     }
+    #nl-needs-field table{
+        font-size: 12px;
+    }
+    #nl-needs-field .table thead tr th{
+        padding: 4px;
+    }
+    #nl-needs-field .table tbody tr td{
+        padding: 6px 4px 6px 4px;
+    }
+
 }
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
@@ -214,6 +253,16 @@
     }
     .price-tag{
         width: 55px;
+    }
+    #nl-needs-field table{
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+    #nl-needs-field .table thead tr th{
+        padding: 8px;
+    }
+    #nl-needs-field .table tbody tr td{
+        padding: 8px;
     }
 }
 /* Large devices (large desktops, 1200px and up) */

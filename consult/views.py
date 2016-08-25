@@ -605,7 +605,7 @@ def results(request, product=None):
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [True, "results"]
     # Title and description
-    page_title = 'Your results'
+    page_title = 'Research Zone'
     page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
                 'Donec in maximus augue. Quisque euismod euismod posuere. ' \
                 'Phasellus tempor.'

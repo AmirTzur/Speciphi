@@ -11,7 +11,7 @@ body button{
 .process-header-logo{
     width: 105px;
     height: 39px;
-    background: url("../img/logo/Logo.svg") no-repeat;
+    /*background: url("../img/logo/Logo.svg") no-repeat;*/
 }
 /* Title */
 .process-header-title{
