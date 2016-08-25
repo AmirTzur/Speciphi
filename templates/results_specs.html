@@ -15,6 +15,11 @@
 <!-- Column: Filters -->
 <form action="{% url 'results' product %}" method="post" role="form" id="filters-menu" class="col-xs-10 col-sm-3 well" style="background-color: #e5dfd3"> {% csrf_token %}
     <div style="display: block">
+        <fieldset id="info-field" class="form-group" form="filters-form">
+            <legend>Info Advisors</legend>
+            <!-- Feature: information elements -->
+            {% include "advisors.html" %}
+        </fieldset>
         <fieldset id="price-slider-field" class="form-group" form="filters-menu">
             <legend>Price Range</legend>
             <div id="price-slider" class="center-block">
@@ -23,7 +28,7 @@
                 <div id="slider-range"></div>
                 <label for="slider-max"></label>
                 <input type="text" id="slider-max" class="price-tag" readonly>
-        </div>
+            </div>
         </fieldset>
     {% for feature_key, feature_vals in filters_list.items %}
         <fieldset class="form-group" form="filters-menu">

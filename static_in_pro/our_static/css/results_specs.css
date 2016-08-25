@@ -64,12 +64,25 @@
     width: auto;
     text-align: left;
 }
-/* Slider */
+/* Advisors */
 #filters-menu fieldset:nth-child(1){
+    margin-bottom: 5px;
+}
+#filters-menu fieldset:nth-child(1) legend{
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    margin-left: 5px;
+    color: #232323;
+    font-size: 15px;
+    font-weight: bold;
+}
+/* Slider */
+#filters-menu fieldset:nth-child(2){
     border: none;
     margin-bottom: 10px;
 }
-#filters-menu fieldset:nth-child(1) legend{
+#filters-menu fieldset:nth-child(2) legend{
     display: block;
     width: 100%;
     margin-bottom: 10px;
@@ -79,9 +92,6 @@
     font-size: 16px;
     font-weight: bold;
     line-height: 2.3;
-}
-#price-slider{
-
 }
 #slider-range{
     display: inline-block;
@@ -113,6 +123,7 @@
     border: none;
     /*height: 4px;*/
 }
+/* Slider - Price Inputs */
 .price-tag{
     text-align: center;
     font-size: 13px;
