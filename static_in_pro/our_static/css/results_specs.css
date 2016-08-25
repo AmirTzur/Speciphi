@@ -61,6 +61,7 @@
 .checkbox{
     margin-bottom: 5px;
     margin-top: 5px;
+    margin-left: 5px;
     width: auto;
     text-align: left;
 }
@@ -98,11 +99,11 @@
     font-weight: bold;
 }
 /* Slider */
-#filters-menu fieldset:nth-child(3){
+#filters-menu fieldset:nth-child(n+3):nth-child(-n+4){
     border: none;
     margin-bottom: 10px;
 }
-#filters-menu fieldset:nth-child(3) legend{
+#filters-menu fieldset:nth-child(n+3):nth-child(-n+4) legend{
     display: block;
     width: 100%;
     margin-bottom: 10px;
@@ -194,7 +195,7 @@
         padding: 0px;
     }
     #filters-menu legend{
-        margin-bottom: 4px;
+        margin-bottom: 6px;
     }
     #slider-range{
         width: 35%;

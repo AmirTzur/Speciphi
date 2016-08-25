@@ -15,6 +15,7 @@
 <!-- Column: Filters -->
 <form action="{% url 'results' product %}" method="post" role="form" id="filters-menu" class="col-xs-10 col-sm-3 well" style="background-color: #e5dfd3"> {% csrf_token %}
     <div style="display: block">
+        <!-- Menu Type Section -->
         <fieldset id="" class="form-group" form="filters-form">
             <legend>Menu Type</legend>
             <div id="menu-type-field" class="btn-group center-block" data-toggle="buttons">
@@ -26,11 +27,13 @@
                 </label>
             </div>
         </fieldset>
+        <!-- Info Advisors Section -->
         <fieldset id="info-field" class="form-group" form="filters-form">
             <legend>Info Advisors</legend>
             <!-- Feature: information elements -->
             {% include "advisors.html" %}
         </fieldset>
+        <!-- Price Range Section -->
         <fieldset id="price-slider-field" class="form-group" form="filters-menu">
             <legend>Price Range</legend>
             <div id="price-slider" class="center-block">
@@ -41,6 +44,49 @@
                 <input type="text" id="slider-max" class="price-tag" readonly>
             </div>
         </fieldset>
+        <!-- NL-Type Section -->
+        <!-- !!! Replace with view list of affiliations !!! -->
+        <fieldset id="nl-type-field" class="form-group nl-menu" form="filters-form">
+            <legend>My Type</legend>
+            <div class="checkbox">
+                <label for="type-1">
+                    <input id="type-1" name="type_1" type="checkbox" value="type-1">
+                    Home & Family
+                </label>
+            </div>
+            <div class="checkbox">
+                <label for="type-2">
+                    <input id="type-2" name="type_2" type="checkbox" value="type-2">
+                    Student
+                </label>
+            </div>
+            <div class="checkbox">
+                <label for="type-3">
+                    <input id="type-3" name="type_3" type="checkbox" value="type-3">
+                    Freelancer
+                </label>
+            </div>
+            <div class="checkbox">
+                <label for="type-4">
+                    <input id="type-4" name="type_4" type="checkbox" value="type-4">
+                    Designer
+                </label>
+            </div>
+            <div class="checkbox">
+                <label for="type-5">
+                    <input id="type-5" name="type_5" type="checkbox" value="type-5">
+                    Gamer
+                </label>
+            </div>
+            <div class="checkbox">
+                <label for="type-6">
+                    <input id="type-6" name="type_6" type="checkbox" value="type-6">
+                    Business
+                </label>
+            </div>
+        </fieldset>
+
+        <!-- Specs Section -->
     {% for feature_key, feature_vals in filters_list.items %}
         <fieldset class="form-group" form="filters-menu">
             <button id="" class="feature-btn">
@@ -55,7 +101,7 @@
                             {{ filters_form|key:field_name }}
                             {% endwith %}
                             {{ spec }}
-                          </label>
+                        </label>
                     </div>
                 {% else %}
                     <div class="checkbox disabled">
@@ -64,7 +110,7 @@
                             {{ filters_form|key:field_name }}
                             {% endwith %}
                             {{ spec }}
-                          </label>
+                        </label>
                     </div>
                 {% endif %}
             {% endfor %}
