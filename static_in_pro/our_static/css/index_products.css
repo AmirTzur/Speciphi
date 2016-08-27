@@ -19,7 +19,7 @@
     background-image: url("../img/products/Speakers.svg");
 }
 #product4{
-    background-image: url("../img/products/Camera.svg");
+    background-image: url("../img/products/Laptop.svg");
 }
 #product5{
     background-image: url("../img/products/Smart_watch.svg");
@@ -28,7 +28,7 @@
     background-image: url("../img/products/Smart_phone.svg");
 }
 #product7{
-    background-image: url("../img/products/Laptop.svg");
+    background-image: url("../img/products/Camera.svg");
 }
 #product8{
     background-image: url("../img/products/Hard_drive.svg");
@@ -48,7 +48,10 @@
     transition: all .1s ease-in-out;
     background-color: white;
 }
-
+.product-off{
+    opacity: 0.7;
+    cursor: not-allowed !important;
+}
 /*Product List - Mobile Label and Next Icon*/
 .product-label {
     display: none;
