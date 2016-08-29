@@ -19,11 +19,11 @@
         <fieldset id="" class="form-group" form="filters-form">
             <legend>Menu Type</legend>
             <div id="menu-type-field" class="btn-group center-block" data-toggle="buttons">
-                <label class="btn btn-sm btn-default active">
-                    <input type="radio" name="menu-type" id="need-based" autocomplete="off" checked> Needs
+                <label id="needs-btn"class="btn btn-sm btn-default active">
+                    <input type="radio" name="menu-type" id="" autocomplete="off" checked> Needs
                 </label>
-                <label class="btn btn-sm btn-default">
-                    <input type="radio" name="menu-type" id="specs-based" autocomplete="off"> Specs
+                <label id="specs-btn" class="btn btn-sm btn-default">
+                    <input type="radio" name="menu-type" id="" autocomplete="off"> Specs
                 </label>
             </div>
         </fieldset>
@@ -46,7 +46,7 @@
         </fieldset>
         <!-- NL-Type Section -->
         <!-- !!! Replace with view list of affiliations !!! -->
-        <fieldset id="nl-type-field" class="form-group nl-menu" form="filters-form">
+        <fieldset id="nl-type-field" class="form-group" form="filters-form">
             <legend>My Type</legend>
             <div class="checkbox">
                 <label for="type-1">
@@ -87,7 +87,7 @@
         </fieldset>
         <!-- NL-Type Section -->
         <!-- !!! Replace with view list of affiliations !!! -->
-        <fieldset id="nl-needs-field" class="form-group nl-menu" form="filters-form">
+        <fieldset id="nl-needs-field" class="form-group" form="filters-form">
             <legend>My Needs</legend>
             <table class="table">
                 <thead>
@@ -176,7 +176,7 @@
         </fieldset>
         <!-- NL-Question Section -->
         <!-- !!! Replace with view list of affiliations !!! -->
-        <fieldset id="nl-questions-field" class="form-group nl-menu" form="filters-form">
+        <fieldset id="nl-questions-field" class="form-group" form="filters-form">
             <legend>Questions</legend>
             <div id="" class="question-block">
                 <p class="">
@@ -248,36 +248,36 @@
                 </div>
             </div>
         </fieldset>
-{#        <!-- Specs Section -->#}
-{#    {% for feature_key, feature_vals in filters_list.items %}#}
-{#        <fieldset class="form-group" form="filters-menu">#}
-{#            <button id="" class="feature-btn">#}
-{#                <i class="fa fa-chevron-right" aria-hidden="true"></i>#}
-{#            </button>#}
-{#            <legend>{{ feature_key }}</legend>#}
-{#            {% for spec in feature_vals %}#}
-{#                {% if spec in filters_optional|key:feature_key %}#}
-{#                    <div class="checkbox">#}
-{#                        <label for="{{feature_key}}-{{ spec }}">#}
-{#                            {% with feature_key|add:"_"|add:spec as field_name %}#}
-{#                            {{ filters_form|key:field_name }}#}
-{#                            {% endwith %}#}
-{#                            {{ spec }}#}
-{#                        </label>#}
-{#                    </div>#}
-{#                {% else %}#}
-{#                    <div class="checkbox disabled">#}
-{#                        <label for="{{feature_key}}-{{ spec }}">#}
-{#                            {% with feature_key|add:"_"|add:spec as field_name %}#}
-{#                            {{ filters_form|key:field_name }}#}
-{#                            {% endwith %}#}
-{#                            {{ spec }}#}
-{#                        </label>#}
-{#                    </div>#}
-{#                {% endif %}#}
-{#            {% endfor %}#}
-{#        </fieldset>#}
-{#    {% endfor %}#}
+        <!-- Specs Section -->
+    {% for feature_key, feature_vals in filters_list.items %}
+        <fieldset class="form-group sp-menu" form="filters-menu">
+            <button id="" class="feature-btn">
+                <i class="fa fa-chevron-right" aria-hidden="true"></i>
+            </button>
+            <legend>{{ feature_key }}</legend>
+            {% for spec in feature_vals %}
+                {% if spec in filters_optional|key:feature_key %}
+                    <div class="checkbox">
+                        <label for="{{feature_key}}-{{ spec }}">
+                            {% with feature_key|add:"_"|add:spec as field_name %}
+                            {{ filters_form|key:field_name }}
+                            {% endwith %}
+                            {{ spec }}
+                        </label>
+                    </div>
+                {% else %}
+                    <div class="checkbox disabled">
+                        <label for="{{feature_key}}-{{ spec }}">
+                            {% with feature_key|add:"_"|add:spec as field_name %}
+                            {{ filters_form|key:field_name }}
+                            {% endwith %}
+                            {{ spec }}
+                        </label>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </fieldset>
+    {% endfor %}
     </div>
     <button id="submit-btn" type="submit" class="btn btn-primary center-block">Submit</button>
 </form>

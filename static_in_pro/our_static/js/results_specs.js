@@ -3,7 +3,18 @@
  */
 
 $(document).ready(function(){
-
+    // Menu Type Buttons
+    $('#specs-btn').on('click',function () {
+        $('#filters-menu fieldset').slice(3,6).fadeOut(150, function () {
+            $('#filters-menu fieldset').slice(6).fadeIn(150);
+            $('#filters-menu fieldset').slice(6).css('display', 'inline-block');
+        });
+    });
+    $('#needs-btn').on('click',function () {
+        $('#filters-menu fieldset').slice(6).fadeOut(150, function () {
+            $('#filters-menu fieldset').slice(3,6).fadeIn(150);
+        });
+    });
     // Mobile Filter Button
     var direction;
     var filters_menu = $('#filters-menu');
@@ -92,7 +103,7 @@ $(document).ready(function(){
     });
     // Price Slider Filter (jQuery UI)
     $(function() {
-        $( "#slider-range" ).slider({
+        $("#slider-range").slider({
             range: true,
             min: 200,
             max: 9500,
