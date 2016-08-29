@@ -618,7 +618,7 @@ def results(request, product=None):
     context.update({
         "page_desc": page_desc,
     })
-    # Affiliation Creation
+    # Affiliation Form
     ConsultationProcess_id = None
     Product_id = None
     affiliations = None
@@ -665,11 +665,10 @@ def results(request, product=None):
             })
         if ConsultationProcess_id:
             request.session['ConsultationProcess_id'] = ConsultationProcess_id[0]
-    # Application creation
+    # Application Form
     # get Uses ids (change to SQL exec)
     uses_ids_string = "1,2,3,4,5,7,9,11"
     uses_ids = uses_ids_string.split(",")
-
     # get relevant Uses (by id) from db
     uses = ValuesQuerySetToDict(Levelofuse.objects.all().filter(Uses_id__in=uses_ids).values())
     applications_form = None
@@ -678,21 +677,6 @@ def results(request, product=None):
         applications_form = UsesForm(uses_dict=uses)
     context.update({
         "applications_form": applications_form,
-    })
-    # Information elements content
-    information_content = {
-        "statistic": [
-            "S1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
-        "insight": [
-            "I1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            "I2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            "I3-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
-        "objective": [
-            "O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
-    }
-    context.update({
-        "information_content": information_content,
     })
     # Filtering Form
     # unit: " , GB x 2, lb.
@@ -760,6 +744,22 @@ def results(request, product=None):
     # else:
     #     filters_form = FilterForm(filters_list=filters_list, filters_optional=filters_optional,
     #                               filters_selected=filters_selected)
+
+    # Information Elements Content
+    information_content = {
+        "statistic": [
+            "S1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+        "insight": [
+            "I1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "I2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "I3-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+        "objective": [
+            "O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
+    }
+    context.update({
+        "information_content": information_content,
+    })
     # Final Results
     # Laptop Features (keys): Screen Size, Processor, Memory, Storage [ssd,hdd], GPU, Screen Resolution, Touch Screen,
     #   Weight, Dimensions (WxHxD), Battery [chemistry,cells,wh], Color, Operating System, Model (manufacturer model)
