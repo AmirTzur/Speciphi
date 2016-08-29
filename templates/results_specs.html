@@ -48,42 +48,14 @@
         <!-- !!! Replace with view list of affiliations !!! -->
         <fieldset id="nl-type-field" class="form-group" form="filters-form">
             <legend>My Type</legend>
-            <div class="checkbox">
-                <label for="type-1">
-                    <input id="type-1" name="type_1" type="checkbox" value="type-1">
-                    Home & Family
-                </label>
-            </div>
-            <div class="checkbox">
-                <label for="type-2">
-                    <input id="type-2" name="type_2" type="checkbox" value="type-2">
-                    Student
-                </label>
-            </div>
-            <div class="checkbox">
-                <label for="type-3">
-                    <input id="type-3" name="type_3" type="checkbox" value="type-3">
-                    Freelancer
-                </label>
-            </div>
-            <div class="checkbox">
-                <label for="type-4">
-                    <input id="type-4" name="type_4" type="checkbox" value="type-4">
-                    Designer
-                </label>
-            </div>
-            <div class="checkbox">
-                <label for="type-5">
-                    <input id="type-5" name="type_5" type="checkbox" value="type-5">
-                    Gamer
-                </label>
-            </div>
-            <div class="checkbox">
-                <label for="type-6">
-                    <input id="type-6" name="type_6" type="checkbox" value="type-6">
-                    Business
-                </label>
-            </div>
+            {% for aff_input in affiliations_form %}
+                <div class="checkbox">
+                    <label for="{{ aff_input.auto_id }}">
+                        {{ aff_input }}
+                        {{ aff_input.html_name }}
+                    </label>
+                </div>
+            {% endfor %}
         </fieldset>
         <!-- NL-Type Section -->
         <!-- !!! Replace with view list of affiliations !!! -->
@@ -99,78 +71,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Gaming</td>
-                        <td>
-                            <input id="gamingl" name="gamingl" type="checkbox" value="gamingl">
-                        </td>
-                        <td>
-                            <input id="gamingm" name="gamingm" type="checkbox" value="gamingm">
-                        </td>
-                        <td>
-                            <input id="gamingh" name="gamingh" type="checkbox" value="gamingh">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Watch Movies</td>
-                        <td>
-                            <input id="watchingmoviesl" name="watchingmoviesl" type="checkbox" value="watchingmoviesl">
-                        </td>
-                        <td>
-                            <input id="watchingmoviesm" name="watchingmoviesm" type="checkbox" value="watchingmoviesm">
-                        </td>
-                        <td>
-                            <input id="watchingmoviesh" name="watchingmoviesh" type="checkbox" value="watchingmoviesh">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Photo Editing</td>
-                        <td>
-                            <input id="" name="" type="checkbox" value="">
-                        </td>
-                        <td>
-                            <input id="" name="" type="checkbox" value="">
-                        </td>
-                        <td>
-                            <input id="" name="" type="checkbox" value="">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Social Media</td>
-                        <td>
-                            <input id="" name="" type="checkbox" value="">
-                        </td>
-                        <td>
-                            <input id="" name="" type="checkbox" value="">
-                        </td>
-                        <td>
-                            <input id="" name="" type="checkbox" value="">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>MS Office</td>
-                        <td>
-                            <input id="" name="" type="checkbox" value="">
-                        </td>
-                        <td>
-                            <input id="" name="" type="checkbox" value="">
-                        </td>
-                        <td>
-                            <input id="" name="" type="checkbox" value="">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Programming</td>
-                        <td>
-                            <input id="" name="" type="checkbox" value="">
-                        </td>
-                        <td>
-                            <input id="" name="" type="checkbox" value="">
-                        </td>
-                        <td>
-                            <input id="" name="" type="checkbox" value="">
-                        </td>
-                    </tr>
+                    {% for use_input in applications_form %}
+                        {% if forloop.counter0|divisibleby:3 %}
+                            {% if forloop.first %}
+                                <tr>
+                                    <td>{{ use_input.html_name }}</td>
+                                    <td>{{ use_input }}</td>
+                            {% else %}
+                                </tr>
+                                <tr>
+                                    <td>{{ use_input.html_name }}</td>
+                                    <td>{{ use_input }}</td>
+                            {% endif %}
+                        {% else %}
+                            {% if forloop.last %}
+                                    <td>{{ use_input }}</td>
+                                </tr>
+                            {% else %}
+                                <td>{{ use_input }}</td>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
                 </tbody>
             </table>
         </fieldset>
