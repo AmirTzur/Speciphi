@@ -15,17 +15,163 @@
 <!-- Column: Filters -->
 <form action="{% url 'results' product %}" method="post" role="form" id="filters-menu" class="col-xs-10 col-sm-3 well" style="background-color: #e5dfd3"> {% csrf_token %}
     <div style="display: block">
-        <fieldset class="form-group" form="filters-menu">
+        <!-- Menu Type Section -->
+        <fieldset id="" class="form-group" form="filters-form">
+            <legend>Menu Type</legend>
+            <div id="menu-type-field" class="btn-group center-block" data-toggle="buttons">
+                <label id="needs-btn"class="btn btn-sm btn-default active">
+                    <input type="radio" name="menu-type" id="" autocomplete="off" checked> Needs
+                </label>
+                <label id="specs-btn" class="btn btn-sm btn-default">
+                    <input type="radio" name="menu-type" id="" autocomplete="off"> Specs
+                </label>
+            </div>
+        </fieldset>
+        <!-- Info Advisors Section -->
+        <fieldset id="info-field" class="form-group" form="filters-form">
+            <legend>Info Advisors</legend>
+            <!-- Feature: information elements -->
+            {% include "advisors.html" %}
+        </fieldset>
+        <!-- Price Range Section -->
+        <fieldset id="price-slider-field" class="form-group" form="filters-menu">
+            <legend>Price Range</legend>
             <div id="price-slider" class="center-block">
                 <label for="slider-min"></label>
                 <input type="text" id="slider-min" class="price-tag" readonly>
                 <div id="slider-range"></div>
                 <label for="slider-max"></label>
                 <input type="text" id="slider-max" class="price-tag" readonly>
-        </div>
+            </div>
         </fieldset>
+        <!-- NL-Type Section -->
+        <!-- !!! Replace with view list of affiliations !!! -->
+        <fieldset id="nl-type-field" class="form-group" form="filters-form">
+            <legend>My Type</legend>
+            {% for aff_input in affiliations_form %}
+                <div class="checkbox">
+                    <label for="{{ aff_input.auto_id }}">
+                        {{ aff_input }}
+                        {{ aff_input.html_name }}
+                    </label>
+                </div>
+            {% endfor %}
+        </fieldset>
+        <!-- NL-Type Section -->
+        <!-- !!! Replace with view list of affiliations !!! -->
+        <fieldset id="nl-needs-field" class="form-group" form="filters-form">
+            <legend>My Needs</legend>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Low</th>
+                        <th>Medium</th>
+                        <th>High</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for use_input in applications_form %}
+                        {% if forloop.counter0|divisibleby:3 %}
+                            {% if forloop.first %}
+                                <tr>
+                                    <td>{{ use_input.html_name }}</td>
+                                    <td>{{ use_input }}</td>
+                            {% else %}
+                                </tr>
+                                <tr>
+                                    <td>{{ use_input.html_name }}</td>
+                                    <td>{{ use_input }}</td>
+                            {% endif %}
+                        {% else %}
+                            {% if forloop.last %}
+                                    <td>{{ use_input }}</td>
+                                </tr>
+                            {% else %}
+                                <td>{{ use_input }}</td>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </fieldset>
+        <!-- NL-Question Section -->
+        <!-- !!! Replace with view list of affiliations !!! -->
+        <fieldset id="nl-questions-field" class="form-group" form="filters-form">
+            <legend>Questions</legend>
+            <div id="" class="question-block">
+                <p class="">
+                    <span>Size vs Weight</span><br>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit? Proin tristique elit neque,
+                    pellentesque elementum sapien tristique eu.
+                </p>
+                <div id="" class="btn-group center-block answer-block" data-toggle="buttons">
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off" checked> Yes
+                    </label>
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off"> No
+                    </label>
+                </div>
+            </div>
+            <div id="" class="question-block">
+                <p class="">
+                    <span>Hybrid Laptop?</span><br>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit? Proin tristique elit neque,
+                    pellentesque elementum sapien tristique eu.
+                </p>
+                <div id="" class="btn-group center-block" data-toggle="buttons">
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off" checked> Yes
+                    </label>
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off"> No
+                    </label>
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off"> Nice to have
+                    </label>
+                </div>
+            </div>
+            <div id="" class="question-block">
+                <p class="">
+                    <span>Mobility</span><br>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit? Proin tristique elit neque,
+                    pellentesque elementum sapien tristique eu.
+                </p>
+                <div id="" class="btn-group center-block" data-toggle="buttons">
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off" checked> Yes
+                    </label>
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off"> No
+                    </label>
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off"> Nice to have
+                    </label>
+                </div>
+            </div>
+            <div id="" class="question-block">
+                <p class="">
+                    <span>Style & Brand</span><br>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit? Proin tristique elit neque,
+                    pellentesque elementum sapien tristique eu.
+                </p>
+                <div id="" class="btn-group center-block" data-toggle="buttons">
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off" checked> Yes
+                    </label>
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off"> No
+                    </label>
+                    <label class="btn btn-sm btn-default">
+                        <input type="radio" name="" id="" autocomplete="off"> Nice to have
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+        <!-- Specs Section -->
     {% for feature_key, feature_vals in filters_list.items %}
-        <fieldset class="form-group" form="filters-menu">
+        <fieldset class="form-group sp-menu" form="filters-menu">
             <button id="" class="feature-btn">
                 <i class="fa fa-chevron-right" aria-hidden="true"></i>
             </button>
@@ -38,7 +184,7 @@
                             {{ filters_form|key:field_name }}
                             {% endwith %}
                             {{ spec }}
-                          </label>
+                        </label>
                     </div>
                 {% else %}
                     <div class="checkbox disabled">
@@ -47,7 +193,7 @@
                             {{ filters_form|key:field_name }}
                             {% endwith %}
                             {{ spec }}
-                          </label>
+                        </label>
                     </div>
                 {% endif %}
             {% endfor %}

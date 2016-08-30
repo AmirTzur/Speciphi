@@ -3,7 +3,18 @@
  */
 
 $(document).ready(function(){
-
+    // Menu Type Buttons
+    $('#specs-btn').on('click',function () {
+        $('#filters-menu fieldset').slice(3,6).fadeOut(150, function () {
+            $('#filters-menu fieldset').slice(6).fadeIn(150);
+            $('#filters-menu fieldset').slice(6).css('display', 'inline-block');
+        });
+    });
+    $('#needs-btn').on('click',function () {
+        $('#filters-menu fieldset').slice(6).fadeOut(150, function () {
+            $('#filters-menu fieldset').slice(3,6).fadeIn(150);
+        });
+    });
     // Mobile Filter Button
     var direction;
     var filters_menu = $('#filters-menu');
@@ -77,7 +88,7 @@ $(document).ready(function(){
             if (window.matchMedia('(max-width: 767px)').matches) {
                 filters_menu.css('left', '100%');
                 filters_menu.width('130');
-                $('#filters-menu fieldset').width('130');
+                $('#filters-menu fieldset').width('100%');
             } else if (window.matchMedia('(min-width: 768px)').matches){
                 filters_menu.css('left', '0');
                 filters_menu.width('');
@@ -88,22 +99,22 @@ $(document).ready(function(){
     });
     // Ajax call on checkbox change
     $('#filters-menu .checkbox input').on('change', function () {
-        alert('ajax call on checkbox change');
+        // alert('ajax call on checkbox change');
     });
     // Price Slider Filter (jQuery UI)
     $(function() {
-        $( "#slider-range" ).slider({
+        $("#slider-range").slider({
             range: true,
             min: 200,
-            max: 10000,
-            values: [200, 10000],
+            max: 9500,
+            values: [200, 9500],
             disabled: false,
             slide: function(event, ui){
                 $("#slider-min").val("$" + ui.values[0]);
                 $("#slider-max").val("$" + ui.values[1]);
             },
             stop: function(event, ui){
-                alert('Define ajax callback to get results');
+                // alert('Define ajax callback to get results');
             },
         });
         $("#slider-min").val("$"+$("#slider-range").slider("values", 0));

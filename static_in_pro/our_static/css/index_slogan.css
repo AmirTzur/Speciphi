@@ -14,7 +14,7 @@
 .sentence {
     font-size: 36px;
     font-family: "Bariol";
-    color: rgb(230, 89, 42);
+    color: #77a2ad;
     font-weight: bold;
     font-style: italic;
     position: relative;
@@ -34,6 +34,8 @@
 @media (min-width: 768px) {
     .sentence{
         display: inline-block;
+        padding-left: 0px;
+        top: 20px;
     }
     #logo{
         width: 228px;
@@ -47,10 +49,10 @@
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
     .sentence{
-        font-size: 43px;
+        font-size: 40px;
         line-height: 1.7;
-        padding-left: 35px;
-        top: 5px;
+        padding-left: 0px;
+        top: 20px;
     }
     #logo{
         width: 235px;
@@ -59,10 +61,7 @@
 }
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
-    .sentence{
-        font-size: 50px;
-        line-height: 1.4;
-    }
+
 }
 
 

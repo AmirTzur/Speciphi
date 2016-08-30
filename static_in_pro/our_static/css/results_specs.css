@@ -26,7 +26,7 @@
     font-family: "Bariol";
     font-style: normal;
     text-align: left;
-    padding: 25px 15px 15px 10px;
+    padding: 30px 0px 15px 0px;
     margin-bottom: 0px;
 }
 #filters-menu fieldset{
@@ -37,7 +37,55 @@
     display: inline-block;
     text-align: left;
     vertical-align: top;
-    width: 130px;
+    width: 100%;
+}
+/* Menu-Type/Advisors/Price-Range Fieldsets */
+#filters-menu fieldset:nth-child(n+1):nth-child(-n+3){
+    margin-bottom: 8px;
+}
+/* My Type/My Needs/Questions Fieldsets */
+#filters-menu fieldset:nth-child(n+4):nth-child(-n+6){
+    border: none;
+    margin-bottom: 5px;
+}
+/* Specs Fieldsets */
+#filters-menu fieldset:nth-child(n+7){
+    display: none;
+    padding-left: 5px;
+}
+#filters-menu legend{
+    float: left;
+    position: relative;
+    /* Standard */
+    width: calc(100% - 15px);
+    /* WebKit */
+    width: -webkit-calc(100% - 15px);
+    /* Firefox */
+    width: -moz-calc(100% - 15px);
+    margin-bottom: 0px;
+    font-size: 14px;
+    font-weight: bold;
+    border-bottom: none;
+}
+#filters-menu fieldset:nth-child(n+1):nth-child(-n+3) legend{
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+    margin-left: 5px;
+    color: #232323;
+    font-size: 15px;
+    font-weight: bold;
+}
+#filters-menu fieldset:nth-child(n+4):nth-child(-n+6) legend{
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    text-align: center;
+    background-color: rgb(50,57,78);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 2.3;
 }
 .feature-btn{
     float: left;
@@ -49,29 +97,35 @@
 .feature-btn i{
     font-size: 12px;
 }
-#filters-menu legend{
-    float: left;
-    position: relative;
-    width: 87%;
-    margin-bottom: 0px;
-    font-size: 14px;
-    font-weight: bold;
-    border-bottom: none;
-}
 .checkbox{
     margin-bottom: 5px;
     margin-top: 5px;
+    margin-left: 5px;
     width: auto;
     text-align: left;
 }
-/* Slider */
-#price-slider{
-    /*display: block;*/
-    /*padding: 10px 0px 10px 0px;*/
+/* Menu Type */
+#menu-type-field{
+    margin-left: 5px;
 }
+#menu-type-field .btn-default{
+    border-color: #bfbdad;
+    color: #0a6488;
+}
+
+/* Displayed Menu */
+.nl-menu{
+    display: block;
+}
+.sp-menu{
+    display: none;
+}
+/* Slider */
 #slider-range{
     display: inline-block;
-    width: 40px;
+    position: relative;
+    top: -3px;
+    width: 40%;
     height: 4px;
     background: #e6592a;
     border: none;
@@ -97,6 +151,50 @@
     border: none;
     /*height: 4px;*/
 }
+/* Slider - Price Inputs */
+.price-tag{
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.5;
+    width: 60px;
+    border: none;
+    background-color: transparent;
+}
+/* NL Needs */
+#nl-needs-field table{
+    margin-bottom: 0px;
+}
+#nl-needs-field table thead th{
+    text-align: center;
+    color: #646469;
+}
+#nl-needs-field .table thead tr th{
+    border-bottom: none;
+}
+#nl-needs-field table tbody tr td:nth-child(n+2){
+    text-align: center;
+}
+#nl-needs-field .table tbody tr td{
+    border-top: 1px solid #bdcfdc;
+}
+/* NL Questions */
+.question-block{
+    /*text-align: left;*/
+    float: left;
+    display: block;
+    width: 90%;
+    margin-left: 5px;
+    margin-bottom: 10px;
+}
+.question-block p{
+    text-align: left;
+}
+.question-block p span{
+    font-weight: bold;
+}
+.answer-block{
+    display: block;
+}
 /* Mobile Submit Button */
 #submit-btn{
     display: block;
@@ -118,6 +216,9 @@
     #filters-btn{
         left: 96%;
     }
+    #slider-range{
+        width: 60%;
+    }
 }
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
@@ -133,23 +234,68 @@
         left: 0%;
         top: 0%;
         z-index: 0;
-        /*max-width: 300px;*/
-        padding: 8px 15px 3px 25px;
+        padding: 0px;
     }
-    #filters-menu fieldset{
-        width: 100%;
+    #filters-menu fieldset:nth-child(n+1):nth-child(-n+3) legend{
+        font-size: 13px;
+    }
+    #filters-menu fieldset:nth-child(n+4):nth-child(-n+6) legend{
+        font-size: 15px;
     }
     #filters-menu legend{
         margin-bottom: 4px;
     }
+    #slider-range{
+        width: 35%;
+    }
+    .price-tag{
+        width: 50px;
+    }
+    #nl-needs-field table{
+        font-size: 12px;
+    }
+    #nl-needs-field .table thead tr th{
+        padding: 4px;
+    }
+    #nl-needs-field .table tbody tr td{
+        padding: 6px 4px 6px 4px;
+    }
+
 }
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
     #filters-btn{
         left: 97%;
     }
+    #filters-menu fieldset:nth-child(n+1):nth-child(-n+3) legend{
+        font-size: 14px;
+    }
+    #filters-menu fieldset:nth-child(n+4):nth-child(-n+6) legend{
+        font-size: 16px;
+    }
+    #slider-range{
+        width: 48%;
+    }
+    .price-tag{
+        width: 55px;
+    }
+    #nl-needs-field table{
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+    #nl-needs-field .table thead tr th{
+        padding: 8px;
+    }
+    #nl-needs-field .table tbody tr td{
+        padding: 8px;
+    }
 }
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
-
+    #slider-range{
+        width: 50%;
+    }
+    .price-tag{
+        width: 60px;
+    }
 }

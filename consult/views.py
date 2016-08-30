@@ -604,23 +604,80 @@ def results(request, product=None):
     pages['Focal'] = [False, "focalization"]
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [True, "results"]
+    context = {}
     # Title and description
-    page_title = 'Your results'
+    page_title = 'Research Zone'
+    context.update({
+        "page_title": page_title,
+        "pages": pages,
+        "product": product,
+    })
     page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
                 'Donec in maximus augue. Quisque euismod euismod posuere. ' \
                 'Phasellus tempor.'
-    # Information elements content
-    information_content = {
-        "statistic": [
-            "S1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
-        "insight": [
-            "I1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            "I2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            "I3-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
-        "objective": [
-            "O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
-            "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
-    }
+    context.update({
+        "page_desc": page_desc,
+    })
+    # Affiliation Form
+    ConsultationProcess_id = None
+    Product_id = None
+    affiliations = None
+    if product == 'Laptop':
+        Product_id = 1  # Laptop product ID
+    if product:
+        # connect to djarooDB
+        try:
+            cursor = connection.cursor()
+            if not cursor:
+                print("cursor was not defined")
+            else:
+                # Input: Product_id
+                # Output: Affiliations - id, Affiliations names, descriptions and images
+                cursor.execute('CALL getProductAffiliations(%s)', [Product_id])
+                affiliations = dictfetchall(cursor)
+                cursor.close()
+            cursor = connection.cursor()
+            if not cursor:
+                print("cursor was not defined")
+            else:
+                # Input: Entrance_id, Product_id
+                # Output: Creates new entry in "consultationProcesses" Table
+                cursor.execute('CALL setNewConsultationProcess(%s,%s)', [request.session['Entrance_id'], Product_id])
+                cursor.close()
+            cursor = connection.cursor()
+            if not cursor:
+                print("cursor was not defined")
+            else:
+                # Input: Entrance_id
+                # Output: ConsultationProcess_id
+                cursor.execute('CALL getConsultationProcessId(%s)', [request.session['Entrance_id']])
+                ConsultationProcess_id = cursor.fetchone()
+                cursor.close()
+        except Error as e:
+            print(e)
+
+        if Product_id:
+            request.session['Product_id'] = Product_id
+        if affiliations:
+            affiliations_form = AffiliationsForm(affiliations_dict=affiliations)
+            context.update({
+                "affiliations_form": affiliations_form,
+            })
+        if ConsultationProcess_id:
+            request.session['ConsultationProcess_id'] = ConsultationProcess_id[0]
+    # Application Form
+    # get Uses ids (change to SQL exec)
+    uses_ids_string = "1,2,3,4,5,7,9,11"
+    uses_ids = uses_ids_string.split(",")
+    # get relevant Uses (by id) from db
+    uses = ValuesQuerySetToDict(Levelofuse.objects.all().filter(Uses_id__in=uses_ids).values())
+    applications_form = None
+    if uses:
+        # create inputs
+        applications_form = UsesForm(uses_dict=uses)
+    context.update({
+        "applications_form": applications_form,
+    })
     # Filtering Form
     # unit: " , GB x 2, lb.
     filters_list = OrderedDict(
@@ -639,6 +696,9 @@ def results(request, product=None):
          ('Weight', ['1-2 lb.', '2-3 lb.', '3-4 lb.', '4+ lb.']),
          ('Operating System', ['Chromebook', 'Windows', 'OSX']),
          ('Brand', ['Apple', 'Dell', 'Samsung'])])
+    context.update({
+        "filters_list": filters_list,
+    })
     filters_optional = OrderedDict(
         [('Screen Size', ['13.3"', '14"', '15.6"']),
          ('Processor', ['Intel Core i5', 'Intel Core i7',
@@ -647,12 +707,15 @@ def results(request, product=None):
          ('Storage', ['320GB', '500GB', '750GB', '1000GB']),
          ('GPU', ['Intel HD Graphics', 'NVIDIA GeForce', 'AMD Radeon']),
          ('Screen Resolution', [
-                                '1920 x 1080', '1920 x 1200', '2166 x 1440',
-                                '2560 x 1440', '2560 x 1600']),
+             '1920 x 1080', '1920 x 1200', '2166 x 1440',
+             '2560 x 1440', '2560 x 1600']),
          ('Touch Screen', ['Yes', 'No']),
          ('Weight', ['1-2 lb.', '2-3 lb.']),
          ('Operating System', ['Chromebook', 'Windows']),
          ('Brand', ['Apple', 'Dell'])])
+    context.update({
+        "filters_optional": filters_optional,
+    })
     filters_selected = OrderedDict(
         [('Screen Size', ['13.3"', '14"', '15.6"']),
          ('Processor', ['Intel Core i5', 'Intel Core i7']),
@@ -665,8 +728,14 @@ def results(request, product=None):
          ('Weight', ['2-3 lb.']),
          ('Operating System', ['Windows']),
          ('Brand', ['Apple', 'Dell'])])
+    context.update({
+        "filters_selected": filters_selected,
+    })
     filters_form = FilterForm(filters_list=filters_list, filters_optional=filters_optional,
                               filters_selected=filters_selected)
+    context.update({
+        "filters_form": filters_form,
+    })
     # if request.method == 'POST':
     #     filters_form = FilterForm(data=request.POST)
     #     if filters_form.is_valid():
@@ -675,6 +744,22 @@ def results(request, product=None):
     # else:
     #     filters_form = FilterForm(filters_list=filters_list, filters_optional=filters_optional,
     #                               filters_selected=filters_selected)
+
+    # Information Elements Content
+    information_content = {
+        "statistic": [
+            "S1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+        "insight": [
+            "I1-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "I2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "I3-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."],
+        "objective": [
+            "O11-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.",
+            "O2-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."]
+    }
+    context.update({
+        "information_content": information_content,
+    })
     # Final Results
     # Laptop Features (keys): Screen Size, Processor, Memory, Storage [ssd,hdd], GPU, Screen Resolution, Touch Screen,
     #   Weight, Dimensions (WxHxD), Battery [chemistry,cells,wh], Color, Operating System, Model (manufacturer model)
@@ -707,9 +792,12 @@ def results(request, product=None):
                      'deal_url': 'xxx',
                      'vendor_name': 'eBay',
                      'price': 1000}],
-         'features': OrderedDict([('Screen Size', '13.3"'), ('Processor', 'Intel Core i5-5600U'), ('Memory', '16GB'), ('Storage', ['256GB', '0GB']),
-                                  ('GPU', 'NVIDIA GeForce GTX 960M'), ('Screen Resolution', '3200 x 1800'), ('Touch Screen', 'No'),
-                                  ('Weight', '4 lb'), ('Dimensions (WxHxD)', '12.2x0.9x8"'), ('Battery', 'Li-Ion 4 cells 72Wh'), ('Color', 'Black'),
+         'features': OrderedDict([('Screen Size', '13.3"'), ('Processor', 'Intel Core i5-5600U'), ('Memory', '16GB'),
+                                  ('Storage', ['256GB', '0GB']),
+                                  ('GPU', 'NVIDIA GeForce GTX 960M'), ('Screen Resolution', '3200 x 1800'),
+                                  ('Touch Screen', 'No'),
+                                  ('Weight', '4 lb'), ('Dimensions (WxHxD)', '12.2x0.9x8"'),
+                                  ('Battery', 'Li-Ion 4 cells 72Wh'), ('Color', 'Black'),
                                   ('Operating System', 'Windows'), ('Model', 'MLLL/AH')]),
          },
         {'sort_indicator': 'Greatest Mobility', 'Brand': 'Dell', 'Line': 'XPS 15',
@@ -722,9 +810,12 @@ def results(request, product=None):
                      'deal_url': 'xxx',
                      'vendor_name': 'eBay',
                      'price': 1200}],
-         'features': OrderedDict([('Screen Size', '15.6"'), ('Processor', 'Intel Core i3-3200F'), ('Memory', '8GB'), ('Storage', ['256GB', '1000GB']),
-                                  ('GPU', 'NVIDIA Quadro M1000M'), ('Screen Resolution', '1920 x 1080'), ('Touch Screen', 'No'),
-                                  ('Weight', '6 lb'), ('Dimensions (WxHxD)', '12.2x1x8"'), ('Battery', 'Li-Ion 3 cells 44Wh'), ('Color', 'Black'),
+         'features': OrderedDict([('Screen Size', '15.6"'), ('Processor', 'Intel Core i3-3200F'), ('Memory', '8GB'),
+                                  ('Storage', ['256GB', '1000GB']),
+                                  ('GPU', 'NVIDIA Quadro M1000M'), ('Screen Resolution', '1920 x 1080'),
+                                  ('Touch Screen', 'No'),
+                                  ('Weight', '6 lb'), ('Dimensions (WxHxD)', '12.2x1x8"'),
+                                  ('Battery', 'Li-Ion 3 cells 44Wh'), ('Color', 'Black'),
                                   ('Operating System', 'Windows'), ('Model', 'XPS13cc')]),
          },
         {'sort_indicator': 'Cost Effective', 'Brand': 'Asus', 'Line': 'Zenbook 133X',
@@ -737,29 +828,28 @@ def results(request, product=None):
                      'deal_url': 'xxx',
                      'vendor_name': 'eBay',
                      'price': 1300}],
-         'features': OrderedDict([('Screen Size', '17"'), ('Processor', 'Intel Core i5-5600U'), ('Memory', '8GB'), ('Storage', ['256GB', '0GB']),
-                                  ('GPU', 'NVIDIA GeForce GTX 960M'), ('Screen Resolution', '1920 x 1080'), ('Touch Screen', 'No'),
-                                  ('Weight', '4.25 lb'), ('Dimensions (WxHxD)', '11x1.2x10"'), ('Battery', 'Li-Ion 4 cells 72Wh'), ('Color', 'Black'),
+         'features': OrderedDict([('Screen Size', '17"'), ('Processor', 'Intel Core i5-5600U'), ('Memory', '8GB'),
+                                  ('Storage', ['256GB', '0GB']),
+                                  ('GPU', 'NVIDIA GeForce GTX 960M'), ('Screen Resolution', '1920 x 1080'),
+                                  ('Touch Screen', 'No'),
+                                  ('Weight', '4.25 lb'), ('Dimensions (WxHxD)', '11x1.2x10"'),
+                                  ('Battery', 'Li-Ion 4 cells 72Wh'), ('Color', 'Black'),
                                   ('Operating System', 'Windows'), ('Model', 'Z3003U')]),
          },
     ]
+    context.update({
+        "final_offers": final_offers[0:3],
+    })
     recommended_spec = OrderedDict([('Screen Size', '13-15"'), ('Processor', 'Intel Core i5-5600U'), ('Memory', '8GB'),
                                     ('Storage', ['8GB SSD', '1000GB HDD']), ('GPU', 'Intel HD Graphics'),
-                                    ('Screen Resolution', '1920 x 1080'), ('Touch Screen', 'Yes'), ('Weight', '2.5-3 lb'),
-                                    ('Battery', 'Li-Polymer 6 cells 56Wh'), ('Operating System', ['Windows /', 'Chromebook'])])
-    context = {
-        "pages": pages,
-        "product": product,
-        "page_title": page_title,
-        "page_desc": page_desc,
-        "information_content": information_content,
-        "final_offers": final_offers[0:3],
+                                    ('Screen Resolution', '1920 x 1080'), ('Touch Screen', 'Yes'),
+                                    ('Weight', '2.5-3 lb'),
+                                    ('Battery', 'Li-Polymer 6 cells 56Wh'),
+                                    ('Operating System', ['Windows /', 'Chromebook'])])
+    context.update({
         "recommended_spec": recommended_spec,
-        "filters_list": filters_list,
-        "filters_optional": filters_optional,
-        "filters_selected": filters_selected,
-        "filters_form": filters_form,
-    }
+    })
+
     return render(request, "results.html", context)
 
 

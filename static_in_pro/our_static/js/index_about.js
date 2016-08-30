@@ -60,7 +60,7 @@ $(document).ready(function () {
         });
         var $imgf = $("#face-icon").css('background-image');
         //var $im1 = $imgf.find('svg');
-        alert($imgf);
+        // alert($imgf);
         //$('path, polygon, circle', this).attr('fill', '#ccc');
         //$('circle', this).attr('fill', '#ccc');
         //$("#face-icon").find('circle').css({fill: "black"});
