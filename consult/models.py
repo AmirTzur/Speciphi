@@ -112,3 +112,78 @@ class Answer(models.Model):
     class Meta:
         db_table = 'answer'
         unique_together = (('product', 'id'), ('product', 'question', 'name'),)
+
+
+class CompleteLaptopModel(models.Model):
+    key = models.AutoField(primary_key=True)
+    model = models.CharField(db_column='Model', max_length=30)  # Field name made lowercase.
+    brand = models.CharField(db_column='Brand', max_length=15)  # Field name made lowercase.
+    line = models.CharField(db_column='Line', max_length=45)  # Field name made lowercase.
+    gpu = models.CharField(db_column='GPU', max_length=30)  # Field name made lowercase.
+    screen_size = models.FloatField(db_column='Screen.Size')
+    screen_resolution = models.CharField(db_column='Screen.Resolution',
+                                         max_length=15)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    touch_screen = models.CharField(db_column='Touch.Screen',
+                                    max_length=5)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    processor = models.CharField(db_column='Processor', max_length=30)  # Field name made lowercase.
+    memory = models.IntegerField(db_column='Memory')  # Field name made lowercase.
+    battery = models.CharField(db_column='Battery', max_length=30)  # Field name made lowercase.
+    storagessd = models.IntegerField(db_column='StorageSSD')  # Field name made lowercase.
+    storagehdd = models.IntegerField(db_column='StorageHDD')  # Field name made lowercase.
+    dimensions = models.CharField(db_column='Dimensions', max_length=25)  # Field name made lowercase.
+    weight = models.FloatField(db_column='Weight')  # Field name made lowercase.
+    color = models.CharField(db_column='Color', max_length=15)  # Field name made lowercase.
+    operating_system = models.CharField(db_column='Operating.System',
+                                        max_length=15)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    rankcpu = models.FloatField(db_column='rankCPU')  # Field name made lowercase.
+    rankgpu = models.FloatField(db_column='rankGPU')  # Field name made lowercase.
+    rankram = models.FloatField(db_column='rankRAM')  # Field name made lowercase.
+    rankhd = models.FloatField(db_column='rankHD')  # Field name made lowercase.
+    rankbattery = models.FloatField(db_column='rankBattery')  # Field name made lowercase.
+    rankweight = models.FloatField(db_column='rankWeight')  # Field name made lowercase.
+    dealamazonrank = models.IntegerField(db_column='dealAmazonRank', blank=True,
+                                         null=True)  # Field name made lowercase.
+    lowestprice = models.FloatField(db_column='lowestPrice')  # Field name made lowercase.
+    image_url = models.CharField(max_length=2083)
+    clusterid = models.IntegerField(db_column='clusterId')  # Field name made lowercase.
+    filtergpu = models.CharField(db_column='filterGPU', max_length=30)  # Field name made lowercase.
+    filtercpu = models.CharField(db_column='filterCPU', max_length=30)  # Field name made lowercase.
+    filtercapacity = models.IntegerField(db_column='filterCapacity')  # Field name made lowercase.
+    offers = models.CharField(max_length=2083)
+    overallrank = models.FloatField(db_column='overallRank')  # Field name made lowercase.
+    mobilityrank = models.FloatField(db_column='mobilityRank')  # Field name made lowercase.
+
+    class Meta:
+        db_table = 'complete_laptop_model'
+
+
+class AffiliationMedianUse(models.Model):
+    cluster = models.IntegerField(primary_key=True)
+    word_processing_office_applications = models.IntegerField(
+        db_column='Word Processing & Office Applications')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    audio_editing = models.IntegerField(
+        db_column='Audio Editing')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    video_watching = models.IntegerField(
+        db_column='Video Watching')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    video_editing = models.IntegerField(
+        db_column='Video Editing')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    pictures_editing = models.IntegerField(
+        db_column='Pictures Editing')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    number_3d_design = models.IntegerField(
+        db_column='3D Design')  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    developing_programming = models.IntegerField(
+        db_column='Developing & Programming')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    portability = models.IntegerField(db_column='Portability')  # Field name made lowercase.
+    storage = models.IntegerField(db_column='Storage')  # Field name made lowercase.
+    gaming = models.IntegerField(db_column='Gaming')  # Field name made lowercase.
+    life_cycle = models.IntegerField(
+        db_column='Life Cycle')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    programs_running = models.IntegerField(
+        db_column='Programs Running')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    everyday_computing = models.IntegerField(
+        db_column='Everyday Computing')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    style_design = models.IntegerField(
+        db_column='Style & Design')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+
+    class Meta:
+        db_table = 'affiliation_median_use'
