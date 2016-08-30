@@ -2,8 +2,7 @@ import os
 import json
 import csv
 import time
-# ML packages
-import numpy as np
+
 # Amazon sdk: bottlenode
 import bottlenose
 import lxml
@@ -1076,15 +1075,3 @@ class DealsHandler(object):
             amazon_data.close()
         amazon_deals.close()
 
-
-from djaroo.settings import BASE_DIR
-
-
-class ClassifierRF(object):
-
-    def __init__(self, **kwargs):
-        """
-
-        """
-        #
-        self.my_data = 0

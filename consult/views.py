@@ -3,7 +3,7 @@ from django.db import connection, Error
 from django.template.loader import get_template
 from django.core.mail import EmailMessage
 from django.template import Context
-from consult.forms import AffiliationsForm, UsesForm, ContactForm, FilterForm
+from consult.forms import AffiliationsForm, UsesForm, QuestionsForm, ContactForm, FilterForm
 from django.http import HttpResponse
 # from consult.models import Levelofuse
 from collections import OrderedDict
@@ -622,6 +622,12 @@ def results(request, product=None):
     ConsultationProcess_id = None
     Product_id = None
     affiliations = None
+    affiliations_form = None
+    uses = None
+    applications_form = None
+    que_ans = None
+    questions_form = None
+
     if product == 'Laptop':
         Product_id = 1  # Laptop product ID
     if product:
@@ -653,31 +659,59 @@ def results(request, product=None):
                 cursor.execute('CALL getConsultationProcessId(%s)', [request.session['Entrance_id']])
                 ConsultationProcess_id = cursor.fetchone()
                 cursor.close()
+            # Application Data
+            cursor = connection.cursor()
+            if not cursor:
+                print("cursor was not defined")
+            else:
+                # Input: product id
+                # Output: levels of use (id,name,value)
+                cursor.execute('CALL getLevelsOfUse(%s)', [Product_id])
+                uses = dictfetchall(cursor)
+                cursor.close()
+            # Focalization Data
+            # cursor = connection.cursor()
+            # if not cursor:
+            #     print("cursor was not defined")
+            # else:
+            #     # Input: product id
+            #     # Output: levels of use (id,name,value)
+            #     cursor.execute('CALL getQuestionsAndAnswers(%s)', [Product_id])
+            #     que_ans = dictfetchall(cursor)
+            #     cursor.close()
         except Error as e:
             print(e)
 
         if Product_id:
             request.session['Product_id'] = Product_id
+        # Affiliation Form
         if affiliations:
             affiliations_form = AffiliationsForm(affiliations_dict=affiliations)
             context.update({
                 "affiliations_form": affiliations_form,
             })
+        # Application Form
+        if uses:
+            applications_form = UsesForm(uses_dict=uses)
+            context.update({
+                "applications_form": applications_form,
+            })
+        # Focalization Dictionary
+        # questions_template = []
+        # if que_ans:
+        #     questions_form = QuestionsForm(questions_dict=que_ans)
+        #     # take form inputs and append them to relevant uses
+        #     for que_input in questions_form:
+        #         for que in que_ans:
+        #             if que['question_header'] + str(que['answer_id']) in str(que_input):
+        #                 que['question_input'] = str(que_input)
+        #
+        #     context.update({
+        #         "questions_dict": que_ans,
+        #     })
         if ConsultationProcess_id:
             request.session['ConsultationProcess_id'] = ConsultationProcess_id[0]
-    # Application Form
-    # get Uses ids (change to SQL exec)
-    uses_ids_string = "1,2,3,4,5,7,9,11"
-    uses_ids = uses_ids_string.split(",")
-    # get relevant Uses (by id) from db
-    uses = ValuesQuerySetToDict(Levelofuse.objects.all().filter(Uses_id__in=uses_ids).values())
-    applications_form = None
-    if uses:
-        # create inputs
-        applications_form = UsesForm(uses_dict=uses)
-    context.update({
-        "applications_form": applications_form,
-    })
+
     # Filtering Form
     # unit: " , GB x 2, lb.
     filters_list = OrderedDict(
