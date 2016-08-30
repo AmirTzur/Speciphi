@@ -33,9 +33,11 @@ class QuestionsForm(forms.Form):
         super(QuestionsForm, self).__init__(*args, **kwargs)
         for que in questions_dict:
             self.fields[que['question_header'] + str(que['answer_id'])] = forms.BooleanField(required=False,
-                                                                                             widget=forms.RadioSelect(
+                                                                                             widget=forms.CheckboxInput(
                                                                                                  attrs={
                                                                                                      'value': str(que['question_id']) + "_" + str(que['answer_id']),
+                                                                                                     'name': str(que['answer_name']),
+                                                                                                     'type': 'radio',
                                                                                                  }))
 
 

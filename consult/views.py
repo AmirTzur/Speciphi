@@ -670,15 +670,15 @@ def results(request, product=None):
                 uses = dictfetchall(cursor)
                 cursor.close()
             # Focalization Data
-            # cursor = connection.cursor()
-            # if not cursor:
-            #     print("cursor was not defined")
-            # else:
-            #     # Input: product id
-            #     # Output: levels of use (id,name,value)
-            #     cursor.execute('CALL getQuestionsAndAnswers(%s)', [Product_id])
-            #     que_ans = dictfetchall(cursor)
-            #     cursor.close()
+            cursor = connection.cursor()
+            if not cursor:
+                print("cursor was not defined")
+            else:
+                # Input: product id
+                # Output: levels of use (id,name,value)
+                cursor.execute('CALL getQuestionsAndAnswers(%s)', [Product_id])
+                que_ans = dictfetchall(cursor)
+                cursor.close()
         except Error as e:
             print(e)
 
@@ -697,18 +697,40 @@ def results(request, product=None):
                 "applications_form": applications_form,
             })
         # Focalization Dictionary
-        # questions_template = []
-        # if que_ans:
-        #     questions_form = QuestionsForm(questions_dict=que_ans)
-        #     # take form inputs and append them to relevant uses
-        #     for que_input in questions_form:
-        #         for que in que_ans:
-        #             if que['question_header'] + str(que['answer_id']) in str(que_input):
-        #                 que['question_input'] = str(que_input)
-        #
-        #     context.update({
-        #         "questions_dict": que_ans,
-        #     })
+        questions_list = []
+        if que_ans:
+            questions_form = QuestionsForm(questions_dict=que_ans)
+            i = 1
+            # take form inputs and append them to relevant uses
+            for index, que in enumerate(que_ans):
+                if i == 1:
+                    ans_list = []
+                    ans_list.append({
+                        'ans_input': questions_form[que['question_header'] + str(que['answer_id'])],
+                        'ans_content': que['answer_name']
+                    })
+                    while index+i < len(que_ans) and que['question_id'] == que_ans[index+i]['question_id']:
+                        ans_list.append({
+                            'ans_input': questions_form[que_ans[index+i]['question_header'] + str(que_ans[index+i]['answer_id'])],
+                            'ans_content': que_ans[index+i]['answer_name']
+                        })
+                        i += 1
+                    print(ans_list)
+                    questions_list.append({
+                        'question_header': que['question_header'],
+                        'question_id': que['question_id'],
+                        'question_content': que['question_content'],
+                        'answers': ans_list,
+                    })
+                else:
+                    i -= 1
+            # for que_input in questions_form:
+            #     for que in que_ans:
+            #         if que['question_header'] + str(que['answer_id']) in str(que_input):
+            #             que['question_input'] = str(que_input)
+            context.update({
+                "questions_list": questions_list,
+            })
         if ConsultationProcess_id:
             request.session['ConsultationProcess_id'] = ConsultationProcess_id[0]
 
@@ -964,7 +986,7 @@ def dictfetchall(cursor):
     return [
         dict(zip(columns, row))
         for row in cursor.fetchall()
-        ]
+]
 
 
 # # Find the nth occurrence of substring in a string
