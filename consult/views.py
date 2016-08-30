@@ -5,7 +5,7 @@ from django.core.mail import EmailMessage
 from django.template import Context
 from consult.forms import AffiliationsForm, UsesForm, ContactForm, FilterForm
 from django.http import HttpResponse
-from consult.models import Levelofuse
+# from consult.models import Levelofuse
 from collections import OrderedDict
 import urllib.request
 import json
