@@ -3,195 +3,187 @@ from __future__ import unicode_literals
 from django.db import models
 
 
-# why to use "managed = False":
-# http://stackoverflow.com/questions/7625674/utility-of-managed-false-option-in-django-models
-#
-class Entrances(models.Model):
-    def __str__(self):
-        return 'Entrances Obj: ' + str(self.id)
-
-    ip = models.CharField(max_length=16)
+class Entrance(models.Model):
+    ip = models.CharField(max_length=24)
     country = models.CharField(max_length=45, blank=True, null=True)
-    entrancedatetime = models.DateTimeField(db_column='entranceDateTime')
-    exitdatetime = models.DateTimeField(db_column='exitDateTime', blank=True, null=True)
+    entrance_date_time = models.DateTimeField()
+    exit_date_time = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        db_table = 'Entrances'
+        db_table = 'entrance'
 
 
-class Products(models.Model):
-    def __str__(self):
-        return 'Products Obj: ' + str(self.name)
-
+class Product(models.Model):
     name = models.CharField(unique=True, max_length=45)
-    creationdatetime = models.DateTimeField(db_column='creationDateTime')
-    # Should use ImageField(upload_to=None, height_field=None, width_field=None, max_length=100, **options)
-    # and install pillow package
-    # image = models.ImageField(upload_to='productsImages/', height_field=None, width_field=None)
-    image = models.TextField(blank=True, null=True)
+    creation_date_time = models.DateTimeField()
 
     class Meta:
-        db_table = 'Products'
+        db_table = 'product'
 
 
-class Consultationprocesses(models.Model):
-    def __str__(self):
-        return 'Consultationprocesses Obj: ' + str(self.id)
-
-    entrances = models.ForeignKey('Entrances', db_column='Entrances_id')
-    products = models.ForeignKey('Products', db_column='Products_id')
-    startdatetime = models.DateTimeField(db_column='startDateTime')
-    enddatetime = models.DateTimeField(db_column='endDateTime', blank=True, null=True)
+class ConsultationProcess(models.Model):
+    entrance = models.ForeignKey('Entrance')
+    product = models.ForeignKey('Product')
+    start_date_time = models.DateTimeField()
+    end_date_time = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        db_table = 'consultationprocesses'
+        db_table = 'consultation_process'
 
 
-class Affiliations(models.Model):
-    def __str__(self):
-        return 'Affiliations Obj: ' + str(self.name)
-
-    products = models.ForeignKey('Products', db_column='Products_id')
+class Affiliation(models.Model):
+    key = models.AutoField(primary_key=True)
+    product = models.ForeignKey('Product')
+    id = models.IntegerField()
     name = models.CharField(max_length=45)
-    description = models.TextField(max_length=300)
-    image = models.TextField(blank=True, null=True)
-    creationdatetime = models.DateTimeField(db_column='creationDateTime')
+    description = models.TextField()
+    creation_date_time = models.DateTimeField()
 
     class Meta:
-        db_table = 'affiliations'
-        unique_together = (('products', 'name'),)
+        db_table = 'affiliation'
+        unique_together = (('product', 'name'), ('product', 'id'),)
 
 
-class Consulteeaffiliations(models.Model):
-    def __str__(self):
-        return 'Consulteeaffiliations Obj: ' + str(self.id)
-
-    entrances_id = models.IntegerField(db_column='Entrances_id')
-    products_id = models.IntegerField(db_column='Products_id')
-    consultationprocesses = models.ForeignKey(Consultationprocesses,
-                                              db_column='consultationProcesses_id')
-    affiliations = models.ForeignKey(Affiliations, db_column='Affiliations_id')
-    selectiondatetime = models.DateTimeField(db_column='selectionDateTime')
-    checked = models.BooleanField()
+class Use(models.Model):
+    key = models.AutoField(primary_key=True)
+    product = models.ForeignKey('Product')
+    id = models.IntegerField()
+    name = models.CharField(max_length=45)
+    creation_date_time = models.DateTimeField()
 
     class Meta:
-        db_table = 'consulteeaffiliations'
-        unique_together = (('consultationprocesses', 'selectiondatetime'),)
+        db_table = 'use'
+        unique_together = (('product', 'id'), ('product', 'name'),)
 
 
-class Levelofuse(models.Model):
-    # def __str__(self):
-    #     return 'Levelofuse Obj: ' + str(self.Uses_id), str(self.Uses_name)
-    #
-    Uses_id = models.IntegerField()
-    Uses_name = models.CharField(max_length=45, blank=True)
+class ConsulteeAffiliation(models.Model):
+    key = models.AutoField(primary_key=True)
+    entrance = models.ForeignKey('Entrance')
+    product = models.ForeignKey('Product')
+    consultation_process = models.ForeignKey('ConsultationProcess')
+    affiliation = models.ForeignKey('Affiliation')
+    selection_date_time = models.DateTimeField()
+    checked = models.IntegerField()
+
+    class Meta:
+        managed = False
+        db_table = 'consultee_affiliation'
+        unique_together = (('consultation_process', 'selection_date_time'),)
+
+
+class LevelOfUse(models.Model):
+    key = models.AutoField(primary_key=True)
+    product = models.ForeignKey('Product')
+    use = models.ForeignKey('Use')
+    use_name = models.CharField(max_length=45)
     value = models.IntegerField()
     description = models.TextField()
+    creation_date_time = models.DateTimeField()
+    last_update = models.DateTimeField()
 
     class Meta:
-        db_table = 'levelofuse'
+        db_table = 'level_of_use'
+        unique_together = (('product', 'use', 'value'),)
 
-###############################################################################################
 
-# class Entrances(models.Model):
-#     ip = models.CharField(max_length=24)
-#     country = models.CharField(max_length=45, blank=True, null=True)
-#     entrancedatetime = models.DateTimeField(db_column='entranceDateTime')  # Field name made lowercase.
-#     exitdatetime = models.DateTimeField(db_column='exitDateTime', blank=True, null=True)  # Field name made lowercase.
-#
-#     class Meta:
-#         db_table = 'entrances'
-#
-#
-# class Products(models.Model):
-#     name = models.CharField(unique=True, max_length=45)
-#     creationdatetime = models.DateTimeField(db_column='creationDateTime')  # Field name made lowercase.
-#     imageurl = models.CharField(db_column='imageUrl', max_length=2083, blank=True,
-#                                 null=True)  # Field name made lowercase.
-#
-#     class Meta:
-#         db_table = 'products'
-#
-#
-# class Consultationprocesses(models.Model):
-#     entrances = models.ForeignKey('Entrances', db_column='Entrances_id')  # Field name made lowercase.
-#     products = models.ForeignKey('Products', db_column='Products_id')  # Field name made lowercase.
-#     startdatetime = models.DateTimeField(db_column='startDateTime')  # Field name made lowercase.
-#     enddatetime = models.DateTimeField(db_column='endDateTime', blank=True, null=True)  # Field name made lowercase.
-#
-#     class Meta:
-#         db_table = 'consultationprocesses'
-#
-#
-# class Affiliations(models.Model):
-#     key = models.AutoField(primary_key=True, auto_created=True, verbose_name='key', serialize=False)
-#     products = models.ForeignKey('Products', db_column='Products_id')  # Field name made lowercase.
-#     id = models.IntegerField()
-#     name = models.CharField(max_length=45)
-#     description = models.TextField()
-#     imageurl = models.CharField(db_column='imageUrl', max_length=2083, blank=True,
-#                                 null=True)  # Field name made lowercase.
-#     creationdatetime = models.DateTimeField(db_column='creationDateTime')  # Field name made lowercase.
-#
-#     class Meta:
-#         db_table = 'affiliations'
-#         unique_together = (('products', 'id'), ('products', 'name'))
-#
-#
-# class Uses(models.Model):
-#     key = models.AutoField(primary_key=True, auto_created=True, verbose_name='key', serialize=False)
-#     products = models.ForeignKey(Products, db_column='Products_id')  # Field name made lowercase.
-#     id = models.IntegerField()
-#     name = models.CharField(max_length=45)
-#     imageurl = models.CharField(db_column='imageUrl', max_length=2083, blank=True,
-#                                 null=True)
-#     creationdatetime = models.DateTimeField(db_column='creationDateTime')  # Field name made lowercase.
-#
-#     class Meta:
-#         db_table = 'uses'
-#         unique_together = (('products', 'name'), ('products', 'id'),)
-#
-#
-# class Consulteeaffiliations(models.Model):
-#     key = models.AutoField(primary_key=True, auto_created=True, verbose_name='key', serialize=False)
-#     entrances = models.ForeignKey(Entrances, db_column='Entrances_id')  # Field name made lowercase.
-#     products = models.ForeignKey(Products, db_column='Products_id')
-#     consultationprocesses = models.ForeignKey(Consultationprocesses,
-#                                               db_column='consultationProcesses_id')  # Field name made lowercase.
-#     affiliations = models.ForeignKey(Affiliations, db_column='Affiliations_id')  # Field name made lowercase.
-#     selectiondatetime = models.DateTimeField(db_column='selectionDateTime')  # Field name made lowercase.
-#     checked = models.IntegerField()
-#
-#     class Meta:
-#         db_table = 'consulteeaffiliations'
-#         unique_together = (('consultationprocesses', 'selectiondatetime'),)
-#
-#
-# class Levelofuse(models.Model):
-#     key = models.AutoField(primary_key=True, auto_created=True, verbose_name='key', serialize=False)
-#     creationdatetime = models.DateTimeField(db_column='creationDateTime')
-#     products = models.ForeignKey(Products, db_column='Products_id')
-#     uses = models.ForeignKey('Uses', db_column='Uses_id')
-#     uses_name = models.CharField(db_column='Uses_name', max_length=45)
-#     value = models.IntegerField()
-#     name = models.CharField(max_length=45, blank=True, null=True)
-#     description = models.TextField()
-#     lastupdate = models.DateTimeField(db_column='lastUpdate')
-#
-#     class Meta:
-#         db_table = 'levelofuse'
-#         unique_together = (('products', 'uses', 'value'),)
-#
-#
-# class Affiliationlevelofuses(models.Model):
-#     key = models.AutoField(primary_key=True, auto_created=True, verbose_name='key', serialize=False)
-#     products = models.ForeignKey(Products, db_column='Products_id')  # Field name made lowercase.
-#     affiliations = models.ForeignKey('Affiliations', db_column='Affiliations_id')  # Field name made lowercase.
-#     uses = models.ForeignKey(Uses, db_column='Uses_id')  # Field name made lowercase.
-#     levelofuse = models.ForeignKey('Levelofuse', db_column='levelofUse')  # Field name made lowercase.
-#     levelofuse_value = models.IntegerField()
-#     lastupdate = models.DateTimeField(db_column='lastUpdate')  # Field name made lowercase.
-#
-#     class Meta:
-#         db_table = 'affiliationlevelofuses'
-#         unique_together = (('affiliations', 'uses'),)
+class Question(models.Model):
+    key = models.AutoField(primary_key=True)
+    product = models.ForeignKey('Product')
+    id = models.IntegerField()
+    header = models.CharField(max_length=45)
+    content = models.TextField()
+    creation_date_time = models.DateTimeField()
+
+    class Meta:
+        db_table = 'question'
+        unique_together = (('product', 'header'), ('product', 'id'),)
+
+
+class Answer(models.Model):
+    key = models.AutoField(primary_key=True)
+    product = models.ForeignKey('Product')
+    question = models.ForeignKey('Question')
+    question_header = models.CharField(max_length=45)
+    question_content = models.TextField()
+    id = models.IntegerField()
+    name = models.CharField(max_length=25)
+    creation_date_time = models.DateTimeField()
+
+    class Meta:
+        db_table = 'answer'
+        unique_together = (('product', 'id'), ('product', 'question', 'name'),)
+
+
+class CompleteLaptopModel(models.Model):
+    key = models.AutoField(primary_key=True)
+    model = models.CharField(db_column='Model', max_length=30)  # Field name made lowercase.
+    brand = models.CharField(db_column='Brand', max_length=15)  # Field name made lowercase.
+    line = models.CharField(db_column='Line', max_length=45)  # Field name made lowercase.
+    gpu = models.CharField(db_column='GPU', max_length=30)  # Field name made lowercase.
+    screen_size = models.FloatField(db_column='Screen.Size')
+    screen_resolution = models.CharField(db_column='Screen.Resolution',
+                                         max_length=15)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    touch_screen = models.CharField(db_column='Touch.Screen',
+                                    max_length=5)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    processor = models.CharField(db_column='Processor', max_length=30)  # Field name made lowercase.
+    memory = models.IntegerField(db_column='Memory')  # Field name made lowercase.
+    battery = models.CharField(db_column='Battery', max_length=30)  # Field name made lowercase.
+    storagessd = models.IntegerField(db_column='StorageSSD')  # Field name made lowercase.
+    storagehdd = models.IntegerField(db_column='StorageHDD')  # Field name made lowercase.
+    dimensions = models.CharField(db_column='Dimensions', max_length=25)  # Field name made lowercase.
+    weight = models.FloatField(db_column='Weight')  # Field name made lowercase.
+    color = models.CharField(db_column='Color', max_length=15)  # Field name made lowercase.
+    operating_system = models.CharField(db_column='Operating.System',
+                                        max_length=15)  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    rankcpu = models.FloatField(db_column='rankCPU')  # Field name made lowercase.
+    rankgpu = models.FloatField(db_column='rankGPU')  # Field name made lowercase.
+    rankram = models.FloatField(db_column='rankRAM')  # Field name made lowercase.
+    rankhd = models.FloatField(db_column='rankHD')  # Field name made lowercase.
+    rankbattery = models.FloatField(db_column='rankBattery')  # Field name made lowercase.
+    rankweight = models.FloatField(db_column='rankWeight')  # Field name made lowercase.
+    dealamazonrank = models.IntegerField(db_column='dealAmazonRank', blank=True,
+                                         null=True)  # Field name made lowercase.
+    lowestprice = models.FloatField(db_column='lowestPrice')  # Field name made lowercase.
+    image_url = models.CharField(max_length=2083)
+    clusterid = models.IntegerField(db_column='clusterId')  # Field name made lowercase.
+    filtergpu = models.CharField(db_column='filterGPU', max_length=30)  # Field name made lowercase.
+    filtercpu = models.CharField(db_column='filterCPU', max_length=30)  # Field name made lowercase.
+    filtercapacity = models.IntegerField(db_column='filterCapacity')  # Field name made lowercase.
+    offers = models.CharField(max_length=2083)
+    overallrank = models.FloatField(db_column='overallRank')  # Field name made lowercase.
+    mobilityrank = models.FloatField(db_column='mobilityRank')  # Field name made lowercase.
+
+    class Meta:
+        db_table = 'complete_laptop_model'
+
+
+class AffiliationMedianUse(models.Model):
+    cluster = models.IntegerField(primary_key=True)
+    word_processing_office_applications = models.IntegerField(
+        db_column='Word Processing & Office Applications')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    audio_editing = models.IntegerField(
+        db_column='Audio Editing')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    video_watching = models.IntegerField(
+        db_column='Video Watching')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    video_editing = models.IntegerField(
+        db_column='Video Editing')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    pictures_editing = models.IntegerField(
+        db_column='Pictures Editing')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    number_3d_design = models.IntegerField(
+        db_column='3D Design')  # Field name made lowercase. Field renamed to remove unsuitable characters. Field renamed because it wasn't a valid Python identifier.
+    developing_programming = models.IntegerField(
+        db_column='Developing & Programming')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    portability = models.IntegerField(db_column='Portability')  # Field name made lowercase.
+    storage = models.IntegerField(db_column='Storage')  # Field name made lowercase.
+    gaming = models.IntegerField(db_column='Gaming')  # Field name made lowercase.
+    life_cycle = models.IntegerField(
+        db_column='Life Cycle')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    programs_running = models.IntegerField(
+        db_column='Programs Running')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    everyday_computing = models.IntegerField(
+        db_column='Everyday Computing')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    style_design = models.IntegerField(
+        db_column='Style & Design')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+
+    class Meta:
+        db_table = 'affiliation_median_use'

@@ -75,12 +75,12 @@
                         {% if forloop.counter0|divisibleby:3 %}
                             {% if forloop.first %}
                                 <tr>
-                                    <td>{{ use_input.html_name }}</td>
+                                    <td>{{ use_input.html_name|slice:":-1" }}</td>
                                     <td>{{ use_input }}</td>
                             {% else %}
                                 </tr>
                                 <tr>
-                                    <td>{{ use_input.html_name }}</td>
+                                    <td>{{ use_input.html_name|slice:":-1" }}</td>
                                     <td>{{ use_input }}</td>
                             {% endif %}
                         {% else %}
@@ -99,75 +99,92 @@
         <!-- !!! Replace with view list of affiliations !!! -->
         <fieldset id="nl-questions-field" class="form-group" form="filters-form">
             <legend>Questions</legend>
-            <div id="" class="question-block">
-                <p class="">
-                    <span>Size vs Weight</span><br>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit? Proin tristique elit neque,
-                    pellentesque elementum sapien tristique eu.
-                </p>
-                <div id="" class="btn-group center-block answer-block" data-toggle="buttons">
-                    <label class="btn btn-sm btn-default">
-                        <input type="radio" name="" id="" autocomplete="off" checked> Yes
-                    </label>
-                    <label class="btn btn-sm btn-default">
-                        <input type="radio" name="" id="" autocomplete="off"> No
-                    </label>
+            {% for ques in questions_list %}
+                <div class="question-block">
+                    <p class="">
+                        <span>{{ ques.question_header }}</span><br>
+                        {{ ques.question_content }}
+                    </p>
+                    <div id="" class="btn-group center-block answer-block" data-toggle="buttons">
+                        {% for ans in ques.answers %}
+                        <label class="btn btn-sm btn-default">
+                            {{ ans.ans_input }}{{ ans.ans_content }}
+{#                            <input type="radio" name="" id="" autocomplete="off" value=""> Yes#}
+                        </label>
+                        {% endfor %}
+                    </div>
                 </div>
-            </div>
-            <div id="" class="question-block">
-                <p class="">
-                    <span>Hybrid Laptop?</span><br>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit? Proin tristique elit neque,
-                    pellentesque elementum sapien tristique eu.
-                </p>
-                <div id="" class="btn-group center-block" data-toggle="buttons">
-                    <label class="btn btn-sm btn-default">
-                        <input type="radio" name="" id="" autocomplete="off" checked> Yes
-                    </label>
-                    <label class="btn btn-sm btn-default">
-                        <input type="radio" name="" id="" autocomplete="off"> No
-                    </label>
-                    <label class="btn btn-sm btn-default">
-                        <input type="radio" name="" id="" autocomplete="off"> Nice to have
-                    </label>
-                </div>
-            </div>
-            <div id="" class="question-block">
-                <p class="">
-                    <span>Mobility</span><br>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit? Proin tristique elit neque,
-                    pellentesque elementum sapien tristique eu.
-                </p>
-                <div id="" class="btn-group center-block" data-toggle="buttons">
-                    <label class="btn btn-sm btn-default">
-                        <input type="radio" name="" id="" autocomplete="off" checked> Yes
-                    </label>
-                    <label class="btn btn-sm btn-default">
-                        <input type="radio" name="" id="" autocomplete="off"> No
-                    </label>
-                    <label class="btn btn-sm btn-default">
-                        <input type="radio" name="" id="" autocomplete="off"> Nice to have
-                    </label>
-                </div>
-            </div>
-            <div id="" class="question-block">
-                <p class="">
-                    <span>Style & Brand</span><br>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit? Proin tristique elit neque,
-                    pellentesque elementum sapien tristique eu.
-                </p>
-                <div id="" class="btn-group center-block" data-toggle="buttons">
-                    <label class="btn btn-sm btn-default">
-                        <input type="radio" name="" id="" autocomplete="off" checked> Yes
-                    </label>
-                    <label class="btn btn-sm btn-default">
-                        <input type="radio" name="" id="" autocomplete="off"> No
-                    </label>
-                    <label class="btn btn-sm btn-default">
-                        <input type="radio" name="" id="" autocomplete="off"> Nice to have
-                    </label>
-                </div>
-            </div>
+            {% endfor %}
+
+{#            <div id="" class="question-block">#}
+{#                <p class="">#}
+{#                    <span>Size vs Weight</span><br>#}
+{#                    Lorem ipsum dolor sit amet, consectetur adipiscing elit? Proin tristique elit neque,#}
+{#                    pellentesque elementum sapien tristique eu.#}
+{#                </p>#}
+{#                <div id="" class="btn-group center-block answer-block" data-toggle="buttons">#}
+{#                    <label class="btn btn-sm btn-default">#}
+{#                        <input type="radio" name="" id="" autocomplete="off" checked> Yes#}
+{#                    </label>#}
+{#                    <label class="btn btn-sm btn-default">#}
+{#                        <input type="radio" name="" id="" autocomplete="off"> No#}
+{#                    </label>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div id="" class="question-block">#}
+{#                <p class="">#}
+{#                    <span>Hybrid Laptop?</span><br>#}
+{#                    Lorem ipsum dolor sit amet, consectetur adipiscing elit? Proin tristique elit neque,#}
+{#                    pellentesque elementum sapien tristique eu.#}
+{#                </p>#}
+{#                <div id="" class="btn-group center-block" data-toggle="buttons">#}
+{#                    <label class="btn btn-sm btn-default">#}
+{#                        <input type="radio" name="" id="" autocomplete="off" checked> Yes#}
+{#                    </label>#}
+{#                    <label class="btn btn-sm btn-default">#}
+{#                        <input type="radio" name="" id="" autocomplete="off"> No#}
+{#                    </label>#}
+{#                    <label class="btn btn-sm btn-default">#}
+{#                        <input type="radio" name="" id="" autocomplete="off"> Nice to have#}
+{#                    </label>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div id="" class="question-block">#}
+{#                <p class="">#}
+{#                    <span>Mobility</span><br>#}
+{#                    Lorem ipsum dolor sit amet, consectetur adipiscing elit? Proin tristique elit neque,#}
+{#                    pellentesque elementum sapien tristique eu.#}
+{#                </p>#}
+{#                <div id="" class="btn-group center-block" data-toggle="buttons">#}
+{#                    <label class="btn btn-sm btn-default">#}
+{#                        <input type="radio" name="" id="" autocomplete="off" checked> Yes#}
+{#                    </label>#}
+{#                    <label class="btn btn-sm btn-default">#}
+{#                        <input type="radio" name="" id="" autocomplete="off"> No#}
+{#                    </label>#}
+{#                    <label class="btn btn-sm btn-default">#}
+{#                        <input type="radio" name="" id="" autocomplete="off"> Nice to have#}
+{#                    </label>#}
+{#                </div>#}
+{#            </div>#}
+{#            <div id="" class="question-block">#}
+{#                <p class="">#}
+{#                    <span>Style & Brand</span><br>#}
+{#                    Lorem ipsum dolor sit amet, consectetur adipiscing elit? Proin tristique elit neque,#}
+{#                    pellentesque elementum sapien tristique eu.#}
+{#                </p>#}
+{#                <div id="" class="btn-group center-block" data-toggle="buttons">#}
+{#                    <label class="btn btn-sm btn-default">#}
+{#                        <input type="radio" name="" id="" autocomplete="off" checked> Yes#}
+{#                    </label>#}
+{#                    <label class="btn btn-sm btn-default">#}
+{#                        <input type="radio" name="" id="" autocomplete="off"> No#}
+{#                    </label>#}
+{#                    <label class="btn btn-sm btn-default">#}
+{#                        <input type="radio" name="" id="" autocomplete="off"> Nice to have#}
+{#                    </label>#}
+{#                </div>#}
+{#            </div>#}
         </fieldset>
         <!-- Specs Section -->
     {% for feature_key, feature_vals in filters_list.items %}
