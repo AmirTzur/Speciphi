@@ -17,14 +17,28 @@ class UsesForm(forms.Form):
         uses_dict = kwargs.pop('uses_dict')
         super(UsesForm, self).__init__(*args, **kwargs)
         for use in uses_dict:
-            self.fields[use['Uses_name'] + str(use['value'])] = forms.BooleanField(required=False,
-                                                                                   widget=forms.CheckboxInput(attrs={
-                                                                                       'id': str(
-                                                                                           use['Uses_id']) + '_' + str(
-                                                                                           use['value']),
-                                                                                       'name': use['Uses_name'],
-                                                                                       'value': use['value'],
-                                                                                   }))
+            self.fields[use['use_name'] + str(use['value'])] = forms.BooleanField(required=False,
+                                                                                  widget=forms.CheckboxInput(attrs={
+                                                                                      'id': str(
+                                                                                          use['use_id']) + '_' + str(
+                                                                                          use['value']),
+                                                                                      'name': use['use_name'],
+                                                                                      'value': use['value'],
+                                                                                  }))
+
+
+class QuestionsForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        questions_dict = kwargs.pop('questions_dict')
+        super(QuestionsForm, self).__init__(*args, **kwargs)
+        for que in questions_dict:
+            self.fields[que['question_header'] + str(que['answer_id'])] = forms.BooleanField(required=False,
+                                                                                             widget=forms.CheckboxInput(
+                                                                                                 attrs={
+                                                                                                     'value': str(que['question_id']) + "_" + str(que['answer_id']),
+                                                                                                     'name': str(que['answer_name']),
+                                                                                                     'type': 'radio',
+                                                                                                 }))
 
 
 class FilterForm(forms.Form):
