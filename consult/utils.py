@@ -7,14 +7,11 @@ import numpy as np
 import pandas as pd
 from sklearn.externals import joblib
 
-import collections
-
-import random
-from sklearn.ensemble import RandomForestClassifier
-
 
 class Classifier:
-    'Optional class documentation string'
+    """
+
+    """
     userClassificationProbs = None
     userMaximalSpecs = None
     userMinimalSpecs = None
@@ -35,11 +32,10 @@ class Classifier:
     weightFilterList = [0, float("inf")]
     priceFilterList = [0, float("inf")]
 
-    # ------------------------------------------------------------------------------------------------------------------------------------#
-    # Constructor
-    # ------------------------------------------------------------------------------------------------------------------------------------#
     def __init__(self):
+        """
 
+        """
         clusters = None
         models = None
         affiliationMedianUses = None
@@ -50,7 +46,6 @@ class Classifier:
                 print("cursor was not defined")
             else:
                 cursor.execute('CALL getClusters(%s)', [1])
-                # clusters = dictfetchall(cursor)
                 clusters = list(cursor)
                 clusters = pd.DataFrame.from_records(clusters, columns=[i[0] for i in cursor.description])
                 cursor.close()
@@ -60,7 +55,6 @@ class Classifier:
                 print("cursor was not defined")
             else:
                 cursor.execute('CALL getLaptopModels()')
-                # models = dictfetchall(cursor)
                 models = list(cursor)
                 models = pd.DataFrame.from_records(models, columns=[i[0] for i in cursor.description])
                 cursor.close()
@@ -70,7 +64,6 @@ class Classifier:
                 print("cursor was not defined")
             else:
                 cursor.execute('CALL getLaptopAffiliationMedianUse()')
-                # affiliationMedianUses = dictfetchall(cursor)
                 affiliationMedianUses = list(cursor)
                 affiliationMedianUses = pd.DataFrame.from_records(affiliationMedianUses, columns=[i[0] for i in cursor.description])
                 cursor.close()
@@ -108,28 +101,28 @@ class Classifier:
         self.affiliationMedianUses = affiliationMedianUses
         del self.affiliationMedianUses['cluster']
         self.affiliationMedianUses.index.name = 'cluster'
-
         self.generateSuitbleResultsAccordingtoUserInput()
 
-    # ------------------------------------------------------------------------------------------------------------------------------------#
-    # Generate results according the user input - Main Function
-    # ------------------------------------------------------------------------------------------------------------------------------------#
     def generateSuitbleResultsAccordingtoUserInput(self):
+        """
+        Generate results according the user input - Main Function
+        :return:
+        """
         self.generateClassificationProbs()
         self.generateUserSpecsRange()
         self.findUserClusters()
-        # print(self.modelResults)
         self.getResults()
-        # print(self.modelResults)
         return (self.filterByRules(self.brandFilterList, self.screenSizeFilterList, self.touchScreenFilterList,
                                    self.screenResolutionFilterList, self.ramFilterList, self.gpuFilterList,
                                    self.cpuFilterList, self.capacityFilterList, self.operatingSystemFilterList,
                                    self.weightFilterList, self.priceFilterList))
 
-    # ------------------------------------------------------------------------------------------------------------------------------------#
-    # Using the classification model to predict the probs for belonging each cluster - according to the user input - Main Function
-    # ------------------------------------------------------------------------------------------------------------------------------------#
     def generateClassificationProbs(self):
+        """
+        Using the classification model to predict the probs for belonging each cluster - according to the user input - Main Function
+
+        :return:
+        """
         userClassificationProbs = self.classificationModel.predict_proba(self.userApplicationInput.ix[:, 0:])
         userClassificationProbs = pd.DataFrame(userClassificationProbs, columns=self.clusters.ix[:,1])
 
@@ -143,60 +136,64 @@ class Classifier:
         self.userClassificationProbs = pd.DataFrame(
             userClassificationProbs.ix[0, :] / sum(userClassificationProbs.ix[0, :]))
 
-    # ------------------------------------------------------------------------------------------------------------------------------------#
-    # Calculating the Weighted Specs Ranks (minimal and maximal) the User Needs
-    # ------------------------------------------------------------------------------------------------------------------------------------#
     def generateUserSpecsRange(self):
+        """
+        Calculating the Weighted Specs Ranks (minimal and maximal) the User Needs
+        :return:
+        """
         self.userMinimalSpecs = np.matrix(self.userClassificationProbs.ix[:, 0]) * np.matrix(
             self.clustersMinimalSpecs.ix[:, :])
         self.userMaximalSpecs = np.matrix(self.userClassificationProbs.ix[:, 0]) * np.matrix(
             self.clustersMaximalSpecs.ix[:, :])
 
-    # ------------------------------------------------------------------------------------------------------------------------------------#
-    #  find the clusters in which the user belongs to
-    # ------------------------------------------------------------------------------------------------------------------------------------#
     def findUserClusters(self):
+        """
+        find the clusters in which the user belongs to
+        :return:
+        """
         self.userChosenClusters = pd.DataFrame(self.userClassificationProbs.index.tolist(),
                                                index=self.userClassificationProbs.index) * (
                                       (self.userClassificationProbs > 0) * 1)
 
-    # ------------------------------------------------------------------------------------------------------------------------------------#
-    #  Get suitble models according the user input
-    # ------------------------------------------------------------------------------------------------------------------------------------#
     def getResults(self):
-        # print(self.modelResults)
+        """
+        Get suitble models according the user input
+        :return:
+        """
         self.modelResults = self.listOfmodels.loc[(self.listOfmodels.rankCPU <= self.userMaximalSpecs.item(0))]
-        # print(self.modelResults)
         self.modelResults = self.modelResults.loc[(self.modelResults.rankGPU <= self.userMaximalSpecs.item(1))]
-        # print(self.modelResults)
         self.modelResults = self.modelResults.loc[(self.modelResults.rankRAM <= self.userMaximalSpecs.item(2))]
-        # print(self.modelResults)
         self.modelResults = self.modelResults.loc[(self.modelResults.rankHD <= self.userMaximalSpecs.item(3))]
-        # print(self.modelResults)
         self.modelResults = self.modelResults.loc[(self.modelResults.rankBattery <= self.userMaximalSpecs.item(4))]
-        # print(self.modelResults)
         self.modelResults = self.modelResults.loc[(self.modelResults.rankWeight <= self.userMaximalSpecs.item(5))]
-        # print(self.modelResults)
         self.modelResults = self.modelResults.loc[(self.modelResults.rankCPU >= self.userMinimalSpecs.item(0))]
         self.modelResults = self.modelResults.loc[(self.modelResults.rankGPU >= self.userMinimalSpecs.item(1))]
         self.modelResults = self.modelResults.loc[(self.modelResults.rankRAM >= self.userMinimalSpecs.item(2))]
         self.modelResults = self.modelResults.loc[(self.modelResults.rankHD >= self.userMinimalSpecs.item(3))]
         self.modelResults = self.modelResults.loc[(self.modelResults.rankBattery >= self.userMinimalSpecs.item(4))]
         self.modelResults = self.modelResults.loc[(self.modelResults.rankWeight >= self.userMinimalSpecs.item(5))]
-        # print(self.modelResults)
         self.modelResults = self.modelResults[self.modelResults['clusterId'].isin(self.userChosenClusters.ix[:, 0])]
-        # print(self.modelResults)
         self.modelResults = self.modelResults.drop_duplicates(subset='Model')
-        # print(self.modelResults)
 
-    # ------------------------------------------------------------------------------------------------------------------------------------#
-    #  Commit rules for filtering the results
-    # ------------------------------------------------------------------------------------------------------------------------------------#
     def filterByRules(self, brandFilterList, screenSizeFilterList, touchScreenFilterList, screenResolutionFilterList,
                       ramFilterList, gpuFilterList, cpuFilterList, capacityFilterList, operatingSystemFilterList,
                       weightFilterList, priceFilterList):
+        """
+        Commit rules for filtering the results
+        :param brandFilterList:
+        :param screenSizeFilterList:
+        :param touchScreenFilterList:
+        :param screenResolutionFilterList:
+        :param ramFilterList:
+        :param gpuFilterList:
+        :param cpuFilterList:
+        :param capacityFilterList:
+        :param operatingSystemFilterList:
+        :param weightFilterList:
+        :param priceFilterList:
+        :return:
+        """
         self.initializeFilters()
-
         self.brandFilterList = brandFilterList
         self.screenSizeFilterList = screenSizeFilterList
         self.touchScreenFilterList = touchScreenFilterList
@@ -208,7 +205,6 @@ class Classifier:
         self.operatingSystemFilterList = operatingSystemFilterList
         self.weightFilterList = weightFilterList
         self.priceFilterList = priceFilterList
-
         self.filteredResults = self.modelResults
         self.filteredResults = self.filteredResults.loc[(self.filteredResults.lowestPrice >= self.priceFilterList[0])]
         self.filteredResults = self.filteredResults.loc[(self.filteredResults.lowestPrice <= self.priceFilterList[1])]
@@ -238,11 +234,13 @@ class Classifier:
         else:
             return ('Less than 3 Results')
 
-    # ------------------------------------------------------------------------------------------------------------------------------------#
-    #  Extract Results According to the User Affiliation Choices
-    # ------------------------------------------------------------------------------------------------------------------------------------#
     def getResultsAccordingToAffiliationInput(self,
                                               chosenAffiliations):  # chosenAffiliations = set of current chosen affiliation ex: {1,3,6} such as min=1, max = 8
+        """
+        Extract Results According to the User Affiliation Choices
+        :param chosenAffiliations:
+        :return:
+        """
         self.initializeFilters()
         if (len(chosenAffiliations) != 0):
             self.userAffiliations = chosenAffiliations
@@ -251,22 +249,24 @@ class Classifier:
         #
         else:
             self.userAffiliationInput = self.defaultUserInput
-
         return (self.generateSuitbleResultsAccordingtoUserInput())
 
-    # ------------------------------------------------------------------------------------------------------------------------------------#
-    #  Extract Results According to the User Application Choices
-    # ------------------------------------------------------------------------------------------------------------------------------------#
     def getResultsAccordingToApplicationInput(self, useId, levelOfUse):
+        """
+        Extract Results According to the User Application Choices
+        :param useId:
+        :param levelOfUse:
+        :return:
+        """
         self.initializeFilters()
         self.userApplicationInput.ix[:, useId - 1] = levelOfUse
         return (self.generateSuitbleResultsAccordingtoUserInput())
 
-    # ------------------------------------------------------------------------------------------------------------------------------------#
-    # get exist levels of filterabled features
-    # ------------------------------------------------------------------------------------------------------------------------------------#
     def getFilterableFeaturesLevels(self):
-
+        """
+        get exist levels of filterabled features
+        :return:
+        """
         filterdResultsLevels = [{"Brand": self.listOfmodels['Brand'].unique().tolist(),
                                  "Screen Size": self.listOfmodels['Screen.Size'].unique().tolist(),
                                  "Touch Screen": self.listOfmodels['Touch.Screen'].unique().tolist(),
@@ -276,7 +276,6 @@ class Classifier:
                                  "CPU": self.listOfmodels['filterCPU'].unique().tolist(),
                                  "Capacity": self.listOfmodels['filterCapacity'].unique().tolist(),
                                  "Operating System": self.listOfmodels['Operating.System'].unique().tolist()},
-
                                 {"Brand": self.modelResults['Brand'].unique().tolist(),
                                  "Screen Size": self.modelResults['Screen.Size'].unique().tolist(),
                                  "Touch Screen": self.modelResults['Touch.Screen'].unique().tolist(),
@@ -286,7 +285,6 @@ class Classifier:
                                  "CPU": self.modelResults['filterCPU'].unique().tolist(),
                                  "Capacity": self.modelResults['filterCapacity'].unique().tolist(),
                                  "Operating System": self.modelResults['Operating.System'].unique().tolist()},
-
                                 {"Brand": self.filteredResults['Brand'].unique().tolist(),
                                  "Screen Size": self.filteredResults['Screen.Size'].unique().tolist(),
                                  "Touch Screen": self.filteredResults['Touch.Screen'].unique().tolist(),
@@ -296,18 +294,17 @@ class Classifier:
                                  "CPU": self.filteredResults['filterCPU'].unique().tolist(),
                                  "Capacity": self.filteredResults['filterCapacity'].unique().tolist(),
                                  "Operating System": self.filteredResults['Operating.System'].unique().tolist()}]
-
         for sub in filterdResultsLevels:
             for idx, val in enumerate(sub['Memory']): sub['Memory'][idx] = str(val) + 'GB'
             for idx, val in enumerate(sub['Capacity']): sub['Capacity'][idx] = str(val) + 'GB'
             for idx, val in enumerate(sub['Screen Size']): sub['Screen Size'][idx] = str(val) + '"'
-
         return (filterdResultsLevels)
 
-    # ------------------------------------------------------------------------------------------------------------------------------------#
-    # Initialize filters
-    # ------------------------------------------------------------------------------------------------------------------------------------#
     def initializeFilters(self):
+        """
+        Initialize filters
+        :return:
+        """
         self.brandFilterList = []
         self.screenSizeFilterList = []
         self.touchScreenFilterList = []
@@ -319,11 +316,11 @@ class Classifier:
         self.operatingSystemFilterList = []
         self.weightFilterList = [0, float("inf")]
 
-    # ------------------------------------------------------------------------------------------------------------------------------------#
-    # Find top 3 Results - Best Match, Best Mobility, Best Price
-    # ------------------------------------------------------------------------------------------------------------------------------------#
     def getTop3Results(self):
-
+        """
+        Find top 3 Results - Best Match, Best Mobility, Best Price
+        :return:
+        """
         bestMatch = self.filteredResults.ix[np.argmax(self.filteredResults.overallRank), :]
         bestMatch = self.filteredResults[self.filteredResults['Model'].isin(bestMatch)]
         self.filteredResults = self.filteredResults[-self.filteredResults['Model'].isin(bestMatch['Model'])]
@@ -348,7 +345,6 @@ class Classifier:
         top3 = pd.concat([bestMatch, bestMobility, bestPrice])
         top3['sort_indicator'] = ['Best Match', 'Best Mobility', 'Best Price']
         top3 = top3.to_dict('records')
-
         for sub in top3:
             sub['Memory'] = str(sub['Memory']) + 'GB'
             sub['Screen.Size'] = str(sub['Screen.Size']) + '"'
@@ -361,47 +357,13 @@ class Classifier:
             sub['Touch Screen'] = sub.pop('Touch.Screen')
             sub['Operating System'] = sub.pop('Operating.System')
 
-        return (top3)
+        return top3
 
-    # ------------------------------------------------------------------------------------------------------------------------------------#
-    # Return Our Recommended Specification
-    # ------------------------------------------------------------------------------------------------------------------------------------#
     def getRecommendedSpecification(self):
+        """
+        Return Our Recommended Specification
+        :return:
+        """
 
         return ()
 
-    def getModelResults(self):
-        return (self.modelResults)
-
-    def getFilteredResults(self):
-        return (self.filteredResults)
-
-    def getProbs(self):
-        return (self.userClassificationProbs)
-
-    def getUserChosenClusters(self):
-        return (self.userChosenClusters)
-
-    def getUserChosenUses(self):
-        return (self.userApplicationInput)
-
-    def getUserMinimalSpecs(self):
-        return (self.userMinimalSpecs)
-
-    def getUserMaximalSpecs(self):
-        return (self.userMaximalSpecs)
-
-    def getClusters(self):
-        return (self.clusters)
-
-    def getMedian(self):
-        return (self.clusters)
-
-
-# return results as a dict with key names
-def dictfetchall(cursor):
-    columns = [col[0] for col in cursor.description]
-    return [
-        dict(zip(columns, row))
-        for row in cursor.fetchall()
-        ]
