@@ -9,7 +9,9 @@ from django.http import HttpResponse
 from collections import OrderedDict
 import urllib.request
 import json
+import pickle
 import string
+from consult.utils import Classifier
 
 
 def home(request):
@@ -623,11 +625,8 @@ def results(request, product=None):
     ConsultationProcess_id = None
     Product_id = None
     affiliations = None
-    affiliations_form = None
     uses = None
-    applications_form = None
     que_ans = None
-    questions_form = None
 
     if product == 'Laptop':
         Product_id = 1  # Laptop product ID
@@ -717,7 +716,6 @@ def results(request, product=None):
                             'ans_content': que_ans[index + i]['answer_name']
                         })
                         i += 1
-                    print(ans_list)
                     questions_list.append({
                         'question_header': que['question_header'],
                         'question_id': que['question_id'],
@@ -726,16 +724,15 @@ def results(request, product=None):
                     })
                 else:
                     i -= 1
-            # for que_input in questions_form:
-            #     for que in que_ans:
-            #         if que['question_header'] + str(que['answer_id']) in str(que_input):
-            #             que['question_input'] = str(que_input)
             context.update({
                 "questions_list": questions_list,
             })
         if ConsultationProcess_id:
             request.session['ConsultationProcess_id'] = ConsultationProcess_id[0]
-
+    # Algorithm
+    classifier_algo = Classifier()
+    # request.session['classifier'] = pickle.dumps(classifier_algo)
+    print(classifier_algo.getTop3Results())
     # Filtering Form
     # unit: " , GB x 2, lb.
     filters_list = OrderedDict(
@@ -821,89 +818,17 @@ def results(request, product=None):
     # Final Results
     # Laptop Features (keys): Screen Size, Processor, Memory, Storage [ssd,hdd], GPU, Screen Resolution, Touch Screen,
     #   Weight, Dimensions (WxHxD), Battery [chemistry,cells,wh], Color, Operating System, Model (manufacturer model)
-    final_offers = [
-        {'sort_indicator': 'Category Favorable', 'Brand': 'Lenovo', 'Line': 'ThinkPad P40 Yoga',
-         'image_url': 'http://ecx.images-amazon.com/images/I/41238W8tcjL._SL160_.jpg',
-         'offers': [{'deal_id': 333,
-                     'deal_url': 'http://www.amazon.com/gp/offer-listing/B00VQP3DNY%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
-                     'vendor_name': 'Amazon',
-                     'price': 1050},
-                    {'deal_id': 444,
-                     'deal_url': 'xxx',
-                     'vendor_name': 'eBay',
-                     'price': 1100}],
-         'features': OrderedDict([('Screen Size', '14"'), ('Processor', 'Intel Core i7-4847HQ'), ('Memory', '8GB'),
-                                  ('Storage', ['0GB', '1000GB']),
-                                  ('GPU', 'Intel HD Graphics 5500'), ('Screen Resolution', '1920 x 1080'),
-                                  ('Touch Screen', 'Yes'),
-                                  ('Weight', '2.87 lb'), ('Dimensions (WxHxD)', '14x0.66x9.27"'),
-                                  ('Battery', 'Li-Polymer 6 cells 56Wh'), ('Color', 'Black'),
-                                  ('Operating System', 'Windows'), ('Model', 'Yogab456')]),
-         },
-        {'sort_indicator': 'Best Match', 'Brand': 'Apple', 'Line': 'Macbook Pro (Early 2015)',
-         'image_url': 'http://ecx.images-amazon.com/images/I/41lmJ1hPMnL._SL160_.jpg',
-         'offers': [{'deal_id': 111,
-                     'deal_url': 'http://www.amazon.com/gp/offer-listing/B00GZB8D0M%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
-                     'vendor_name': 'Amazon',
-                     'price': 950},
-                    {'deal_id': 222,
-                     'deal_url': 'xxx',
-                     'vendor_name': 'eBay',
-                     'price': 1000}],
-         'features': OrderedDict([('Screen Size', '13.3"'), ('Processor', 'Intel Core i5-5600U'), ('Memory', '16GB'),
-                                  ('Storage', ['256GB', '0GB']),
-                                  ('GPU', 'NVIDIA GeForce GTX 960M'), ('Screen Resolution', '3200 x 1800'),
-                                  ('Touch Screen', 'No'),
-                                  ('Weight', '4 lb'), ('Dimensions (WxHxD)', '12.2x0.9x8"'),
-                                  ('Battery', 'Li-Ion 4 cells 72Wh'), ('Color', 'Black'),
-                                  ('Operating System', 'Windows'), ('Model', 'MLLL/AH')]),
-         },
-        {'sort_indicator': 'Greatest Mobility', 'Brand': 'Dell', 'Line': 'XPS 15',
-         'image_url': 'http://ecx.images-amazon.com/images/I/218dheiyUrL._SL160_.jpg',
-         'offers': [{'deal_id': 555,
-                     'deal_url': 'http://www.amazon.com/gp/offer-listing/B00SQG3MQE%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
-                     'vendor_name': 'Amazon',
-                     'price': 1150},
-                    {'deal_id': 666,
-                     'deal_url': 'xxx',
-                     'vendor_name': 'eBay',
-                     'price': 1200}],
-         'features': OrderedDict([('Screen Size', '15.6"'), ('Processor', 'Intel Core i3-3200F'), ('Memory', '8GB'),
-                                  ('Storage', ['256GB', '1000GB']),
-                                  ('GPU', 'NVIDIA Quadro M1000M'), ('Screen Resolution', '1920 x 1080'),
-                                  ('Touch Screen', 'No'),
-                                  ('Weight', '6 lb'), ('Dimensions (WxHxD)', '12.2x1x8"'),
-                                  ('Battery', 'Li-Ion 3 cells 44Wh'), ('Color', 'Black'),
-                                  ('Operating System', 'Windows'), ('Model', 'XPS13cc')]),
-         },
-        {'sort_indicator': 'Cost Effective', 'Brand': 'Asus', 'Line': 'Zenbook 133X',
-         'image_url': 'http://ecx.images-amazon.com/images/I/41-6oCGJqwL._SL160_.jpg',
-         'offers': [{'deal_id': 777,
-                     'deal_url': 'http://www.amazon.com/gp/offer-listing/B01BLU6ERK%3FSubscriptionId%3DAKIAJZXUIQUQZ34J3E5Q%26tag%3Ddjaroo10-',
-                     'vendor_name': 'Amazon',
-                     'price': 1250},
-                    {'deal_id': 888,
-                     'deal_url': 'xxx',
-                     'vendor_name': 'eBay',
-                     'price': 1300}],
-         'features': OrderedDict([('Screen Size', '17"'), ('Processor', 'Intel Core i5-5600U'), ('Memory', '8GB'),
-                                  ('Storage', ['256GB', '0GB']),
-                                  ('GPU', 'NVIDIA GeForce GTX 960M'), ('Screen Resolution', '1920 x 1080'),
-                                  ('Touch Screen', 'No'),
-                                  ('Weight', '4.25 lb'), ('Dimensions (WxHxD)', '11x1.2x10"'),
-                                  ('Battery', 'Li-Ion 4 cells 72Wh'), ('Color', 'Black'),
-                                  ('Operating System', 'Windows'), ('Model', 'Z3003U')]),
-         },
-    ]
+    final_offers = parse_results(classifier_algo.getTop3Results())
     context.update({
         "final_offers": final_offers[0:3],
     })
-    recommended_spec = OrderedDict([('Screen Size', '13-15"'), ('Processor', 'Intel Core i5-5600U'), ('Memory', '8GB'),
-                                    ('Storage', ['8GB SSD', '1000GB HDD']), ('GPU', 'Intel HD Graphics'),
-                                    ('Screen Resolution', '1920 x 1080'), ('Touch Screen', 'Yes'),
-                                    ('Weight', '2.5-3 lb'),
-                                    ('Battery', 'Li-Polymer 6 cells 56Wh'),
-                                    ('Operating System', ['Windows /', 'Chromebook'])])
+    recommended_spec = OrderedDict(
+        [('Screen Size', '13-15"'), ('Processor', 'Intel Core i5-5600U'), ('Memory', '8GB'),
+         ('Storage', ['8GB SSD', '1000GB HDD']), ('GPU', 'Intel HD Graphics'),
+         ('Screen Resolution', '1920 x 1080'), ('Touch Screen', 'Yes'),
+         ('Weight', '2.5-3 lb'),
+         ('Battery', 'Li-Polymer 6 cells 56Wh'),
+         ('Operating System', ['Windows /', 'Chromebook'])])
     context.update({
         "recommended_spec": recommended_spec,
     })
@@ -1042,6 +967,9 @@ def user_actions(request):
         else:
             print('data is not valid')
 
+        # update algorithm
+        # get results in response
+        # send results
         response_data = {}  # hold the data that will send back to client (for future use)
         response_data['total_results'] = 1000
         response_data['offers'] = 2
@@ -1127,3 +1055,42 @@ def NewConsulteeAffiliation(request):
             json.dumps({"failed": "request POST didn't go through"}),
             content_type="application/json"
         )
+
+
+def parse_results(results_list):
+    final_offers = []
+    for offer_dict in results_list:
+        ord_dict = OrderedDict([])
+        offer_list = []
+        result_dict = {'features': ord_dict, 'offers': offer_list}
+        for key, val in offer_dict.items():
+            if key == 'sort_indicator' or key == 'Brand' or key == 'Line' or key == 'image_url':
+                result_dict[key] = val
+            elif key == 'offers':
+                vendor_name, price, deal_url = val.split(',')
+                result_dict['offers'].append(
+                    {'vendor_name': vendor_name,
+                     'price': price,
+                     'deal_url': deal_url,
+                     }
+                )
+            else:
+                result_dict['features'].update({key: val})
+        features_dict = OrderedDict([
+            ('Screen Size', result_dict['features']['Screen Size']),
+            ('Processor', result_dict['features']['Processor']),
+            ('Memory', result_dict['features']['Memory']),
+            ('Storage', result_dict['features']['Storage']),
+            ('GPU', result_dict['features']['GPU']),
+            ('Screen Resolution', result_dict['features']['Screen Resolution']),
+            ('Touch Screen', result_dict['features']['Touch Screen']),
+            ('Weight', result_dict['features']['Weight']),
+            ('Dimensions (WxHxD)', result_dict['features']['Dimensions']),
+            ('Battery', result_dict['features']['Battery']),
+            ('Color', result_dict['features']['Color']),
+            ('Operating System', result_dict['features']['Operating System']),
+            ('Model', result_dict['features']['Model'])
+        ])
+        result_dict['features'] = features_dict
+        final_offers.append(result_dict)
+    return final_offers
