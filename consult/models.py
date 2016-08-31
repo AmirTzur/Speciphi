@@ -187,3 +187,29 @@ class AffiliationMedianUse(models.Model):
 
     class Meta:
         db_table = 'affiliation_median_use'
+
+
+class Advice(models.Model):
+    key = models.AutoField(primary_key=True)
+    advisor_id = models.IntegerField()
+    header = models.CharField(max_length=35)
+    content = models.TextField()
+    triger = models.CharField(max_length=25)
+    triger_id = models.IntegerField()
+
+    class Meta:
+        db_table = 'advice'
+
+
+class Action(models.Model):
+    key = models.AutoField(primary_key=True)
+    entrance = models.ForeignKey('Entrance')
+    consultation_process = models.ForeignKey('ConsultationProcess')
+    name = models.CharField(max_length=50)
+    type = models.IntegerField(blank=True, null=True)
+    object_id = models.IntegerField(blank=True, null=True)
+    content = models.CharField(max_length=50, blank=True, null=True)
+    creation_date_time = models.DateTimeField()
+
+    class Meta:
+        db_table = 'action'

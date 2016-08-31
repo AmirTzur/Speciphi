@@ -9,6 +9,7 @@ from django.http import HttpResponse
 from collections import OrderedDict
 import urllib.request
 import json
+import string
 
 
 def home(request):
@@ -709,10 +710,11 @@ def results(request, product=None):
                         'ans_input': questions_form[que['question_header'] + str(que['answer_id'])],
                         'ans_content': que['answer_name']
                     })
-                    while index+i < len(que_ans) and que['question_id'] == que_ans[index+i]['question_id']:
+                    while index + i < len(que_ans) and que['question_id'] == que_ans[index + i]['question_id']:
                         ans_list.append({
-                            'ans_input': questions_form[que_ans[index+i]['question_header'] + str(que_ans[index+i]['answer_id'])],
-                            'ans_content': que_ans[index+i]['answer_name']
+                            'ans_input': questions_form[
+                                que_ans[index + i]['question_header'] + str(que_ans[index + i]['answer_id'])],
+                            'ans_content': que_ans[index + i]['answer_name']
                         })
                         i += 1
                     print(ans_list)
@@ -986,7 +988,7 @@ def dictfetchall(cursor):
     return [
         dict(zip(columns, row))
         for row in cursor.fetchall()
-]
+        ]
 
 
 # # Find the nth occurrence of substring in a string
@@ -1002,6 +1004,56 @@ def dictfetchall(cursor):
 # def get_spec_val(data, term):
 #     data = data[data.index(term) + len(term):]
 #     return data[find_nth(data, '>', 1) + 1:data.index('</td>')]
+
+
+def user_actions(request):
+    print('user_actions|')
+    if request.method == 'POST':
+        entrance_id = request.session['Entrance_id']
+        consultation_process_id = request.session['ConsultationProcess_id']
+        action_name = request.POST.get('action_name')
+        action_type = request.POST.get('action_type')
+        object_id = request.POST.get('object_id')
+        action_content = request.POST.get('action_content')
+        validate_data = True
+        if not object_id.isdigit():
+            validate_data = False
+        if not (action_type.isdigit() or (action_type[0] == '-' and action_type[1:].isdigit())):
+            validate_data = False
+        if validate_data:
+            try:
+                cursor = connection.cursor()
+                if not cursor:
+                    print("cursor was not defined")
+                else:
+                    # Input: Entrance_id, Consultation_Process_id, Name, Type, Object_id, Content
+                    # Output: Creates new entry on action table
+                    cursor.execute('CALL setNewAction(%s,%s,%s,%s,%s,%s)',
+                                   [entrance_id,
+                                    consultation_process_id,
+                                    action_name,
+                                    action_type,
+                                    object_id,
+                                    action_content
+                                    ])
+                    cursor.close()
+            except Error as e:
+                print(e)
+        else:
+            print('data is not valid')
+
+        response_data = {}  # hold the data that will send back to client (for future use)
+        response_data['total_results'] = 1000
+        response_data['offers'] = 2
+        return HttpResponse(
+            json.dumps(response_data),
+            content_type="application/json"
+        )
+    else:
+        return HttpResponse(
+            json.dumps({"failed": "request POST didn't go through"}),
+            content_type="application/json"
+        )
 
 
 def NewConsulteeAffiliation(request):

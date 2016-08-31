@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^success_close/$', 'consult.views.success_close', name='success_close'),
     url(r'^NewConsulteeAffiliation/$', 'consult.views.NewConsulteeAffiliation', name='NewConsulteeAffiliation'),
+    url(r'^user_actions/$', 'consult.views.user_actions', name='user_actions'),
 ]
 
 if settings.DEBUG:
