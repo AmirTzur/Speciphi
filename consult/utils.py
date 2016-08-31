@@ -234,11 +234,11 @@ class Classifier:
         else:
             return ('Less than 3 Results')
 
-    def getResultsAccordingToAffiliationInput(self,
-                                              chosenAffiliations):  # chosenAffiliations = set of current chosen affiliation ex: {1,3,6} such as min=1, max = 8
+    def getResultsAccordingToAffiliationInput(self, chosenAffiliations):
         """
         Extract Results According to the User Affiliation Choices
-        :param chosenAffiliations:
+        chosenAffiliations = set of current chosen affiliation ex: {1,3,6} such as min=1, max = 8
+        :param chosenAffiliations: pd.DataFrame([2,3])
         :return:
         """
         self.initializeFilters()
@@ -255,11 +255,11 @@ class Classifier:
         """
         Extract Results According to the User Application Choices
         :param useId:
-        :param levelOfUse:
+        :param levelOfUse: unchecked value = 0
         :return:
         """
         self.initializeFilters()
-        self.userApplicationInput.ix[:, useId - 1] = levelOfUse
+        self.userApplicationInput.ix[:, useId] = levelOfUse
         return (self.generateSuitbleResultsAccordingtoUserInput())
 
     def getFilterableFeaturesLevels(self):
@@ -319,6 +319,7 @@ class Classifier:
     def getTop3Results(self):
         """
         Find top 3 Results - Best Match, Best Mobility, Best Price
+        Using only on first entrance
         :return:
         """
         bestMatch = self.filteredResults.ix[np.argmax(self.filteredResults.overallRank), :]
