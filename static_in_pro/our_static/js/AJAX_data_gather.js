@@ -4,6 +4,7 @@ $('#nl-type-field input').on('change', function () {
 });
 // application
 $('#nl-needs-field input').on('change', function () {
+    console.log('sending application ajax');
     AJAX_userAction(this, 'use_ranking');
 });
 // focalization

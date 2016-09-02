@@ -1040,13 +1040,13 @@ def predict(p_type, p_classifier, request):
                         request.session['application']['use_id'][index],
                         request.session['application']['level_of_use'][index]
                     ))
-                    print('last one')
+                    # print('last one')
                 else:
                     parse_results(p_classifier.getResultsAccordingToApplicationInput(
                         request.session['application']['use_id'][index],
                         request.session['application']['level_of_use'][index]
                     ))
-                    print('middle one')
+                    # print('middle one')
         if len(request.session['affiliation']) < 1 and len(request.session['application']['use_id']) < 1:
             print('Unchecked all affiliations and applications')
             final_offers = parse_results(p_classifier.getTop3Results())
