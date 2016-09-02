@@ -1,3 +1,4 @@
+from django.core.files import File
 from django.shortcuts import render, redirect
 from django.db import connection, Error
 from django.template.loader import get_template
@@ -733,6 +734,7 @@ def results(request, product=None):
             request.session['ConsultationProcess_id'] = ConsultationProcess_id[0]
     # Algorithm
     classifier_algo = Classifier()
+
     # Filtering Form
     # unit: " , GB x 2, lb.
     filters_list = OrderedDict(
@@ -818,7 +820,7 @@ def results(request, product=None):
     # Final Results
     # Laptop Features (keys): Screen Size, Processor, Memory, Storage [ssd,hdd], GPU, Screen Resolution, Touch Screen,
     #   Weight, Dimensions (WxHxD), Battery [chemistry,cells,wh], Color, Operating System, Model (manufacturer model)
-    # final_offers = parse_results(classifier_algo.getTop3Results())
+
     final_offers = predict('init', classifier_algo, request)
     context.update({
         "final_offers": final_offers[0:3],
