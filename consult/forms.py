@@ -9,7 +9,6 @@ class AffiliationsForm(forms.Form):
             self.fields[aff['name']] = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={
                 'name': aff['name'],
                 'value': aff['id'],
-                'class': 'affiliation_input',
             }))
 
 
@@ -25,7 +24,6 @@ class UsesForm(forms.Form):
                                                                                           use['value']),
                                                                                       'name': use['use_name'],
                                                                                       'value': use['value'],
-                                                                                      'class': 'application_input',
                                                                                   }))
 
 
@@ -40,8 +38,6 @@ class QuestionsForm(forms.Form):
                                                                                                      'value': str(que['question_id']) + "_" + str(que['answer_id']),
                                                                                                      'name': str(que['answer_name']),
                                                                                                      'type': 'radio',
-                                                                                                     'class': 'focalization_input',
-
                                                                                                  }))
 
 
