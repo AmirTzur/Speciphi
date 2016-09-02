@@ -988,8 +988,14 @@ def user_actions(request):
         if action_name == 'use_ranking':
             # if checked
             if int(action_type) in [1, 2, 3]:
+                # if re-checked
+                if int(object_id) in request.session['application']['use_id']:
+                    remove_index = request.session['application']['use_id'].index(int(object_id))
+                    del request.session['application']['use_id'][remove_index]
+                    del request.session['application']['level_of_use'][remove_index]
                 request.session['application']['use_id'].append(int(object_id))
                 request.session['application']['level_of_use'].append(int(action_type))
+                # if un-checked
             elif int(action_type) in [-1, -2, -3]:
                 request.session['application']['use_id'].remove(int(object_id))
                 request.session['application']['level_of_use'].remove(int(action_type) * -1)
