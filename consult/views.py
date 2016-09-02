@@ -956,7 +956,7 @@ def user_actions(request):
                     print("cursor was not defined")
                 else:
                     # Input: Entrance_id, Consultation_Process_id, Name, Type, Object_id, Content
-                    # Output: Creates new entry on action table
+                    # Output: saves user action
                     cursor.execute('CALL setNewAction(%s,%s,%s,%s,%s,%s)',
                                    [entrance_id,
                                     consultation_process_id,
@@ -976,12 +976,14 @@ def user_actions(request):
         # Session Update
         if action_name == 'affiliation_choosing':
             # if checked
-            if str(action_type) == '1':
+            if int(action_type) == 1:
                 request.session['affiliation'].append(int(object_id))
+                print('affiliations checked. ', request.session['affiliation'])
                 offer_list = predict('needs', classifier_ent, request)
             # if un-checked
-            elif action_type == -1:
+            elif int(action_type) == -1:
                 request.session['affiliation'].remove(int(object_id))
+                print('affiliations unchecked. ', request.session['affiliation'])
                 offer_list = predict('needs', classifier_ent, request)
         if action_name == 'use_ranking':
             # if checked
@@ -990,7 +992,7 @@ def user_actions(request):
                 request.session['application']['level_of_use'].append(int(action_type))
             elif int(action_type) in [-1, -2, -3]:
                 request.session['application']['use_id'].remove(int(object_id))
-                request.session['application']['level_of_use'].remove(int(action_type)*-1)
+                request.session['application']['level_of_use'].remove(int(action_type) * -1)
             offer_list = predict('needs', classifier_ent, request)
 
         # get results in response
@@ -1045,7 +1047,9 @@ def predict(p_type, p_classifier, request):
                         request.session['application']['level_of_use'][index]
                     ))
                     print('middle one')
-
+        if len(request.session['affiliation']) < 1 and len(request.session['application']['use_id']) < 1:
+            print('Unchecked all affiliations and applications')
+            final_offers = parse_results(p_classifier.getTop3Results())
     return final_offers
 
 
