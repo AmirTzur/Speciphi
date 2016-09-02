@@ -2,6 +2,7 @@ from django.core.files import File
 from django.shortcuts import render, redirect
 from django.db import connection, Error
 from django.template.loader import get_template
+from django.template import RequestContext, Template
 from django.core.mail import EmailMessage
 from django.template import Context
 from consult.forms import AffiliationsForm, UsesForm, QuestionsForm, ContactForm, FilterForm
@@ -13,6 +14,7 @@ import json
 import pickle
 import string
 from consult.utils import Classifier
+import pandas as pd
 
 
 def home(request):
@@ -819,7 +821,7 @@ def results(request, product=None):
     # Laptop Features (keys): Screen Size, Processor, Memory, Storage [ssd,hdd], GPU, Screen Resolution, Touch Screen,
     #   Weight, Dimensions (WxHxD), Battery [chemistry,cells,wh], Color, Operating System, Model (manufacturer model)
 
-    final_offers = parse_results(classifier_algo.getTop3Results())
+    final_offers = predict('init', classifier_algo, request)
     context.update({
         "final_offers": final_offers[0:3],
     })
@@ -935,6 +937,7 @@ def dictfetchall(cursor):
 def user_actions(request):
     print('user_actions|')
     if request.method == 'POST':
+        request.session.modified = True
         entrance_id = request.session['Entrance_id']
         consultation_process_id = request.session['ConsultationProcess_id']
         action_name = request.POST.get('action_name')
@@ -967,22 +970,129 @@ def user_actions(request):
                 print(e)
         else:
             print('data is not valid')
-
         # update algorithm
+        classifier_ent = Classifier()
+        offer_list = []
+        # Session Update
+        if action_name == 'affiliation_choosing':
+            # if checked
+            if str(action_type) == '1':
+                request.session['affiliation'].append(int(object_id))
+                offer_list = predict('needs', classifier_ent, request)
+            # if un-checked
+            elif action_type == -1:
+                request.session['affiliation'].remove(int(object_id))
+                offer_list = predict('needs', classifier_ent, request)
+        if action_name == 'use_ranking':
+            # if checked
+            if int(action_type) in [1, 2, 3]:
+                request.session['application']['use_id'].append(int(object_id))
+                request.session['application']['level_of_use'].append(int(action_type))
+            elif int(action_type) in [-1, -2, -3]:
+                request.session['application']['use_id'].remove(int(object_id))
+                request.session['application']['level_of_use'].remove(int(action_type)*-1)
+            offer_list = predict('needs', classifier_ent, request)
+
         # get results in response
         # send results
         response_data = {}  # hold the data that will send back to client (for future use)
-        response_data['total_results'] = 1000
-        response_data['offers'] = 2
+        response_data['offers'] = offer_list
         return HttpResponse(
             json.dumps(response_data),
-            content_type="application/json"
+            content_type="application/json",
         )
     else:
         return HttpResponse(
             json.dumps({"failed": "request POST didn't go through"}),
             content_type="application/json"
         )
+
+
+def predict(p_type, p_classifier, request):
+    """
+
+    :param p_type: status type: init/specs/needs
+    :param p_classifier: Classifier instance
+    :return:
+    """
+    final_offers = None
+    if p_type == 'init':
+        final_offers = parse_results(p_classifier.getTop3Results())
+        request.session['affiliation'] = []
+        request.session['application'] = {'use_id': [], 'level_of_use': []}
+        request.session['focalization'] = ''
+        request.session['specification'] = []
+    elif p_type == 'specs':
+        return
+    elif p_type == 'price':
+        return
+    elif p_type == 'needs':
+        if len(request.session['affiliation']) > 0:
+            final_offers = parse_results(
+                p_classifier.getResultsAccordingToAffiliationInput(pd.DataFrame(request.session['affiliation'])))
+        if len(request.session['application']['use_id']) > 0:
+            print(request.session['application'])
+            for index, val in enumerate(request.session['application']['use_id']):
+                if index == len(request.session['application']['use_id']) - 1:
+                    final_offers = parse_results(p_classifier.getResultsAccordingToApplicationInput(
+                        request.session['application']['use_id'][index],
+                        request.session['application']['level_of_use'][index]
+                    ))
+                    print('last one')
+                else:
+                    parse_results(p_classifier.getResultsAccordingToApplicationInput(
+                        request.session['application']['use_id'][index],
+                        request.session['application']['level_of_use'][index]
+                    ))
+                    print('middle one')
+
+    return final_offers
+
+
+def parse_results(results_list):
+    """
+    :param results_list: List with 3 result dic - unstructured
+    :return: List with 3 result dict - structured
+    """
+    final_offers = []
+    if isinstance(final_offers, str):
+        print(final_offers)
+    else:
+        for offer_dict in results_list:
+            ord_dict = OrderedDict([])
+            offer_list = []
+            result_dict = {'features': ord_dict, 'offers': offer_list}
+            for key, val in offer_dict.items():
+                if key == 'sort_indicator' or key == 'Brand' or key == 'Line' or key == 'image_url':
+                    result_dict[key] = val
+                elif key == 'offers':
+                    vendor_name, price, deal_url = val.split(',')
+                    result_dict['offers'].append(
+                        {'vendor_name': vendor_name,
+                         'price': price,
+                         'deal_url': deal_url,
+                         }
+                    )
+                else:
+                    result_dict['features'].update({key: val})
+            features_dict = OrderedDict([
+                ('Screen Size', result_dict['features']['Screen Size']),
+                ('Processor', result_dict['features']['Processor']),
+                ('Memory', result_dict['features']['Memory']),
+                ('Storage', result_dict['features']['Storage']),
+                ('GPU', result_dict['features']['GPU']),
+                ('Screen Resolution', result_dict['features']['Screen Resolution']),
+                ('Touch Screen', result_dict['features']['Touch Screen']),
+                ('Weight', result_dict['features']['Weight']),
+                ('Dimensions (WxHxD)', result_dict['features']['Dimensions']),
+                ('Battery', result_dict['features']['Battery']),
+                ('Color', result_dict['features']['Color']),
+                ('Operating System', result_dict['features']['Operating System']),
+                ('Model', result_dict['features']['Model'])
+            ])
+            result_dict['features'] = features_dict
+            final_offers.append(result_dict)
+    return final_offers
 
 
 def NewConsulteeAffiliation(request):
@@ -1056,42 +1166,3 @@ def NewConsulteeAffiliation(request):
             json.dumps({"failed": "request POST didn't go through"}),
             content_type="application/json"
         )
-
-
-def parse_results(results_list):
-    final_offers = []
-    for offer_dict in results_list:
-        ord_dict = OrderedDict([])
-        offer_list = []
-        result_dict = {'features': ord_dict, 'offers': offer_list}
-        for key, val in offer_dict.items():
-            if key == 'sort_indicator' or key == 'Brand' or key == 'Line' or key == 'image_url':
-                result_dict[key] = val
-            elif key == 'offers':
-                vendor_name, price, deal_url = val.split(',')
-                result_dict['offers'].append(
-                    {'vendor_name': vendor_name,
-                     'price': price,
-                     'deal_url': deal_url,
-                     }
-                )
-            else:
-                result_dict['features'].update({key: val})
-        features_dict = OrderedDict([
-            ('Screen Size', result_dict['features']['Screen Size']),
-            ('Processor', result_dict['features']['Processor']),
-            ('Memory', result_dict['features']['Memory']),
-            ('Storage', result_dict['features']['Storage']),
-            ('GPU', result_dict['features']['GPU']),
-            ('Screen Resolution', result_dict['features']['Screen Resolution']),
-            ('Touch Screen', result_dict['features']['Touch Screen']),
-            ('Weight', result_dict['features']['Weight']),
-            ('Dimensions (WxHxD)', result_dict['features']['Dimensions']),
-            ('Battery', result_dict['features']['Battery']),
-            ('Color', result_dict['features']['Color']),
-            ('Operating System', result_dict['features']['Operating System']),
-            ('Model', result_dict['features']['Model'])
-        ])
-        result_dict['features'] = features_dict
-        final_offers.append(result_dict)
-    return final_offers
