@@ -95,12 +95,13 @@ class Classifier:
         self.clustersMaximalSpecs = clustersMaximalSpecs
         self.clustersMinimalSpecs = clustersMinimalSpecs
         self.defaultUserInput = defaultUserInput
-        self.userApplicationInput = defaultUserInput
+
         self.classificationUpperThreshold = classificationUpperThreshold
         self.classificationLowerThreshold = classificationLowerThreshold
         self.affiliationMedianUses = affiliationMedianUses
         del self.affiliationMedianUses['cluster']
         self.affiliationMedianUses.index.name = 'cluster'
+        self.userApplicationInput = pd.DataFrame(round(affiliationMedianUses.median(axis=0))).T
         self.generateSuitbleResultsAccordingtoUserInput()
 
     def generateSuitbleResultsAccordingtoUserInput(self):
@@ -259,7 +260,7 @@ class Classifier:
         :return:
         """
         self.initializeFilters()
-        self.userApplicationInput.ix[:, useId] = levelOfUse
+        self.userApplicationInput.ix[:, useId-1] = levelOfUse
         return (self.generateSuitbleResultsAccordingtoUserInput())
 
     def getFilterableFeaturesLevels(self):

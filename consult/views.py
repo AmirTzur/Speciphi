@@ -1,3 +1,4 @@
+from django.contrib.messages.storage import session
 from django.core.files import File
 from django.shortcuts import render, redirect
 from django.db import connection, Error
@@ -978,6 +979,7 @@ def user_actions(request):
             # if checked
             if int(action_type) == 1:
                 request.session['affiliation'].append(int(object_id))
+                # request.session.save()
                 print('affiliations checked. ', request.session['affiliation'])
                 offer_list = predict('needs', classifier_ent, request)
             # if un-checked
