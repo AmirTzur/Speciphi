@@ -1,20 +1,45 @@
+var ajax_que = [];
+
 // affiliation
 $('#nl-type-field input').on('change', function () {
-    AJAX_userAction(this, 'affiliation_choosing');
+    AJAX_manager(this, 'affiliation_choosing', true);
+    // AJAX_userAction(this, 'affiliation_choosing');
 });
 // application
 $('#nl-needs-field input').on('change', function () {
-    console.log('sending application ajax');
-    AJAX_userAction(this, 'use_ranking');
+    AJAX_manager(this, 'use_ranking', true);
+    // AJAX_userAction(this, 'use_ranking');
 });
 // focalization
 $('#nl-questions-field input').on('change', function () {
-    AJAX_userAction(this, 'question_answering');
+    AJAX_manager(this, 'question_answering', true);
+    // AJAX_userAction(this, 'question_answering');
 });
 // open info element
 $('#info-elements button').on('click', function () {
     AJAX_userAction(this, 'advice_clicking');
 });
+
+function AJAX_manager(object, action_name, ajax_request) {
+    if (ajax_request){
+        ajax_que.push([object, action_name]);
+        console.log('New Request: ' + action_name);
+        console.log(ajax_que);
+        if (ajax_que.length == 1){
+            console.log('length 1 execution');
+            AJAX_userAction(object, action_name);
+        }
+    }else {
+        // console.log('New Response: ' + ajax_que[1][1]);
+        if (ajax_que.length > 1) {
+            AJAX_userAction(ajax_que[1][0], ajax_que[1][1]);
+        }
+        ajax_que.shift();
+        console.log('Item Deleted');
+        // console.log(ajax_que);
+    }
+}
+
 // close info element
 // $('#info-box button').on('click', function () {
 //     AJAX_userAction(this, 'advice_clicking1');
@@ -67,7 +92,9 @@ function AJAX_userAction(object, action_name) {
         },
         // handle a successful response
         success: function (json) {
-            // need to implement...
+            // Triger ajax
+            AJAX_manager(null, null, false);
+            // Update deals data
             update_deals(json['offers']);
             console.log('success'); // log the returned json to the console
         },

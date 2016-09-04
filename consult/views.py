@@ -618,6 +618,8 @@ def results(request, product=None):
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [True, "results"]
     context = {}
+    # Session ajax
+    request.session['ajax_in_process'] = []
     # Title and description
     page_title = 'Research Zone'
     context.update({
@@ -986,7 +988,7 @@ def user_actions(request):
             if int(action_type) == 1:
                 request.session['affiliation'].append(int(object_id))
                 # http://kechengpuzi.com/q/s13748166
-                request.session.save()
+                # request.session.save()
                 print('affiliations checked. ', request.session['affiliation'])
                 offer_list = predict('needs', classifier_ent, request)
             # if un-checked
@@ -1045,6 +1047,7 @@ def predict(p_type, p_classifier, request):
         return
     elif p_type == 'needs':
         if len(request.session['affiliation']) > 0:
+            print(request.session['affiliation'])
             final_offers = parse_results(
                 p_classifier.getResultsAccordingToAffiliationInput(pd.DataFrame(request.session['affiliation'])))
         if len(request.session['application']['use_id']) > 0:
@@ -1055,13 +1058,11 @@ def predict(p_type, p_classifier, request):
                         request.session['application']['use_id'][index],
                         request.session['application']['level_of_use'][index]
                     ))
-                    # print('last one')
                 else:
                     parse_results(p_classifier.getResultsAccordingToApplicationInput(
                         request.session['application']['use_id'][index],
                         request.session['application']['level_of_use'][index]
                     ))
-                    # print('middle one')
         if len(request.session['affiliation']) < 1 and len(request.session['application']['use_id']) < 1:
             print('Unchecked all affiliations and applications')
             final_offers = parse_results(p_classifier.getTop3Results())
