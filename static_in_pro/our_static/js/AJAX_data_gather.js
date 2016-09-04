@@ -1,20 +1,44 @@
+var ajax_que = [];
+
 // affiliation
 $('#nl-type-field input').on('change', function () {
-    AJAX_userAction(this, 'affiliation_choosing');
+    AJAX_manager(this, 'affiliation_choosing', true);
 });
 // application
 $('#nl-needs-field input').on('change', function () {
-    console.log('sending application ajax');
-    AJAX_userAction(this, 'use_ranking');
+    AJAX_manager(this, 'use_ranking', true);
 });
 // focalization
 $('#nl-questions-field input').on('change', function () {
-    AJAX_userAction(this, 'question_answering');
+    AJAX_manager(this, 'question_answering', true);
 });
 // open info element
 $('#info-elements button').on('click', function () {
     AJAX_userAction(this, 'advice_clicking');
 });
+
+function AJAX_manager(object, action_name, ajax_request) {
+    if (ajax_request){
+        ajax_que.push([object, action_name]);
+        console.log('New Request: action name - ' + action_name);
+        console.log('ajax_que : ');
+        console.log(ajax_que);
+        if (ajax_que.length == 1){
+            console.log('First element triggering AJAX');
+            AJAX_userAction(object, action_name);
+        }
+    }else {
+        console.log('New Response');
+        ajax_que.shift();
+        console.log('Item Deleted - Update ajax_que : ');
+        console.log(ajax_que);
+        if (ajax_que.length > 1) {
+            console.log('Triggering ' + ajax_que[0][1] + ' next AJAX');
+            AJAX_userAction(ajax_que[0][0], ajax_que[0][1]);
+        }
+    }
+}
+
 // close info element
 // $('#info-box button').on('click', function () {
 //     AJAX_userAction(this, 'advice_clicking1');
@@ -30,6 +54,7 @@ function AJAX_userAction(object, action_name) {
         if ($(object).is(':checked')) action_type = 1;
         else action_type = -1;
         object_id = $(object).val();
+        console.log('affilliation action type: ' + action_type);
         // use_ranking
     } else if (action_name == 'use_ranking') {
         action_type = $(object).val();
@@ -67,7 +92,9 @@ function AJAX_userAction(object, action_name) {
         },
         // handle a successful response
         success: function (json) {
-            // need to implement...
+            // Trigger ajax
+            AJAX_manager(null, null, false);
+            // Update deals data
             update_deals(json['offers']);
             console.log('success'); // log the returned json to the console
         },
@@ -108,10 +135,15 @@ function update_deals(offers) {
                     }
                     specs_index += 1;
                 }
-                // $(this).children('table tbody').each(function () {
-                //
-                // })
             }
         }
     });
 }
+
+// function count_matches(arr, target_val) {
+//     var count = 0;
+//     for (var i=0; i<ajax_que.length; i++){
+//
+//     }
+//     return (count%2 == 0) ? -1:1;
+// }
