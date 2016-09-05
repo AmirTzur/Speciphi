@@ -954,7 +954,7 @@ def user_actions(request):
         object_id = request.POST.get('object_id')
         action_content = request.POST.get('action_content')
         validate_data = True
-        if not object_id.isdigit():
+        if not (object_id is None or object_id.isdigit()):
             print('not object_id.isdigit()', object_id)
             validate_data = False
         if not (action_type is None or action_type.isdigit() or (action_type[0] == '-' and action_type[1:].isdigit())):

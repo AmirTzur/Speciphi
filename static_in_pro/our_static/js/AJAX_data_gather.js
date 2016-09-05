@@ -12,10 +12,23 @@ $('#nl-needs-field input').on('change', function () {
 $('#nl-questions-field input').on('change', function () {
     AJAX_manager(this, 'question_answering', true);
 });
-// open info element
+// info element
 $('#info-elements button').on('click', function () {
     AJAX_userAction(this, 'advice_clicking');
 });
+// switch menu type
+$('#menu-type-field input').on('change', function () {
+    AJAX_userAction(this, 'menu_type_changing');
+});
+// open my specs
+$('button#my-specs-btn').on('click', function () {
+    AJAX_userAction(this, 'my_specs_viewing');
+});
+// close my specs
+$('button#specs-close').on('click', function () {
+    AJAX_userAction(this, 'my_specs_viewing');
+});
+
 
 function AJAX_manager(object, action_name, ajax_request) {
     if (ajax_request) {
@@ -38,12 +51,6 @@ function AJAX_manager(object, action_name, ajax_request) {
         }
     }
 }
-
-// close info element
-// $('#info-box button').on('click', function () {
-//     AJAX_userAction(this, 'advice_clicking1');
-// });
-// continue implementing closing advise and browsing advices
 
 function AJAX_userAction(object, action_name) {
     var action_type;
@@ -92,6 +99,22 @@ function AJAX_userAction(object, action_name) {
             action_type = -2;
             object_id = get_advisor_id($(object).parent('div#info-pagination'));
             console.log('backward', object_id);
+        }
+    } else if (action_name == 'menu_type_changing') {
+        if ($(object).parent('label').prop('id') == 'needs-btn') {
+            action_type = 1;
+            console.log('needs');
+        } else if ($(object).parent('label').prop('id') == 'specs-btn') {
+            action_type = -1;
+            console.log('specs');
+        }
+    } else if (action_name = 'my_specs_viewing') {
+        if ($(object).prop('id') == 'my-specs-btn') {
+            action_type = 1;
+            console.log('open my specs');
+        } else if ($(object).prop('id') == 'specs-close') {
+            action_type = -1;
+            console.log('close my specs');
         }
 
     }
@@ -180,6 +203,9 @@ function get_advisor_id(obj) {
                 break;
             case 'objective-text':
                 return 3;
+                break;
+            default:
+                return 0;
                 break;
         }
     }
