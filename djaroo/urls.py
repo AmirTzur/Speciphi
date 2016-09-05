@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^success_close/$', 'consult.views.success_close', name='success_close'),
     url(r'^NewConsulteeAffiliation/$', 'consult.views.NewConsulteeAffiliation', name='NewConsulteeAffiliation'),
     url(r'^user_actions/$', 'consult.views.user_actions', name='user_actions'),
+    url(r'^user_exit/$', 'consult.views.user_exit', name='user_exit'),
 ]
 
 if settings.DEBUG:

@@ -50,7 +50,6 @@ def home(request):
         geo_dict = json.loads(geo_data.decode('UTF-8'))
         if geo_dict['status'] == 'success':
             user_location = str(geo_dict['country'] + ', ' + geo_dict['city'])
-
         # connect to djarooDB
         try:
             cursor = connection.cursor()
@@ -76,6 +75,21 @@ def home(request):
         "pages": pages,
         "product": "None",
     }
+    # gather user data
+    if 'Entrance_id' in request.session:
+        entrance_id = str(request.session['Entrance_id'])
+    else:
+        entrance_id = 1
+    if 'ConsultationProcess_id' in request.session:
+        consultation_process_id = request.session['ConsultationProcess_id']
+    else:
+        consultation_process_id = 1
+    action_name = 'webpage_viewing'
+    action_type = 0
+    try:
+        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, None)
+    except Error as e:
+        print(e)
     return render(request, "index.html", context)
 
 
@@ -633,7 +647,8 @@ def results(request, product=None):
     context.update({
         "page_desc": page_desc,
     })
-    # Affiliation Form
+
+    # initial variables
     ConsultationProcess_id = None
     Product_id = None
     affiliations = None
@@ -844,7 +859,21 @@ def results(request, product=None):
     context.update({
         "recommended_spec": recommended_spec,
     })
-
+    # gather user data
+    if 'Entrance_id' in request.session:
+        entrance_id = str(request.session['Entrance_id'])
+    else:
+        entrance_id = 1
+    if 'ConsultationProcess_id' in request.session:
+        consultation_process_id = request.session['ConsultationProcess_id']
+    else:
+        consultation_process_id = 1
+    action_name = 'webpage_viewing'
+    action_type = 1
+    try:
+        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, None)
+    except Error as e:
+        print(e)
     return render(request, "results.html", context)
 
 
@@ -859,6 +888,17 @@ def contact(request):
         "page_desc": page_desc,
         "form": form,
     }
+    # user data
+    if 'Entrance_id' in request.session:
+        entrance_id = str(request.session['Entrance_id'])
+    else:
+        entrance_id = 1
+    if 'ConsultationProcess_id' in request.session:
+        consultation_process_id = request.session['ConsultationProcess_id']
+    else:
+        consultation_process_id = 1
+    action_name = 'webpage_viewing'
+    action_type = 3
     if 'contact_name' in request.session:
         success_message = request.session['contact_name'] + ", Thank you for applying us."
         context.update({
@@ -873,6 +913,14 @@ def contact(request):
             contact_name = request.POST.get('name', '')
             contact_email = request.POST.get('email', '')
             form_content = request.POST.get('message', '')
+            # save form at DB
+            try:
+                set_new_action(entrance_id, consultation_process_id, action_name, action_type, None,
+                               'Name: ' + str(contact_name) +
+                               ' , Email: ' + str(contact_email) +
+                               ' , Content: ' + str(form_content))
+            except Error as e:
+                print(e)
             # Email the contact information
             template = get_template('contact_template.txt')
             information = Context({
@@ -887,13 +935,19 @@ def contact(request):
                 "Djaroo Website", ['eladdan88@gmail.com', 'tzuramir@gmail.com', 'talzee10@gmail.com'],
                 headers={'Reply-To': contact_email}
             )
-            email.send()
+            # email.send()
             request.session['contact_name'] = contact_name
             return redirect('contact')
         else:
+            print('form is not valid')
             context.update({
                 "form": form,
             })
+    # gather user data
+    try:
+        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, None)
+    except Error as e:
+        print(e)
     return render(request, 'contact.html', context)
 
 
@@ -905,6 +959,21 @@ def about(request):
         "page_title": page_title,
         "page_desc": page_desc,
     }
+    # gather user data
+    if 'Entrance_id' in request.session:
+        entrance_id = str(request.session['Entrance_id'])
+    else:
+        entrance_id = 1
+    if 'ConsultationProcess_id' in request.session:
+        consultation_process_id = request.session['ConsultationProcess_id']
+    else:
+        consultation_process_id = 1
+    action_name = 'webpage_viewing'
+    action_type = 2
+    try:
+        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, None)
+    except Error as e:
+        print(e)
     return render(request, 'about.html', context)
 
 
@@ -943,12 +1012,39 @@ def dictfetchall(cursor):
 #     return data[find_nth(data, '>', 1) + 1:data.index('</td>')]
 
 
+def user_exit(request):
+    print('user_exit|')
+    if 'Entrance_id' in request.session:
+        entrance_id = request.session['Entrance_id']
+    else:
+        entrance_id = 1
+    if 'ConsultationProcess_id' in request.session:
+        consultation_process_id = request.session['ConsultationProcess_id']
+    else:
+        consultation_process_id = 1
+    action_name = 'webpage_viewing'
+    action_type = -1
+    print('about to save exit ', action_name, action_type)
+    try:
+        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, None)
+    except Error as e:
+        print(e)
+    print('exit ', action_name, action_type)
+    return HttpResponse('')
+
+
 def user_actions(request):
     print('user_actions|')
     if request.method == 'POST':
         request.session.modified = True
-        entrance_id = request.session['Entrance_id']
-        consultation_process_id = request.session['ConsultationProcess_id']
+        if 'Entrance_id' in request.session:
+            entrance_id = request.session['Entrance_id']
+        else:
+            entrance_id = 1
+        if 'ConsultationProcess_id' in request.session:
+            consultation_process_id = request.session['ConsultationProcess_id']
+        else:
+            consultation_process_id = 1
         action_name = request.POST.get('action_name')
         action_type = request.POST.get('action_type')
         object_id = request.POST.get('object_id')
@@ -1194,3 +1290,21 @@ def NewConsulteeAffiliation(request):
             json.dumps({"failed": "request POST didn't go through"}),
             content_type="application/json"
         )
+
+
+def set_new_action(entrance_id, consultation_process_id, action_name, action_type, object_id, action_content):
+    cursor = connection.cursor()
+    if not cursor:
+        print("cursor was not defined")
+    else:
+        # Input: Entrance_id, Consultation_Process_id, Name, Type, Object_id, Content
+        # Output: saves user action
+        cursor.execute('CALL setNewAction(%s,%s,%s,%s,%s,%s)',
+                       [entrance_id,
+                        consultation_process_id,
+                        action_name,
+                        action_type,
+                        object_id,
+                        action_content
+                        ])
+        cursor.close()

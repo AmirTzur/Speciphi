@@ -32,6 +32,16 @@ $('button#specs-close').on('click', function () {
 $('div#share-icons-container button').on('click', function () {
     AJAX_userAction(this, 'my_specs_sharing');
 });
+// user exits
+window.onbeforeunload = function () {
+    console.log('exit');
+    $.ajax({
+        url: '/user_exit/',
+        type: 'POST',
+        async: false
+    });
+    // or delay here or cancel http response or GET -> POST
+};
 
 
 function AJAX_manager(object, action_name, ajax_request) {
