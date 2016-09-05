@@ -324,6 +324,7 @@ class Classifier:
         :return:
         """
         bestMatch = self.filteredResults.ix[np.argmax(self.filteredResults.overallRank), :]
+        modelKeyBestMatch = self.filteredResults[self.filteredResults['Model'].isin(bestMatch)].index
         bestMatch = self.filteredResults[self.filteredResults['Model'].isin(bestMatch)]
         self.filteredResults = self.filteredResults[-self.filteredResults['Model'].isin(bestMatch['Model'])]
         bestMatch = bestMatch.drop(
@@ -331,6 +332,7 @@ class Classifier:
              'lowestPrice', 'filterCapacity', 'filterCPU', 'filterGPU', 'overallRank', 'mobilityRank'], axis=1)
 
         bestMobility = self.filteredResults.ix[np.argmax(self.filteredResults.mobilityRank), :]
+        modelKeyBestMobility = self.filteredResults[self.filteredResults['Model'].isin(bestMobility)].index
         bestMobility = self.filteredResults[self.filteredResults['Model'].isin(bestMobility)]
         self.filteredResults = self.filteredResults[-self.filteredResults['Model'].isin(bestMobility['Model'])]
         bestMobility = bestMobility.drop(
@@ -338,6 +340,7 @@ class Classifier:
              'lowestPrice', 'filterCapacity', 'filterCPU', 'filterGPU', 'overallRank', 'mobilityRank'], axis=1)
 
         bestPrice = self.filteredResults.ix[np.argmin(self.filteredResults.lowestPrice), :]
+        modelKeyBestPrice = self.filteredResults[self.filteredResults['Model'].isin(bestPrice)].index
         bestPrice = self.filteredResults[self.filteredResults['Model'].isin(bestPrice)]
         self.filteredResults = self.filteredResults[-self.filteredResults['Model'].isin(bestPrice['Model'])]
         bestPrice = bestPrice.drop(
@@ -346,6 +349,7 @@ class Classifier:
 
         top3 = pd.concat([bestMatch, bestMobility, bestPrice])
         top3['sort_indicator'] = ['Best Match', 'Best Mobility', 'Best Price']
+        top3['Key'] = [modelKeyBestMatch[0],modelKeyBestMobility[0],modelKeyBestPrice[0]]
         top3 = top3.to_dict('records')
         for sub in top3:
             sub['Memory'] = str(sub['Memory']) + 'GB'

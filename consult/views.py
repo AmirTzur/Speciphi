@@ -1051,28 +1051,21 @@ def user_actions(request):
         action_content = request.POST.get('action_content')
         validate_data = True
         if not (object_id is None or object_id.isdigit()):
-            print('not object_id.isdigit()', object_id)
+            print('object_id is not valid: ', object_id)
             validate_data = False
         if not (action_type is None or action_type.isdigit() or (action_type[0] == '-' and action_type[1:].isdigit())):
-            print('not action_type.isdigit()', object_id)
+            print('action_type is not valid: ', action_type)
             validate_data = False
         if validate_data:
+            # Input: Entrance_id, Consultation_Process_id, Name, Type, Object_id, Content
+            # Output: saves user action
             try:
-                cursor = connection.cursor()
-                if not cursor:
-                    print("cursor was not defined")
-                else:
-                    # Input: Entrance_id, Consultation_Process_id, Name, Type, Object_id, Content
-                    # Output: saves user action
-                    cursor.execute('CALL setNewAction(%s,%s,%s,%s,%s,%s)',
-                                   [entrance_id,
-                                    consultation_process_id,
-                                    action_name,
-                                    action_type,
-                                    object_id,
-                                    action_content
-                                    ])
-                    cursor.close()
+                set_new_action(entrance_id,
+                               consultation_process_id,
+                               action_name,
+                               action_type,
+                               object_id,
+                               action_content)
             except Error as e:
                 print(e)
         else:
@@ -1212,8 +1205,10 @@ def parse_results(results_list):
                 ('Battery', result_dict['features']['Battery']),
                 ('Color', result_dict['features']['Color']),
                 ('Operating System', result_dict['features']['Operating System']),
-                ('Model', result_dict['features']['Model'])
+                ('Model', result_dict['features']['Model']),
+                ('Key', result_dict['features']['Key']), # model key
             ])
+            print(features_dict['Key'])
             result_dict['features'] = features_dict
             final_offers.append(result_dict)
     return final_offers

@@ -32,15 +32,18 @@ $('button#specs-close').on('click', function () {
 $('div#share-icons-container button').on('click', function () {
     AJAX_userAction(this, 'my_specs_sharing');
 });
-// user exits
+// product choosing
+$('a.deal-link span, a.deal-link img, div#select-price a').on('click', function () {
+    AJAX_userAction(this, 'product_choosing');
+});
+// user exits page
 window.onbeforeunload = function () {
-    console.log('exit');
+    console.log('exit page');
     $.ajax({
         url: '/user_exit/',
         type: 'POST',
         async: false
     });
-    // or delay here or cancel http response or GET -> POST
 };
 
 
@@ -149,8 +152,35 @@ function AJAX_userAction(object, action_name) {
                 console.log('share-pdf');
                 break;
         }
+    } else if (action_name == 'product_choosing') {
+        // header
+        if ($(object).is('span')) {
+            action_type = 1;
+            //object_id = get.model.id ###### Taltul required ######
+            action_content = $(object).parent('a.deal-link').parent('div.results-deal').prop('id');
+        } else if ($(object).is('img')) {
+            action_type = 2;
+            //object_id = get.model.id ###### Taltul required ######
+            action_content = $(object).parent('a.deal-link').parent('div.results-deal').prop('id')
+        } else if ($(object).parent().prop('id') == 'select-price') {
+            // first deal
+            if ($(object).index() == 0) {
+                action_type = ebay_or_amazon(object);
+                action_content = $(object).parent('div#select-price').parent('div').prop('id');
+                console.log('primary ', action_content, action_type);
+                // check out other price
+            } else if ($(object).index() == 1) {
+                action_type = 5;
+                action_content = $(object).parent('div#select-price').parent('div').prop('id');
+                console.log('select ', action_content);
+            }// second deal
+        } else if ($(object).hasClass('dropdown-item')) {
+            action_type = ebay_or_amazon(object);
+            action_content = $(object).parent('li').parent('ul.dropdown-menu').parent('div#select-price').parent('div').prop('id');
+            console.log('secondary ', action_content, action_type);
+        }
     }
-    // send AJAX post request to NewConsulteeAffiliation view
+    // send AJAX post request to user_actions view
     $.ajax({
         url: '/user_actions/',
         type: 'POST',
@@ -175,8 +205,15 @@ function AJAX_userAction(object, action_name) {
     });
 }
 
-function update_deals(offers) {
+function ebay_or_amazon(obj) {
+    var price_title = $($(obj)[0]).text().toLowerCase();
+    if (price_title.indexOf('on amazon') >= 0)
+        return 3;
+    else if (price_title.indexOf('on ebay') >= 0)
+        return 4;
+}
 
+function update_deals(offers) {
     $('#results-section .results-deal').each(function () {
         var sort_ind = $(this).attr('id');
         for (var i = 0; i < offers.length; i++) {
