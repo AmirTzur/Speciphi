@@ -28,6 +28,10 @@ $('button#my-specs-btn').on('click', function () {
 $('button#specs-close').on('click', function () {
     AJAX_userAction(this, 'my_specs_viewing');
 });
+// my specs share
+$('div#share-icons-container button').on('click', function () {
+    AJAX_userAction(this, 'my_specs_sharing');
+});
 
 
 function AJAX_manager(object, action_name, ajax_request) {
@@ -108,7 +112,7 @@ function AJAX_userAction(object, action_name) {
             action_type = -1;
             console.log('specs');
         }
-    } else if (action_name = 'my_specs_viewing') {
+    } else if (action_name == 'my_specs_viewing') {
         if ($(object).prop('id') == 'my-specs-btn') {
             action_type = 1;
             console.log('open my specs');
@@ -116,7 +120,25 @@ function AJAX_userAction(object, action_name) {
             action_type = -1;
             console.log('close my specs');
         }
-
+    } else if (action_name == 'my_specs_sharing') {
+        switch (String($(object).prop('id'))) {
+            case 'share-facebook':
+                action_type = 1;
+                console.log('share-facebook');
+                break;
+            case 'share-twitter':
+                action_type = 2;
+                console.log('share-twitter');
+                break;
+            case 'share-email':
+                action_type = 3;
+                console.log('share-email');
+                break;
+            case 'share-pdf':
+                action_type = 4;
+                console.log('share-pdf');
+                break;
+        }
     }
     // send AJAX post request to NewConsulteeAffiliation view
     $.ajax({
