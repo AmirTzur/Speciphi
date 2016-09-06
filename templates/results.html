@@ -93,12 +93,15 @@
                             <img src="{{ deal.image_url }}">
                         </a>
                         <div id="select-price" class="btn-group dropdown">
-                            <a class="btn btn-primary" href="{{ deal.offers.0.deal_url }}" target="_blank"><i class="fa fa-usd" aria-hidden="true"></i> {{ deal.offers.0.price }} on {{ deal.offers.0.vendor_name }}</a>
+                            <a class="btn btn-primary" href="{{ deal.offers.0.deal_url }}" target="_blank">
+                                <i class="fa fa-usd" aria-hidden="true"></i>
+                                <span>{{ deal.offers.0.price }} on {{ deal.offers.0.vendor_name }}</span>
+                            </a>
                             <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
                                 <span class="fa fa-caret-down" title="Toggle dropdown menu"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ deal.offers.0.deal_url }}" target="_blank"><i class="fa fa-usd" aria-hidden="true"></i> {{ deal.offers.0.price }} on eBay</a></li>
+{#                                <li><a class="dropdown-item" href="{{ deal.offers.0.deal_url }}" target="_blank"><i class="fa fa-usd" aria-hidden="true"></i> {{ deal.offers.0.price }} on eBay</a></li>#}
 {#                                <li class="divider"></li>#}
                             </ul>
                         </div>
