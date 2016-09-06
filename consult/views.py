@@ -1206,9 +1206,8 @@ def parse_results(results_list):
                 ('Color', result_dict['features']['Color']),
                 ('Operating System', result_dict['features']['Operating System']),
                 ('Model', result_dict['features']['Model']),
-                ('Key', result_dict['features']['Key']), # model key
+                ('Key', result_dict['features']['Key']),  # model key
             ])
-            print(features_dict['Key'])
             result_dict['features'] = features_dict
             final_offers.append(result_dict)
     return final_offers

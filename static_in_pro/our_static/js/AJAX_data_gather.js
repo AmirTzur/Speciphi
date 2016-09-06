@@ -155,29 +155,32 @@ function AJAX_userAction(object, action_name) {
     } else if (action_name == 'product_choosing') {
         // header
         if ($(object).is('span')) {
+            object_id = $(object).parent('a.deal-link').siblings('table.table').attr('data-brand');
             action_type = 1;
-            //object_id = get.model.id ###### Taltul required ######
             action_content = $(object).parent('a.deal-link').parent('div.results-deal').prop('id');
         } else if ($(object).is('img')) {
+            object_id = $(object).parent('a.deal-link').siblings('table.table').attr('data-brand');
             action_type = 2;
-            //object_id = get.model.id ###### Taltul required ######
             action_content = $(object).parent('a.deal-link').parent('div.results-deal').prop('id')
         } else if ($(object).parent().prop('id') == 'select-price') {
             // first deal
             if ($(object).index() == 0) {
+                object_id = $(object).parent('div#select-price').siblings('table.table').attr('data-brand');
                 action_type = ebay_or_amazon(object);
                 action_content = $(object).parent('div#select-price').parent('div').prop('id');
-                console.log('primary ', action_content, action_type);
+                console.log('primary ', action_content, action_type, object_id);
                 // check out other price
             } else if ($(object).index() == 1) {
+                object_id = $(object).parent('div#select-price').siblings('table.table').attr('data-brand');
                 action_type = 5;
                 action_content = $(object).parent('div#select-price').parent('div').prop('id');
-                console.log('select ', action_content);
+                console.log('select ', action_content, object_id);
             }// second deal
         } else if ($(object).hasClass('dropdown-item')) {
+            object_id = $(object).parent('li').parent('ul.dropdown-menu').parent('div#select-price').siblings('table.table').attr('data-brand');
             action_type = ebay_or_amazon(object);
             action_content = $(object).parent('li').parent('ul.dropdown-menu').parent('div#select-price').parent('div').prop('id');
-            console.log('secondary ', action_content, action_type);
+            console.log('secondary ', action_content, action_type, object_id);
         }
     }
     // send AJAX post request to user_actions view
