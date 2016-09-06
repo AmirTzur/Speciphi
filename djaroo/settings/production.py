@@ -92,6 +92,8 @@ if not settings.DEBUG:
                     # allauth
                     'allauth.account.context_processors.account',
                     'allauth.socialaccount.context_processors.socialaccount',
+                    # google analytics
+                    'consult.context_processors.google_analytics',
                 ],
             },
         },
@@ -184,3 +186,7 @@ if not settings.DEBUG:
     # if setting it to false - sometimes register users as username = user
     SOCIALACCOUNT_AUTO_SIGNUP = False
     SOCIALACCOUNT_EMAIL_REQUIRED = False
+
+    # Google analytics (http://www.nomadblue.com/blog/django/google-analytics-tracking-code-into-django-project/)
+    GOOGLE_ANALYTICS_PROPERTY_ID = 'UA-83437624-1'
+    GOOGLE_ANALYTICS_DOMAIN = 'www.speciphi.com'

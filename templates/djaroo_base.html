@@ -33,6 +33,11 @@
     {#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>#}
     <!-- Hammer V2.0.6 core JavaScript -->
     <script src="{% static 'js/hammer.min.js' %}"></script>
+    <!-- google analytics code -->
+    {% if GOOGLE_ANALYTICS_PROPERTY_ID %}
+        {% include "google_analytics.html" %}
+    {% endif %}
+
     {% block stylesheets %}<!-- Templates stylesheets -->{% endblock %}
 
 </head>
