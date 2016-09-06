@@ -99,14 +99,12 @@ $(document).ready(function () {
     });
     // Price Slider Filter (jQuery UI)
     $(function () {
-        var min_start, min_end, max_start, max_end;
-        // var start_price = [];
-        // var end_price = [];
+        var min_start, min_end, max_start, max_end, starting_price, ending_price;
         $("#slider-range").slider({
             range: true,
-            min: 200,
-            max: 9500,
-            values: [200, 9500],
+            min: parseInt($("#slider-min").val()),
+            max: parseInt($("#slider-max").val()),
+            values: [parseInt($("#slider-min").val()), parseInt($("#slider-max").val())],
             disabled: false,
             start: function (event, ui) {
                 min_start = (parseInt($("#slider-min").val().slice(1)));
@@ -119,9 +117,9 @@ $(document).ready(function () {
                 max_end = (parseInt($("#slider-max").val().slice(1)));
             },
             stop: function (event, ui) {
-                // alert('Define ajax callback to get results');
-                console.log('min_start = ' + min_start + ' ; max_start = ' + max_start);
-                console.log('min_end = ' + min_end + ' ; max_end = ' + max_end);
+                starting_price = [min_start,max_start];
+                ending_price = [min_end, max_end];
+                (min_start == min_end) ? price_move(true, starting_price, ending_price):price_move(false, starting_price, ending_price);
             },
         });
         $("#slider-min").val("$" + $("#slider-range").slider("values", 0));
