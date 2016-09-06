@@ -240,7 +240,12 @@ function update_deals(offers) {
                     // deal url
                     $(this).children('a').attr('href', offers[i]['offers'][0]['deal_url']);
                     // ---Change deal <div> drop down price---
-                    // deal url
+                    // drop down - first element
+                    // $(this).children('#select-price').children('a:first-child');
+                    // console.log();
+                    $(this).children('#select-price').children('a:first-child').attr('href', offers[i]['offers'][0]['deal_url']);
+                    $(this).children('#select-price').children('a:first-child').find('span').text(offers[i]['offers'][0]['price'] + ' on ' + offers[i]['offers'][0]['vendor_name']);
+                    // drop down - the rest of elements (ul/dropdown-menu + offers)
 
                     // ---Change deal <table> specification---
                     var $specs_raw;
