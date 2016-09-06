@@ -369,3 +369,6 @@ class Classifier:
 
         return ()
 
+    def getPriceRange(self):
+        return ([int(min(self.listOfmodels['lowestPrice'])), int(max(self.listOfmodels['lowestPrice']))])
+

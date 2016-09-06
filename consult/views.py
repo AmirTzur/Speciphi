@@ -802,6 +802,7 @@ def results(request, product=None):
     context.update({
         "filters_form": filters_form,
     })
+
     # if request.method == 'POST':
     #     filters_form = FilterForm(data=request.POST)
     #     if filters_form.is_valid():
@@ -1013,7 +1014,16 @@ def user_actions(request):
                 request.session['application']['use_id'].remove(int(object_id))
                 request.session['application']['level_of_use'].remove(int(action_type) * -1)
             offer_list = predict('needs', classifier_ent, request)
-
+        if action_name == 'price_range_changing':
+            prices = [int(x) for x in action_content.split(",")]
+            if len(prices) == 4:
+                request.session['specification']['price'] = []
+                request.session['specification']['price'].append([prices[0], prices[1]])
+                request.session['specification']['price'].append([prices[2], prices[3]])
+                print('price range choosing ')
+                print(request.session['specification']['price'])
+                # if menu type needs or specs -> execute different predict
+                offer_list = predict('needs', classifier_ent, request)
         # get results in response
         # send results
         response_data = {}  # hold the data that will send back to client (for future use)
@@ -1040,14 +1050,19 @@ def predict(p_type, p_classifier, request):
     final_offers = None
     print('-----Predict-----')
     if p_type == 'init':
-        final_offers = parse_results(p_classifier.getTop3Results())
+        print('predict Init')
         request.session['affiliation'] = []
         request.session['application'] = {'use_id': [], 'level_of_use': []}
         request.session['focalization'] = ''
-        request.session['specification'] = []
+        request.session['static_price_range'] = p_classifier.getPriceRange()
+        # specs - manual insert: [brand, screen_size, touch_screen, screen_resolution,
+        #                        ram, gpu, cpu, capacity, os, weight]
+        # price - auto insert: [min_start, max_start, min_end, max_end]
+        request.session['specification'] = {'specs': [[], [], [], [], [], [], [], [], [], [0, 10000]],
+                                            'price': [[0, 0], request.session['static_price_range']]
+                                            }
+        final_offers = parse_results(p_classifier.getTop3Results())
     elif p_type == 'specs':
-        return
-    elif p_type == 'price':
         return
     elif p_type == 'needs':
         if len(request.session['affiliation']) > 0:
@@ -1072,6 +1087,15 @@ def predict(p_type, p_classifier, request):
         if len(request.session['affiliation']) < 1 and len(request.session['application']['use_id']) < 1:
             print('Unchecked all affiliations and applications')
             final_offers = parse_results(p_classifier.getTop3Results())
+    if p_type != 'specs':
+        print('predict PRICE. executing the following input:')
+        # price input: empty specs + price values  (just if needs and init)
+        specs_input = [[] for x in range(0, len(request.session['specification']['specs']))]
+        # add weight value manually
+        specs_input[len(specs_input) - 1] = [0, 10000]
+        price_input = specs_input + [request.session['specification']['price'][1]]
+        print(*price_input)
+        final_offers = parse_results(p_classifier.filterByRules(*price_input))
     return final_offers
 
 
@@ -1081,8 +1105,12 @@ def parse_results(results_list):
     :return: List with 3 result dict - structured
     """
     final_offers = []
-    if isinstance(final_offers, str):
-        print(final_offers)
+    # print(final_offers)
+    # print(type(final_offers))
+    # print(isinstance(final_offers, str))
+    if isinstance(results_list, str):
+        print(results_list)
+        return results_list
     else:
         for offer_dict in results_list:
             ord_dict = OrderedDict([])

@@ -2,11 +2,13 @@ var ajax_que = [];
 
 // affiliation
 $('#nl-type-field input').on('change', function () {
-    AJAX_manager(this, 'affiliation_choosing', true);
+    var opts = {'action_type':$(this).is(':checked')};
+    AJAX_manager(this, 'affiliation_choosing', true, opts);
 });
 // application
 $('#nl-needs-field input').on('change', function () {
-    AJAX_manager(this, 'use_ranking', true);
+    var opts = {'action_type':$(this).is(':checked')};
+    AJAX_manager(this, 'use_ranking', true, opts);
 });
 // focalization
 $('#nl-questions-field input').on('change', function () {
@@ -16,25 +18,33 @@ $('#nl-questions-field input').on('change', function () {
 $('#info-elements button').on('click', function () {
     AJAX_userAction(this, 'advice_clicking');
 });
+// Price Range 
+function price_move(action_type, starting_price, ending_price) {
+    var opts = {'action_type': action_type,
+                // 'action_content':[starting_price[0], starting_price[1], ending_price[0], ending_price[1]]
+                'action_content': ''+starting_price[0]+','+starting_price[1]+','+ending_price[0]+','+ending_price[1]
+    };
+    AJAX_manager(null, 'price_range_changing', true, opts);
+}
 
-function AJAX_manager(object, action_name, ajax_request) {
+function AJAX_manager(object, action_name, ajax_request, opts) {
     if (ajax_request){
-        ajax_que.push([object, action_name]);
+        ajax_que.push([object, action_name, opts]);
         console.log('New Request: action name - ' + action_name);
         console.log('ajax_que : ');
         console.log(ajax_que);
         if (ajax_que.length == 1){
             console.log('First element triggering AJAX');
-            AJAX_userAction(object, action_name);
+            AJAX_userAction(object, action_name, opts);
         }
     }else {
         console.log('New Response');
         ajax_que.shift();
         console.log('Item Deleted - Update ajax_que : ');
         console.log(ajax_que);
-        if (ajax_que.length > 1) {
+        if (ajax_que.length >= 1) {
             console.log('Triggering ' + ajax_que[0][1] + ' next AJAX');
-            AJAX_userAction(ajax_que[0][0], ajax_que[0][1]);
+            AJAX_userAction(ajax_que[0][0], ajax_que[0][1], ajax_que[0][2]);
         }
     }
 }
@@ -45,20 +55,19 @@ function AJAX_manager(object, action_name, ajax_request) {
 // });
 // continue implementing closing advise and browsing advices
 
-function AJAX_userAction(object, action_name) {
+function AJAX_userAction(object, action_name, opts) {
     var action_type;
     var object_id;
     var action_content;
     // affiliation_choosing
     if (action_name == 'affiliation_choosing') {
-        if ($(object).is(':checked')) action_type = 1;
-        else action_type = -1;
+        action_type = (opts['action_type']) ? 1:-1;
         object_id = $(object).val();
         console.log('affilliation action type: ' + action_type);
         // use_ranking
     } else if (action_name == 'use_ranking') {
-        action_type = $(object).val();
-        if (!$(object).is(':checked')) action_type = -action_type;
+        action_type = (opts['action_type']) ? 1:-1;
+        action_type = $(object).val() * action_type;
         object_id = $(object).prop('id').substr(0, $(object).prop('id').indexOf('_'));
         // question_answering
     } else if (action_name == 'question_answering') {
@@ -79,6 +88,14 @@ function AJAX_userAction(object, action_name) {
             // action_type = -1;
             // object_id; // need to check which advise is it the we close
         }
+        // price change
+    } else if (action_name == 'price_range_changing'){
+        action_type = (opts['action_type']) ? 1:-1;
+        action_content = opts['action_content'];
+        // object id??
+        object_id = 0;
+        console.log('price range action type' + action_type);
+        console.log('price range action content' + action_content);
     }
     // send AJAX post request to NewConsulteeAffiliation view
     $.ajax({
@@ -93,7 +110,7 @@ function AJAX_userAction(object, action_name) {
         // handle a successful response
         success: function (json) {
             // Trigger ajax
-            AJAX_manager(null, null, false);
+            AJAX_manager(null, null, false, null);
             // Update deals data
             update_deals(json['offers']);
             console.log('success'); // log the returned json to the console
@@ -106,44 +123,40 @@ function AJAX_userAction(object, action_name) {
 }
 
 function update_deals(offers) {
+    if ((typeof offers) == 'string'){
+        alert(offers);
+    }else {
+        $('#results-section .results-deal').each(function () {
+            var sort_ind = $(this).attr('id');
+            for (var i = 0; i < offers.length; i++) {
+                if (offers[i]['sort_indicator'] == sort_ind) {
+                    // ---Change deal <a> header---
+                    // image url
+                    $(this).children('a').children('img').attr('src', offers[i]['image_url']);
+                    // brand and line
+                    $(this).children('a').children('span').text(offers[i]['Brand'] + ' ' + offers[i]['Line']);
+                    // deal url
+                    $(this).children('a').attr('href', offers[i]['offers'][0]['deal_url']);
+                    // ---Change deal <div> drop down price---
+                    // deal url
 
-    $('#results-section .results-deal').each(function () {
-        var sort_ind = $(this).attr('id');
-        for (var i=0; i< offers.length; i++){
-            if (offers[i]['sort_indicator'] == sort_ind){
-                // ---Change deal <a> header---
-                // image url
-                $(this).children('a').children('img').attr('src', offers[i]['image_url']);
-                // brand and line
-                $(this).children('a').children('span').text(offers[i]['Brand'] + ' ' + offers[i]['Line']);
-                // deal url
-                $(this).children('a').attr('href', offers[i]['offers'][0]['deal_url']);
-                // ---Change deal <div> drop down price---
-                // deal url
-
-                // ---Change deal <table> specification---
-                var $specs_raw;
-                var specs_index = 0;
-                for(var feature_key in offers[i]['features']){
-                    // get feature raw
-                    $specs_raw = $(this).find('tbody').children('tr').eq(specs_index);
-                    // change feature value name
-                    if (feature_key != 'Storage'){
-                        $specs_raw.children('td').eq(1).text(offers[i]['features'][feature_key]);
-                    }else {
-                        $specs_raw.children('td').eq(1).text(offers[i]['features'][feature_key][0]+' SSD\n'+offers[i]['features'][feature_key][1]+' HDD');
+                    // ---Change deal <table> specification---
+                    var $specs_raw;
+                    var specs_index = 0;
+                    for (var feature_key in offers[i]['features']) {
+                        // get feature raw
+                        $specs_raw = $(this).find('tbody').children('tr').eq(specs_index);
+                        // change feature value name
+                        if (feature_key != 'Storage') {
+                            $specs_raw.children('td').eq(1).text(offers[i]['features'][feature_key]);
+                        } else {
+                            $specs_raw.children('td').eq(1).text(offers[i]['features'][feature_key][0] + ' SSD\n' + offers[i]['features'][feature_key][1] + ' HDD');
+                        }
+                        specs_index += 1;
                     }
-                    specs_index += 1;
                 }
             }
-        }
-    });
+        });
+    }
 }
 
-// function count_matches(arr, target_val) {
-//     var count = 0;
-//     for (var i=0; i<ajax_que.length; i++){
-//
-//     }
-//     return (count%2 == 0) ? -1:1;
-// }

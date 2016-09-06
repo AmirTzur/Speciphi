@@ -38,10 +38,10 @@
             <legend>Price Range</legend>
             <div id="price-slider" class="center-block">
                 <label for="slider-min"></label>
-                <input type="text" id="slider-min" class="price-tag" readonly>
+                <input type="text" id="slider-min" class="price-tag" value="{{ request.session.static_price_range.0 }}" readonly>
                 <div id="slider-range"></div>
                 <label for="slider-max"></label>
-                <input type="text" id="slider-max" class="price-tag" readonly>
+                <input type="text" id="slider-max" class="price-tag" value="{{ request.session.static_price_range.1 }}" readonly>
             </div>
         </fieldset>
         <!-- NL-Type Section -->
