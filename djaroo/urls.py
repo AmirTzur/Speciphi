@@ -20,10 +20,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^$', 'consult.views.home', name='home'),
-    url(r'^([a-zA-Z]\w+)/affiliation/$', 'consult.views.affiliation', name='affiliation'),
-    url(r'^([a-zA-Z]\w+)/application/$', 'consult.views.application', name='application'),
-    url(r'^([a-zA-Z]\w+)/focalization/$', 'consult.views.focalization', name='focalization'),
-    url(r'^([a-zA-Z]\w+)/comparison/$', 'consult.views.comparison', name='comparison'),
     url(r'^([a-zA-Z]\w+)/results/$', 'consult.views.results', name='results'),
     url(r'^contact/$', 'consult.views.contact', name='contact'),
     url(r'^about/$', 'consult.views.about', name='about'),
@@ -31,7 +27,6 @@ urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^success_close/$', 'consult.views.success_close', name='success_close'),
-    url(r'^NewConsulteeAffiliation/$', 'consult.views.NewConsulteeAffiliation', name='NewConsulteeAffiliation'),
     url(r'^user_actions/$', 'consult.views.user_actions', name='user_actions'),
     url(r'^user_exit/$', 'consult.views.user_exit', name='user_exit'),
 ]

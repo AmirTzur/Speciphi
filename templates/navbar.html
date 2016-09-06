@@ -171,11 +171,7 @@
 <script>
     var pages = [
         {name: "Home", show: false},
-        {name: "Affil", show: false},
-        {name: "Appli", show: false},
-        {name: "Focal", show: false},
-        {name: "Compar", show: false},
-        {name: "Results", show: false},
+        {name: "Results", show: false}
     ];
 
     {% if pages %}
@@ -205,27 +201,6 @@
         $('#forward').children().css('opacity', '0.6');
         $('#backward').children().css('opacity', '0.6');
     {% endif %}
-
-    {#    facebook script#}
-    {#    window.fbAsyncInit = function () {#}
-    {#        FB.init({#}
-    {#            appId: '824594521003011', // local#}
-    {#            appId: '658096024344639', //production#}
-    {#            xfbml: true,#}
-    {#            version: 'v2.5'#}
-    {#        });#}
-    {#    };#}
-    {#    (function (d, s, id) {#}
-    {#        var js, fjs = d.getElementsByTagName(s)[0];#}
-    {#        if (d.getElementById(id)) {#}
-    {#            return;#}
-    {#        }#}
-    {#        js = d.createElement(s);#}
-    {#        js.id = id;#}
-    {#        js.src = "//connect.facebook.net/en_US/sdk.js";#}
-    {#        fjs.parentNode.insertBefore(js, fjs);#}
-    {#    }(document, 'script', 'facebook-jssdk'));#}
-
 
 </script>
 <script src="{% static 'js/navbar.js' %}" style=""></script>
