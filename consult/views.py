@@ -33,7 +33,6 @@ def home(request):
     pages['Focal'] = [False, "focalization"]
     pages['Compar'] = [False, "comparison"]
     pages['Results'] = [False, "results"]
-
     # new user
     user_location = None
     if 'Entrance_id' not in request.session:
