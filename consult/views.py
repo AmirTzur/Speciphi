@@ -1022,14 +1022,10 @@ def user_exit(request):
         consultation_process_id = request.session['ConsultationProcess_id']
     else:
         consultation_process_id = 1
-    action_name = 'webpage_viewing'
-    action_type = -1
-    print('about to save exit ', action_name, action_type)
     try:
-        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, None)
+        set_new_action(entrance_id, consultation_process_id, 'webpage_viewing', -1, None, None)
     except Error as e:
         print(e)
-    print('exit ', action_name, action_type)
     return HttpResponse('')
 
 
