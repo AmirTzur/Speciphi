@@ -70,8 +70,9 @@ def home(request):
         consultation_process_id = 1
     action_name = 'webpage_viewing'
     action_type = 0
+    action_content = request.META.get('HTTP_REFERER') or None
     try:
-        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, None)
+        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, action_content)
     except Error as e:
         print(e)
     return render(request, "index.html", context)
@@ -321,8 +322,9 @@ def results(request, product=None):
         consultation_process_id = 1
     action_name = 'webpage_viewing'
     action_type = 1
+    action_content = request.META.get('HTTP_REFERER') or None
     try:
-        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, None)
+        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, action_content)
     except Error as e:
         print(e)
     return render(request, "results.html", context)
@@ -350,6 +352,7 @@ def contact(request):
         consultation_process_id = 1
     action_name = 'webpage_viewing'
     action_type = 3
+
     if 'contact_name' in request.session:
         success_message = request.session['contact_name'] + ", Thank you for applying us."
         context.update({
@@ -395,8 +398,9 @@ def contact(request):
                 "form": form,
             })
     # gather user data
+    action_content = request.META.get('HTTP_REFERER') or None
     try:
-        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, None)
+        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, action_content)
     except Error as e:
         print(e)
     return render(request, 'contact.html', context)
@@ -421,8 +425,9 @@ def about(request):
         consultation_process_id = 1
     action_name = 'webpage_viewing'
     action_type = 2
+    action_content = request.META.get('HTTP_REFERER') or None
     try:
-        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, None)
+        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, action_content)
     except Error as e:
         print(e)
     return render(request, 'about.html', context)
