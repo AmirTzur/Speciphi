@@ -215,6 +215,21 @@ function AJAX_userAction(object, action_name, opts) {
             action_content = opts['action_content'];
         } else {
             action_content = $(object).prop('id');
+            if (action_content.indexOf('ind') == 0) {
+                switch (action_content[3]) {
+                    case '0':
+                        action_content = 'Best Match';
+                        break;
+                    case '1':
+                        action_content = 'Best Mobility';
+                        break;
+                    case '2':
+                        action_content = 'Best Price';
+                        break;
+                    default:
+                        action_content = action_content = $(object).prop('id');
+                }
+            }
         }
     }
     // send AJAX post request to user_actions view
