@@ -17,7 +17,6 @@ def home(request):
     print('home|')
     pages = OrderedDict()
     pages['Home'] = [True, "home"]
-    pages['Results'] = [False, "results"]
     # new user
     user_location = None
     if 'Entrance_id' not in request.session:
@@ -83,9 +82,6 @@ def home(request):
 
 
 def results(request, product=None):
-    pages = OrderedDict()
-    pages['Home'] = [False, "home"]
-    pages['Results'] = [True, "results"]
     context = {}
     # Session ajax
     request.session['ajax_in_process'] = []
@@ -93,7 +89,6 @@ def results(request, product=None):
     page_title = 'Research Zone'
     context.update({
         "page_title": page_title,
-        "pages": pages,
         "product": product,
     })
     page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \

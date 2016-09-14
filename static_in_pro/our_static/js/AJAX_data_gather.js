@@ -48,7 +48,7 @@ $(document).ready(function () {
         AJAX_userAction(this, 'results_clicks');
     });
 // navbar clicks (open and close menu is triggered on navbar.js)
-    $().on('click', function () {
+    $('a.figure-word, a#facebook_icon, a#twitter_icon, a#google_plus_icon, a#share_icon').on('click', function () {
         AJAX_userAction(this, 'navbar_clicks');
     });
 // user exits page
@@ -238,6 +238,10 @@ function AJAX_userAction(object, action_name, opts) {
     } else if (action_name == 'navbar_clicks') {
         if (opts && 'action_content' in opts) {
             action_content = opts['action_content'];
+        } else if ($(object).hasClass('figure-word')) {
+            action_content = 'navigate to home page';
+        } else {
+            action_content = $(object).prop('id');
         }
     }
     // send AJAX post request to user_actions view

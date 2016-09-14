@@ -71,9 +71,6 @@ $(document).ready(function () {
     });
 });
 
-//home orientation shape
-$('#screens_holder').children().first().children().first().prop('id', 'square');
-
 /* When the user clicks on the button,
  toggle between hiding and showing the dropdown content */
 function opendrop2() {
@@ -96,40 +93,3 @@ $('#myDropdown').css({
 function closeIFrame() {
     location.reload();
 }
-
-
-////fix right-side-nav size according to register link text
-//// media query change
-//function WidthChange(mq) {
-//    if (mq.matches) {
-//        if ($('#register_links:first-child a').text() == 'Sign In') {
-//            $('#right-side-nav').css('width', '148px');
-//        } else if ($('#register_links:first-child a').text() == 'Sign Out') {
-//            $('#right-side-nav').css('width', '160px');
-//        }
-//    }
-//    else {
-//        $('#right-side-nav').css('width', 'auto');
-//    }
-//}
-//// media query event handler
-//if (matchMedia) {
-//    var mq = window.matchMedia("(min-width: 768px)");
-//    mq.addListener(WidthChange);
-//    WidthChange(mq);
-//}
-
-
-//// Close the dropdown menu if the user clicks outside of it
-//window.onclick = function (event) {
-//    if (!event.target.matches('.dropbtn')) {
-//        var dropdowns = document.getElementsByClassName("dropdown-content");
-//        var i;
-//        for (i = 0; i < dropdowns.length; i++) {
-//            var openDropdown = dropdowns[i];
-//            if (openDropdown.classList.contains('show')) {
-//                openDropdown.classList.remove('show');
-//            }
-//        }
-//    }
-//}

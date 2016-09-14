@@ -20,27 +20,6 @@
                 {#navigation#}
                 <ul class="ul-top">
                     <div id="figure">
-                        <li><a id="backward" class="button" style="cursor: default"
-                               onclick="
-                                       if (i > 0) {
-                                       $('#'+pages[i].name).css('display','none');
-                                       $('#'+pages[i-1].name).css('display','block');
-                                       i--;
-                                       $('#forward').css('cursor', 'pointer');
-                                       $('#forward').children().css('opacity', '1');
-                                       if (i == 0 || !pages[i-1].show){
-                                       $('#backward').children().css('opacity', '0.6');
-                                       $('#backward').css('cursor', 'default');
-                                       }else {
-                                       $('#backward').children().css('opacity', '1');
-                                       $('#forward').children().css('opacity', '1');
-                                       $('#backward').css('cursor', 'pointer');
-                                       }
-                                       }
-                                       ">
-                            <i class="fa fa-caret-left fa-lg"></i>
-                        </a>
-                        </li>
                         <li>
                             {% if pages %}
                                 {% for page in pages %}
@@ -66,30 +45,6 @@
                                 </a>
                             {% endif %}
                         </li>
-                        <li>
-                            <a id="forward" class="button" style="cursor: default"
-                               onclick="
-                                       if (i < pages.length-1 && pages[i+1].show) {
-                                       $('#'+pages[i].name).css('display','none');
-                                       $('#'+pages[i+1].name).css('display','block')
-                                       i++;
-                                       $('#backward').children().css('opacity', '1');
-                                       $('#forward').children().css('opacity', '1');
-                                       $('#backward').css('cursor', 'pointer');
-                                       //fade arrow color when next page is unavailable
-                                       if (i == pages.length-1 || !pages[i+1].show){
-                                       $('#forward').children().css('opacity', '0.6');
-                                       $('#forward').css('cursor', 'default');
-                                       }else {
-                                       $('#forward').children().css('opacity', '1');
-                                       $('#forward').children().css('opacity', '1');
-                                       $('#forward').css('cursor', 'pointer');
-                                       }
-                                       }
-                                       ">
-                                <i class="fa fa-caret-right fa-lg"></i>
-                            </a>
-                        </li>
                     </div>
                 </ul>
                 {#orientation#}
@@ -98,11 +53,11 @@
                         {% for page in pages %}
                             {% if pages|keylist1:page %}
                                 <li>
-                                    <div id="circle" style="background-color: #E6592A!important;"></div>
+                                    {#                                    <div id="circle" style="background-color: #E6592A!important;"></div>#}
                                 </li>
                             {% else %}
                                 <li>
-                                    <div id="circle"></div>
+                                    {#                                    <div id="circle"></div>#}
                                 </li>
                             {% endif %}
                         {% endfor %}
@@ -122,11 +77,10 @@
                 </span>
                 <ul class="dropdown-menu pull-center" role="menu" aria-labelledby="menu1">
                     <li><a href="{% url 'about' %}" class="text-align-center">About Us</a></li>
-                    {#                    <li><a href="#" class="text-align-center">About Us</a></li>#}
                     <li><a href="{% url 'contact' %}" class="text-align-center">Contact Us</a></li>
-                    <li><a href="#" class="text-align-center">FAQ</a></li>
-                    <li><a href="#" class="text-align-center">Personal Zone</a>
-                        <!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="#">HTML</a></li>-->
+                    {#                    <li><a href="#" class="text-align-center">FAQ</a></li>#}
+                    {#                    <li><a href="#" class="text-align-center">Personal Zone</a>#}
+                    <!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="#">HTML</a></li>-->
                     </li>
                     <li role="presentation" class="divider"></li>
                 </ul>
@@ -151,13 +105,13 @@
                 </ul>
                 <ul class="ul-bottom">
                     <div id="share_icons">
-                        <li><a href="http://www.facebook.com/elad.dan" class="small-right-side-padding">
+                        <li><a id="facebook_icon" href="http://www.facebook.com/" class="small-right-side-padding">
                             <i class="fa fa-facebook-square fa-lg"></i></a></li>
-                        <li><a href="https://twitter.com/Djaroo_" class="small-sides-padding">
+                        <li><a id="twitter_icon" href="https://twitter.com/" class="small-sides-padding">
                             <i class="fa fa-twitter-square fa-lg"></i></a></li>
-                        <li><a href="https://plus.google.com/" class="small-sides-padding">
+                        <li><a id="google_plus_icon" href="https://plus.google.com/" class="small-sides-padding">
                             <i class="fa fa-google-plus-square fa-lg"></i></a></li>
-                        <li><a href="#" class="small-left-side-padding">
+                        <li><a id="share_icon" href="#" class="small-left-side-padding">
                             <i class="fa fa-share-alt-square fa-lg"></i></a></li>
                     </div>
                 </ul>
@@ -167,42 +121,6 @@
     </div>
 </div>
 
-
-<script>
-    var pages = [
-        {name: "Home", show: false},
-        {name: "Results", show: false}
-    ];
-
-    {% if pages %}
-        //update pages array with the current page
-        {% for page in pages %}
-            {% if pages|keylist1:page %}
-                for (var i = 0; i < pages.length; i++) {
-                    pages[i].show = true;
-                    if (pages[i].name == '{{ page }}') {
-                        break;
-                    }
-                }
-            {% endif %}
-        {% endfor %}
-        //color figure arrows according to current page and his neighbors
-        if (i == pages.length - 1 || !pages[i + 1].show) {
-            $('#forward').children().css('opacity', '0.6');
-        }
-        if (i == 0) {
-            $('#backward').children().css('opacity', '0.6');
-
-        } else {
-            $('#backward').css('cursor', 'pointer');
-        }
-    {% else %}
-        // contact us, about us etc..
-        $('#forward').children().css('opacity', '0.6');
-        $('#backward').children().css('opacity', '0.6');
-    {% endif %}
-
-</script>
 <script src="{% static 'js/navbar.js' %}" style=""></script>
 
 </body>
