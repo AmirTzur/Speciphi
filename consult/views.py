@@ -70,9 +70,13 @@ def home(request):
         consultation_process_id = 1
     action_name = 'webpage_viewing'
     action_type = 0
-    action_content = request.META.get('HTTP_REFERER') or None
+    action_content_referer = request.META.get('HTTP_REFERER') or None
+    # device type is determined on mobileesp.middleware
+    action_content_device = request.device_type
     try:
-        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, action_content)
+        if action_content_referer is not None:
+            set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, action_content_referer)
+        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, action_content_device)
     except Error as e:
         print(e)
     return render(request, "index.html", context)

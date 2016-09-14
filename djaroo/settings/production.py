@@ -74,6 +74,7 @@ if not settings.DEBUG:
         'django.contrib.messages.middleware.MessageMiddleware',
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
         'django.middleware.security.SecurityMiddleware',
+        'mobileesp.middleware.MobileDetectionMiddleware',
     )
 
     ROOT_URLCONF = 'djaroo.urls'
