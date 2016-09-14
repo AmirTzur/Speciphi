@@ -48,7 +48,7 @@ $(document).ready(function () {
         AJAX_userAction(this, 'results_clicks');
     });
 // navbar clicks (open and close menu is triggered on navbar.js)
-    $('a.figure-word, a#facebook_icon, a#twitter_icon, a#google_plus_icon, a#share_icon').on('click', function () {
+    $('a.figure-word, a#facebook_icon, a#twitter_icon, a#google_plus_icon, a#share_icon, a#sign_in, a#sign_out').on('click', function () {
         AJAX_userAction(this, 'navbar_clicks');
     });
 // user exits page

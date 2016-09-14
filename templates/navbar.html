@@ -91,9 +91,9 @@
                     <div id="register_links">
                         <div class="dropdown2">
                             {% if request.user.is_authenticated %}
-                                <li><a href="/accounts/logout" class="dropbtn" style="cursor: pointer">Sign Out</a></li>
+                                <li><a id="sign_out" href="/accounts/logout" class="dropbtn" style="cursor: pointer">Sign Out</a></li>
                             {% else %}
-                                <li><a onclick="opendrop2()" class="dropbtn" style="cursor: pointer">Sign In</a></li>
+                                <li><a id= "sign_in" onclick="opendrop2()" class="dropbtn" style="cursor: pointer">Sign In</a></li>
                                 <div id="myDropdown" class="dropdown-content">
                                     <iframe id="accounts_iframe" src="/accounts/login/">
                                     </iframe>
