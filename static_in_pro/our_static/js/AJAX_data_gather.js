@@ -46,6 +46,10 @@ $('div#share-icons-container button').on('click', function () {
 $('a.deal-link span, a.deal-link img, div#select-price a').on('click', function () {
     AJAX_userAction(this, 'product_choosing');
 });
+// home page clicks
+$('button#right-control-btn, button#left-control-btn, img#info-stage1, img#info-stage2, img#info-stage3, img#info-stage4, img#info-stage5').on('click', function () {
+    AJAX_userAction(this, 'home_clicks')
+});
 // user exits page
 window.onbeforeunload = function () {
     console.log('exit page');
@@ -198,6 +202,8 @@ function AJAX_userAction(object, action_name, opts) {
         object_id = 1;
         console.log('price range action type' + action_type);
         console.log('price range action content' + action_content);
+    } else if (action_name == 'home_clicks') {
+        action_content = $(object).prop('id');
     }
     // send AJAX post request to user_actions view
     $.ajax({
