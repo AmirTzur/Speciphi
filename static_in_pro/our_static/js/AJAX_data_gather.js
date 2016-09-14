@@ -1,19 +1,63 @@
 var ajax_que = [];
-
+$(document).ready(function () {
 // affiliation
-$('#nl-type-field input').on('change', function () {
-    var opts = {'action_type': $(this).is(':checked')};
-    AJAX_manager(this, 'affiliation_choosing', true, opts);
-});
+    $('#nl-type-field input').on('change', function () {
+        var opts = {'action_type': $(this).is(':checked')};
+        AJAX_manager(this, 'affiliation_choosing', true, opts);
+    });
 // application
-$('#nl-needs-field input').on('change', function () {
-    var opts = {'action_type': $(this).is(':checked')};
-    AJAX_manager(this, 'use_ranking', true, opts);
-});
+    $('#nl-needs-field input').on('change', function () {
+        var opts = {'action_type': $(this).is(':checked')};
+        AJAX_manager(this, 'use_ranking', true, opts);
+    });
 // focalization
-$('#nl-questions-field input').on('change', function () {
-    // AJAX_manager(this, 'question_answering', true);
+    $('#nl-questions-field input').on('change', function () {
+        // AJAX_manager(this, 'question_answering', true);
+    });
+
+// info element
+    $('#info-elements button').on('click', function () {
+        AJAX_userAction(this, 'advice_clicking');
+    });
+// switch menu type
+    $('#menu-type-field input').on('change', function () {
+        AJAX_userAction(this, 'menu_type_changing');
+    });
+// open my specs
+    $('button#my-specs-btn').on('click', function () {
+        AJAX_userAction(this, 'my_specs_viewing');
+    });
+// close my specs
+    $('button#specs-close').on('click', function () {
+        AJAX_userAction(this, 'my_specs_viewing');
+    });
+// my specs share
+    $('div#share-icons-container button').on('click', function () {
+        AJAX_userAction(this, 'my_specs_sharing');
+    });
+// product choosing
+    $('a.deal-link span, a.deal-link img, div#select-price a').on('click', function () {
+        AJAX_userAction(this, 'product_choosing');
+    });
+// home page clicks
+    $('button#right-control-btn, button#left-control-btn, img#info-stage1, img#info-stage2, img#info-stage3, img#info-stage4, img#info-stage5, label#how-label, label#who-we-label').on('click', function () {
+        AJAX_userAction(this, 'home_clicks')
+    });
+// results page clicks (open & close of mobile filter is triggered on results_specs.js)
+    $('button#ind0, button#ind1, button#ind2, button#submit-btn').on('click', function () {
+        AJAX_userAction(this, 'results_clicks');
+    });
+// user exits page
+    window.onbeforeunload = function () {
+        console.log('exit page');
+        $.ajax({
+            url: '/user_exit/',
+            type: 'POST',
+            async: false
+        });
+    };
 });
+
 // Price Range
 function price_move(action_type, starting_price, ending_price) {
     var opts = {
@@ -22,44 +66,6 @@ function price_move(action_type, starting_price, ending_price) {
     };
     AJAX_manager(null, 'price_range_changing', true, opts);
 }
-// info element
-$('#info-elements button').on('click', function () {
-    AJAX_userAction(this, 'advice_clicking');
-});
-// switch menu type
-$('#menu-type-field input').on('change', function () {
-    AJAX_userAction(this, 'menu_type_changing');
-});
-// open my specs
-$('button#my-specs-btn').on('click', function () {
-    AJAX_userAction(this, 'my_specs_viewing');
-});
-// close my specs
-$('button#specs-close').on('click', function () {
-    AJAX_userAction(this, 'my_specs_viewing');
-});
-// my specs share
-$('div#share-icons-container button').on('click', function () {
-    AJAX_userAction(this, 'my_specs_sharing');
-});
-// product choosing
-$('a.deal-link span, a.deal-link img, div#select-price a').on('click', function () {
-    AJAX_userAction(this, 'product_choosing');
-});
-// home page clicks
-$('button#right-control-btn, button#left-control-btn, img#info-stage1, img#info-stage2, img#info-stage3, img#info-stage4, img#info-stage5').on('click', function () {
-    AJAX_userAction(this, 'home_clicks')
-});
-// user exits page
-window.onbeforeunload = function () {
-    console.log('exit page');
-    $.ajax({
-        url: '/user_exit/',
-        type: 'POST',
-        async: false
-    });
-};
-
 
 function AJAX_manager(object, action_name, ajax_request, opts) {
     if (ajax_request) {
@@ -204,8 +210,15 @@ function AJAX_userAction(object, action_name, opts) {
         console.log('price range action content' + action_content);
     } else if (action_name == 'home_clicks') {
         action_content = $(object).prop('id');
+    } else if (action_name == 'results_clicks') {
+        if (opts && 'action_content' in opts) {
+            action_content = opts['action_content'];
+        } else {
+            action_content = $(object).prop('id');
+        }
     }
     // send AJAX post request to user_actions view
+    console.log(action_name, action_type, object_id, action_content);
     $.ajax({
         url: '/user_actions/',
         type: 'POST',
@@ -305,3 +318,6 @@ function get_advisor_id(obj) {
         }
     }
 }
+
+
+
