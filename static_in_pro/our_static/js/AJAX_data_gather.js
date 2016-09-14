@@ -47,6 +47,10 @@ $(document).ready(function () {
     $('button#ind0, button#ind1, button#ind2, button#submit-btn').on('click', function () {
         AJAX_userAction(this, 'results_clicks');
     });
+// navbar clicks (open and close menu is triggered on navbar.js)
+    $().on('click', function () {
+        AJAX_userAction(this, 'navbar_clicks');
+    });
 // user exits page
     window.onbeforeunload = function () {
         console.log('exit page');
@@ -230,6 +234,10 @@ function AJAX_userAction(object, action_name, opts) {
                         action_content = action_content = $(object).prop('id');
                 }
             }
+        }
+    } else if (action_name == 'navbar_clicks') {
+        if (opts && 'action_content' in opts) {
+            action_content = opts['action_content'];
         }
     }
     // send AJAX post request to user_actions view

@@ -2,12 +2,15 @@ function ShowEgg() {
     $('#menu1').css('display', 'inline');
     $('#drop_left').css('display', 'none');
     $('#drop_right').css('display', 'none');
+    console.log('close menu');
+    AJAX_userAction(this, 'navbar_clicks', {'action_content': 'close menu'});
 }
 function ShowEggs() {
     $('#menu1').css('display', 'none');
     $('#drop_left').css('display', 'inline');
     $('#drop_right').css('display', 'inline');
-
+    console.log('open menu');
+    AJAX_userAction(this, 'navbar_clicks', {'action_content': 'open menu'});
 }
 
 // media query change
