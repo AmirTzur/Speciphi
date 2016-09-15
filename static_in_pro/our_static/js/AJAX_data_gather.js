@@ -232,6 +232,7 @@ function AJAX_userAction(object, action_name, opts) {
                         break;
                     default:
                         action_content = action_content = $(object).prop('id');
+                        break;
                 }
             }
         }
