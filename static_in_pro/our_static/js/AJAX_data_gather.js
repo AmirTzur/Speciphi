@@ -73,6 +73,9 @@ function price_move(action_type, starting_price, ending_price) {
 
 function AJAX_manager(object, action_name, ajax_request, opts) {
     if (ajax_request) {
+        // activate loading mode
+        $('div.results-deal a img, div.results-deal a span, div.results-deal div, div.results-deal table').css('opacity', '0.4');
+        $('i.product-loading-icon').css('display', 'block');
         ajax_que.push([object, action_name, opts]);
         console.log('New Request: action name - ' + action_name);
         console.log('ajax_que : ');
@@ -261,8 +264,13 @@ function AJAX_userAction(object, action_name, opts) {
             // Trigger ajax
             AJAX_manager(null, null, false, null);
             // Update deals data
-            update_deals(json['offers']);
             console.log('success'); // log the returned json to the console
+            // disable loading mode
+            if (ajax_que.length == 0) {
+                update_deals(json['offers']);
+                $('i.product-loading-icon').css('display', 'none');
+                $('div.results-deal a img, div.results-deal a span, div.results-deal div, div.results-deal table').css('opacity', '');
+            }
         },
         // handle a non-successful response
         error: function (xhr, errmsg, err) {
