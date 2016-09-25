@@ -89,7 +89,13 @@ $('#myDropdown').css({
     "border-width": "1px",
 });
 
-//close iframe by refreshing the parent page
+//close iframe by refreshing navbar template
 function closeIFrame() {
-    location.reload();
+    // location.reload(); // close by refreshing home page
+    $.ajax({
+        url: '/navbar_update/',
+        success: function (data) {
+            $("#navbar_include").html(data);
+        }
+    });
 }

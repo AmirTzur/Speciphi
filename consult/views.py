@@ -566,6 +566,13 @@ def user_exit(request):
     return HttpResponse('')
 
 
+def navbar_update(request):
+    print('navbar_update|')
+    context = {
+    }
+    return render(request, "navbar.html", context)
+
+
 def predict(p_type, p_classifier, request):
     """
 
