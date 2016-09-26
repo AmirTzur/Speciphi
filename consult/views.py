@@ -17,7 +17,6 @@ def home(request):
     print('home|')
     pages = OrderedDict()
     pages['Home'] = [True, "home"]
-    pages['Results'] = [False, "results"]
     # new user
     user_location = None
     if 'Entrance_id' not in request.session:
@@ -70,17 +69,19 @@ def home(request):
         consultation_process_id = 1
     action_name = 'webpage_viewing'
     action_type = 0
+    action_content_referer = request.META.get('HTTP_REFERER') or None
+    # device type is determined on mobileesp.middleware
+    action_content_device = request.device_type
     try:
-        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, None)
+        if action_content_referer is not None:
+            set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, action_content_referer)
+        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, action_content_device)
     except Error as e:
         print(e)
     return render(request, "index.html", context)
 
 
 def results(request, product=None):
-    pages = OrderedDict()
-    pages['Home'] = [False, "home"]
-    pages['Results'] = [True, "results"]
     context = {}
     # Session ajax
     request.session['ajax_in_process'] = []
@@ -88,7 +89,6 @@ def results(request, product=None):
     page_title = 'Research Zone'
     context.update({
         "page_title": page_title,
-        "pages": pages,
         "product": product,
     })
     page_desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' \
@@ -321,8 +321,9 @@ def results(request, product=None):
         consultation_process_id = 1
     action_name = 'webpage_viewing'
     action_type = 1
+    action_content = request.META.get('HTTP_REFERER') or None
     try:
-        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, None)
+        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, action_content)
     except Error as e:
         print(e)
     return render(request, "results.html", context)
@@ -350,6 +351,7 @@ def contact(request):
         consultation_process_id = 1
     action_name = 'webpage_viewing'
     action_type = 3
+
     if 'contact_name' in request.session:
         success_message = request.session['contact_name'] + ", Thank you for applying us."
         context.update({
@@ -395,8 +397,9 @@ def contact(request):
                 "form": form,
             })
     # gather user data
+    action_content = request.META.get('HTTP_REFERER') or None
     try:
-        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, None)
+        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, action_content)
     except Error as e:
         print(e)
     return render(request, 'contact.html', context)
@@ -421,8 +424,9 @@ def about(request):
         consultation_process_id = 1
     action_name = 'webpage_viewing'
     action_type = 2
+    action_content = request.META.get('HTTP_REFERER') or None
     try:
-        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, None)
+        set_new_action(entrance_id, consultation_process_id, action_name, action_type, None, action_content)
     except Error as e:
         print(e)
     return render(request, 'about.html', context)
@@ -560,6 +564,13 @@ def user_exit(request):
     except Error as e:
         print(e)
     return HttpResponse('')
+
+
+def navbar_update(request):
+    print('navbar_update|')
+    context = {
+    }
+    return render(request, "navbar.html", context)
 
 
 def predict(p_type, p_classifier, request):

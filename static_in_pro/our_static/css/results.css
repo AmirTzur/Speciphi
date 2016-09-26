@@ -1,4 +1,4 @@
-#headers-wrapper{
+#headers-wrapper {
     background-color: #e5b34d;
     font-size: 18px;
     font-family: "Bariol";
@@ -6,16 +6,18 @@
     font-style: italic;
     text-align: center;
 }
-#headers-wrapper .row{
+
+#headers-wrapper .row {
     padding: 0px 15px 5px 15px;
     height: 85px;
 }
-#results-headers{
+
+#results-headers {
     padding: 0px;
 }
 
 /* Results headers */
-#results-headers button{
+#results-headers button {
     border: none;
     background-color: inherit;
     line-height: 1.2;
@@ -24,15 +26,18 @@
     padding: 0px;
     margin: 0% 1% 0% 1%;
 }
-#results-headers button span{
+
+#results-headers button span {
     display: block;
     margin-bottom: 5px;
 }
-#results-headers button i{
+
+#results-headers button i {
     font-size: 26px;
 }
+
 /* My Specs headers */
-#my-specs-btn{
+#my-specs-btn {
     float: left;
     position: relative;
     top: 55px;
@@ -48,21 +53,25 @@
     color: rgb(255, 255, 255);
     font-style: italic;
 }
-#my-specs-btn:hover{
+
+#my-specs-btn:hover {
     color: rgb(235, 233, 233);
 }
-#my-specs-btn span{
+
+#my-specs-btn span {
     position: relative;
     top: -3px;
     margin-right: 10px;
 }
-#my-specs-btn i{
+
+#my-specs-btn i {
     position: relative;
     top: 1px;
     font-size: 26px;
 }
+
 /* My specs window */
-#my-specs-window{
+#my-specs-window {
     display: none;
     position: absolute;
     top: 54px;
@@ -77,7 +86,8 @@
     text-align: center;
     border-color: rgba(154, 153, 145, 0.9);
 }
-#specs-close{
+
+#specs-close {
     float: right;
     display: inline-block;
     position: relative;
@@ -89,63 +99,77 @@
     margin-left: 5px;
     z-index: 310;
 }
-#my-specs-header{
+
+#my-specs-header {
     font-size: 18px;
     font-family: "Bariol";
     color: rgb(229, 179, 77);
     font-weight: bold;
     line-height: 2.25;
 }
-#share-icons-container{
+
+#share-icons-container {
 
 }
-#share-icons-container button{
+
+#share-icons-container button {
     display: inline-block;
     background-color: transparent;
     border: none;
 }
-#share-icons-container button i{
+
+#share-icons-container button i {
     font-size: 18px;
     color: #3c4144;
 }
-#recommended-spec{
+
+#recommended-spec {
     font-size: 14px;
     margin: 5px 0px 10px 0px;
     /*background-color: white;*/
 }
-#recommended-spec td{
+
+#recommended-spec td {
     border-color: white;
 }
+
 /* Results Deals */
-#results-wrapper .row{
+#results-wrapper .row {
     padding: 15px 15px 0px 0px;
 }
-#results-section .results-deal{
+
+#results-section .results-deal {
     display: none;
 }
+
 /* Deal Header */
-.results-deal .deal-link span{
+.results-deal .deal-link span {
     font-size: 18px;
     display: block;
 }
-.results-deal .deal-link img{
+
+.results-deal .deal-link img {
     width: 160px;
 }
+
 /* Deal Select Price */
-#select-price{
+#select-price {
     display: block;
     font-size: 12px;
     font-family: "Bariol";
     font-style: normal;
     font-weight: normal;
 }
-#select-price a:first-child{
+
+#select-price a:first-child {
     width: 85%;
 }
-#select-price a:nth-child(2){
+
+#select-price a:nth-child(2) {
     width: 15%;
 }
-#select-price ul{
+
+#select-price ul {
     position: relative;
     left: -50%;
     width: 100%;
@@ -154,129 +178,174 @@
     color: white;
     background-color: #337ab7;
 }
-#select-price li a{
+
+#select-price li a {
     color: white;
     font-weight: normal;
     font-size: 14px;
     position: relative;
     left: -7px;
 }
-#select-price ul li a:hover{
+
+#select-price ul li a:hover {
     color: #f3ede1 !important;
 }
+
 /* Deal Specification */
-.results-deal table{
+.results-deal table {
     font-size: 16px;
     font-family: "Bariol";
     font-style: normal;
     /*color: rgb(60, 65, 68);*/
 }
-.results-deal table td:nth-child(1){
+
+.results-deal table td:nth-child(1) {
     padding: 20px 0px 20px 0px;
-}
-.results-deal table td:nth-child(2){
-    padding: 20px 0px 20px 0px;
-}
-.results-deal table tr:first-child td{
-    border-top: none!important;
 }
 
+.results-deal table td:nth-child(2) {
+    padding: 20px 0px 20px 0px;
+}
+
+.results-deal table tr:first-child td {
+    border-top: none !important;
+}
+
+i.product-loading-icon {
+    font-size: 80px;
+    z-index: 2;
+    position: absolute;
+    left: 42px;
+    top: -30px;
+    display: none;
+}
 
 /* Results Feature - Responsive */
 
+/* Custom Mini i-pad screen*/
+@media only screen and (min-width: 480px) {
+
+}
+
 /* Extra small devices - 320px Design (phones, less than 480px) */
 @media (max-width: 767px) {
-    #results-headers button:focus{
+    #results-headers button:focus {
         color: white;
     }
 }
 
 /* Small devices (tablets, 768px and up) */
 @media (min-width: 768px) {
-    #headers-wrapper .row{
+    #headers-wrapper .row {
         padding: 5px 15px 5px 0px;
         height: 100px;
     }
+
     /* My specs header */
-    #my-specs{
+    #my-specs {
         padding-left: 0px;
         padding-right: 0px;
     }
+
     /* Results header */
-    #results-headers button{
+    #results-headers button {
         width: 130px;
         margin-right: 3%;
     }
-    #results-headers button:hover{
+
+    #results-headers button:hover {
         cursor: default;
     }
-    #results-headers button span{
+
+    #results-headers button span {
         width: 80px;
         margin: 0 auto;
         margin-bottom: 10px;
     }
+
     /* Results Deals */
-    #results-section .results-deal{
+    #results-section .results-deal {
         display: inline-block;
     }
-    .results-deal{
+
+    .results-deal {
         margin-right: 3%;
     }
+
     /* Deal Header */
-    .results-deal .deal-link span{
+    .results-deal .deal-link span {
         font-size: 14px;
         width: 130px;
         height: 50px;
     }
-    .results-deal .deal-link img{
+
+    .results-deal .deal-link img {
         width: 130px;
         height: 130px;
     }
-    #select-price{
+
+    #select-price {
         width: 135px;
     }
-    #select-price a{
+
+    #select-price a {
         font-size: 12px;
     }
-    #select-price ul{
+
+    #select-price ul {
         position: relative;
         left: -50%;
         top: 36px;
     }
-    #select-price li a{
+
+    #select-price li a {
         font-size: 12px;
     }
-    .dropdown-menu{
-        min-width: 80%!important;
+
+    .dropdown-menu {
+        min-width: 80% !important;
         max-width: 99%;
     }
+
     /* Deal Specification */
-    .results-deal table{
+    .results-deal table {
         font-size: 12px;
         width: 130px;
     }
 
+    i.product-loading-icon {
+        font-size: 70px;
+        z-index: 2;
+        position: absolute;
+        left: 30px;
+        top: -30px;
+        display: none;
+    }
 }
 
 /* Medium devices (desktops, 992px and up) */
 @media (min-width: 992px) {
     /* Results header */
-    #results-headers button{
+    #results-headers button {
         width: 130px;
         margin-right: 15%;
     }
-    #results-headers button:nth-child(3){
+
+    #results-headers button:nth-child(3) {
         margin-right: 1%;
     }
+
     /* Results Deals */
-    .results-deal{
+    .results-deal {
         margin-right: 16%;
     }
-    .results-deal:nth-child(3){
+
+    .results-deal:nth-child(3) {
         margin-right: 0%;
     }
+
     /* Deals Header */
-    .results-deal .deal-link span{
+    .results-deal .deal-link span {
         font-size: 15px;
     }
 
@@ -285,42 +354,60 @@
 /* Large devices (large desktops, 1200px and up) */
 @media (min-width: 1200px) {
     /* Results header */
-    #results-headers button{
+    #results-headers button {
         width: 150px;
         /*margin-right: 15%;*/
     }
-    #results-headers button:nth-child(3){
+
+    #results-headers button:nth-child(3) {
         /*margin-right: 1%;*/
     }
+
     /* Results Deals */
-    .results-deal{
+    .results-deal {
         /*margin-right: 16%;*/
     }
-    .results-deal:nth-child(3){
+
+    .results-deal:nth-child(3) {
         /*margin-right: 0%;*/
     }
+
     /* Deal Header */
-    .results-deal .deal-link span{
+    .results-deal .deal-link span {
         /*font-size: 14px;*/
         width: 150px;
         /*height: 50px;*/
     }
-    .results-deal .deal-link img{
+
+    .results-deal .deal-link img {
         width: 150px;
         height: 150px;
     }
-    #select-price{
+
+    #select-price {
         width: 155px;
     }
-    #select-price a{
+
+    #select-price a {
         font-size: 14px;
     }
-    #select-price li a{
+
+    #select-price li a {
         font-size: 14px;
     }
+
     /* Deal Specification */
-    .results-deal table{
+    .results-deal table {
         font-size: 14px;
         width: 150px;
+    }
+
+    i.product-loading-icon {
+        font-size: 70px;
+        z-index: 2;
+        position: absolute;
+        left: 40px;
+        top: -30px;
+        display: none;
     }
 }

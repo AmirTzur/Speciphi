@@ -29,6 +29,7 @@ urlpatterns = [
     url(r'^success_close/$', 'consult.views.success_close', name='success_close'),
     url(r'^user_actions/$', 'consult.views.user_actions', name='user_actions'),
     url(r'^user_exit/$', 'consult.views.user_exit', name='user_exit'),
+    url(r'^navbar_update/$', 'consult.views.navbar_update', name='navbar_update'),
 ]
 
 if settings.DEBUG:

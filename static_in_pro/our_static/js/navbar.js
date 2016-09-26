@@ -2,12 +2,15 @@ function ShowEgg() {
     $('#menu1').css('display', 'inline');
     $('#drop_left').css('display', 'none');
     $('#drop_right').css('display', 'none');
+    console.log('close menu');
+    AJAX_userAction(this, 'navbar_clicks', {'action_content': 'close menu'});
 }
 function ShowEggs() {
     $('#menu1').css('display', 'none');
     $('#drop_left').css('display', 'inline');
     $('#drop_right').css('display', 'inline');
-
+    console.log('open menu');
+    AJAX_userAction(this, 'navbar_clicks', {'action_content': 'open menu'});
 }
 
 // media query change
@@ -68,9 +71,6 @@ $(document).ready(function () {
     });
 });
 
-//home orientation shape
-$('#screens_holder').children().first().children().first().prop('id', 'square');
-
 /* When the user clicks on the button,
  toggle between hiding and showing the dropdown content */
 function opendrop2() {
@@ -89,44 +89,13 @@ $('#myDropdown').css({
     "border-width": "1px",
 });
 
-//close iframe by refreshing the parent page
+//close iframe by refreshing navbar template
 function closeIFrame() {
-    location.reload();
+    // location.reload(); // close by refreshing home page
+    $.ajax({
+        url: '/navbar_update/',
+        success: function (data) {
+            $("#navbar_include").html(data);
+        }
+    });
 }
-
-
-////fix right-side-nav size according to register link text
-//// media query change
-//function WidthChange(mq) {
-//    if (mq.matches) {
-//        if ($('#register_links:first-child a').text() == 'Sign In') {
-//            $('#right-side-nav').css('width', '148px');
-//        } else if ($('#register_links:first-child a').text() == 'Sign Out') {
-//            $('#right-side-nav').css('width', '160px');
-//        }
-//    }
-//    else {
-//        $('#right-side-nav').css('width', 'auto');
-//    }
-//}
-//// media query event handler
-//if (matchMedia) {
-//    var mq = window.matchMedia("(min-width: 768px)");
-//    mq.addListener(WidthChange);
-//    WidthChange(mq);
-//}
-
-
-//// Close the dropdown menu if the user clicks outside of it
-//window.onclick = function (event) {
-//    if (!event.target.matches('.dropbtn')) {
-//        var dropdowns = document.getElementsByClassName("dropdown-content");
-//        var i;
-//        for (i = 0; i < dropdowns.length; i++) {
-//            var openDropdown = dropdowns[i];
-//            if (openDropdown.classList.contains('show')) {
-//                openDropdown.classList.remove('show');
-//            }
-//        }
-//    }
-//}

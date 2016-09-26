@@ -51,6 +51,7 @@ $(document).ready(function () {
     mc_filters.on("panstart panend", function (ev) {
         switch (ev.type) {
             case 'panend':
+                AJAX_userAction(this, 'results_clicks', {'action_content': 'open or close mobile menu'});
                 if (direction == 'panleft') {
                     $(function () {
                         filter_button_jq.animate({
@@ -117,9 +118,9 @@ $(document).ready(function () {
                 max_end = (parseInt($("#slider-max").val().slice(1)));
             },
             stop: function (event, ui) {
-                starting_price = [min_start,max_start];
+                starting_price = [min_start, max_start];
                 ending_price = [min_end, max_end];
-                (min_start == min_end) ? price_move(true, starting_price, ending_price):price_move(false, starting_price, ending_price);
+                (min_start == min_end) ? price_move(true, starting_price, ending_price) : price_move(false, starting_price, ending_price);
             },
         });
         $("#slider-min").val("$" + $("#slider-range").slider("values", 0));
